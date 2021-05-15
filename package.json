@@ -1,0 +1,14 @@
+{
+  "name": "axelor-ui",
+  "private": true,
+  "engines": {
+    "node": ">=14",
+    "yarn": ">=1.22"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "preinstall": "node scripts/check-yarn.js"
+  }
+}
