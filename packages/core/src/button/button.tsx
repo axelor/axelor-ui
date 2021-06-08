@@ -11,21 +11,25 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
   variant?: ThemeColor | 'link';
 }
 
-export const Button: React.FC<ButtonProps> = React.forwardRef(
-  ({
-    disabled = false,
-    outline = false,
-    type = 'button',
-    variant,
-    size,
-    className,
-    ...props
-  }) => {
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      disabled = false,
+      outline = false,
+      type = 'button',
+      variant,
+      size,
+      className,
+      ...props
+    },
+    ref
+  ) => {
     const classes = styleNames(className, 'btn', {
       [`btn-outline-${variant}`]: outline,
       [`btn-${variant}`]: !outline,
       [`btn-${size}`]: size,
+      disabled,
     });
-    return <button className={classes} {...{ disabled, ...props }} />;
+    return <button ref={ref} className={classes} {...{ disabled, ...props }} />;
   }
 );
