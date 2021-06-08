@@ -8,7 +8,7 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
   outline?: boolean;
   type?: 'button' | 'reset' | 'submit' | string;
   size?: 'sm' | 'lg';
-  variant?: ThemeColor;
+  variant?: ThemeColor | 'link';
 }
 
 export const Button: React.FC<ButtonProps> = React.forwardRef(
@@ -16,16 +16,16 @@ export const Button: React.FC<ButtonProps> = React.forwardRef(
     disabled = false,
     outline = false,
     type = 'button',
-    variant = 'default',
+    variant,
     size,
     className,
     ...props
   }) => {
-    const btnVariant = ['btn', outline && 'outline', variant]
-      .filter(x => x)
-      .join('-');
-    const btnSize = size ? `btn-${size}` : null;
-    const classes = styleNames('btn', btnVariant, btnSize, className);
+    const classes = styleNames(className, 'btn', {
+      [`btn-outline-${variant}`]: outline,
+      [`btn-${variant}`]: !outline,
+      [`btn-${size}`]: size,
+    });
     return <button className={classes} {...{ disabled, ...props }} />;
   }
 );
