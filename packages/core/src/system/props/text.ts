@@ -2,6 +2,7 @@ import { computeStyle, ComputeStyles, Config, TForeground } from '../theme';
 
 export interface TextProps {
   color?: TForeground;
+  linkColor?: TForeground;
   textWrap?: boolean;
   textBreak?: boolean;
   textTruncate?: boolean;
@@ -20,6 +21,7 @@ export interface TextAlignProps {
 
 export const TextConfig: Config<TextProps & TextAlignProps> = {
   color: true,
+  linkColor: true,
   textAlign: true,
   textWrap: true,
   textBreak: true,
@@ -36,6 +38,7 @@ export const TextConfig: Config<TextProps & TextAlignProps> = {
 export const textStyles: ComputeStyles<TextProps & TextAlignProps> = (
   {
     color,
+    linkColor,
     textAlign,
     textWrap,
     textBreak,
@@ -52,6 +55,7 @@ export const textStyles: ComputeStyles<TextProps & TextAlignProps> = (
 ) => {
   return [
     computeStyle('text', color),
+    computeStyle('link', linkColor),
     computeStyle('text', textAlign, size),
     textWrap === true && 'text-wrap',
     textWrap === false && 'text-nowrap',
