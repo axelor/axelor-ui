@@ -1,19 +1,30 @@
 import React from 'react';
 
 import { styleNames } from '../styles';
-import { ThemeColor } from '../types';
+import {
+  TVariant,
+  SystemProps,
+  AsComponent,
+  AsProp,
+  makeStyles,
+  omitStyles,
+} from '../system';
 
-export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
+export interface ButtonProps extends AsProp, SystemProps {
   disabled?: boolean;
   outline?: boolean;
   type?: 'button' | 'reset' | 'submit' | string;
   size?: 'sm' | 'lg';
-  variant?: ThemeColor | 'link';
+  variant?: TVariant | 'link';
 }
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button: AsComponent<'button', ButtonProps> = React.forwardRef<
+  HTMLButtonElement,
+  ButtonProps
+>(
   (
     {
+      as,
       disabled = false,
       outline = false,
       type = 'button',
@@ -24,12 +35,16 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const classes = styleNames(className, 'btn', {
+    const styles = makeStyles(props);
+    const rest = omitStyles(props);
+    const classes = styleNames(className, styles, 'btn', {
       [`btn-outline-${variant}`]: outline,
       [`btn-${variant}`]: !outline,
       [`btn-${size}`]: size,
       disabled,
     });
-    return <button ref={ref} className={classes} {...{ disabled, ...props }} />;
+    const Comp = as || 'button';
+    const more = Comp === 'button' ? { disabled, type } : { role: 'button' };
+    return <Comp ref={ref} className={classes} {...{ ...more, ...rest }} />;
   }
 );
