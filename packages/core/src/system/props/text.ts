@@ -58,7 +58,7 @@ export const textStyles: ComputeStyles<TextProps & TextAlignProps> = (
     textBreak === true && 'text-break',
     textTruncate === true && 'text-truncate',
     computeStyle('text', textTransform),
-    computeStyle('text', textDecoration),
+    computeStyle('text-decoration', textDecoration),
     computeStyle('fs', fontSize),
     computeStyle('fw', fontWeight),
     computeStyle('fst', fontStyle),
