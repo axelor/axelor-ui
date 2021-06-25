@@ -7,3 +7,4 @@ export { InputLabel } from './input-label';
 export { InputFeedback } from './input-feedback';
 export { Switch } from './switch';
 export { Image } from './image';
+export { Link } from './link';
