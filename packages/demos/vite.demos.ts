@@ -2,6 +2,7 @@ import type { UserConfig } from 'vite';
 import * as path from 'path';
 
 import reactRefresh from '@vitejs/plugin-react-refresh';
+import svgr from 'vite-plugin-svgr';
 import mdx from 'vite-plugin-mdx';
 import pages, { DefaultPageStrategy } from 'vite-plugin-react-pages';
 
@@ -9,6 +10,7 @@ module.exports = {
   jsx: 'react',
   plugins: [
     reactRefresh(),
+    svgr(),
     mdx(),
     pages({
       pagesDir: path.join(__dirname, 'pages'),
