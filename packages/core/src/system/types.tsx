@@ -82,7 +82,7 @@ const compute = [
   flexStyles,
 ];
 
-export const omitStyles = (props: SystemProps) => {
+export const omitStyles = (props: Record<string, any>) => {
   var keys = configs.flatMap(c => Object.keys(c));
   var result: any = { ...props };
   keys.forEach(k => delete result[k]);
@@ -90,7 +90,7 @@ export const omitStyles = (props: SystemProps) => {
   return result;
 };
 
-export const makeStyles = (props: SystemProps) => {
+export const makeStyles = (props: Record<string, any>) => {
   var base = compute;
   var resp = compute.filter(fn => fn.length === 2);
   return [
