@@ -37,10 +37,11 @@ export interface InputProps extends SystemProps {
   multiple?: boolean;
   autoComplete?: boolean;
   disabled?: boolean;
+  invalid?: boolean;
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type = 'text', min, max, ...props }, ref) => {
+  ({ className, type = 'text', min, max, invalid, ...props }, ref) => {
     const styles = makeStyles(props);
     const rest = omitStyles(props);
 
@@ -51,6 +52,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         'form-check-input': ['checkbox', 'radio'].includes(type),
         'form-control-color': type === 'color',
         'form-range': type === 'range',
+        'is-invalid': invalid,
       },
       className
     );
