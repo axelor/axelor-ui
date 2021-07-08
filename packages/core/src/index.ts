@@ -9,6 +9,7 @@ export { InputFeedback } from './input-feedback';
 export { Switch } from './switch';
 export { Image } from './image';
 export { Link } from './link';
+export { Divider } from './divider';
 export {
   Table,
   TableHead,
