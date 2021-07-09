@@ -2,21 +2,21 @@ import React from 'react';
 
 import { styleNames } from '../styles';
 import {
-  AsComponent,
-  AsProp,
+  OverridableProps,
+  OverridableComponent,
   makeStyles,
   omitStyles,
   SystemProps,
   TVariant,
 } from '../system';
 
-export interface TableCellProps extends SystemProps, AsProp {
+export interface TableCellProps extends SystemProps, OverridableProps {
   as?: 'td' | 'th';
   color?: TVariant;
   selected?: boolean;
 }
 
-export const TableCell: AsComponent<'td', TableCellProps> = React.forwardRef<
+export const TableCell: OverridableComponent<'td', TableCellProps> = React.forwardRef<
   HTMLTableCellElement,
   TableCellProps
 >(({ as: Component = 'td', className, color, selected, ...props }, ref) => {

@@ -2,16 +2,16 @@ import React from 'react';
 
 import { styleNames } from '../styles';
 import {
-  AsComponent,
-  AsProp,
+  OverridableComponent,
+  OverridableProps,
   SystemProps,
   makeStyles,
   omitStyles,
 } from '../system';
 
-export interface BoxProps extends SystemProps, AsProp {}
+export interface BoxProps extends SystemProps, OverridableProps {}
 
-export const Box: AsComponent<'div', BoxProps> = React.forwardRef<
+export const Box: OverridableComponent<'div', BoxProps> = React.forwardRef<
   HTMLDivElement,
   BoxProps
 >(({ as, className, ...props }, ref) => {

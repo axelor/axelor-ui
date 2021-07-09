@@ -2,20 +2,20 @@ import React from 'react';
 
 import { styleNames } from '../styles';
 import {
-  AsComponent,
-  AsProp,
+  OverridableProps,
+  OverridableComponent,
   makeStyles,
   omitStyles,
   SystemProps,
   TVariant,
 } from '../system';
 
-export interface InputFeedbackProps extends SystemProps, AsProp {
+export interface InputFeedbackProps extends SystemProps, OverridableProps {
   invalid?: boolean;
   color?: TVariant;
 }
 
-export const InputFeedback: AsComponent<'div', InputFeedbackProps> =
+export const InputFeedback: OverridableComponent<'div', InputFeedbackProps> =
   React.forwardRef<HTMLLabelElement, InputFeedbackProps>(
     ({ invalid, className, children, as, ...props }, ref) => {
       const styles = makeStyles(props);

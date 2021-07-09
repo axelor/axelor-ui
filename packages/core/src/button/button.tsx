@@ -4,13 +4,13 @@ import { styleNames } from '../styles';
 import {
   TVariant,
   SystemProps,
-  AsComponent,
-  AsProp,
+  OverridableProps,
+  forwardRef,
   makeStyles,
   omitStyles,
 } from '../system';
 
-export interface ButtonProps extends AsProp, SystemProps {
+export interface ButtonProps extends OverridableProps, SystemProps {
   disabled?: boolean;
   outline?: boolean;
   type?: 'button' | 'reset' | 'submit' | string;
@@ -18,10 +18,7 @@ export interface ButtonProps extends AsProp, SystemProps {
   variant?: TVariant | 'link';
 }
 
-export const Button: AsComponent<'button', ButtonProps> = React.forwardRef<
-  HTMLButtonElement,
-  ButtonProps
->(
+export const Button = forwardRef<'button', ButtonProps>(
   (
     {
       as,
