@@ -1,0 +1,52 @@
+.collapse {
+  overflow: hidden;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 350ms;
+  transition-delay: 0ms;
+}
+
+.collapseH {
+  height: 0;
+  transition-property: height;
+}
+
+.collapseW {
+  width: 0;
+  transition-property: width;
+}
+
+.collapseEntered {
+  overflow: visible;
+}
+
+.collapseEntered.collapseH {
+  height: auto;
+}
+
+.collapseEntered.collapseW {
+  width: auto;
+}
+
+.collapseExited {
+  visibility: hidden;
+}
+
+.collapseExited.collapseH {
+  height: 0;
+}
+
+.collapseExited.collapseW {
+  width: 0;
+}
+
+.collapseWrapper {
+  display: flex;
+}
+
+.collapseH .collapseWrapperInner {
+  width: 100%;
+}
+
+.collapseW .collapseWrapperInner {
+  height: 100%;
+}
