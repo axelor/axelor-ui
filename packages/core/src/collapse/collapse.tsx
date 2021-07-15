@@ -1,6 +1,8 @@
 import React from 'react';
 import { Transition } from 'react-transition-group';
-import { TransitionProps } from './types';
+import { TransitionProps } from '../transitions/types';
+import { reflow } from '../transitions/utils';
+
 import { styleNames } from '../styles';
 
 import styles from './collapse.module.css';
@@ -103,7 +105,7 @@ export const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
 
     const handleExit = transitionHandler((node: any) => {
       node.style[size] = `${getSize()}px`;
-      node.clientHeight; // force reflow
+      reflow(node); // force reflow
       if (onExit) {
         onExit(node);
       }
