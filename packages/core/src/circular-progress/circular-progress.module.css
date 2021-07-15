@@ -1,0 +1,26 @@
+.root {
+  display: inline-block;
+}
+
+.root-determinate {
+  transform: rotate(-90deg);
+}
+
+.svg-indeterminate {
+  animation: rotate 0.6s linear infinite;
+}
+
+.determinate {
+  transition: stroke-dashoffset 0.2s ease-in;
+}
+
+.indeterminate {
+  stroke-dasharray: 80, 200;
+  stroke-dashoffset: 0;
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
