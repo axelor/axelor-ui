@@ -11,6 +11,7 @@ export { Image } from './image';
 export { Link } from './link';
 export { Divider } from './divider';
 export { Collapse } from './collapse';
+export { Fade } from './fade';
 export { List, ListItem } from './list';
 export {
   Table,
