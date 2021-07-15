@@ -135,7 +135,6 @@ export const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
         {...props}
       >
         {state => {
-          console.log('xxx', state);
           const className = styleNames(styles.collapse, {
             [styles.collapseH]: !horizontal,
             [styles.collapseW]: !!horizontal,
