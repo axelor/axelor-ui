@@ -12,6 +12,7 @@ export { Link } from './link';
 export { Divider } from './divider';
 export { Collapse } from './collapse';
 export { Fade } from './fade';
+export { Grow } from './grow';
 export { List, ListItem } from './list';
 export {
   Table,
