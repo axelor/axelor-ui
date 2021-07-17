@@ -61,6 +61,7 @@ export function Fade({
   return (
     <Transition
       in={props.in}
+      appear={appear}
       timeout={timeout}
       onEnter={handleEnter}
       onExit={handleExit}

@@ -92,6 +92,7 @@ export function Grow({
   return (
     <Transition
       in={props.in}
+      appear={appear}
       timeout={timeout}
       onEnter={handleEnter}
       onEntering={handleEntering}
