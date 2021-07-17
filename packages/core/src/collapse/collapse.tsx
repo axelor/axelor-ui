@@ -1,7 +1,11 @@
 import React from 'react';
 import { Transition } from 'react-transition-group';
 import { TransitionProps } from '../transitions/types';
-import { reflow } from '../transitions/utils';
+import {
+  getTransition,
+  getTransitionProps,
+  reflow,
+} from '../transitions/utils';
 
 import { styleNames } from '../styles';
 
@@ -12,144 +16,121 @@ export interface CollapseProps extends TransitionProps {
   children?: React.ReactNode;
 }
 
-export const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
-  (
-    {
-      children,
-      horizontal,
-      timeout = 300,
-      in: isIn,
-      onEnter,
-      onEntering,
-      onEntered,
-      onExit,
-      onExiting,
-      onExited,
-      ...props
-    },
-    ref
-  ) => {
-    const nodeRef = React.useRef<HTMLDivElement | null>(null);
-    const wrapperRef = React.useRef<HTMLDivElement | null>(null);
+export const Collapse = ({
+  horizontal,
+  timeout = 300,
+  children,
+  onEnter,
+  onEntering,
+  onEntered,
+  onExit,
+  onExiting,
+  onExited,
+  ...props
+}: CollapseProps) => {
+  const wrapperRef = React.useRef<HTMLDivElement | null>(null);
+  const size = horizontal ? 'width' : 'height';
 
-    const size = horizontal ? 'width' : 'height';
-
-    const getSize = () => {
-      const wrapper = wrapperRef.current;
-      if (wrapper && horizontal) {
-        wrapper.style.position = 'absolute';
-        try {
-          return wrapper.clientWidth;
-        } finally {
-          wrapper.style.position = '';
-        }
+  const getWrapperSize = () => {
+    const wrapper = wrapperRef.current;
+    if (wrapper && horizontal) {
+      wrapper.style.position = 'absolute';
+      try {
+        return wrapper.clientWidth;
+      } finally {
+        wrapper.style.position = '';
       }
-      if (wrapper) {
-        return wrapper.clientHeight;
-      }
-      return 0;
-    };
+    }
+    if (wrapper) {
+      return wrapper.clientHeight;
+    }
+    return 0;
+  };
 
-    const getDuration = (status: 'enter' | 'exit') => {
-      if (typeof timeout === 'object') {
-        return timeout[status];
-      }
-      return timeout;
-    };
+  const handleEnter = (node: HTMLElement, isAppearing: boolean) => {
+    node.style[size] = '0';
+    if (onEnter) {
+      onEnter(node, isAppearing);
+    }
+  };
 
-    const transitionHandler = (callback: any) => (isAppearing?: boolean) => {
-      if (callback) {
-        const node = nodeRef.current;
-        if (callback) {
-          callback(node);
-        } else {
-          callback(node, isAppearing);
-        }
-      }
-    };
+  const handleEntering = (node: HTMLElement, isAppearing: boolean) => {
+    const style = node.style;
+    const wrapperSize = getWrapperSize();
+    const options = getTransitionProps('enter', { timeout, style });
 
-    const handleRef = (elem: HTMLDivElement) => {
-      nodeRef.current = elem;
-      if (typeof ref === 'function') {
-        ref(elem);
-      } else if (ref) {
-        ref.current = elem;
-      }
-    };
+    node.style[size] = `${wrapperSize}px`;
+    node.style.transition = getTransition(size, options);
 
-    const handleEnter = transitionHandler((node: any, isAppearing: boolean) => {
-      node.style[size] = 0;
-      if (onEnter) {
-        onEnter(node, isAppearing);
-      }
-    });
+    if (onEntering) {
+      onEntering(node, isAppearing);
+    }
+  };
 
-    const handleEntering = transitionHandler(
-      (node: any, isAppearing: boolean) => {
-        node.style[size] = `${getSize()}px`;
-        node.style.transitionDuration = `${getDuration('enter')}ms`;
-        if (onEntering) {
-          onEntering(node, isAppearing);
-        }
-      }
-    );
+  const handleEntered = (node: HTMLElement, isAppearing: boolean) => {
+    node.style[size] = 'auto';
 
-    const handleEntered = transitionHandler(
-      (node: any, isAppearing: boolean) => {
-        node.style[size] = `auto`;
-        if (onEntered) {
-          onEntered(node, isAppearing);
-        }
-      }
-    );
+    if (onEntered) {
+      onEntered(node, isAppearing);
+    }
+  };
 
-    const handleExit = transitionHandler((node: any) => {
-      node.style[size] = `${getSize()}px`;
-      reflow(node); // force reflow
-      if (onExit) {
-        onExit(node);
-      }
-    });
+  const handleExit = (node: HTMLElement) => {
+    const wrapperSize = getWrapperSize();
 
-    const handleExiting = transitionHandler((node: any) => {
-      node.style[size] = 0;
-      node.style.transitionDuration = `${getDuration('exit')}ms`;
-      if (onExiting) {
-        onExiting(node);
-      }
-    });
+    node.style[size] = `${wrapperSize}px`;
+    reflow(node);
 
-    const handleExited = transitionHandler(onExited);
+    if (onExit) {
+      onExit(node);
+    }
+  };
 
-    return (
-      <Transition
-        in={isIn}
-        timeout={timeout}
-        nodeRef={nodeRef}
-        onEnter={handleEnter}
-        onEntering={handleEntering}
-        onEntered={handleEntered}
-        onExit={handleExit}
-        onExiting={handleExiting}
-        onExited={handleExited}
-        {...props}
-      >
-        {state => {
-          const className = styleNames(styles.collapse, {
-            [styles.collapseH]: !horizontal,
-            [styles.collapseW]: !!horizontal,
-            [styles.collapseEntered]: state === 'entered',
-            [styles.collapseExited]: state === 'exited',
-          });
-          return (
-            <div ref={handleRef} className={className}>
-              <div ref={wrapperRef} className={styles.collapseWrapper}>
-                <div className={styles.collapseWrapperInner}>{children}</div>
-              </div>
+  const handleExiting = (node: HTMLElement) => {
+    const style = node.style;
+    const options = getTransitionProps('exit', { timeout, style });
+
+    node.style[size] = '0';
+    node.style.transition = getTransition(size, options);
+
+    if (onExiting) {
+      onExiting(node);
+    }
+  };
+
+  const handleExited = (node: HTMLElement) => {
+    if (onExited) {
+      onExited(node);
+    }
+  };
+
+  return (
+    <Transition
+      in={props.in}
+      timeout={timeout}
+      onEnter={handleEnter}
+      onEntering={handleEntering}
+      onEntered={handleEntered}
+      onExit={handleExit}
+      onExiting={handleExiting}
+      onExited={handleExited}
+      {...props}
+    >
+      {state => {
+        const className = styleNames(styles.collapse, {
+          [styles.collapseH]: !horizontal,
+          [styles.collapseW]: !!horizontal,
+          [styles.collapseEntered]: state === 'entered',
+          [styles.collapseExited]: state === 'exited',
+        });
+        return (
+          <div className={className}>
+            <div ref={wrapperRef} className={styles.collapseWrapper}>
+              <div className={styles.collapseWrapperInner}>{children}</div>
             </div>
-          );
-        }}
-      </Transition>
-    );
-  }
-);
+          </div>
+        );
+      }}
+    </Transition>
+  );
+};

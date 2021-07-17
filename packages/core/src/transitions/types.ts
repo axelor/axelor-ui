@@ -16,6 +16,7 @@ type TransitionKeys =
   | 'timeout'
   | 'mountOnEnter'
   | 'unmountOnExit'
+  | 'children'
   | TransitionHandlerKeys;
 
 export interface TransitionHandlerProps

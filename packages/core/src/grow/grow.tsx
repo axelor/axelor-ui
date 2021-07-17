@@ -1,121 +1,112 @@
 import React from 'react';
 import { Transition } from 'react-transition-group';
-import { TransitionProps, TransitionHandlerProps } from '../transitions/types';
-import { reflow } from '../transitions/utils';
+import { TransitionProps } from '../transitions/types';
+import {
+  getTransition,
+  getTransitionProps,
+  getTransitionStyle,
+  reflow,
+} from '../transitions/utils';
 
-import { styleNames } from '../styles';
+export interface GrowProps extends TransitionProps {}
 
-import styles from './grow.module.css';
+const styles = {
+  exited: {
+    opacity: 0,
+    transform: 'scale(0.75, 0.5)',
+    visibility: 'hidden',
+  },
+};
 
-export interface GrowProps extends TransitionProps {
-  children?: React.ReactElement;
-}
+export function Grow({
+  appear = true,
+  timeout = 350,
+  children,
+  onEnter,
+  onEntering,
+  onEntered,
+  onExit,
+  ...props
+}: GrowProps) {
+  const handleEnter = (node: HTMLElement, isAppearing: boolean) => {
+    const style = node.style;
+    const { easing, duration, delay } = getTransitionProps('enter', {
+      timeout,
+      style,
+    });
 
-export const Grow = React.forwardRef<HTMLDivElement, GrowProps>(
-  (
-    {
-      children,
-      timeout = 300,
-      in: isIn,
-      onEnter,
-      onEntering,
-      onEntered,
-      onExit,
-      onExiting,
-      onExited,
-      ...props
-    },
-    ref
-  ) => {
-    const nodeRef = React.useRef<HTMLDivElement | null>(null);
+    reflow(node);
 
-    const getDuration = (status: 'enter' | 'exit') => {
-      if (typeof timeout === 'object') {
-        return timeout[status] || 350;
-      }
-      return timeout;
-    };
+    style.visibility = '';
+    style.transition = [
+      getTransition('opacity', { easing, duration, delay }),
+      getTransition('transform', { easing, duration: duration * 0.666, delay }),
+    ].join(',');
 
-    const transitionHandler = (callback: any) => (isAppearing?: boolean) => {
-      if (callback) {
-        const node = nodeRef.current;
-        if (callback) {
-          callback(node);
-        } else {
-          callback(node, isAppearing);
+    if (onEnter) {
+      onEnter(node, isAppearing);
+    }
+  };
+
+  const handleEntering = (node: HTMLElement, isAppearing: boolean) => {
+    node.style.opacity = '1';
+    node.style.transform = 'scale(1, 1)';
+
+    if (onEntering) {
+      onEntering(node, isAppearing);
+    }
+  };
+
+  const handleEntered = (node: HTMLElement, isAppearing: boolean) => {
+    node.style.opacity = '1';
+    node.style.transform = 'none';
+
+    if (onEntered) {
+      onEntered(node, isAppearing);
+    }
+  };
+
+  const handleExit = (node: HTMLElement) => {
+    const style = node.style;
+    const { easing, duration, delay } = getTransitionProps('exit', {
+      timeout,
+      style,
+    });
+
+    style.opacity = '0';
+    style.transform = 'scale(0.75, 0.5)';
+    style.transition = [
+      getTransition('opacity', { easing, duration, delay }),
+      getTransition('transform', {
+        easing,
+        duration: duration * 0.666,
+        delay: delay || duration * 0.333,
+      }),
+    ].join(',');
+
+    if (onExit) {
+      onExit(node);
+    }
+  };
+
+  return (
+    <Transition
+      in={props.in}
+      timeout={timeout}
+      onEnter={handleEnter}
+      onEntering={handleEntering}
+      onEntered={handleEntered}
+      onExit={handleExit}
+      {...props}
+    >
+      {state => {
+        if (React.isValidElement(children)) {
+          const style = getTransitionStyle(state, styles as any, children);
+          return React.cloneElement(children, {
+            style,
+          });
         }
-      }
-    };
-
-    const handleRef = (elem: HTMLDivElement) => {
-      nodeRef.current = elem;
-      if (typeof ref === 'function') {
-        ref(elem);
-      } else if (ref) {
-        ref.current = elem;
-      }
-    };
-
-    const handleEnter = transitionHandler((node: any, isAppearing: boolean) => {
-      reflow(node);
-      const duration = getDuration('enter');
-
-      node.style.opacity = 1;
-      node.style.transitionDuration = `${duration}ms, ${duration * .666}ms`;
-      node.style.transitionDelay = `0ms, 0ms`;
-      node.style.transform = 'none';
-
-      if (onEnter) {
-        onEnter(node, isAppearing);
-      }
-    });
-
-    const handleEntering = transitionHandler(onEntering);
-
-    const handleEntered = transitionHandler(onEntered);
-
-    const handleExit = transitionHandler((node: any) => {
-      const duration = getDuration('exit');
-
-      node.style.opacity = 0;
-      node.style.transitionDuration = `${duration}ms, ${duration * .666}ms`;
-      node.style.transitionDelay = `0ms, ${duration * .333}ms`;
-      node.style.transform = `scale(0.75, 0.5)`;
-
-      if (onExit) {
-        onExit(node);
-      }
-    });
-
-    const handleExiting = transitionHandler(onExiting);
-
-    const handleExited = transitionHandler(onExited);
-
-    return (
-      <Transition
-        in={isIn}
-        timeout={timeout}
-        nodeRef={nodeRef}
-        onEnter={handleEnter}
-        onEntering={handleEntering}
-        onEntered={handleEntered}
-        onExit={handleExit}
-        onExiting={handleExiting}
-        onExited={handleExited}
-        {...props}
-      >
-        {state => {
-          const className = styleNames(styles.grow, {
-            [styles.growEntering]: state === 'entering',
-            [styles.growEntered]: state === 'entered',
-            [styles.growExited]: state === 'exited',
-          });
-          return React.cloneElement(children as any, {
-            className: className,
-            ref: handleRef,
-          });
-        }}
-      </Transition>
-    );
-  }
-);
+      }}
+    </Transition>
+  );
+}
