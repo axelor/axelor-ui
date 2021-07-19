@@ -20,6 +20,7 @@ export { Collapse } from './collapse';
 export { Fade } from './fade';
 export { Grow } from './grow';
 export { Slide } from './slide';
+export { Portal } from './portal';
 export { List, ListItem } from './list';
 export {
   Table,
