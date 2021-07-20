@@ -39,8 +39,9 @@ export default () => {
         placement={placement}
         offset={[0, 4]}
         arrow
+        shadow
       >
-        <Box p={3} bg="secondary" color="light" border rounded shadow>
+        <Box p={3} bg="secondary" color="light" rounded>
           The content of the Popper.
         </Box>
       </Popper>

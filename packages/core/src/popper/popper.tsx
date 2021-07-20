@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { Fade } from '../fade';
 import { Portal } from '../portal';
+import { styleNames } from '../styles';
 
 import styles from './popper.module.css';
 
@@ -29,6 +30,7 @@ export interface PopperProps {
   strategy?: 'absolute' | 'fixed';
   offset?: [number, number];
   arrow?: boolean;
+  shadow?: boolean;
   transition?: null | React.FunctionComponent<{
     in: boolean | undefined;
     appear: boolean;
@@ -59,6 +61,7 @@ const PopperWrapper = ({
   strategy = 'absolute',
   offset,
   arrow,
+  shadow,
   children,
   ...props
 }: PopperProps) => {
@@ -107,7 +110,11 @@ const PopperWrapper = ({
   }, [target, wrapperEl, open]);
 
   return (
-    <div ref={setWrapperEl} className={styles.popper} {...props}>
+    <div
+      ref={setWrapperEl}
+      className={styleNames(styles.popper, { [styles.shadow]: shadow })}
+      {...props}
+    >
       {children}
     </div>
   );
