@@ -1,8 +1,6 @@
 import { createPopper, Instance, Placement } from '@popperjs/core';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { TransitionProps } from '../transitions/types';
-
 import { Fade } from '../fade';
 import { Portal } from '../portal';
 
@@ -26,8 +24,12 @@ export interface PopperProps {
   container?: Element | null | (() => Element | null);
   children?: React.ReactNode;
   placement?: PopperPlacement;
-  transition?: React.ComponentType<TransitionProps>;
-  transitionProps?: Omit<TransitionProps, 'in' | 'appear' | 'children'>;
+  transition?: null | React.FunctionComponent<{
+    in: boolean | undefined;
+    appear: boolean;
+    onEnter: () => void;
+    onExited: () => void;
+  }>;
 }
 
 const PlacementMapping: Record<PopperPlacement, Placement> = {
@@ -75,51 +77,47 @@ const PopperWrapper = ({
     };
   }, [target, wrapperEl, open]);
 
-  return <div ref={setWrapperEl} {...props}>{children}</div>;
+  return (
+    <div ref={setWrapperEl} {...props}>
+      {children}
+    </div>
+  );
 };
 
 export const Popper = ({
   open,
   placement = 'bottom',
   container,
-  transition: Transition = Fade,
-  transitionProps: { onEnter, onExited, ...transitionProps } = {},
+  transition = Fade,
   children,
   ...props
 }: PopperProps) => {
   const [exited, setExited] = React.useState(true);
 
-  const handleEnter = (node: HTMLElement, isAppearing: boolean) => {
+  const handleEnter = () => {
     setExited(false);
-    if (onEnter) {
-      onEnter(node, isAppearing);
-    }
   };
 
-  const handleExited = (node: HTMLElement) => {
+  const handleExited = () => {
     setExited(true);
-    if (onExited) {
-      onExited(node);
-    }
   };
 
-  const show = open || !exited;
-  if (!show) {
+  if (exited && !open) {
     return null;
   }
 
   return (
     <Portal container={container}>
-      <PopperWrapper placement={placement} open={show} {...props}>
-        <Transition
-          in={open}
-          appear={true}
-          onEnter={handleEnter}
-          onExited={handleExited}
-          {...transitionProps}
-        >
-          {children}
-        </Transition>
+      <PopperWrapper placement={placement} open={open || !exited} {...props}>
+        {transition
+          ? transition({
+              in: open,
+              appear: true,
+              onEnter: handleEnter,
+              onExited: handleExited,
+              children,
+            })
+          : children}
       </PopperWrapper>
     </Portal>
   );
