@@ -38,6 +38,7 @@ export default () => {
         open={open}
         placement={placement}
         offset={[0, 4]}
+        arrow
       >
         <Box p={3} bg="secondary" color="light" border rounded shadow>
           The content of the Popper.

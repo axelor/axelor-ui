@@ -1,0 +1,33 @@
+.arrow,
+.arrow::before {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: inherit;
+}
+
+.arrow {
+  visibility: hidden;
+}
+
+.arrow::before {
+  visibility: visible;
+  content: '';
+  transform: rotate(45deg);
+}
+
+.popper[data-popper-placement^='top'] .arrow {
+  bottom: -6px;
+}
+
+.popper[data-popper-placement^='bottom'] .arrow {
+  top: -6px;
+}
+
+.popper[data-popper-placement^='left'] .arrow {
+  right: -6px;
+}
+
+.popper[data-popper-placement^='right'] .arrow {
+  left: -6px;
+}

@@ -4,6 +4,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Fade } from '../fade';
 import { Portal } from '../portal';
 
+import styles from './popper.module.css';
+
 export type PopperPlacement =
   | 'top'
   | 'top-start'
@@ -26,6 +28,7 @@ export interface PopperProps {
   placement?: PopperPlacement;
   strategy?: 'absolute' | 'fixed';
   offset?: [number, number];
+  arrow?: boolean;
   transition?: null | React.FunctionComponent<{
     in: boolean | undefined;
     appear: boolean;
@@ -55,12 +58,32 @@ const PopperWrapper = ({
   placement: popperPlacement = 'bottom',
   strategy = 'absolute',
   offset,
+  arrow,
   children,
   ...props
 }: PopperProps) => {
   const instance = useRef<Instance | null>(null);
   const [wrapperEl, setWrapperEl] = useState<HTMLDivElement | null>(null);
+
   const placement = PlacementMapping[popperPlacement];
+  const [skidding = 0, distance = 0] = offset || [];
+  const arrowPadding = arrow ? 6 : 0; // match with .arrow css
+
+  const modifiers = [
+    { name: 'preventOverflow' },
+    { name: 'flip' },
+    {
+      name: 'offset',
+      enabled: Boolean(offset) || Boolean(arrow),
+      options: {
+        offset: [skidding, distance + arrowPadding],
+      },
+    },
+    {
+      name: 'arrow',
+      enabled: Boolean(arrow),
+    },
+  ];
 
   useEffect(() => {
     instance.current?.forceUpdate();
@@ -71,19 +94,11 @@ const PopperWrapper = ({
       return undefined;
     }
 
-    const modifiers: any[] = [];
-    const options = { placement, strategy, modifiers };
-
-    if (offset) {
-      modifiers.push({
-        name: 'offset',
-        options: {
-          offset,
-        },
-      });
-    }
-
-    instance.current = createPopper(target, wrapperEl, options);
+    instance.current = createPopper(target, wrapperEl, {
+      placement,
+      strategy,
+      modifiers,
+    });
 
     return () => {
       instance.current?.destroy();
@@ -92,7 +107,7 @@ const PopperWrapper = ({
   }, [target, wrapperEl, open]);
 
   return (
-    <div ref={setWrapperEl} {...props}>
+    <div ref={setWrapperEl} className={styles.popper} {...props}>
       {children}
     </div>
   );
@@ -101,6 +116,7 @@ const PopperWrapper = ({
 export const Popper = ({
   open,
   placement = 'bottom',
+  arrow,
   container,
   transition = Fade,
   children,
@@ -116,22 +132,47 @@ export const Popper = ({
     setExited(true);
   };
 
+  const childrenWithArrow = () => {
+    if (!arrow) return children;
+    if (React.isValidElement(children)) {
+      return React.cloneElement(children, {
+        children: (
+          <>
+            {children.props.children}
+            <span data-popper-arrow className={styles.arrow}></span>
+          </>
+        ),
+      });
+    }
+    return (
+      <div>
+        {children}
+        <span data-popper-arrow className={styles.arrow}></span>
+      </div>
+    );
+  };
+
   if (exited && !open) {
     return null;
   }
 
   return (
     <Portal container={container}>
-      <PopperWrapper placement={placement} open={open || !exited} {...props}>
+      <PopperWrapper
+        placement={placement}
+        arrow={arrow}
+        open={open || !exited}
+        {...props}
+      >
         {transition
           ? transition({
               in: open,
               appear: true,
               onEnter: handleEnter,
               onExited: handleExited,
-              children,
+              children: childrenWithArrow(),
             })
-          : children}
+          : childrenWithArrow()}
       </PopperWrapper>
     </Portal>
   );
