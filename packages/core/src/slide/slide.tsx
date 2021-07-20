@@ -11,7 +11,7 @@ import {
 type Direction = 'start' | 'end' | 'up' | 'down';
 
 export interface SlideProps extends TransitionProps {
-  direction: Direction;
+  direction?: Direction;
 }
 
 const styles = {
@@ -66,7 +66,7 @@ const getTranslateValue = (node: HTMLElement, direction: Direction) => {
 
 export function Slide({
   timeout = 300,
-  direction = 'start',
+  direction = 'end',
   children,
   onEnter,
   onEntering,
@@ -134,7 +134,6 @@ export function Slide({
 
   return (
     <Transition
-      in={props.in}
       timeout={timeout}
       onEnter={handleEnter}
       onEntering={handleEntering}
