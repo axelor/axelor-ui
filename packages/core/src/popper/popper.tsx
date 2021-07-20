@@ -24,6 +24,8 @@ export interface PopperProps {
   container?: Element | null | (() => Element | null);
   children?: React.ReactNode;
   placement?: PopperPlacement;
+  strategy?: 'absolute' | 'fixed';
+  offset?: [number, number];
   transition?: null | React.FunctionComponent<{
     in: boolean | undefined;
     appear: boolean;
@@ -51,6 +53,8 @@ const PopperWrapper = ({
   open,
   target,
   placement: popperPlacement = 'bottom',
+  strategy = 'absolute',
+  offset,
   children,
   ...props
 }: PopperProps) => {
@@ -67,9 +71,19 @@ const PopperWrapper = ({
       return undefined;
     }
 
-    instance.current = createPopper(target, wrapperEl, {
-      placement,
-    });
+    const modifiers: any[] = [];
+    const options = { placement, strategy, modifiers };
+
+    if (offset) {
+      modifiers.push({
+        name: 'offset',
+        options: {
+          offset,
+        },
+      });
+    }
+
+    instance.current = createPopper(target, wrapperEl, options);
 
     return () => {
       instance.current?.destroy();
