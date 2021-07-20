@@ -17,9 +17,9 @@ export default () => {
       <Button variant="primary" ref={setTargetEl} onClick={toggle}>
         Button
       </Button>
-      <Popper open={open} target={targetEl}>
-        <Box bg="secondary" color="light" border rounded p={2}>
-          Popper
+      <Popper open={open} target={targetEl} offset={[0, 4]}>
+        <Box p={2} bg="secondary" color="light" border rounded shadow>
+          The content of the Popper.
         </Box>
       </Popper>
     </div>
