@@ -1,5 +1,6 @@
 {
   "arrowParens": "avoid",
   "singleQuote": true,
+  "quoteProps": "consistent",
   "semi": true
 }

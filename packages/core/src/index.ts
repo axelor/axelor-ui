@@ -21,6 +21,7 @@ export { Fade } from './fade';
 export { Grow } from './grow';
 export { Slide } from './slide';
 export { Portal } from './portal';
+export { Popper } from './popper';
 export { List, ListItem } from './list';
 export {
   Table,
