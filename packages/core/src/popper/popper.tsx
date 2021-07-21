@@ -121,6 +121,7 @@ const PopperWrapper = ({
       ref={setWrapperEl}
       className={styleNames(styles.popper, { [styles.shadow]: shadow })}
       {...props}
+      style={{ position: 'fixed' }}
     >
       {children}
     </div>
