@@ -33,5 +33,5 @@
 }
 
 .popper.shadow {
-  filter: drop-shadow(0 0.5rem 1rem rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 0 1rem rgba(0, 0, 0, 0.2));
 }

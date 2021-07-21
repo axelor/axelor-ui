@@ -18,9 +18,7 @@ export default () => {
         Button
       </Button>
       <Popper open={open} target={targetEl} offset={[0, 4]}>
-        <Box p={2} bg="secondary" color="light" border rounded shadow>
-          The content of the Popper.
-        </Box>
+        <Box p={2}>The content of the Popper.</Box>
       </Popper>
     </div>
   );

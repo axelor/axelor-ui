@@ -40,10 +40,9 @@ export default () => {
         offset={[0, 4]}
         arrow
         shadow
+        rounded
       >
-        <Box p={3} bg="secondary" color="light" rounded>
-          The content of the Popper.
-        </Box>
+        <Box p={3}>The content of the Popper.</Box>
       </Popper>
       <Box d="flex" justifyContent="center">
         <MyButton onClick={handleClick}>top-start</MyButton>

@@ -1,9 +1,12 @@
 import { createPopper, Instance, Placement } from '@popperjs/core';
 import React, { useEffect, useRef, useState } from 'react';
 
+import { Box } from '../box';
 import { Fade } from '../fade';
 import { Portal } from '../portal';
+
 import { styleNames } from '../styles';
+import { TBackground, TForeground } from '../system';
 
 import styles from './popper.module.css';
 
@@ -31,6 +34,10 @@ export interface PopperProps {
   offset?: [number, number];
   arrow?: boolean;
   shadow?: boolean;
+  rounded?: boolean;
+  role?: string;
+  bg?: TBackground;
+  color?: TForeground;
   transition?: null | React.FunctionComponent<{
     in: boolean | undefined;
     appear: boolean;
@@ -124,6 +131,11 @@ export const Popper = ({
   open,
   placement = 'bottom',
   arrow,
+  rounded = true,
+  shadow = true,
+  role = 'tooltip',
+  bg = 'white',
+  color = 'body',
   container,
   transition = Fade,
   children,
@@ -139,23 +151,18 @@ export const Popper = ({
     setExited(true);
   };
 
-  const childrenWithArrow = () => {
-    if (!arrow) return children;
-    if (React.isValidElement(children)) {
-      return React.cloneElement(children, {
-        children: (
-          <>
-            {children.props.children}
-            <span data-popper-arrow className={styles.arrow}></span>
-          </>
-        ),
-      });
-    }
+  const render = () => {
     return (
-      <div>
-        {children}
-        <span data-popper-arrow className={styles.arrow}></span>
-      </div>
+      <Box
+        className={styles.wrapper}
+        role={role}
+        bg={bg}
+        color={color}
+        rounded={rounded}
+      >
+        <div className={styles.content}>{children}</div>
+        {arrow && <span data-popper-arrow className={styles.arrow}></span>}
+      </Box>
     );
   };
 
@@ -168,6 +175,7 @@ export const Popper = ({
       <PopperWrapper
         placement={placement}
         arrow={arrow}
+        shadow={shadow}
         open={open || !exited}
         {...props}
       >
@@ -177,9 +185,9 @@ export const Popper = ({
               appear: true,
               onEnter: handleEnter,
               onExited: handleExited,
-              children: childrenWithArrow(),
+              children: render(),
             })
-          : childrenWithArrow()}
+          : render()}
       </PopperWrapper>
     </Portal>
   );
