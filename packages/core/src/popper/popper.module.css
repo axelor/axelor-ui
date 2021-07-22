@@ -10,6 +10,10 @@
   visibility: hidden;
 }
 
+.wrapper {
+  position: relative;
+}
+
 .arrow::before {
   visibility: visible;
   content: '';
