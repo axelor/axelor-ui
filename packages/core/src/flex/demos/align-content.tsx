@@ -74,8 +74,8 @@ export default () => {
       <ExampleBox alignContent="start" />
       <ExampleBox alignContent="end" />
       <ExampleBox alignContent="center" />
-      <ExampleBox alignContent="between" />
-      <ExampleBox alignContent="around" mb={0} />
+      <ExampleBox alignContent="space-between" />
+      <ExampleBox alignContent="space-around" mb={0} />
     </Box>
   );
 };

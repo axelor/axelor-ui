@@ -1,24 +1,36 @@
 import { computeStyle, ComputeStyles, Config } from '../theme';
 
 export type FlexDirection = 'row' | 'column' | 'row-reverse' | 'column-reverse';
-export type FlexJustify =
+
+export type AlignSelf =
+  | 'auto'
   | 'start'
   | 'end'
   | 'center'
-  | 'between'
-  | 'around'
-  | 'evenly';
-
-export type FlexAlign = 'start' | 'end' | 'center' | 'baseline' | 'stretch';
-
-export type FlexAlignContent =
-  | 'start'
-  | 'end'
-  | 'center'
-  | 'around'
+  | 'baseline'
   | 'stretch';
 
-export type FlexOrder = 0 | 1 | 2 | 3 | 4 | 5 | 'first' | 'last';
+export type AlignItems = 'start' | 'end' | 'center' | 'baseline' | 'stretch';
+
+export type AlignContent =
+  | 'start'
+  | 'end'
+  | 'center'
+  | 'space-around'
+  | 'space-between'
+  | 'space-evenly'
+  | 'stretch';
+
+export type JustifyContent =
+  | 'start'
+  | 'end'
+  | 'center'
+  | 'space-around'
+  | 'space-between'
+  | 'space-evenly'
+  | 'stretch';
+
+export type Order = 0 | 1 | 2 | 3 | 4 | 5 | 'first' | 'last';
 
 export interface FlexProps {
   flexDirection?: FlexDirection;
@@ -26,11 +38,11 @@ export interface FlexProps {
   flexGrow?: 0 | 1;
   flexShrink?: 0 | 1;
   flexFill?: boolean;
-  flexOrder?: FlexOrder;
-  alignSelf?: FlexAlign;
-  alignItems?: FlexAlign;
-  alignContent?: FlexAlignContent;
-  justifyContent?: FlexJustify;
+  order?: Order;
+  alignSelf?: AlignSelf;
+  alignItems?: AlignItems;
+  alignContent?: AlignContent;
+  justifyContent?: JustifyContent;
 }
 
 export const FlexConfig: Config<FlexProps> = {
@@ -39,12 +51,14 @@ export const FlexConfig: Config<FlexProps> = {
   flexGrow: true,
   flexShrink: true,
   flexFill: true,
-  flexOrder: true,
+  order: true,
   alignSelf: true,
   alignItems: true,
   alignContent: true,
   justifyContent: true,
 };
+
+const withSpace = (value?: string) => value?.replace('space-', '');
 
 export const flexStyles: ComputeStyles<FlexProps> = (
   {
@@ -53,7 +67,7 @@ export const flexStyles: ComputeStyles<FlexProps> = (
     flexGrow,
     flexShrink,
     flexFill,
-    flexOrder,
+    order,
     alignSelf,
     alignItems,
     alignContent,
@@ -63,7 +77,7 @@ export const flexStyles: ComputeStyles<FlexProps> = (
 ) => {
   return [
     computeStyle('flex', flexDirection, size),
-    computeStyle('justify-content', justifyContent, size),
+    computeStyle('justify-content', withSpace(justifyContent), size),
     computeStyle('align-items', alignItems, size),
     computeStyle('align-self', alignSelf, size),
     computeStyle('flex', flexFill ? 'fill' : null, size),
@@ -72,7 +86,7 @@ export const flexStyles: ComputeStyles<FlexProps> = (
     computeStyle('flex', flexWrap === true ? 'wrap' : null, size),
     computeStyle('flex', flexWrap === false ? 'nowrap' : null, size),
     computeStyle('flex', flexWrap === 'reverse' ? 'wrap-reverse' : null, size),
-    computeStyle('order', flexOrder, size),
-    computeStyle('align-content', alignContent, size),
+    computeStyle('order', order, size),
+    computeStyle('align-content', withSpace(alignContent), size),
   ];
 };

@@ -44,7 +44,7 @@ export default () => {
           Flex item
         </Box>
       </Box>
-      <Box d="flex" justifyContent="between" mb={3} className={highlight}>
+      <Box d="flex" justifyContent="space-between" mb={3} className={highlight}>
         <Box p={2} className={highlight}>
           Flex item
         </Box>
@@ -55,7 +55,7 @@ export default () => {
           Flex item
         </Box>
       </Box>
-      <Box d="flex" justifyContent="around" mb={3} className={highlight}>
+      <Box d="flex" justifyContent="space-around" mb={3} className={highlight}>
         <Box p={2} className={highlight}>
           Flex item
         </Box>
@@ -66,7 +66,7 @@ export default () => {
           Flex item
         </Box>
       </Box>
-      <Box d="flex" justifyContent="evenly" className={highlight}>
+      <Box d="flex" justifyContent="space-evenly" className={highlight}>
         <Box p={2} className={highlight}>
           Flex item
         </Box>

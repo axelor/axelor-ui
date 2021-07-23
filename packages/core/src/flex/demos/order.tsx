@@ -12,13 +12,13 @@ export default () => {
   return (
     <Box className={example}>
       <Box d="flex" className={highlight}>
-        <Box flexOrder={3} p={2} className={highlight}>
+        <Box order={3} p={2} className={highlight}>
           First flex item
         </Box>
-        <Box flexOrder={2} p={2} className={highlight}>
+        <Box order={2} p={2} className={highlight}>
           Second flex item
         </Box>
-        <Box flexOrder={1} p={2} className={highlight}>
+        <Box order={1} p={2} className={highlight}>
           Third flex item
         </Box>
       </Box>
