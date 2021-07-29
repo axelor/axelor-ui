@@ -34,3 +34,4 @@ export {
   TableFoot,
   TableCaption,
 } from './table';
+export { FocusTrap } from './focus-trap';
