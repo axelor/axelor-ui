@@ -3,9 +3,7 @@
  */
 
 import React, { useState } from 'react';
-import { ClickAwayListener } from '../ClickAwayListener';
-
-import { Button, Box, Popper } from '@axelor-ui/core';
+import { Button, Box, Popper, ClickAwayListener } from '@axelor-ui/core';
 
 export default () => {
   const [open, setOpen] = useState(false);
