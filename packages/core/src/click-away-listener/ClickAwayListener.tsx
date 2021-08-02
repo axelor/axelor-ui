@@ -84,10 +84,11 @@ export const ClickAwayListener = ({
   );
 
   React.useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       activatedRef.current = true;
-    }, 0);
+    }, 100);
     return () => {
+      clearTimeout(timer);
       activatedRef.current = false;
     };
   }, []);
