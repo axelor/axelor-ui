@@ -21,7 +21,7 @@ export { Fade } from './fade';
 export { Grow } from './grow';
 export { Slide } from './slide';
 export { Portal } from './portal';
-export { Popper } from './popper';
+export { Popper, usePopperTrigger } from './popper';
 export { List, ListItem } from './list';
 export { CircularProgress } from './circular-progress';
 export { LinearProgress } from './linear-progress';
