@@ -20,6 +20,7 @@ export { Collapse } from './collapse';
 export { Fade } from './fade';
 export { Grow } from './grow';
 export { Slide } from './slide';
+export { Drawer } from './drawer';
 export { Portal } from './portal';
 export { Popper, usePopperTrigger } from './popper';
 export { List, ListItem } from './list';

@@ -1,0 +1,57 @@
+.hide {
+  visibility: hidden;
+}
+
+.drawer {
+  position: fixed;
+  z-index: 1300;
+  min-width: 240px;
+  min-height: 240px;
+  visibility: visible;
+}
+
+.backdrop {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  z-index: 1000;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.content {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.drawer.top {
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.drawer.start {
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.drawer.end {
+  height: 100%;
+  right: 0;
+  top: 0;
+}
+
+.drawer.bottom {
+  bottom: 0;
+  width: 100%;
+}
+
+.hide {
+  display: none;
+}
