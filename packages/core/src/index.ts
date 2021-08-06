@@ -37,3 +37,4 @@ export {
 } from './table';
 export { FocusTrap } from './focus-trap';
 export { ClickAwayListener } from './click-away-listener';
+export { OverflowList } from './overflow-list';

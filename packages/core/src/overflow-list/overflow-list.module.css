@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+}
+
+.container.vertical {
+  flex-direction: column;
+}
+
+.content {
+  position: relative;
+  overflow: hidden;
+  scroll-behavior: smooth;
+}
+
+.content.inverse {
+  justify-content: flex-end;
+}
+
+.content.scrollable {
+  overflow: hidden;
+}
+
+.dropdownIcon {
+  cursor: pointer;
+  position: relative;
+}
+
+.hidden {
+  visibility: hidden;
+}
