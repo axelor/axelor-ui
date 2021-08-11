@@ -69,7 +69,7 @@ export const ClickAwayListener = ({
           node.contains(event.target as HTMLElement);
       }
 
-      if (!insideDOM || !insideReactTree) {
+      if (!insideDOM && !insideReactTree) {
         onClickAwayRef.current(event);
       }
     },
