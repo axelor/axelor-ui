@@ -3,8 +3,10 @@ export function ownerDocument(node: Node | null | undefined): Document {
 }
 
 export function isElementDisabled(element: HTMLElement): boolean {
-  // @ts-ignore
-  return element.disabled || element.getAttribute('aria-disabled') == true;
+  return (
+    // @ts-ignore
+    element.disabled || `${element.getAttribute('aria-disabled')}` === 'true'
+  );
 }
 
 export function isElementHidden(element: HTMLElement): boolean {
