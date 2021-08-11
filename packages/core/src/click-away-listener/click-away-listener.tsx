@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRefs } from '../hooks';
 
 export interface ClickAwayListenerProps {
   children: React.ReactElement;
@@ -37,16 +38,8 @@ export const ClickAwayListener = ({
       }
     };
 
-  const handleRef = (el: HTMLElement) => {
-    // @ts-expect-error
-    const { ref } = children;
-    nodeRef.current = el;
-    if (typeof ref === 'function') {
-      ref(el);
-    } else if (ref) {
-      ref.current = el;
-    }
-  };
+  // @ts-expect-error
+  const handleRef = useRefs(children?.ref, nodeRef);
 
   const handleClickAway = React.useCallback(
     (event: MouseEvent | TouchEvent) => {
