@@ -1,37 +1,34 @@
 import React from 'react';
 import * as focusTrap from 'focus-trap';
+import { useRefs } from '../hooks';
 
 export interface FocusTrapProps {
   enabled?: boolean;
   children: React.ReactElement;
 }
 
-export function FocusTrap({ enabled = true, children }: FocusTrapProps) {
-  const childrenRef = React.useRef<HTMLElement | null>(null);
+export const FocusTrap = React.forwardRef<HTMLElement, FocusTrapProps>(
+  ({ enabled = true, children }: FocusTrapProps, ref) => {
+    const childrenRef = React.useRef<HTMLElement | null>(null);
 
-  React.useEffect(() => {
-    const children: any = childrenRef.current;
-    if (children && enabled) {
-      const trap: any = focusTrap.createFocusTrap(children, {
-        returnFocusOnDeactivate: true,
-        allowOutsideClick: true,
-        fallbackFocus: children,
-      });
-      trap.activate();
-      return () => trap.deactivate();
-    }
-  }, [enabled]);
+    // @ts-expect-error
+    const handleRef = useRefs(ref, children?.ref, childrenRef);
 
-  return React.cloneElement(children, {
-    ref: (el: HTMLElement) => {
-      // @ts-expect-error
-      const { ref } = children;
-      childrenRef.current = el;
-      if (typeof ref === 'function') {
-        ref(el);
-      } else if (ref) {
-        ref.current = el;
+    React.useEffect(() => {
+      const children: any = childrenRef.current;
+      if (children && enabled) {
+        const trap: any = focusTrap.createFocusTrap(children, {
+          returnFocusOnDeactivate: true,
+          allowOutsideClick: true,
+          fallbackFocus: children,
+        });
+        trap.activate();
+        return () => trap.deactivate();
       }
-    },
-  });
-}
+    }, [enabled]);
+
+    return React.cloneElement(children, {
+      ref: handleRef,
+    });
+  }
+);
