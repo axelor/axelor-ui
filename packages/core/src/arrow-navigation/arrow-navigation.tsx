@@ -26,11 +26,11 @@ export const ArrowNavigation = React.forwardRef(
     const isAutoLayout = [LAYOUT.HORIZONTAL, LAYOUT.VERTICAL].includes(
       selector as string
     );
-    // get selector elements
-    const elements =
-      !isAutoLayout && typeof selector === 'function' && selector();
 
     function handleKeyDown(e: KeyboardEvent) {
+      // get selector elements
+      const elements =
+        !isAutoLayout && typeof selector === 'function' && selector();
       const list = nodeRef.current || null;
 
       if (isAutoLayout) {
