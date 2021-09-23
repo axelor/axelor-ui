@@ -4,8 +4,7 @@
 
 import React from 'react';
 
-import { Box, Button } from '@axelor-ui/core';
-import { ArrowNavigation } from '../arrow-navigation';
+import { Box, Button, ArrowNavigation } from '@axelor-ui/core';
 
 function CustomButton(props: any) {
   return <Button m={1} style={{ width: 100 }} variant="primary" {...props} />;
