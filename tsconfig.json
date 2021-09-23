@@ -17,7 +17,10 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@axelor-ui/core": ["./packages/core/src"]
+      "@axelor-ui/core": ["./packages/core/src"],
+      "@axelor-ui/core/hooks": ["./packages/core/src/hooks"],
+      "@axelor-ui/core/styles": ["./packages/core/src/styles"],
+      "@axelor-ui/grid": ["./packages/grid/src"]
     }
   },
   "include": [
