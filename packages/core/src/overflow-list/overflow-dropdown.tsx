@@ -194,6 +194,7 @@ export default function OverflowDropdown({
     if (content) {
       const resizeObserver = new ResizeObserver(computeOffset);
       resizeObserver.observe(content);
+      computeOffset();
       return () => resizeObserver.disconnect();
     }
   }, [content, computeOffset]);
