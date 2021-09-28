@@ -219,7 +219,7 @@ export const Grid = React.forwardRef<HTMLTableElement, TYPES.GridProps>(
 
     // handle group row toggle, row selection
     const handleRowClick = React.useCallback(
-      (e, row, rowIndex, cellIndex = null) => {
+      async (e, row, rowIndex, cellIndex = null) => {
         // toggle group row
         if (row.type === 'group-row') {
           const { key } = row;
@@ -232,7 +232,12 @@ export const Grid = React.forwardRef<HTMLTableElement, TYPES.GridProps>(
         onRowClick && onRowClick(e, row, rowIndex);
 
         if (editable) {
-          onRecordEdit && onRecordEdit(row, rowIndex);
+          if (onRecordEdit) {
+            const result = await onRecordEdit(row, rowIndex);
+            if (result === null) {
+              return;
+            }
+          }
           return setMutableState(draft => {
             draft.editRow = [rowIndex, cellIndex];
           });
@@ -551,11 +556,16 @@ export const Grid = React.forwardRef<HTMLTableElement, TYPES.GridProps>(
     );
 
     const handleRecordSave = React.useCallback(
-      (row, rowIndex) => {
-        setMutableState(draft => {
-          draft.editRow = null;
-        });
-        onRecordSave && onRecordSave(row, rowIndex);
+      async (row, rowIndex) => {
+        let result = true;
+        if (onRecordSave) {
+          result = await onRecordSave(row, rowIndex);
+        }
+        result &&
+          setMutableState(draft => {
+            draft.editRow = null;
+          });
+        return result;
       },
       [setMutableState, onRecordSave]
     );

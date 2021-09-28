@@ -11,16 +11,33 @@ import { GridState } from '../types';
 
 import { columns, records } from './demo-data';
 
+const FormHandlers = React.createContext(React.createRef<any>());
+
 const FormContext = React.createContext({
   onChange: (name: string, value: any) => {},
   onSave: () => {},
-  onCancel: () => {},
+  onCancel: (data?: any, index?: number) => {},
 });
+
+function saveRecordAPI(record: any) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      if (!record.name) {
+        resolve(null);
+      } else {
+        resolve(record);
+      }
+    }, 1000);
+  });
+}
 
 function Form({ style, className, children, onSave, onCancel, data }: any) {
   const values = React.useRef({ ...data.record });
+  const handlers = React.useContext(FormHandlers);
+  const dirty = React.useRef(false);
 
   const handleChange = React.useCallback((name, value) => {
+    dirty.current = true;
     values.current = {
       ...values.current,
       [name]: value,
@@ -28,8 +45,16 @@ function Form({ style, className, children, onSave, onCancel, data }: any) {
   }, []);
 
   const handleSave = React.useCallback(() => {
-    onSave && onSave(values.current);
-  }, []);
+    const data = values.current;
+    if (!dirty.current) {
+      return data;
+    }
+    return onSave && onSave(data);
+  }, [onSave]);
+
+  React.useEffect(() => {
+    handlers.current && (handlers.current.save = handleSave);
+  }, [handlers, handleSave]);
 
   return (
     <FormContext.Provider
@@ -52,10 +77,11 @@ function FormField({ children, style, className, ...rest }: any) {
   const { onSave, onChange, onCancel } = React.useContext(FormContext);
   const { name = '', type = '', options } = data || {};
   const [value, setValue] = React.useState(_value);
+  const initRef = React.useRef(false);
 
   function handleKeyDown(e: any) {
     if (e.keyCode === 27) {
-      return onCancel && onCancel();
+      return onCancel && onCancel(data, rest.index);
     }
     if (e.ctrlKey && e.keyCode === 13) {
       return onSave && onSave();
@@ -88,7 +114,8 @@ function FormField({ children, style, className, ...rest }: any) {
   }
 
   React.useEffect(() => {
-    onChange && onChange(name, value);
+    initRef.current && onChange && onChange(name, value);
+    initRef.current = true;
   }, [onChange, name, value]);
 
   return <div {...{ style, className }}>{render()}</div>;
@@ -100,31 +127,52 @@ export default function () {
     columns: [],
     rows: [],
   });
+  const boxRef = React.useRef<any>();
+  const handlers = React.useRef({
+    save: () => {},
+  });
+
+  const handleRecordEdit = React.useCallback(async record => {
+    const { save } = handlers.current || {};
+    if (save) {
+      return await save();
+    }
+  }, []);
 
   const handleRecordSave = React.useCallback(record => {
-    setRecords(records =>
-      records.map(_record => (_record.id === record.id ? record : _record))
-    );
+    boxRef.current.style.opacity = '0.5';
+    return saveRecordAPI(record).then((record: any) => {
+      if (record) {
+        setRecords(records =>
+          records.map(_record => (_record.id === record.id ? record : _record))
+        );
+      }
+      boxRef.current.style.opacity = null;
+      return record;
+    });
   }, []);
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <Box style={{ display: 'flex', maxHeight: 500 }}>
-        <Grid
-          editable
-          allowSelection
-          allowCheckboxSelection
-          allowCellSelection
-          selectionType="multiple"
-          records={$records}
-          columns={columns}
-          state={state}
-          setState={setState}
-          onRecordSave={handleRecordSave}
-          editRowRenderer={Form}
-          editRowColumnRenderer={FormField}
-        />
-      </Box>
+      <FormHandlers.Provider value={handlers}>
+        <Box ref={boxRef} style={{ display: 'flex', maxHeight: 500 }}>
+          <Grid
+            editable
+            allowSelection
+            allowCheckboxSelection
+            allowCellSelection
+            selectionType="multiple"
+            records={$records}
+            columns={columns}
+            state={state}
+            setState={setState}
+            editRowRenderer={Form}
+            editRowColumnRenderer={FormField}
+            onRecordEdit={handleRecordEdit}
+            onRecordSave={handleRecordSave}
+          />
+        </Box>
+      </FormHandlers.Provider>
     </DndProvider>
   );
 }
