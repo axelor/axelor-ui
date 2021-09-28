@@ -19,6 +19,7 @@ export function GridBodyRow(props: TYPES.GridRowProps) {
     cellRenderer,
     onCellClick,
     onDoubleClick,
+    onMove,
     onClick,
   } = props;
 
@@ -43,27 +44,29 @@ export function GridBodyRow(props: TYPES.GridRowProps) {
   const rendererProps = renderer ? props : {};
 
   return (
-    <RowComponent
-      {...rendererProps}
-      className={styleNames(styles.row, className, {
-        [styles.selected]: selected,
-      })}
-      onDoubleClick={e => onDoubleClick && onDoubleClick(e, data, rowIndex)}
-    >
-      {columns.map((column, index) => (
-        <GridColumn
-          key={column.name}
-          data={column}
-          index={index}
-          value={data.record[column.name]}
-          focus={editCell === index}
-          selected={selectedCell === index}
-          renderer={cellRenderer}
-          onClick={handleCellClick}
-        >
-          {renderColumn(column)}
-        </GridColumn>
-      ))}
-    </RowComponent>
+    <>
+      <RowComponent
+        {...rendererProps}
+        className={styleNames(styles.row, className, {
+          [styles.selected]: selected,
+        })}
+        onDoubleClick={e => onDoubleClick && onDoubleClick(e, data, rowIndex)}
+      >
+        {columns.map((column, index) => (
+          <GridColumn
+            key={column.name}
+            data={column}
+            index={index}
+            value={data.record[column.name]}
+            focus={editCell === index}
+            selected={selectedCell === index}
+            renderer={cellRenderer || column.renderer}
+            onClick={handleCellClick}
+          >
+            {renderColumn(column)}
+          </GridColumn>
+        ))}
+      </RowComponent>
+    </>
   );
 }

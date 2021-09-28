@@ -6,6 +6,7 @@ import { styleNames } from '@axelor-ui/core/styles';
 import { GridGroup } from './grid-group';
 import { GridHeader } from './grid-header';
 import { GridBody } from './grid-body';
+import { GridDNDRow, GridDNDColumn } from './grid-dnd-row';
 import {
   GRID_CONFIG,
   ROW_TYPE,
@@ -49,6 +50,7 @@ export const Grid = React.forwardRef<HTMLTableElement, TYPES.GridProps>(
       allowCellSelection,
       allowColumnCustomize,
       allowColumnHide,
+      allowRowReorder,
       stickyHeader = true,
       stickyFooter = true,
     } = props;
@@ -56,6 +58,7 @@ export const Grid = React.forwardRef<HTMLTableElement, TYPES.GridProps>(
     const {
       onRowClick,
       onRowDoubleClick,
+      onRowReorder,
       onCellClick,
       onRecordEdit,
       onRecordSave,
@@ -110,6 +113,19 @@ export const Grid = React.forwardRef<HTMLTableElement, TYPES.GridProps>(
             width: 30,
           });
         }
+        if (
+          allowRowReorder &&
+          !columns.find(col => col.name === '__reorder__')
+        ) {
+          columns.push({
+            name: '__reorder__',
+            width: 30,
+            computed: true,
+            title: '',
+            renderer: GridDNDColumn,
+          });
+        }
+
         const totalWidth = getContainerWidth();
         if (totalWidth > 0) {
           const displayColumns = getColumns(columns);
@@ -132,7 +148,12 @@ export const Grid = React.forwardRef<HTMLTableElement, TYPES.GridProps>(
           });
         }
       });
-    }, [allowCheckboxSelection, getContainerWidth, setMutableState]);
+    }, [
+      allowCheckboxSelection,
+      allowRowReorder,
+      getContainerWidth,
+      setMutableState,
+    ]);
 
     // handle column sorting
     const handleSort = React.useCallback(
@@ -315,6 +336,21 @@ export const Grid = React.forwardRef<HTMLTableElement, TYPES.GridProps>(
         }
       },
       [editable, onRecordEdit, onRowClick, setMutableState]
+    );
+
+    const handleRowMove = React.useCallback(
+      (dragRow, hoverRow, isStartRow) => {
+        onRowReorder && onRowReorder(dragRow, hoverRow);
+        return setMutableState(draft => {
+          const { rows } = draft;
+          const dragIndex = rows.findIndex(row => row.key === dragRow.key);
+          const [dragColumn] = rows.splice(dragIndex, 1);
+
+          const hoverIndex = rows.findIndex(row => row.key === hoverRow.key);
+          rows.splice(hoverIndex + (isStartRow ? 0 : 1), 0, dragColumn);
+        });
+      },
+      [onRowReorder]
     );
 
     const handleColumnResizeStart = React.useCallback(
@@ -950,6 +986,11 @@ export const Grid = React.forwardRef<HTMLTableElement, TYPES.GridProps>(
             ? {
                 searchRowRenderer,
                 searchColumnRenderer,
+              }
+            : {})}
+          {...(allowRowReorder
+            ? {
+                onRowMove: handleRowMove,
               }
             : {})}
           onCellClick={onCellClick}

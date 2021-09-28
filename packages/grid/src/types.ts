@@ -10,6 +10,7 @@ export interface GridColumn {
   sort?: boolean;
   aggregate?: 'sum' | 'min' | 'max' | 'avg' | 'count';
   formatter?: (data: any, column: GridColumn) => any;
+  renderer?: (props: any) => any;
   $changed?: boolean;
 }
 
@@ -95,7 +96,7 @@ export interface GridProps {
     row: GridRow,
     rowIndex: number
   ) => void;
-  onRowReorder?: (row: any, rowIndex: number, oldRowIndex: number) => void;
+  onRowReorder?: (dragRow: GridRow, hoverRow: GridRow) => void;
   onRecordEdit?: (record: any, recordIndex?: number) => void;
   onRecordSave?: (record: any, recordIndex?: number) => any;
   onRecordDiscard?: (record: any, recordIndex?: number) => void;
@@ -116,6 +117,7 @@ export interface GridRowProps {
   onCancel?: GridProps['onRecordDiscard'];
   onCellClick?: GridProps['onCellClick'];
   onDoubleClick?: GridProps['onRowDoubleClick'];
+  onMove?: (dragRow: GridRow, hoverRow: GridRow, isFirstRow?: boolean) => void;
   onClick?: (
     e: SyntheticEvent,
     row: GridRow,

@@ -3,6 +3,7 @@ import { GridSearchRow } from './grid-search-row';
 import { GridGroupRow } from './grid-group-row';
 import { GridBodyRow } from './grid-body-row';
 import { GridFooterRow } from './grid-footer-row';
+import { GridDNDRow } from './grid-dnd-row';
 import { isRowVisible } from './utils';
 import * as TYPES from './types';
 import styles from './grid.module.css';
@@ -27,7 +28,8 @@ export interface GridBodyProps
       | 'onRowDoubleClick'
       | 'onCellClick'
     > {
-  onRowClick: TYPES.GridRowProps['onClick'];
+  onRowMove?: TYPES.GridRowProps['onMove'];
+  onRowClick?: TYPES.GridRowProps['onClick'];
 }
 
 export function GridBody(props: GridBodyProps) {
@@ -48,6 +50,7 @@ export function GridBody(props: GridBodyProps) {
     onRecordSave,
     onRecordDiscard,
     onCellClick,
+    onRowMove,
     onRowClick,
     onRowDoubleClick,
   } = props;
@@ -89,6 +92,7 @@ export function GridBody(props: GridBodyProps) {
           onCellClick,
           onClick: onRowClick,
           onDoubleClick: onRowDoubleClick,
+          onMove: onRowMove,
         };
 
         if (editRow) {
@@ -117,7 +121,12 @@ export function GridBody(props: GridBodyProps) {
           );
         }
 
-        return <GridBodyRow renderer={rowRenderer} {...rowProps} />;
+        return (
+          <GridBodyRow
+            renderer={onRowMove ? GridDNDRow : rowRenderer}
+            {...rowProps}
+          />
+        );
       })}
     </div>
   );
