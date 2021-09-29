@@ -5,7 +5,8 @@
   position: relative;
 }
 
-.resizingColumns {}
+.resizingColumns {
+}
 
 .body {
   min-width: 100%;
@@ -27,6 +28,9 @@
 .header.sticky {
   position: sticky;
   top: 0;
+}
+.header.sticky.shadow {
+  box-shadow: -3px -1px 9px rgb(0 0 0 / 40%);
 }
 
 .footer {

@@ -778,6 +778,22 @@ export const Grid = React.forwardRef<HTMLTableElement, TYPES.GridProps>(
       });
     };
 
+    const handleScroll = e => {
+      const container = containerRef.current;
+      const header = container && container.querySelector(`.${styles.header}`);
+      if (header && stickyHeader) {
+        if (!refs.current.stickOffset) {
+          refs.current.stickOffset = header.offsetTop + header.offsetHeight;
+        }
+        const isStick = e.target.scrollTop > refs.current.stickOffset;
+        if (isStick) {
+          header.classList.add(styles.shadow);
+        } else {
+          header.classList.remove(styles.shadow);
+        }
+      }
+    };
+
     const scrollToCell = React.useCallback(
       function scrollToCell([row, col]) {
         if (isNull(row) || isNull(col)) return;
@@ -920,6 +936,7 @@ export const Grid = React.forwardRef<HTMLTableElement, TYPES.GridProps>(
         {...(allowCellSelection
           ? { tabIndex: 0, onKeyDown: handleNavigation }
           : {})}
+        onScroll={handleScroll}
       >
         {allowGrouping && (
           <div className={styles.groupArea}>
