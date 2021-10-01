@@ -1,0 +1,67 @@
+.tree {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  flex-grow: 1;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.headerColumn {
+  font-weight: 600;
+}
+
+.body {
+  min-height: 240px;
+}
+
+.column {
+  padding: 5;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.column:first-child {
+  flex: 2;
+}
+.column.edit {
+  z-index: 1;
+}
+.column .indent {
+  line-height: normal;
+}
+
+.node {
+  cursor: default;
+  display: flex;
+  min-height: 32px;
+  align-items: center;
+}
+.node.selected {
+  background: #337ab7;
+  color: #fff;
+}
+.node.hover {
+  background: #eee;
+  color: #000;
+}
+.node.edit {
+  z-index: 1;
+}
+
+.nodeContent {
+  display: flex;
+  flex-direction: column;
+}
+.icon {
+  cursor: pointer;
+  font-size: 12px;
+  margin: 0 4px;
+  /* height: 24px;
+  width: 24px; */
+  display: inline-flex;
+}

@@ -40,3 +40,4 @@ export { ClickAwayListener } from './click-away-listener';
 export { OverflowList } from './overflow-list';
 export { ArrowNavigation } from './arrow-navigation';
 export { Menu, MenuItem, MenuHeader, MenuDivider } from './menu';
+export { Tree } from './tree';
