@@ -8,6 +8,7 @@ import styles from './tree.module.css';
 export function Tree(props: TYPES.TreeProps) {
   const { onLoad, onUpdate, columns, data: _data, nodeRenderer } = props;
   const [data, setData] = useState<TYPES.TreeNode[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const selectRow = useCallback(index => {
     setData(data =>
@@ -24,19 +25,25 @@ export function Tree(props: TYPES.TreeProps) {
     async function toggle(record, index, isHover = false) {
       if (!record._loaded && onLoad) {
         record._loaded = true;
-        const children: TYPES.TreeNode[] = await onLoad(record);
-        setData(data => {
-          data.splice(
-            index + 1,
-            0,
-            ...children.map(item => ({
-              ...item,
-              _parent: record.id,
-              _level: (record._level || 0) + 1,
-            }))
-          );
-          return [...data];
-        });
+
+        setLoading(true);
+        try {
+          const children: TYPES.TreeNode[] = await onLoad(record);
+          setData(data => {
+            data.splice(
+              index + 1,
+              0,
+              ...children.map(item => ({
+                ...item,
+                _parent: record.id,
+                _level: (record._level || 0) + 1,
+              }))
+            );
+            return [...data];
+          });
+        } finally {
+          setLoading(false);
+        }
       }
       const updateKey = isHover ? '_hover' : '_selected';
       setData(data =>
@@ -128,7 +135,13 @@ export function Tree(props: TYPES.TreeProps) {
   };
 
   return (
-    <div tabIndex={0} onKeyDown={handleNavigation} className={styles.tree}>
+    <div
+      tabIndex={0}
+      onKeyDown={handleNavigation}
+      className={styleNames(styles.tree, {
+        [styles.loading]: loading,
+      })}
+    >
       <div className={styles.header}>
         {columns.map(column => (
           <div

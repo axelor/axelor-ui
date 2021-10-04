@@ -4,6 +4,9 @@
   flex-direction: column;
   outline: none;
 }
+.tree.loading {
+  opacity: 0.5;
+}
 
 .header {
   display: flex;
