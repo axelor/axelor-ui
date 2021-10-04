@@ -8,7 +8,7 @@ import { Tree } from '@axelor-ui/core';
 
 const columns = [
   { name: 'name', title: 'Name', type: 'String' },
-  { name: 'code', title: 'Code'}
+  { name: 'code', title: 'Code' },
 ];
 
 const records = [
@@ -36,10 +36,16 @@ const records = [
 
 export default () => {
   const onLoad = React.useCallback(async record => {
-    return new Array(4).fill(0).map((_, index) => ({
-      id: record.id * 100 + index,
-      name: `${record.name} Item ${index + 1}`,
-    }));
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(
+          new Array(4).fill(0).map((_, index) => ({
+            id: record.id * 100 + index,
+            name: `${record.name} Item ${index + 1}`,
+          }))
+        );
+      }, 1000);
+    });
   }, []);
   const onUpdate = React.useCallback(record => {
     return record;

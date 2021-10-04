@@ -9,7 +9,18 @@ export function Tree(props: TYPES.TreeProps) {
   const { onLoad, onUpdate, columns, data: _data, nodeRenderer } = props;
   const [data, setData] = useState<TYPES.TreeNode[]>([]);
 
-  const toggle = useCallback(
+  const selectRow = useCallback(index => {
+    setData(data =>
+      data.map((_row, i) => {
+        if (i === index) {
+          return { ..._row, _selected: true };
+        }
+        return _row._selected ? { ..._row, _selected: false } : _row;
+      })
+    );
+  }, []);
+
+  const handleToggle = useCallback(
     async function toggle(record, index, isHover = false) {
       if (!record._loaded && onLoad) {
         record._loaded = true;
@@ -50,22 +61,15 @@ export function Tree(props: TYPES.TreeProps) {
     [onLoad]
   );
 
-  const select = useCallback(
+  const handleSelect = useCallback(
     async function select(_, record, index) {
       if (record._children) {
-        await toggle(record, index);
+        await handleToggle(record, index);
       } else {
-        setData(data =>
-          data.map((_row, i) => {
-            if (i === index) {
-              return { ..._row, _selected: true };
-            }
-            return _row._selected ? { ..._row, _selected: false } : _row;
-          })
-        );
+        selectRow(index);
       }
     },
-    [toggle]
+    [handleToggle]
   );
 
   const drop = useCallback(
@@ -94,8 +98,37 @@ export function Tree(props: TYPES.TreeProps) {
     setData([..._data].map(item => ({ ...item, _level: 0 })));
   }, [_data]);
 
+  const handleNavigation = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    let currentIndex: number = data.findIndex(row => row._selected);
+    let activeIndex = currentIndex;
+
+    if (activeIndex > -1) {
+      switch (e.key) {
+        case 'Enter':
+          return handleSelect({}, data[activeIndex], activeIndex);
+        case 'ArrowUp':
+          for (let i = 0; i < data.length; i++) {
+            if (i < currentIndex && !data[i]._hidden) {
+              activeIndex = i;
+            }
+          }
+          break;
+        case 'ArrowDown':
+          for (let i = 0; i < data.length; i++) {
+            if (i > currentIndex && !data[i]._hidden) {
+              activeIndex = i;
+              break;
+            }
+          }
+          break;
+      }
+    }
+
+    selectRow(Math.max(0, activeIndex));
+  };
+
   return (
-    <div className={styles.tree}>
+    <div tabIndex={0} onKeyDown={handleNavigation} className={styles.tree}>
       <div className={styles.header}>
         {columns.map(column => (
           <div
@@ -116,8 +149,8 @@ export function Tree(props: TYPES.TreeProps) {
                 columns={columns}
                 data={row}
                 renderer={nodeRenderer}
-                onToggle={toggle}
-                onSelect={select}
+                onToggle={handleToggle}
+                onSelect={handleSelect}
                 onDrop={drop}
               />
             )
