@@ -47,8 +47,9 @@ export default () => {
       }, 1000);
     });
   }, []);
-  const onUpdate = React.useCallback(record => {
-    return record;
+
+  const onNodeMove = React.useCallback((record, newParent) => {
+    return { ...record, category: newParent.name };
   }, []);
 
   return (
@@ -56,8 +57,8 @@ export default () => {
       <Tree
         columns={columns}
         data={records}
-        onUpdate={onUpdate}
         onLoad={onLoad}
+        onNodeMove={onNodeMove}
       />
     </DndProvider>
   );

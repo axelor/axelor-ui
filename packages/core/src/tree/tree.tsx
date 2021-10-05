@@ -6,9 +6,20 @@ import * as TYPES from './types';
 import styles from './tree.module.css';
 
 export function Tree(props: TYPES.TreeProps) {
-  const { onLoad, onUpdate, columns, data: _data, nodeRenderer } = props;
+  const {
+    onLoad,
+    onNodeMove,
+    onNodeEdit,
+    onNodeSave,
+    onNodeDiscard,
+    columns,
+    data: _data,
+    nodeRenderer,
+    editNodeRenderer,
+  } = props;
   const [data, setData] = useState<TYPES.TreeNode[]>([]);
   const [loading, setLoading] = useState(false);
+  const [editNode, setEditNode] = useState<TYPES.TreeNode | null>(null);
 
   const selectRow = useCallback(index => {
     setData(data =>
@@ -22,7 +33,7 @@ export function Tree(props: TYPES.TreeProps) {
   }, []);
 
   const handleToggle = useCallback(
-    async function toggle(record, index, isHover = false) {
+    async function handleToggle(record, index, isHover = false) {
       if (!record._loaded && onLoad) {
         record._loaded = true;
 
@@ -69,7 +80,8 @@ export function Tree(props: TYPES.TreeProps) {
   );
 
   const handleSelect = useCallback(
-    async function select(_, record, index) {
+    async function handleSelect(_, record, index) {
+      setEditNode(null);
       if (record._children) {
         await handleToggle(record, index);
       } else {
@@ -79,13 +91,13 @@ export function Tree(props: TYPES.TreeProps) {
     [handleToggle]
   );
 
-  const drop = useCallback(
-    async function drop({ data: dragItem }, { data: hoverItem }) {
+  const handleDrop = useCallback(
+    async function handleDrop({ data: dragItem }, { data: hoverItem }) {
       const hoverParent =
         hoverItem._level === dragItem._level ? { id: hoverItem.id } : hoverItem;
       let updatedNode = { ...dragItem };
-      if (hoverParent.id !== dragItem._parent && onUpdate) {
-        updatedNode = await onUpdate(dragItem, hoverParent);
+      if (hoverParent.id !== dragItem._parent && onNodeMove) {
+        updatedNode = await onNodeMove(dragItem, hoverParent);
         updatedNode._parent = hoverParent.id;
       }
       setData(data => {
@@ -98,12 +110,31 @@ export function Tree(props: TYPES.TreeProps) {
         return [...data];
       });
     },
-    [onUpdate]
+    [onNodeMove]
   );
 
-  useEffect(() => {
-    setData([..._data].map(item => ({ ...item, _level: 0 })));
-  }, [_data]);
+  const handleNodeEdit = useCallback(record => {
+    setEditNode(record);
+  }, []);
+
+  const handleNodeSave = useCallback(
+    async (record, index) => {
+      let updatedRecord = record;
+      if (onNodeSave) {
+        updatedRecord = await onNodeSave(record);
+      }
+      setEditNode(null);
+      setData(data => {
+        return data.map((rec, ind) => (ind === index ? record : rec));
+      });
+    },
+    [onNodeSave]
+  );
+
+  const handleNodeCancel = useCallback(record => {
+    setEditNode(null);
+    onNodeDiscard && onNodeDiscard(record);
+  }, [onNodeDiscard]);
 
   const handleNavigation = (e: React.KeyboardEvent<HTMLDivElement>) => {
     let currentIndex: number = data.findIndex(row => row._selected);
@@ -134,13 +165,25 @@ export function Tree(props: TYPES.TreeProps) {
     selectRow(Math.max(0, activeIndex));
   };
 
+  useEffect(() => {
+    setData([..._data].map(item => ({ ...item, _level: 0 })));
+  }, [_data]);
+
+  useEffect(() => {
+    editNode && onNodeEdit && onNodeEdit(editNode);
+  }, [editNode, onNodeEdit]);
+
   return (
     <div
-      tabIndex={0}
-      onKeyDown={handleNavigation}
       className={styleNames(styles.tree, {
         [styles.loading]: loading,
       })}
+      {...(editNode
+        ? {}
+        : {
+            tabIndex: 0,
+            onKeyDown: handleNavigation,
+          })}
     >
       <div className={styles.header}>
         {columns.map(column => (
@@ -160,11 +203,16 @@ export function Tree(props: TYPES.TreeProps) {
                 key={rowIndex}
                 index={rowIndex}
                 columns={columns}
+                edit={editNode === row}
                 data={row}
                 renderer={nodeRenderer}
+                editRenderer={editNodeRenderer}
                 onToggle={handleToggle}
                 onSelect={handleSelect}
-                onDrop={drop}
+                {...(editNode ? {} : { onDrop: handleDrop })}
+                onEdit={handleNodeEdit}
+                onSave={handleNodeSave}
+                onCancel={handleNodeCancel}
               />
             )
         )}

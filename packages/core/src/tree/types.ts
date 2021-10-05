@@ -17,15 +17,20 @@ export interface TreeColumn {
 export interface TreeProps {
   data: TreeNode[];
   columns: TreeColumn[];
-  onUpdate?: (data: TreeNode, parent: TreeNode) => void;
   onLoad?: (data: TreeNode) => any;
   nodeRenderer?: TreeNodeProps['renderer'];
+  editNodeRenderer?: TreeNodeProps['editRenderer'];
+  onNodeMove?: (data: TreeNode, parent: TreeNode) => void;
+  onNodeEdit?: (record: any, recordIndex?: number) => void;
+  onNodeSave?: (record: any, recordIndex?: number) => any;
+  onNodeDiscard?: (record: any, recordIndex?: number) => void;
 }
 
 export interface TreeNodeProps {
   data: TreeNode;
   index: number;
   columns: TreeProps['columns'];
+  edit?: boolean;
   onDrop?: (dragData: any, hoverData: any) => any;
   onToggle?: (record: any, index?: number, hover?: boolean) => any;
   onSelect?: (
@@ -34,7 +39,11 @@ export interface TreeNodeProps {
     index?: number,
     cellIndex?: number
   ) => any;
+  onEdit?: TreeProps['onNodeEdit'];
+  onSave?: TreeProps['onNodeSave'];
+  onCancel?: TreeProps['onNodeDiscard'];
   renderer?: React.JSXElementConstructor<any>;
+  editRenderer?: React.JSXElementConstructor<any>;
 }
 
 export interface TreeChildProps extends TreeNodeProps {

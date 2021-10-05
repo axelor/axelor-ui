@@ -34,8 +34,8 @@ const isNull = (value: any) => !isDefined(value) || value === null;
 const getColumns = (columns: TYPES.GridColumn[]) =>
   columns.filter(column => column.visible !== false);
 
-export const Grid = React.forwardRef<HTMLTableElement, TYPES.GridProps>(
-  (props: TYPES.GridProps, ref) => {
+export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
+  (props, ref) => {
     const containerRef = React.useRef<any>();
     const refs = React.useRef<any>({});
     const { className, state, setState, columns, records } = props;
@@ -929,6 +929,8 @@ export const Grid = React.forwardRef<HTMLTableElement, TYPES.GridProps>(
       () => state.columns.filter(column => column.visible === false),
       [state.columns]
     );
+    const isEditMode = Boolean(state.editRow);
+
     return (
       <div
         ref={handleRef}
@@ -959,31 +961,35 @@ export const Grid = React.forwardRef<HTMLTableElement, TYPES.GridProps>(
           columns={displayColumns}
           hiddenColumns={hiddenColumns}
           rowRenderer={headerRowRenderer}
-          {...(allowColumnResize
+          {...(!isEditMode
             ? {
-                onColumnResizeStart: handleColumnResizeStart,
-                onColumnResize: handleColumnResize,
-                onColumnResizeEnd: handleColumnResizeEnd,
-              }
-            : {})}
-          {...(allowSorting
-            ? {
-                onColumnClick: handleSort,
-                onColumnSort: handleSort,
-              }
-            : {})}
-          {...(allowGrouping
-            ? {
-                onColumnDrop: handleGroupColumnDrop,
-                onColumnGroupAdd: handleGroupColumnAdd,
-                onColumnGroupRemove: handleGroupColumnRemove,
-              }
-            : {})}
-          {...(allowColumnCustomize ? { onColumnCustomize } : {})}
-          {...(allowColumnHide
-            ? {
-                onColumnShow: handleColumnShow,
-                onColumnHide: handleColumnHide,
+                ...(allowColumnResize
+                  ? {
+                      onColumnResizeStart: handleColumnResizeStart,
+                      onColumnResize: handleColumnResize,
+                      onColumnResizeEnd: handleColumnResizeEnd,
+                    }
+                  : {}),
+                ...(allowSorting
+                  ? {
+                      onColumnClick: handleSort,
+                      onColumnSort: handleSort,
+                    }
+                  : {}),
+                ...(allowGrouping
+                  ? {
+                      onColumnDrop: handleGroupColumnDrop,
+                      onColumnGroupAdd: handleGroupColumnAdd,
+                      onColumnGroupRemove: handleGroupColumnRemove,
+                    }
+                  : {}),
+                ...(allowColumnCustomize ? { onColumnCustomize } : {}),
+                ...(allowColumnHide
+                  ? {
+                      onColumnShow: handleColumnShow,
+                      onColumnHide: handleColumnHide,
+                    }
+                  : {}),
               }
             : {})}
           onCheckAll={handleCheckAll}

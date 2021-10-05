@@ -158,9 +158,14 @@ export default function () {
         <Box ref={boxRef} style={{ display: 'flex', maxHeight: 500 }}>
           <Grid
             editable
+            allowColumnResize
+            allowGrouping
+            allowSorting
             allowSelection
             allowCheckboxSelection
             allowCellSelection
+            sortType="state"
+            groupingText={'Drag columns here...'}
             selectionType="multiple"
             records={$records}
             columns={columns}

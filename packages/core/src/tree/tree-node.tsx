@@ -77,13 +77,27 @@ function Parent(props: TYPES.TreeChildProps) {
 }
 
 function Leaf(props: TYPES.TreeChildProps) {
-  const { className, columns, data, index, onClick } = props;
+  const { className, columns, data, index, onEdit, onClick } = props;
   const [, dragRef, dragPreviewRef] = useDrag({
     type: NODE_TYPE,
     item: { data, index, type: NODE_TYPE },
   });
+
+  function handleEdit(e: React.SyntheticEvent) {
+    if (onEdit) {
+      e.preventDefault();
+      e.stopPropagation();
+      onEdit(data, index);
+    }
+  }
+
   return (
-    <div ref={dragRef} className={className} onClick={onClick}>
+    <div
+      ref={dragRef}
+      className={className}
+      onClick={onClick}
+      onDoubleClick={handleEdit}
+    >
       <TreeNodeContent
         {...(index === 0 ? { ref: dragPreviewRef } : {})}
         data={data}
@@ -96,20 +110,27 @@ function Leaf(props: TYPES.TreeChildProps) {
 export const TreeNode = React.memo(function TreeNode({
   columns,
   data,
+  edit,
   index,
+  onEdit,
   onDrop,
   onToggle,
   onSelect,
+  onSave,
+  onCancel,
+  editRenderer,
   renderer: Renderer = React.Fragment,
 }: TYPES.TreeNodeProps) {
   const NodeComponent = hasChildren(data) ? Parent : Leaf;
+  const RendererComponent = edit && editRenderer ? editRenderer : Renderer;
   return (
-    <Renderer
+    <RendererComponent
       {...(Renderer === React.Fragment
         ? {}
         : {
             data,
           })}
+      {...(edit ? { data, index, columns, onCancel, onSave } : {})}
     >
       <NodeComponent
         data={data}
@@ -117,13 +138,14 @@ export const TreeNode = React.memo(function TreeNode({
         className={styleNames(styles.node, {
           [styles.selected]: data._selected,
         })}
+        columns={columns}
         onClick={(e: React.SyntheticEvent) =>
           onSelect && onSelect(e, data, index)
         }
+        {...(editRenderer ? { onEdit } : {})}
         onDrop={onDrop}
         onToggle={onToggle}
-        columns={columns}
       />
-    </Renderer>
+    </RendererComponent>
   );
 });
