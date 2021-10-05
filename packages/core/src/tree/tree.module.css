@@ -24,13 +24,9 @@
 }
 
 .column {
-  padding: 5;
   flex: 1;
   display: flex;
   align-items: center;
-}
-.column:first-child {
-  flex: 2;
 }
 .column.edit {
   z-index: 1;
@@ -59,7 +55,7 @@
 
 .nodeContent {
   display: flex;
-  flex-direction: column;
+  flex: 1;
 }
 .icon {
   cursor: pointer;

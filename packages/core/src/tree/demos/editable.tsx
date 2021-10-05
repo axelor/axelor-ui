@@ -8,32 +8,37 @@ import { Tree, Input } from '@axelor-ui/core';
 import { styleNames } from '@axelor-ui/core/styles';
 
 const columns = [
-  { name: 'name', title: 'Name', type: 'String' },
-  { name: 'code', title: 'Code' },
+  { name: 'title', title: 'Title', type: 'String' },
+  { name: 'progress', title: 'Progress', type: 'String' },
 ];
 
 const records = [
   {
     id: 1,
-    name: 'Storage',
+    title: 'Project 1',
     _children: true,
+    tasks: [
+      { id: 101, title: 'Analysis', progress: 0 },
+      { id: 102, title: 'Definition', progress: 50 },
+      { id: 103, title: 'Presale analysis', progress: 10 },
+      { id: 104, title: 'Test', progress: 20 },
+    ],
   },
   {
     id: 2,
-    name: 'Computers',
+    title: 'Project 2',
     _children: true,
-  },
-  {
-    id: 3,
-    name: 'Accessories',
-    _children: true,
-  },
-  {
-    id: 4,
-    name: 'Other',
-    _children: true,
+    tasks: [
+      { id: 105, title: 'Design', progress: 5 },
+      { id: 106, title: 'Development', progress: 50 },
+      { id: 107, title: 'Follow-up', progress: 30 },
+      { id: 108, title: 'Implementation', progress: 20 },
+      { id: 109, title: 'Research', progress: 90 },
+      { id: 110, title: 'UI Design', progress: 45 },
+    ],
   },
 ];
+
 
 const FormHandlers = React.createContext(React.createRef<any>());
 
@@ -93,8 +98,8 @@ function FormField({
   return <div {...{ style: { flex: 1 }, className }}>{render()}</div>;
 }
 
-function Form({ data, index, columns, onSave, onCancel }: any) {
-  const values = React.useRef({ ...data });
+function Form({ node, index, columns, onSave, onCancel }: any) {
+  const values = React.useRef({ ...node.data });
   const handlers = React.useContext(FormHandlers);
   const dirty = React.useRef(false);
 
@@ -111,8 +116,17 @@ function Form({ data, index, columns, onSave, onCancel }: any) {
     if (!dirty.current) {
       return data;
     }
-    return onSave && onSave(data, index);
-  }, [onSave, index]);
+    return (
+      onSave &&
+      onSave(
+        {
+          ...node,
+          data,
+        },
+        index
+      )
+    );
+  }, [onSave, index, node]);
 
   React.useEffect(() => {
     handlers.current && (handlers.current.save = handleSave);
@@ -125,7 +139,7 @@ function Form({ data, index, columns, onSave, onCancel }: any) {
           focus={index === 0}
           key={column.name}
           data={column}
-          value={data[column.name]}
+          value={node.data[column.name]}
           onCancel={onCancel}
           onChange={handleChange}
           onSave={handleSave}
@@ -137,10 +151,13 @@ function Form({ data, index, columns, onSave, onCancel }: any) {
 
 export default () => {
   const onLoad = React.useCallback(async record => {
-    return new Array(4).fill(0).map((_, index) => ({
-      id: record.id * 100 + index,
-      name: `${record.name} Item ${index + 1}`,
-    }));
+    return new Promise(resolve => {
+      const project = records.find(p => p.id === record.id);
+
+      setTimeout(() => {
+        resolve(project?.tasks || []);
+      }, 0);
+    });
   }, []);
 
   const onUpdate = React.useCallback(record => {
@@ -151,7 +168,7 @@ export default () => {
     <DndProvider backend={HTML5Backend}>
       <Tree
         columns={columns}
-        data={records}
+        records={records}
         editNodeRenderer={Form}
         onLoad={onLoad}
         onNodeMove={onUpdate}

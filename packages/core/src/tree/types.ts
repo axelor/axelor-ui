@@ -1,12 +1,13 @@
 export interface TreeNode {
   id?: any;
-  _children?: boolean | null | number;
-  _expanded?: boolean;
-  _hover?: boolean;
-  _selected?: boolean;
-  _level?: number;
-  _hidden?: boolean;
-  _parent?: number | null;
+  data: Record<string, any>;
+  children?: boolean | null | number;
+  expanded?: boolean;
+  hover?: boolean;
+  selected?: boolean;
+  level?: number;
+  hidden?: boolean;
+  parent?: number | null;
 }
 
 export interface TreeColumn {
@@ -15,7 +16,7 @@ export interface TreeColumn {
 }
 
 export interface TreeProps {
-  data: TreeNode[];
+  records: any[];
   columns: TreeColumn[];
   onLoad?: (data: TreeNode) => any;
   nodeRenderer?: TreeNodeProps['renderer'];

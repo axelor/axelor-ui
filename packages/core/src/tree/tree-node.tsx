@@ -6,7 +6,7 @@ import { styleNames } from '../styles';
 import { Icon } from '../icon';
 import * as TYPES from './types';
 
-const hasChildren = (node: TYPES.TreeNode) => Boolean(node._children);
+const hasChildren = (node: TYPES.TreeNode) => Boolean(node.children);
 const NODE_TYPE = 'TREE_NODE';
 
 const TreeNodeContent = React.forwardRef<
@@ -22,18 +22,18 @@ const TreeNodeContent = React.forwardRef<
             {ind === 0 && (
               <span
                 className="indent"
-                style={{ paddingLeft: (data._level || 0) * 16 }}
+                style={{ paddingLeft: (data.level || 0) * 16 }}
               >
                 {hasChildren(data) && (
                   <Icon
                     size={1}
-                    use={data._expanded ? 'chevron-down' : 'chevron-right'}
+                    use={data.expanded ? 'chevron-down' : 'chevron-right'}
                     className={styles.icon}
                   />
                 )}
               </span>
             )}
-            {(data as any)[column.name]}
+            {(data as any).data[column.name]}
           </div>
         );
       })}
@@ -46,7 +46,7 @@ function Parent(props: TYPES.TreeChildProps) {
   const [{ hovered }, dropRef] = useDrop({
     accept: NODE_TYPE,
     hover() {
-      if (!data._expanded) {
+      if (!data.expanded) {
         onToggle && onToggle(data, index, true);
       }
     },
@@ -54,8 +54,8 @@ function Parent(props: TYPES.TreeChildProps) {
       onDrop && onDrop(item, { data, index });
     },
     canDrop(props: any) {
-      const { _parent }: TYPES.TreeNode = props.data;
-      return _parent !== data.id;
+      const { parent }: TYPES.TreeNode = props.data;
+      return parent !== data.id;
     },
     collect: function (monitor) {
       return {
@@ -130,13 +130,15 @@ export const TreeNode = React.memo(function TreeNode({
         : {
             data,
           })}
-      {...(edit ? { data, index, columns, onCancel, onSave } : {})}
+      {...(edit
+        ? { node: data, index, columns, onCancel, onSave }
+        : {})}
     >
       <NodeComponent
         data={data}
         index={index}
         className={styleNames(styles.node, {
-          [styles.selected]: data._selected,
+          [styles.selected]: data.selected,
         })}
         columns={columns}
         onClick={(e: React.SyntheticEvent) =>
