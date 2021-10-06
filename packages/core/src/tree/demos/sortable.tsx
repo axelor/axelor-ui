@@ -1,5 +1,5 @@
 /**
- * @title Basic
+ * @title Sortable
  */
 import React from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -15,6 +15,7 @@ const records = [
   {
     id: 1,
     title: 'Project 1',
+    progress: 40,
     _children: true,
     tasks: [
       { id: 101, title: 'Analysis', progress: 0 },
@@ -26,6 +27,7 @@ const records = [
   {
     id: 2,
     title: 'Project 2',
+    progress: 60,
     _children: true,
     tasks: [
       { id: 105, title: 'Design', progress: 5 },
@@ -56,6 +58,7 @@ export default () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <Tree
+        sortable
         columns={columns}
         records={records}
         onLoad={onLoad}

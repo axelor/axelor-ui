@@ -15,10 +15,16 @@ export interface TreeColumn {
   title: string;
 }
 
+export interface TreeSortColumn {
+  name: string;
+  order: 'asc' | 'desc';
+}
+
 export interface TreeProps {
   records: any[];
   columns: TreeColumn[];
-  onLoad?: (data: TreeNode) => any;
+  sortable?: boolean;
+  onLoad?: (data: TreeNode, sortColumn?: TreeSortColumn) => any;
   nodeRenderer?: TreeNodeProps['renderer'];
   editNodeRenderer?: TreeNodeProps['editRenderer'];
   onNodeMove?: (data: TreeNode, parent: TreeNode) => void;
@@ -45,6 +51,12 @@ export interface TreeNodeProps {
   onCancel?: TreeProps['onNodeDiscard'];
   renderer?: React.JSXElementConstructor<any>;
   editRenderer?: React.JSXElementConstructor<any>;
+}
+
+export interface TreeColumnProps {
+  data: TreeColumn;
+  sort?: 'asc' | 'desc';
+  onSort?: (column: TreeColumn) => void;
 }
 
 export interface TreeChildProps extends TreeNodeProps {

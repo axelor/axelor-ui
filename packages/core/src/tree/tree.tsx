@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
+import { TreeColumn } from './tree-column';
 import { TreeNode } from './tree-node';
 import { styleNames } from '../styles';
 import * as TYPES from './types';
@@ -16,6 +17,7 @@ function toNode(record: any): TYPES.TreeNode {
 
 export function Tree(props: TYPES.TreeProps) {
   const {
+    sortable,
     onLoad,
     onNodeMove,
     onNodeEdit,
@@ -29,6 +31,7 @@ export function Tree(props: TYPES.TreeProps) {
   const [data, setData] = useState<TYPES.TreeNode[]>([]);
   const [loading, setLoading] = useState(false);
   const [editNode, setEditNode] = useState<TYPES.TreeNode | null>(null);
+  const [sortColumn, setSortColumn] = useState<TYPES.TreeSortColumn>();
 
   const selectRow = useCallback(index => {
     setData(data =>
@@ -41,6 +44,18 @@ export function Tree(props: TYPES.TreeProps) {
     );
   }, []);
 
+  const handleSort = useCallback(column => {
+    setSortColumn(sortColumn => {
+      return {
+        name: column.name,
+        order:
+          sortColumn?.name === column.name && sortColumn?.order === 'asc'
+            ? 'desc'
+            : 'asc',
+      };
+    });
+  }, []);
+
   const handleToggle = useCallback(
     async function handleToggle(record, index, isHover = false) {
       if (!record.loaded && onLoad) {
@@ -48,7 +63,7 @@ export function Tree(props: TYPES.TreeProps) {
 
         setLoading(true);
         try {
-          const children = await onLoad(record.data);
+          const children = await onLoad(record.data, sortColumn);
           setData(data => {
             data.splice(
               index + 1,
@@ -83,7 +98,7 @@ export function Tree(props: TYPES.TreeProps) {
           )
       );
     },
-    [onLoad]
+    [onLoad, sortColumn]
   );
 
   const handleSelect = useCallback(
@@ -111,7 +126,10 @@ export function Tree(props: TYPES.TreeProps) {
         data.splice(dragIndex, 1);
 
         const hoverIndex = data.indexOf(hoverItem);
-        data.splice(hoverIndex + 1, 0, { ...updatedNode, parent: hoverParent.id });
+        data.splice(hoverIndex + 1, 0, {
+          ...updatedNode,
+          parent: hoverParent.id,
+        });
 
         return [...data];
       });
@@ -174,8 +192,19 @@ export function Tree(props: TYPES.TreeProps) {
   };
 
   useEffect(() => {
-    setData([...records].map(toNode));
-  }, [records]);
+    setData(
+      (sortColumn
+        ? [...records].sort((r1, r2) => {
+            const v1 = r1[sortColumn.name];
+            const v2 = r2[sortColumn.name];
+            if (v1 > v2) return sortColumn.order === 'asc' ? 1 : -1;
+            if (v1 < v2) return sortColumn.order === 'asc' ? -1 : 1;
+            return 0;
+          })
+        : [...records]
+      ).map(toNode)
+    );
+  }, [records, sortColumn]);
 
   useEffect(() => {
     editNode && onNodeEdit && onNodeEdit(editNode);
@@ -194,14 +223,21 @@ export function Tree(props: TYPES.TreeProps) {
           })}
     >
       <div className={styles.header}>
-        {columns.map(column => (
-          <div
-            key={column.name}
-            className={styleNames(styles.headerColumn, styles.column)}
-          >
-            {column.title}
-          </div>
-        ))}
+        {columns.map(column => {
+          const hasSort = sortColumn && sortColumn.name === column.name;
+          return (
+            <TreeColumn
+              key={column.name}
+              data={column}
+              {...(hasSort ? { sort: sortColumn?.order } : {})}
+              {...(sortable
+                ? {
+                    onSort: handleSort,
+                  }
+                : {})}
+            />
+          );
+        })}
       </div>
       <div className={styles.body}>
         {data.map(
