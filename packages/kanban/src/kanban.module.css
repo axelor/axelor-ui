@@ -1,0 +1,14 @@
+.board {
+  height: 100%;
+  width: fit-content;
+  display: inline-flex;
+}
+
+.column {
+  position: relative;
+  width: 250px;
+}
+
+.record-list {
+  padding: 8px;
+}
