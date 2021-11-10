@@ -30,6 +30,8 @@ export const RecordList = React.memo(function RecordList({
         <Box
           ref={innerRef}
           {...droppableProps}
+          d="flex"
+          flexDirection="column"
           style={style}
           className={className}
         >
