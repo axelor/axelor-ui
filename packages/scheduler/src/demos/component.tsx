@@ -4,9 +4,8 @@
 
 import React from 'react';
 
-import Scheduler from '../scheduler';
-import events from './events';
 import { SchedulerEvent } from '../types';
+import Basic from './basic';
 
 function CustomEvent({ event }: { event: SchedulerEvent }) {
   return (
@@ -21,13 +20,7 @@ const components = {
 };
 
 function Component() {
-  return (
-    <Scheduler
-      events={events}
-      components={components}
-      style={{ height: 500 }}
-    />
-  );
+  return <Basic components={components} />;
 }
 
 export default Component;
