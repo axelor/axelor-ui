@@ -11,6 +11,7 @@ import { Popper, PopperProps } from '../popper/popper';
 import { ClickAwayListener } from '../click-away-listener';
 import { ArrowNavigation } from '../arrow-navigation';
 import { FocusTrap } from '../focus-trap';
+import cssStyles from './menu.module.css';
 
 export type MenuPlacement = 'top' | 'bottom' | 'start' | 'end';
 export type MenuAlignment = 'top' | 'bottom' | 'start' | 'end';
@@ -41,7 +42,7 @@ export const Menu: OverridableComponent<'div', MenuProps> = React.forwardRef<
       container = document.body,
       target,
       placement = 'bottom',
-      alignment = 'start',
+      alignment = '',
       className,
       ...props
     },
@@ -50,7 +51,7 @@ export const Menu: OverridableComponent<'div', MenuProps> = React.forwardRef<
     const classes = makeStyles(props);
     const rest = omitStyles(props);
     const Component = as || 'div';
-    const $placement: any = `${placement}-${alignment}`;
+    const $placement: any = `${placement}${alignment ? `-${alignment}` : ''}`;
 
     return (
       <Popper placement={$placement} target={target} open={show}>
@@ -61,6 +62,7 @@ export const Menu: OverridableComponent<'div', MenuProps> = React.forwardRef<
                 ref={ref}
                 className={styleNames(
                   className,
+                  cssStyles.dropdownMenu,
                   'dropdown-menu',
                   {
                     show,

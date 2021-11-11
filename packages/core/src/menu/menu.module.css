@@ -1,3 +1,9 @@
+.dropdownMenu {
+  position: relative;
+}
 .menuItem:not(:disabled) {
   cursor: pointer;
+}
+.menuItem:focus {
+  outline: none;
 }
