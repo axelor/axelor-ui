@@ -21,7 +21,7 @@ export default () => {
       <Button
         ref={setTarget}
         onClick={showMenu}
-        bgColor="secondary"
+        bgColor="primary"
         color="light"
       >
         Menu

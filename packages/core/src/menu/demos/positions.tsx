@@ -8,7 +8,7 @@ const MyButton = ({ children, onClick }: any) => {
   return (
     <Button
       m={2}
-      variant="secondary"
+      variant="primary"
       textTransform="capitalize"
       onClick={onClick}
     >
