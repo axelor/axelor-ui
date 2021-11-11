@@ -4,7 +4,7 @@
 import React from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
-import { Box, Input } from '@axelor-ui/core';
+import { Box, FocusTrap, Input } from '@axelor-ui/core';
 import { styleNames } from '@axelor-ui/core/styles';
 import { Grid } from '../grid';
 import { GridState } from '../types';
@@ -27,7 +27,7 @@ function saveRecordAPI(record: any) {
       } else {
         resolve(record);
       }
-    }, 1000);
+    }, 300);
   });
 }
 
@@ -47,6 +47,7 @@ function Form({ style, className, children, onSave, onCancel, data }: any) {
   const handleSave = React.useCallback(() => {
     const data = values.current;
     if (!dirty.current) {
+      onCancel && onCancel();
       return data;
     }
     return onSave && onSave(data);
@@ -67,7 +68,9 @@ function Form({ style, className, children, onSave, onCancel, data }: any) {
         [handleSave, handleChange, onCancel]
       )}
     >
-      <div {...{ style, className, children }} />
+      <FocusTrap>
+        <div {...{ style, className, children }} />
+      </FocusTrap>
     </FormContext.Provider>
   );
 }
@@ -83,7 +86,7 @@ function FormField({ children, style, className, ...rest }: any) {
     if (e.keyCode === 27) {
       return onCancel && onCancel(data, rest.index);
     }
-    if (e.ctrlKey && e.keyCode === 13) {
+    if (!e.defaultPrevented && e.keyCode === 13) {
       return onSave && onSave();
     }
   }
