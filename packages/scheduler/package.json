@@ -13,8 +13,7 @@
   "dependencies": {
     "@axelor-ui/core": "*",
     "moment": "^2.29.1",
-    "react-big-calendar": "^0.36.1",
-    "sass": "^1.42.1"
+    "react-big-calendar": "^0.36.1"
   },
   "devDependencies": {
     "@types/react": "^17.0.9",

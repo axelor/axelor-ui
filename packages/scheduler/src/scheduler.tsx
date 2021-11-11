@@ -11,7 +11,7 @@ import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import { Event, Component, View, SchedulerEvent } from './types';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss';
+import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 
 const localizer = momentLocalizer(moment);
 const DragAndDropCalendar = withDragAndDrop(Calendar as any);
