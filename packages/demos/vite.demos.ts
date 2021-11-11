@@ -27,7 +27,9 @@ module.exports = {
                 /(.*)\/(.*)\/demos\/(.*)\.([tj]sx|mdx?)$/
               );
               if (!match) throw new Error('unexpected file: ' + absolute);
-              const [, , componentName, demoPath] = match;
+              const [, dirName, name, demoPath] = match;
+              const isNested = dirName.includes('/');
+              const componentName = isNested ? name : dirName;
               const pageId = `/${componentName}`;
               const runtimeDataPaths = api.getRuntimeData(pageId);
               runtimeDataPaths[demoPath] = absolute;
@@ -46,7 +48,9 @@ module.exports = {
               const { relative, path: absolute } = file;
               const match = relative.match(/(.*)\/(.*)\/README\.mdx?$/);
               if (!match) throw new Error('unexpected file: ' + absolute);
-              const [, , componentName] = match;
+              const [, dirName, name] = match;
+              const isNested = dirName.includes('/');
+              const componentName = isNested ? name : dirName;
               const pageId = `/${componentName}`;
               const runtimeDataPaths = api.getRuntimeData(pageId);
               runtimeDataPaths['README'] = absolute;
