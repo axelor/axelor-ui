@@ -16,7 +16,7 @@ const FormHandlers = React.createContext(React.createRef<any>());
 const FormContext = React.createContext({
   onFocus: (index: number) => {},
   onChange: (name: string, value: any) => {},
-  onSave: () => {},
+  onSave: (editSave?: boolean) => {},
   onCancel: (data?: any, index?: number) => {},
 });
 
@@ -26,7 +26,7 @@ function saveRecordAPI(record: any) {
       if (!record.name) {
         resolve(null);
       } else {
-        resolve(record);
+        resolve({ ...record, id: record.id || Date.now() });
       }
     }, 300);
   });
@@ -43,7 +43,7 @@ function Form({
 }: any) {
   const values = React.useRef({ ...data.record });
   const handlers = React.useContext(FormHandlers);
-  const dirty = React.useRef(false);
+  const dirty = React.useRef(!data.record.id);
   const currentFocus = React.useRef();
 
   const handleChange = React.useCallback((name, value) => {
@@ -62,17 +62,28 @@ function Form({
     onCancel && onCancel(values.current, index, currentFocus.current);
   }, [onCancel, index]);
 
-  const handleSave = React.useCallback(() => {
-    const data = values.current;
-    if (!dirty.current) {
-      handleCancel();
-      return data;
-    }
-    return onSave && onSave(data, index, currentFocus.current);
-  }, [onSave, handleCancel, index]);
+  const handleSave = React.useCallback(
+    isSaveFromEdit => {
+      const data = values.current;
+      return (
+        onSave &&
+        onSave(
+          data,
+          index,
+          currentFocus.current,
+          dirty.current,
+          isSaveFromEdit === true
+        )
+      );
+    },
+    [onSave, handleCancel, index]
+  );
 
   React.useEffect(() => {
     handlers.current && (handlers.current.save = handleSave);
+    return () => {
+      handlers.current && (handlers.current.save = null);
+    };
   }, [handlers, handleSave]);
 
   return (
@@ -98,7 +109,7 @@ function FormField({ children, style, className, ...rest }: any) {
   const { data, focus, value: _value } = rest;
   const { onFocus, onSave, onChange, onCancel } = React.useContext(FormContext);
   const { name = '', type = '', options } = data || {};
-  const [value, setValue] = React.useState(_value);
+  const [value, setValue] = React.useState(_value === undefined ? '' : _value);
   const initRef = React.useRef(false);
 
   function handleKeyDown(e: any) {
@@ -153,27 +164,37 @@ export default function () {
   });
   const boxRef = React.useRef<any>();
   const handlers = React.useRef({
-    save: () => {},
+    save: (e: boolean) => {},
   });
+
+  const handleRecordAdd = React.useCallback(() => {
+    setRecords(records => [...records, {}] as any);
+  }, []);
 
   const handleRecordEdit = React.useCallback(async record => {
     const { save } = handlers.current || {};
     if (save) {
-      return await save();
+      return await save(true);
     }
   }, []);
 
-  const handleRecordSave = React.useCallback(record => {
+  const handleRecordSave = React.useCallback((record, index) => {
     boxRef.current.style.opacity = '0.5';
     return saveRecordAPI(record).then((record: any) => {
       if (record) {
         setRecords(records =>
-          records.map(_record => (_record.id === record.id ? record : _record))
+          records.map((_record, i) => (index === i ? record : _record))
         );
       }
       boxRef.current.style.opacity = null;
       return record;
     });
+  }, []);
+
+  const handleRecordDiscard = React.useCallback((record, rowIndex) => {
+    if (!record.id) {
+      setRecords(records => records.filter((record, i) => i !== rowIndex));
+    }
   }, []);
 
   return (
@@ -197,8 +218,10 @@ export default function () {
             setState={setState}
             editRowRenderer={Form}
             editRowColumnRenderer={FormField}
+            onRecordAdd={handleRecordAdd}
             onRecordEdit={handleRecordEdit}
             onRecordSave={handleRecordSave}
+            onRecordDiscard={handleRecordDiscard}
           />
         </Box>
       </FormHandlers.Provider>
