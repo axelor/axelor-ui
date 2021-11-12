@@ -239,6 +239,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             }
           }
           return setMutableState(draft => {
+            draft.selectedCell = null;
             draft.editRow = [rowIndex, cellIndex];
           });
         }
@@ -555,29 +556,37 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       [setMutableState]
     );
 
+    const handleRecordComplete = React.useCallback(
+      (row, rowIndex, columnIndex) => {
+        setMutableState(draft => {
+          if (draft.editRow) {
+            const [rowIndex, cellIndex] = draft.editRow;
+            draft.selectedCell = [rowIndex, columnIndex || cellIndex];
+          }
+          draft.editRow = null;
+        });
+      },
+      [setMutableState]
+    );
+
     const handleRecordSave = React.useCallback(
-      async (row, rowIndex) => {
+      async (row, rowIndex, columnIndex) => {
         let result = true;
         if (onRecordSave) {
           result = await onRecordSave(row, rowIndex);
         }
-        result &&
-          setMutableState(draft => {
-            draft.editRow = null;
-          });
+        result && handleRecordComplete(row, rowIndex, columnIndex);
         return result;
       },
-      [setMutableState, onRecordSave]
+      [handleRecordComplete, onRecordSave]
     );
 
     const handleRecordDiscard = React.useCallback(
-      (row, rowIndex) => {
-        setMutableState(draft => {
-          draft.editRow = null;
-        });
+      (row, rowIndex, columnIndex) => {
+        handleRecordComplete(row, rowIndex, columnIndex);
         onRecordDiscard && onRecordDiscard(row, rowIndex);
       },
-      [setMutableState, onRecordDiscard]
+      [handleRecordComplete, onRecordDiscard]
     );
 
     const handleNavigation = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -862,6 +871,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           coords.scrollTop >= 0 && (container.scrollTop = coords.scrollTop);
         }
         refs.current.selectedCell = { row, col };
+        container && container.focus();
       },
       [stickyHeader, stickyFooter]
     );

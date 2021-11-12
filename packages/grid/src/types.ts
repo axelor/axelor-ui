@@ -98,8 +98,8 @@ export interface GridProps {
   ) => void;
   onRowReorder?: (dragRow: GridRow, hoverRow: GridRow) => void;
   onRecordEdit?: (record: any, recordIndex?: number) => void;
-  onRecordSave?: (record: any, recordIndex?: number) => any;
-  onRecordDiscard?: (record: any, recordIndex?: number) => void;
+  onRecordSave?: (record: any, recordIndex?: number, columnIndex?: number) => any;
+  onRecordDiscard?: (record: any, recordIndex?: number, columnIndex?: number) => void;
 }
 
 export interface GridRowProps {

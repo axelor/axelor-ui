@@ -3,6 +3,7 @@
   user-select: none;
   flex: 1;
   position: relative;
+  outline: none;
 }
 
 .resizingColumns {
