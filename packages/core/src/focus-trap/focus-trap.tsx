@@ -21,6 +21,7 @@ export const FocusTrap = React.forwardRef<HTMLElement, FocusTrapProps>(
           returnFocusOnDeactivate: true,
           allowOutsideClick: true,
           fallbackFocus: children,
+          escapeDeactivates: false,
         });
         trap.activate();
         return () => trap.deactivate();
