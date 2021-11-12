@@ -193,7 +193,7 @@ export function doIndexing(
         });
     } else {
       newData.push({
-        key: record.id || i,
+        key: record.id || `ind_${i}`,
         type: ROW_TYPE.ROW,
         record,
         parent,
