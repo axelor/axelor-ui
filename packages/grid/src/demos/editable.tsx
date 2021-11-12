@@ -14,6 +14,7 @@ import { columns, records } from './demo-data';
 const FormHandlers = React.createContext(React.createRef<any>());
 
 const FormContext = React.createContext({
+  onFocus: (index: number) => {},
   onChange: (name: string, value: any) => {},
   onSave: () => {},
   onCancel: (data?: any, index?: number) => {},
@@ -31,10 +32,19 @@ function saveRecordAPI(record: any) {
   });
 }
 
-function Form({ style, className, children, onSave, onCancel, data }: any) {
+function Form({
+  style,
+  className,
+  children,
+  onSave,
+  onCancel,
+  index,
+  data,
+}: any) {
   const values = React.useRef({ ...data.record });
   const handlers = React.useContext(FormHandlers);
   const dirty = React.useRef(false);
+  const currentFocus = React.useRef();
 
   const handleChange = React.useCallback((name, value) => {
     dirty.current = true;
@@ -44,14 +54,22 @@ function Form({ style, className, children, onSave, onCancel, data }: any) {
     };
   }, []);
 
+  const handleFocus = React.useCallback(fieldIndex => {
+    currentFocus.current = fieldIndex;
+  }, []);
+
+  const handleCancel = React.useCallback(() => {
+    onCancel && onCancel(values.current, index, currentFocus.current);
+  }, [onCancel, index]);
+
   const handleSave = React.useCallback(() => {
     const data = values.current;
     if (!dirty.current) {
-      onCancel && onCancel();
+      handleCancel();
       return data;
     }
-    return onSave && onSave(data);
-  }, [onSave]);
+    return onSave && onSave(data, index, currentFocus.current);
+  }, [onSave, handleCancel, index]);
 
   React.useEffect(() => {
     handlers.current && (handlers.current.save = handleSave);
@@ -61,11 +79,12 @@ function Form({ style, className, children, onSave, onCancel, data }: any) {
     <FormContext.Provider
       value={React.useMemo(
         () => ({
-          onCancel,
+          onCancel: handleCancel,
+          onFocus: handleFocus,
           onChange: handleChange,
           onSave: handleSave,
         }),
-        [handleSave, handleChange, onCancel]
+        [handleSave, handleChange, handleFocus, handleCancel]
       )}
     >
       <FocusTrap>
@@ -77,17 +96,18 @@ function Form({ style, className, children, onSave, onCancel, data }: any) {
 
 function FormField({ children, style, className, ...rest }: any) {
   const { data, focus, value: _value } = rest;
-  const { onSave, onChange, onCancel } = React.useContext(FormContext);
+  const { onFocus, onSave, onChange, onCancel } = React.useContext(FormContext);
   const { name = '', type = '', options } = data || {};
   const [value, setValue] = React.useState(_value);
   const initRef = React.useRef(false);
 
   function handleKeyDown(e: any) {
-    if (e.keyCode === 27) {
-      return onCancel && onCancel(data, rest.index);
+    if (e.defaultPrevented) return;
+    if (e.keyCode === 27 && onCancel) {
+      return onCancel(data, rest.index);
     }
-    if (!e.defaultPrevented && e.keyCode === 13) {
-      return onSave && onSave();
+    if (e.keyCode === 13 && onSave) {
+      return onSave();
     }
   }
 
@@ -95,6 +115,7 @@ function FormField({ children, style, className, ...rest }: any) {
     const props = {
       autoFocus: focus,
       value,
+      onFocus: () => onFocus && onFocus(rest.index),
       onChange: (e: any) => setValue(e.target.value),
       onKeyDown: handleKeyDown,
     };
