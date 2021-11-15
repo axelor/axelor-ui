@@ -183,7 +183,11 @@ export default function () {
     return saveRecordAPI(record).then((record: any) => {
       if (record) {
         setRecords(records =>
-          records.map((_record, i) => (index === i ? record : _record))
+          records.map((_record, i) =>
+            (_record.id ? _record.id === record.id : i === index)
+              ? record
+              : _record
+          )
         );
       }
       boxRef.current.style.opacity = null;
