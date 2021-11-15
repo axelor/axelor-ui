@@ -909,15 +909,34 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     React.useEffect(() => {
       // generate computed rows from records
       setState(draft => {
+        const newRows = getRows({
+          records,
+          columns,
+          orderBy: $orderBy,
+          groupBy: state.groupBy,
+          rows: [],
+        });
+
+        function getRowNewIndex(oldIndex: number) {
+          const key = draft.rows[oldIndex].key;
+          return newRows.findIndex(row => row.key === key);
+        }
+
+        // restore selected cell/rows index
+        let { selectedRows, selectedCell } = draft;
+        if (selectedRows) {
+          selectedRows = selectedRows.map(getRowNewIndex);
+        }
+        if (selectedCell) {
+          const [row, col] = selectedCell;
+          selectedCell = [getRowNewIndex(row), col];
+        }
+
         return {
           ...draft,
-          rows: getRows({
-            records,
-            columns,
-            orderBy: $orderBy,
-            groupBy: state.groupBy,
-            rows: [],
-          }),
+          selectedRows,
+          selectedCell,
+          rows: newRows,
         };
       });
     }, [records, columns, sortType, $orderBy, state.groupBy]);
