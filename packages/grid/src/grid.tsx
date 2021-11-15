@@ -222,6 +222,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     // handle group row toggle, row selection
     const handleRowClick = React.useCallback(
       async (e, row, rowIndex, cellIndex = null) => {
+        const isSelectBox =
+          e.key === 'Enter' ||
+          ['checkbox', 'radio'].includes(e.target && e.target.type);
+
         // toggle group row
         if (row.type === 'group-row') {
           const { key } = row;
@@ -232,8 +236,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         }
 
         onRowClick && onRowClick(e, row, rowIndex);
-
-        if (editable) {
+        if (!isSelectBox && editable) {
           if (onRecordEdit) {
             const result = await onRecordEdit(row, rowIndex);
             if (result === null) {
@@ -242,6 +245,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           }
           return setMutableState(draft => {
             draft.selectedCell = null;
+            draft.selectedRows = [rowIndex];
             draft.editRow = [rowIndex, cellIndex];
           });
         }
@@ -249,13 +253,12 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         if (!allowSelection) return;
         if (row.type === ROW_TYPE.ROW) {
           const isMultiple = selectionType === 'multiple';
-          const isSelectBox =
-            e.key === 'Enter' ||
-            ['checkbox', 'radio'].includes(e.target && e.target.type);
           const withShift = isMultiple && e.shiftKey;
           const withControl = e.ctrlKey || isSelectBox;
 
           setMutableState(draft => {
+            if (draft.editRow) return;
+            
             // handle shift (except combined with ctrl) selection
             const rows = draft.selectedRows || [];
             let _selectedRows: any = [...rows];

@@ -33,9 +33,7 @@ export function GridBodyRow(props: TYPES.GridRowProps) {
 
   function renderColumn(column: TYPES.GridColumn) {
     if (column.type === 'row-checked') {
-      return (
-        <Input type="checkbox" checked={selected} onChange={console.log} />
-      );
+      return <Input type="checkbox" checked={selected} onChange={() => {}} />;
     }
     return data.record[column.name];
   }
