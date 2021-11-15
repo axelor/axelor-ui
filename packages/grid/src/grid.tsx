@@ -60,6 +60,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       onRowDoubleClick,
       onRowReorder,
       onCellClick,
+      onRecordAdd,
       onRecordEdit,
       onRecordSave,
       onRecordDiscard,
@@ -80,6 +81,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     } = props;
 
     const handleRef = useRefs(containerRef, ref);
+    const totalRows = state.rows.length;
 
     const setMutableState = React.useCallback(
       (state: TYPES.GridState | TYPES.GridStateHandler) =>
@@ -557,10 +559,13 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleRecordComplete = React.useCallback(
-      (row, rowIndex, columnIndex) => {
+      (row, rowIndex, columnIndex, discarded = false, reset = true) => {
         setMutableState(draft => {
-          if (draft.editRow) {
-            const [rowIndex, cellIndex] = draft.editRow;
+          if (draft.editRow && reset) {
+            let [rowIndex, cellIndex] = draft.editRow;
+            if (discarded && !row.id) {
+              rowIndex--;
+            }
             draft.selectedCell = [rowIndex, columnIndex || cellIndex];
           }
           draft.editRow = null;
@@ -570,20 +575,41 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleRecordSave = React.useCallback(
-      async (row, rowIndex, columnIndex) => {
-        let result = true;
-        if (onRecordSave) {
+      async (row, rowIndex, columnIndex, dirty, saveFromEdit) => {
+        const isLast = !saveFromEdit && rowIndex === totalRows - 1;
+        let result = row;
+        if (dirty && onRecordSave) {
           result = await onRecordSave(row, rowIndex);
         }
-        result && handleRecordComplete(row, rowIndex, columnIndex);
+        if (result) {
+          if (isLast && onRecordAdd) {
+            onRecordAdd();
+            setMutableState(draft => {
+              if (draft.editRow) {
+                const [rowIndex] = draft.editRow;
+                draft.editRow = [rowIndex + 1, 1];
+              }
+              draft.selectedRows = null;
+              draft.selectedCell = null;
+            });
+          } else {
+            handleRecordComplete(
+              row,
+              rowIndex,
+              columnIndex,
+              false,
+              !saveFromEdit
+            );
+          }
+        }
         return result;
       },
-      [handleRecordComplete, onRecordSave]
+      [totalRows, handleRecordComplete, onRecordAdd, onRecordSave]
     );
 
     const handleRecordDiscard = React.useCallback(
       (row, rowIndex, columnIndex) => {
-        handleRecordComplete(row, rowIndex, columnIndex);
+        handleRecordComplete(row, rowIndex, columnIndex, true);
         onRecordDiscard && onRecordDiscard(row, rowIndex);
       },
       [handleRecordComplete, onRecordDiscard]

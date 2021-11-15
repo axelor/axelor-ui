@@ -97,9 +97,20 @@ export interface GridProps {
     rowIndex: number
   ) => void;
   onRowReorder?: (dragRow: GridRow, hoverRow: GridRow) => void;
+  onRecordAdd?: () => void;
   onRecordEdit?: (record: any, recordIndex?: number) => void;
-  onRecordSave?: (record: any, recordIndex?: number, columnIndex?: number) => any;
-  onRecordDiscard?: (record: any, recordIndex?: number, columnIndex?: number) => void;
+  onRecordSave?: (
+    record: any,
+    recordIndex?: number,
+    columnIndex?: number,
+    dirty?: boolean,
+    saveFromEdit?: boolean
+  ) => any;
+  onRecordDiscard?: (
+    record: any,
+    recordIndex?: number,
+    columnIndex?: number
+  ) => void;
 }
 
 export interface GridRowProps {
