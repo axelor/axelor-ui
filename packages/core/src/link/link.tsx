@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@axelor-ui/core';
+import { Box } from '../box';
 import { styleNames } from '../styles';
 import { TVariant, SystemProps, makeStyles, omitStyles } from '../system';
 
