@@ -1048,9 +1048,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
                       onColumnHide: handleColumnHide,
                     }
                   : {}),
+                onCheckAll: handleCheckAll,
               }
             : {})}
-          onCheckAll={handleCheckAll}
         />
         <GridBody
           columns={displayColumns}

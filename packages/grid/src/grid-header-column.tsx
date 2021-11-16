@@ -81,13 +81,18 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
 
   function renderColumn(column: TYPES.GridColumn, index: number) {
     if (column.type === 'row-checked') {
+      const canCheck = Boolean(onCheckAll);
       return (
         <span className={styles.headerColumnTitle}>
           <Input
             type="checkbox"
-            onChange={e =>
-              onCheckAll && onCheckAll((e.target as HTMLInputElement).checked)
-            }
+            key={canCheck ? 'check-all' : 'check-all-disable'}
+            {...(onCheckAll
+              ? {
+                  onChange: e =>
+                    onCheckAll((e.target as HTMLInputElement).checked),
+                }
+              : { defaultChecked: false })}
           />
         </span>
       );
