@@ -34,6 +34,29 @@ const isNull = (value: any) => !isDefined(value) || value === null;
 const getColumns = (columns: TYPES.GridColumn[]) =>
   columns.filter(column => column.visible !== false);
 
+function restoreGridSelection(
+  state: TYPES.GridState,
+  oldRows: TYPES.GridRow[]
+) {
+  // restore selected cell/rows index
+  let { selectedRows, selectedCell, rows } = state;
+
+  function getRowNewIndex(oldIndex: number) {
+    const key = oldRows[oldIndex].key;
+    return rows.findIndex(row => row.key === key);
+  }
+
+  if (selectedRows) {
+    selectedRows = selectedRows.map(getRowNewIndex);
+  }
+  if (selectedCell) {
+    const [row, col] = selectedCell;
+    selectedCell = [getRowNewIndex(row), col];
+  }
+
+  return { selectedCell, selectedRows };
+}
+
 export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
   (props, ref) => {
     const containerRef = React.useRef<any>();
@@ -354,14 +377,23 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         onRowReorder && onRowReorder(dragRow, hoverRow);
         return setMutableState(draft => {
           const { rows } = draft;
+          const oldRows = [...rows];
+
           const dragIndex = rows.findIndex(row => row.key === dragRow.key);
           const [dragColumn] = rows.splice(dragIndex, 1);
 
           const hoverIndex = rows.findIndex(row => row.key === hoverRow.key);
           rows.splice(hoverIndex + (isStartRow ? 0 : 1), 0, dragColumn);
+
+          const { selectedCell, selectedRows } = restoreGridSelection(
+            draft,
+            oldRows
+          );
+          draft.selectedCell = selectedCell;
+          draft.selectedRows = selectedRows;
         });
       },
-      [onRowReorder]
+      [onRowReorder, setMutableState]
     );
 
     const handleColumnResizeStart = React.useCallback(
@@ -927,25 +959,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           rows: [],
         });
 
-        function getRowNewIndex(oldIndex: number) {
-          const key = draft.rows[oldIndex].key;
-          return newRows.findIndex(row => row.key === key);
-        }
-
-        // restore selected cell/rows index
-        let { selectedRows, selectedCell } = draft;
-        if (selectedRows) {
-          selectedRows = selectedRows.map(getRowNewIndex);
-        }
-        if (selectedCell) {
-          const [row, col] = selectedCell;
-          selectedCell = [getRowNewIndex(row), col];
-        }
-
         return {
           ...draft,
-          selectedRows,
-          selectedCell,
+          ...restoreGridSelection({ ...draft, rows: newRows }, draft.rows),
           rows: newRows,
         };
       });
