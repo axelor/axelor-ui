@@ -41,7 +41,7 @@ export default function () {
         setRecords(
           records_data.filter((record: any) => {
             const str = record[column.name] as string;
-            return (str || '').toLowerCase().includes(value.toLowerCase());
+            return (str || '').toString().toLowerCase().includes((`${value}`).toLowerCase());
           })
         );
       } else {
