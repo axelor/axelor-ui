@@ -23,8 +23,25 @@ export function GridColumn(props: GridColumnProps) {
   const { width } = data;
   const ColumnComponent = renderer || 'div';
   const rendererProps = renderer ? props : {};
+  const columnRef = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(() => {
+    if (selected && columnRef.current) {
+      const focusable = columnRef.current.querySelector(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable) {
+        const timer = setTimeout(() => {
+          (focusable as HTMLElement).focus();
+        }, 50);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [selected]);
+
   return (
     <ColumnComponent
+      {...renderer ? {} : { ref: columnRef }}
       {...rendererProps}
       onClick={e => onClick && onClick(e, data, index)}
       className={styleNames(styles.column, { [styles.selected]: selected })}
