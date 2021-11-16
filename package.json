@@ -11,6 +11,7 @@
   "scripts": {
     "preinstall": "node scripts/check-yarn.js",
     "format": "prettier -w '**/*.{ts,tsx,js,jsx,json,css,scss}'",
-    "dev": "yarn workspace demos dev"
+    "dev": "yarn workspace demos dev",
+    "storybook": "yarn workspace stories run storybook"
   }
 }
