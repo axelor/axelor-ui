@@ -6,7 +6,7 @@ import { styleNames } from '@axelor-ui/core/styles';
 import { GridGroup } from './grid-group';
 import { GridHeader } from './grid-header';
 import { GridBody } from './grid-body';
-import { GridDNDRow, GridDNDColumn } from './grid-dnd-row';
+import { GridDNDColumn } from './grid-dnd-row';
 import {
   GRID_CONFIG,
   ROW_TYPE,
@@ -258,7 +258,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
           setMutableState(draft => {
             if (draft.editRow) return;
-            
+
             // handle shift (except combined with ctrl) selection
             const rows = draft.selectedRows || [];
             let _selectedRows: any = [...rows];
@@ -789,13 +789,23 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       }
 
       setMutableState(data => {
+        const checkAndAssign = (
+          key: 'selectedCell' | 'selectedRows' | 'selectedCols',
+          value: any
+        ) => {
+          const toString = (obj: any) => JSON.stringify(obj);
+          if (toString(data[key]) !== toString(value)) {
+            data[key] = value;
+          }
+        };
+
         if (isHeaderCell && !isTabKey) {
-          data.selectedCols = [col];
+          checkAndAssign('selectedCols', [col]);
         } else {
           if ((selectedCols || []).length) {
             data.selectedCols = null;
           }
-          data.selectedCell = [row, col];
+          checkAndAssign('selectedCell', [row, col]);
 
           if (selectedRows && (selectedRows || []).length) {
             const rowIndex = row;
@@ -810,7 +820,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             } else {
               newRows = [rowIndex];
             }
-            data.selectedRows = newRows;
+            checkAndAssign('selectedRows', newRows);
           }
         }
       });
