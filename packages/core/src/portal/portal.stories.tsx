@@ -1,12 +1,15 @@
-/**
- * @title Basic usage
- */
-
 import React, { useRef, useState } from 'react';
 
-import { Box, Button, Portal } from '@axelor-ui/core';
+import { Box } from '../box';
+import { Button } from '../button';
+import { Portal } from './portal';
 
-export default () => {
+export default {
+  component: Portal,
+  title: 'Core/Portal',
+};
+
+export const Basic = () => {
   const [show, setShow] = useState(false);
   const container = useRef(null);
 
