@@ -1,12 +1,18 @@
-/**
- * @title Basic usage
- */
-
 import React from 'react';
 
-import { Box, Button, Input, InputLabel, Slide } from '@axelor-ui/core';
+import { Box } from '../box';
+import { Button } from '../button';
+import { Input } from '../input';
+import { InputLabel } from '../input-label';
 
-export default function () {
+import { Slide } from './slide';
+
+export default {
+  component: Slide,
+  title: 'Core/Slide',
+};
+
+export const Basic = function () {
   const [show, setShow] = React.useState(false);
   const [direction, setDirection] = React.useState<any>('start');
 
@@ -71,4 +77,4 @@ export default function () {
       </Slide>
     </Box>
   );
-}
+};
