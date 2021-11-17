@@ -1,11 +1,16 @@
-/**
- * @title Basic usage
- */
-
 import React, { useState } from 'react';
-import { Button, Box, Popper, ClickAwayListener } from '@axelor-ui/core';
 
-export default () => {
+import { Box } from '../box';
+import { Button } from '../button';
+import { Popper } from '../popper';
+import { ClickAwayListener } from './click-away-listener';
+
+export default {
+  component: ClickAwayListener,
+  title: 'Core/ClickAwayListener',
+};
+
+export const Basic = () => {
   const [open, setOpen] = useState(false);
   const [targetEl, setTargetEl] = useState<HTMLButtonElement | null>(null);
 
@@ -21,8 +26,12 @@ export default () => {
           <Box p={2} bg="secondary" color="light" border rounded shadow>
             <p>Sample Buttons</p>
             <p>Click outside to close the popper</p>
-            <Button mx={2} variant="light">Button 1</Button>
-            <Button mx={2} variant="light">Button 2</Button>
+            <Button mx={2} variant="light">
+              Button 1
+            </Button>
+            <Button mx={2} variant="light">
+              Button 2
+            </Button>
           </Box>
         </ClickAwayListener>
       </Popper>
