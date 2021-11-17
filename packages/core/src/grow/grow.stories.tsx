@@ -1,12 +1,15 @@
-/**
- * @title Basic usage
- */
-
 import React from 'react';
 
-import { Box, Button, Grow } from '@axelor-ui/core';
+import { Box } from '../box';
+import { Button } from '../button';
+import { Grow } from './grow';
 
-export default function () {
+export default {
+  component: Grow,
+  title: 'Core/Grow',
+};
+
+export const Basic = function () {
   const [show, setShow] = React.useState(false);
   const toggle = function () {
     setShow(prev => !prev);
@@ -28,4 +31,4 @@ export default function () {
       </Grow>
     </Box>
   );
-}
+};
