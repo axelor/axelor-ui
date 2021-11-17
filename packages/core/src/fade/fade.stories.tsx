@@ -1,12 +1,15 @@
-/**
- * @title Basic usage
- */
-
 import React from 'react';
 
-import { Box, Button, Fade } from '@axelor-ui/core';
+import { Box } from '../box';
+import { Button } from '../button';
+import { Fade } from './fade';
 
-export default function () {
+export default {
+  component: Fade,
+  title: 'Core/Fade',
+};
+
+export const Basic = function () {
   const [show, setShow] = React.useState(false);
   const toggle = function () {
     setShow(prev => !prev);
@@ -27,4 +30,4 @@ export default function () {
       </Fade>
     </Box>
   );
-}
+};
