@@ -1,10 +1,48 @@
-/**
- * @title Types
- */
 import React, { useState } from 'react';
-import { Box, Input } from '@axelor-ui/core';
+import { Meta } from '@storybook/react';
 
-import { InputProps } from '../input';
+import { Box } from '../box';
+import { Input, InputProps } from './input';
+
+export default {
+  component: Input,
+  title: 'Core/Input',
+  decorators: [
+    Story => (
+      <Box style={{ width: 400 }}>
+        <Story />
+      </Box>
+    ),
+  ],
+} as Meta;
+
+export const Basic = () => {
+  const [value, setValue] = useState('');
+
+  return (
+    <Input value={value} onChange={(e: any) => setValue(e.target.value)} />
+  );
+};
+
+export const Disabled = () => {
+  return <Input disabled />;
+};
+
+export const Invalid = () => {
+  return <Input invalid />;
+};
+
+export const Placeholder = () => {
+  return <Input placeholder="Placeholder" />;
+};
+
+export const Readonly = () => {
+  return (
+    <Box>
+      <Input value="Readonly" readOnly />
+    </Box>
+  );
+};
 
 function Range({ value: valueProp, ...rest }: InputProps) {
   const [value, setValue] = useState(valueProp);
@@ -46,14 +84,14 @@ function Checkbox(props: InputProps) {
 
 function FormControl({ label, children }: any) {
   return (
-    <>
-      <Box mt={4}>{label}</Box>
-      <Box mt={2}>{children}</Box>
-    </>
+    <Box mb={2}>
+      <Box>{label}</Box>
+      <Box>{children}</Box>
+    </Box>
   );
 }
 
-export default () => {
+export const Types = () => {
   return (
     <Box mt={4}>
       <FormControl label="Text">
