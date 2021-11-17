@@ -9,7 +9,7 @@ import { Slide } from './slide';
 
 export default {
   component: Slide,
-  title: 'Core/Slide',
+  title: 'Animation/Slide',
 };
 
 export const Basic = function () {

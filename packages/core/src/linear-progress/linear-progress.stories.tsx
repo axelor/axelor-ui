@@ -4,7 +4,7 @@ import { LinearProgress } from './linear-progress';
 
 export default {
   component: LinearProgress,
-  title: 'Core/LinearProgress',
+  title: 'Components/LinearProgress',
 };
 
 export const Animated = () => {

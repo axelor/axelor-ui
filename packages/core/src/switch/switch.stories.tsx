@@ -5,7 +5,7 @@ import { Switch } from './switch';
 
 export default {
   component: Switch,
-  title: 'Core/Switch',
+  title: 'Components/Switch',
 };
 
 export const Basic = () => {

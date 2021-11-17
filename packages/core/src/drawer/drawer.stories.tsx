@@ -9,7 +9,7 @@ import { Drawer } from './drawer';
 
 export default {
   component: Drawer,
-  title: 'Core/Drawer',
+  title: 'Components/Drawer',
 };
 
 export const Backdrop = () => {

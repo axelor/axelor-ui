@@ -12,7 +12,7 @@ import {
 
 export default {
   component: Table,
-  title: 'Core/Table',
+  title: 'Components/Table',
 };
 
 export const Active = () => {

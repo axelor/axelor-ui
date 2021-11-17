@@ -5,7 +5,7 @@ import { Box } from './box';
 
 export default {
   component: Box,
-  title: 'Core/Box',
+  title: 'Layout/Box',
 };
 
 export const Basic = () => {

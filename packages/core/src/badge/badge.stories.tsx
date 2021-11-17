@@ -6,7 +6,7 @@ import { Button } from '../button';
 
 export default {
   component: Badge,
-  title: 'Core/Badge',
+  title: 'Components/Badge',
 };
 
 export const Basic = () => {

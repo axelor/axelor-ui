@@ -4,7 +4,7 @@ import { Button } from './button';
 
 export default {
   component: Button,
-  title: 'Core/Button',
+  title: 'Components/Button',
 };
 
 export const Basic = () => {

@@ -5,7 +5,7 @@ import { BoxProps } from '../box/box';
 
 export default {
   component: Box,
-  title: 'Core/Grid',
+  title: 'Layout/Grid',
 };
 
 const Container = (props: BoxProps) => <Box {...props} display="grid" />;

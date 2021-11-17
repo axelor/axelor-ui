@@ -5,7 +5,7 @@ import { Box } from '../box';
 
 export default {
   component: Box,
-  title: 'Core/Flex',
+  title: 'Layout/Flex',
 };
 
 const ExampleBox = ({ alignContent, mb = 3 }: any) => {

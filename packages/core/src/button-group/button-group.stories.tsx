@@ -5,7 +5,7 @@ import { ButtonGroup } from '../button-group';
 
 export default {
   component: ButtonGroup,
-  title: 'Core/ButtonGroup',
+  title: 'Components/ButtonGroup',
 };
 
 export const Basic = () => {

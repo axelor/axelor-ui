@@ -8,7 +8,7 @@ import { AccordionCollapse } from './accordion-collapse';
 
 export default {
   component: Accordion,
-  title: 'Core/Accordion',
+  title: 'Components/Accordion',
 };
 
 const items = [

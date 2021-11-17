@@ -9,7 +9,7 @@ import { Icon } from './icon';
 
 export default {
   component: Icon,
-  title: 'Core/Icon',
+  title: 'Components/Icon',
 };
 
 export const Name = () => {

@@ -6,7 +6,7 @@ import { InputFeedback } from './input-feedback';
 
 export default {
   component: InputFeedback,
-  title: 'Core/InputFeedback',
+  title: 'Components/InputFeedback',
 };
 
 export const Basic = () => {

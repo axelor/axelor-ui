@@ -6,7 +6,7 @@ import { InputLabel } from './input-label';
 
 export default {
   component: InputLabel,
-  title: 'Core/InputLabel',
+  title: 'Components/InputLabel',
 };
 
 export const Basic = () => {

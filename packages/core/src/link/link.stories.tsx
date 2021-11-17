@@ -5,7 +5,7 @@ import { Link } from './link';
 
 export default {
   component: Link,
-  title: 'Core/Link',
+  title: 'Components/Link',
 };
 
 export const Basic = () => {

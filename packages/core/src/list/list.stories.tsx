@@ -7,7 +7,7 @@ import { ListItem } from './list-item';
 
 export default {
   component: List,
-  title: 'Core/List',
+  title: 'Components/List',
 };
 
 export const Active = () => {

@@ -6,7 +6,7 @@ import { CircularProgress } from './circular-progress';
 
 export default {
   component: CircularProgress,
-  title: 'Core/CircularProgress',
+  title: 'Components/CircularProgress',
 };
 
 export const Composition = () => {

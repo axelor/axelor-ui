@@ -6,7 +6,7 @@ import { Fade } from './fade';
 
 export default {
   component: Fade,
-  title: 'Core/Fade',
+  title: 'Animation/Fade',
 };
 
 export const Basic = function () {

@@ -8,7 +8,7 @@ import { MenuItem } from './menu-item';
 
 export default {
   component: Menu,
-  title: 'Core/Menu',
+  title: 'Components/Menu',
 };
 
 export const Basic = () => {

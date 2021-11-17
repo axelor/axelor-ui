@@ -6,7 +6,7 @@ import { Grow } from './grow';
 
 export default {
   component: Grow,
-  title: 'Core/Grow',
+  title: 'Animation/Grow',
 };
 
 export const Basic = function () {

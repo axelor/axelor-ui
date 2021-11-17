@@ -6,7 +6,7 @@ import { Input, InputProps } from './input';
 
 export default {
   component: Input,
-  title: 'Core/Input',
+  title: 'Components/Input',
   decorators: [
     Story => (
       <Box style={{ width: 400 }}>

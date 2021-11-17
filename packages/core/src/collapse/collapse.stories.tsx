@@ -6,7 +6,7 @@ import { Collapse } from './collapse';
 
 export default {
   component: Collapse,
-  title: 'Core/Collapse',
+  title: 'Animation/Collapse',
 };
 
 export const Basic = function () {
