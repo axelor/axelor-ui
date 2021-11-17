@@ -1,7 +1,10 @@
 module.exports = {
-  stories: ['../../**/*.stories.mdx', '../../**/*.stories.@(js|jsx|ts|tsx)'],
-  addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
+  stories: ['../../**/*.stories.tsx'],
+  addons: ['@storybook/addon-a11y', '@storybook/addon-toolbars'],
   core: {
     builder: 'storybook-builder-vite',
+  },
+  typescript: {
+    reactDocgen: false,
   },
 };
