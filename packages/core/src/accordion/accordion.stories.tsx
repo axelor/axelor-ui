@@ -1,14 +1,15 @@
-/**
- * @title Basic Usage
- */
 import React, { useCallback, useState } from 'react';
-import {
-  Box,
-  Accordion,
-  AccordionItem,
-  AccordionHeader,
-  AccordionCollapse,
-} from '@axelor-ui/core';
+
+import { Box } from '../box';
+import { Accordion } from './accordion';
+import { AccordionItem } from './accordion-item';
+import { AccordionHeader } from './accordion-header';
+import { AccordionCollapse } from './accordion-collapse';
+
+export default {
+  component: Accordion,
+  title: 'Core/Accordion',
+};
 
 const items = [
   {
@@ -34,7 +35,7 @@ const items = [
   },
 ];
 
-export default () => {
+export const Basic = () => {
   const [show, setShow] = useState<number>(1);
 
   const toggleShow = (id: number) =>
@@ -47,6 +48,32 @@ export default () => {
   return (
     <Box>
       <Accordion>
+        {items.map(({ id, title, content }) => (
+          <AccordionItem key={id}>
+            <AccordionHeader onClick={toggleShow(id)} collapsed={show !== id}>
+              {title}
+            </AccordionHeader>
+            <AccordionCollapse in={show === id}>{content}</AccordionCollapse>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </Box>
+  );
+};
+
+export const Flush = () => {
+  const [show, setShow] = useState<number>(-1);
+
+  const toggleShow = (id: number) =>
+    useCallback(() => {
+      setShow((show: number) => {
+        return show === id ? -1 : id;
+      });
+    }, []);
+
+  return (
+    <Box>
+      <Accordion flush>
         {items.map(({ id, title, content }) => (
           <AccordionItem key={id}>
             <AccordionHeader onClick={toggleShow(id)} collapsed={show !== id}>
