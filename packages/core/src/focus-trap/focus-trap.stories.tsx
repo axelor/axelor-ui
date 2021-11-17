@@ -1,11 +1,16 @@
-/**
- * @title Basic usage
- */
-
 import React from 'react';
-import { Box, Button, FocusTrap, Input } from '@axelor-ui/core';
 
-export default function () {
+import { Box } from '../box';
+import { Button } from '../button';
+import { Input } from '../input';
+import { FocusTrap } from './focus-trap';
+
+export default {
+  component: FocusTrap,
+  title: 'Core/FocusTrap',
+};
+
+export const Basic = function () {
   return (
     <FocusTrap>
       <Box p={2} border borderColor="dark" bgColor="light">
@@ -26,4 +31,4 @@ export default function () {
       </Box>
     </FocusTrap>
   );
-}
+};
