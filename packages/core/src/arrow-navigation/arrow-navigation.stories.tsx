@@ -1,10 +1,13 @@
-/**
- * @title Basic usage
- */
-
 import React from 'react';
 
-import { Box, Button, ArrowNavigation } from '@axelor-ui/core';
+import { Box } from '../box';
+import { Button } from '../button';
+import { ArrowNavigation } from './arrow-navigation';
+
+export default {
+  component: ArrowNavigation,
+  title: 'Core/ArrowNavigation',
+};
 
 function CustomButton(props: any) {
   return (
@@ -12,12 +15,12 @@ function CustomButton(props: any) {
       m={1}
       variant="primary"
       {...props}
-      style={{ width: 50, ...props.style }}
+      style={{ width: 75, ...props.style }}
     />
   );
 }
 
-export default function () {
+export const Basic = function () {
   const [box, setBox] = React.useState<HTMLElement | null>(null);
 
   const selector: any = React.useCallback(() => {
@@ -65,4 +68,35 @@ export default function () {
       </Box>
     </ArrowNavigation>
   );
-}
+};
+
+export const Horizontal = function () {
+  return (
+    <ArrowNavigation selector={'auto-horizontal'}>
+      <Box d="flex" flexDirection="row">
+        <CustomButton>Item 1</CustomButton>
+        <CustomButton>Item 2</CustomButton>
+        <CustomButton>Item 3</CustomButton>
+        <CustomButton style={{ visibility: 'hidden' }}>Item 4</CustomButton>
+        <CustomButton>Item 5</CustomButton>
+        <CustomButton>Item 6</CustomButton>
+        <CustomButton style={{ display: 'none' }}>Item 7</CustomButton>
+      </Box>
+    </ArrowNavigation>
+  );
+};
+
+export const Vertical = function () {
+  return (
+    <ArrowNavigation selector={'auto-vertical'}>
+      <Box d="flex" flexDirection="column">
+        <CustomButton>Item 1</CustomButton>
+        <CustomButton>Item 2</CustomButton>
+        <CustomButton disabled>Item 3</CustomButton>
+        <CustomButton>Item 4</CustomButton>
+        <CustomButton>Item 5</CustomButton>
+        <CustomButton>Item 6</CustomButton>
+      </Box>
+    </ArrowNavigation>
+  );
+};
