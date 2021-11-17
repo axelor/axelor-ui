@@ -33,6 +33,9 @@ import {
   FlexProps,
   FlexConfig,
   flexStyles,
+  GridProps,
+  GridConfig,
+  gridStyles,
 } from './props';
 
 export interface StyleProps
@@ -47,12 +50,13 @@ export interface StyleProps
     SpaceProps,
     TextProps,
     TextAlignProps,
-    FlexProps {}
+    FlexProps,
+    GridProps {}
 
 export interface SystemProps
   extends Omit<React.HTMLAttributes<HTMLElement>, keyof StyleProps>,
     StyleProps,
-    Responsive<SpaceProps & DisplayProps & TextAlignProps & FlexProps> {}
+    Responsive<SpaceProps & DisplayProps & TextAlignProps & FlexProps & GridProps> {}
 
 const sizes = ['sm', 'md', 'lg', 'xl', 'xxl'];
 
@@ -67,6 +71,7 @@ const configs = [
   PositionConfig,
   TextConfig,
   FlexConfig,
+  GridConfig,
 ];
 
 const compute = [
@@ -80,6 +85,7 @@ const compute = [
   positionStyles,
   textStyles,
   flexStyles,
+  gridStyles,
 ];
 
 export const omitStyles = (props: Record<string, any>) => {
