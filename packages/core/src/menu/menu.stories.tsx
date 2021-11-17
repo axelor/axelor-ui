@@ -1,8 +1,90 @@
-/**
- * @title Positions
- */
-import React, { useState, useCallback, useRef } from 'react';
-import { Menu, MenuItem, Box, Button } from '@axelor-ui/core';
+import React, { useCallback, useRef, useState } from 'react';
+
+import { Box } from '../box';
+import { Button } from '../button';
+import { Menu } from './menu';
+import { MenuHeader } from './menu-header';
+import { MenuItem } from './menu-item';
+
+export default {
+  component: Menu,
+  title: 'Core/Menu',
+};
+
+export const Basic = () => {
+  const [show, setShow] = React.useState(false);
+  const [target, setTarget] = React.useState<HTMLElement | null>(null);
+
+  function showMenu() {
+    setShow(true);
+  }
+
+  function hideMenu() {
+    setShow(false);
+  }
+
+  return (
+    <Box>
+      <Button
+        ref={setTarget}
+        onClick={showMenu}
+        bgColor="primary"
+        color="light"
+      >
+        Menu
+      </Button>
+      <Menu target={target} show={show} onHide={hideMenu}>
+        <MenuItem href="#option1" onClick={hideMenu}>
+          Option 1
+        </MenuItem>
+        <MenuItem href="#option2" onClick={hideMenu}>
+          Option 2
+        </MenuItem>
+        <MenuItem href="#option3" onClick={hideMenu}>
+          Option 3
+        </MenuItem>
+      </Menu>
+    </Box>
+  );
+};
+
+export const Header = () => {
+  const [show, setShow] = React.useState(false);
+  const [target, setTarget] = React.useState<HTMLElement | null>(null);
+
+  function showMenu() {
+    setShow(true);
+  }
+
+  function hideMenu() {
+    setShow(false);
+  }
+
+  return (
+    <Box>
+      <Button
+        ref={setTarget}
+        onClick={showMenu}
+        bgColor="primary"
+        color="light"
+      >
+        Menu
+      </Button>
+      <Menu target={target} show={show} onHide={hideMenu}>
+        <MenuHeader>Options</MenuHeader>
+        <MenuItem href="#option1" onClick={hideMenu}>
+          Option 1
+        </MenuItem>
+        <MenuItem href="#option2" onClick={hideMenu}>
+          Option 2
+        </MenuItem>
+        <MenuItem href="#option3" onClick={hideMenu}>
+          Option 3
+        </MenuItem>
+      </Menu>
+    </Box>
+  );
+};
 
 const MyButton = ({ children, onClick }: any) => {
   return (
@@ -17,7 +99,7 @@ const MyButton = ({ children, onClick }: any) => {
   );
 };
 
-export default () => {
+export const Positions = () => {
   const [open, setOpen] = useState(false);
   const [targetEl, setTargetEl] = useState<HTMLButtonElement | null>(null);
   const [menuProps, setMenuProps] = useState<any>({});
@@ -56,9 +138,15 @@ export default () => {
   return (
     <Box style={{ width: 500 }} m="auto">
       <Menu {...menuProps} target={targetEl} show={open} onHide={hide}>
-        <MenuItem href="#option1" onClick={hide}>Option 1</MenuItem>
-        <MenuItem href="#option2" onClick={hide}>Option 2</MenuItem>
-        <MenuItem href="#option3" onClick={hide}>Option 3</MenuItem>
+        <MenuItem href="#option1" onClick={hide}>
+          Option 1
+        </MenuItem>
+        <MenuItem href="#option2" onClick={hide}>
+          Option 2
+        </MenuItem>
+        <MenuItem href="#option3" onClick={hide}>
+          Option 3
+        </MenuItem>
       </Menu>
       <Box d="flex" justifyContent="center">
         <MyButton onClick={handleClick}>top-start</MyButton>
