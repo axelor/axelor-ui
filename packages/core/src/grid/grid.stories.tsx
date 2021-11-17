@@ -67,7 +67,8 @@ export const Position = () => {
 export const Layout = () => {
   return (
     <Container
-      style={{ width: 750, height: 600 }}
+      width={750}
+      height={600}
       gridTemplateColumns="200px 1fr 1fr"
       gridTemplateRows="80px 1fr 1fr 100px"
       gridGap="1rem"
@@ -97,7 +98,8 @@ export const Layout = () => {
 export const Areas = () => {
   return (
     <Container
-      style={{ width: 750, height: 600 }}
+      width={750}
+      height={600}
       gridTemplateColumns="200px 1fr 1fr"
       gridTemplateRows="80px 1fr 1fr 100px"
       gridGap="1rem"

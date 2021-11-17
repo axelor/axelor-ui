@@ -36,7 +36,7 @@ export const Basic = () => {
 
 const content = (
   <>
-    <Box d="flex" w={100} justifyContent="space-between">
+    <Box d="flex" width="100%" justifyContent="space-between">
       <Box as="h5" mb={1}>
         Lorem ipsum dolor
       </Box>
@@ -58,7 +58,7 @@ export const CustomContent = () => {
   return (
     <List>
       <ListItem active>
-        <Box d="flex" w={100} justifyContent="space-between">
+        <Box d="flex" width="100%" justifyContent="space-between">
           <Box as="h5" mb={1}>
             Lorem ipsum dolor
           </Box>

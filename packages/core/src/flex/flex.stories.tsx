@@ -7,22 +7,8 @@ export default {
   title: 'Layout/Flex',
 };
 
-type Size = {
-  width?: number;
-  height?: number;
-};
-
-type ContainerProps = Size & Omit<BoxProps, keyof Size>;
-
-const Container = ({ width, height, ...props }: ContainerProps) => (
-  <Box
-    {...props}
-    border
-    p={2}
-    display="flex"
-    gap={8}
-    style={{ width, height }}
-  />
+const Container = (props: BoxProps) => (
+  <Box {...props} border p={2} display="flex" gap={8} />
 );
 
 const Cell = (props: BoxProps) => <Box {...props} border p={2} />;
@@ -292,7 +278,7 @@ export const Grow = () => {
 export const Shrink = () => {
   return (
     <Container>
-      <Cell style={{ width: '100%' }}>Item 1</Cell>
+      <Cell width="100%">Item 1</Cell>
       <Cell flexShrink={1}>Item 2</Cell>
       <Cell flexShrink={0}>Item 3</Cell>
     </Container>

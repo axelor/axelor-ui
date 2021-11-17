@@ -1,4 +1,5 @@
-import { computeStyle, ComputeStyles, Config } from '../theme';
+import { computeCss, computeStyle, ComputeStyles, Config } from '../theme';
+import CSS from 'csstype';
 
 export type TVerticalAlignment =
   | 'baseline'
@@ -8,21 +9,21 @@ export type TVerticalAlignment =
   | 'text-top'
   | 'text-bottom';
 
-export type TDimension = 25 | 50 | 75 | 100 | 'auto';
-
 export interface LayoutProps {
   verticalAlign?: TVerticalAlignment;
   overflow?: 'auto' | 'hidden' | 'visible' | 'scroll';
   float?: 'start' | 'end' | 'none';
 
-  w?: TDimension;
-  width?: TDimension;
+  w?: CSS.Property.Width | number;
+  width?: CSS.Property.Width | number;
 
-  h?: TDimension;
-  height?: TDimension;
+  h?: CSS.Property.Height | number;
+  height?: CSS.Property.Height | number;
 
-  maxW?: boolean;
-  maxH?: boolean;
+  maxW?: CSS.Property.MaxWidth | number;
+  maxWidth?: CSS.Property.MaxWidth | number;
+  maxH?: CSS.Property.MaxHeight | number;
+  maxHeight?: CSS.Property.MaxWidth | number;
 
   vw?: boolean;
   vh?: boolean;
@@ -43,7 +44,9 @@ export const LayoutConfig: Config<LayoutProps> = {
   height: true,
 
   maxW: true,
+  maxWidth: true,
   maxH: true,
+  maxHeight: true,
 
   vw: true,
   vh: true,
@@ -64,7 +67,9 @@ export const layoutStyles: ComputeStyles<LayoutProps> = ({
   height,
 
   maxW,
+  maxWidth,
   maxH,
+  maxHeight,
 
   vw,
   vh,
@@ -76,10 +81,10 @@ export const layoutStyles: ComputeStyles<LayoutProps> = ({
     computeStyle('align', verticalAlign),
     computeStyle('overflow', overflow),
     computeStyle('float', float),
-    computeStyle('w', w ?? width),
-    computeStyle('h', h ?? height),
-    computeStyle('mw', maxW),
-    computeStyle('mh', maxH),
+    computeCss('width', w ?? width),
+    computeCss('height', h ?? height),
+    computeCss('minWidth', maxW ?? maxWidth),
+    computeCss('minHeight', maxH ?? maxHeight),
     computeStyle('vw', vw),
     computeStyle('vh', vh),
     computeStyle('min-vw', minVW),

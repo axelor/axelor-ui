@@ -1,5 +1,4 @@
 import React from 'react';
-import { TBackground, TForeground } from '../system';
 
 import { Box } from './box';
 
@@ -10,7 +9,7 @@ export default {
 
 export const Basic = () => {
   return (
-    <Box style={{ width: 400 }}>
+    <Box width={400}>
       <Box p={4} border>
         Welcome to Box
       </Box>
@@ -64,7 +63,7 @@ const gradientIgnore = ['body', 'white', 'transparent'];
 
 export const Background = () => {
   return (
-    <Box style={{ width: 400 }}>
+    <Box width={400}>
       {(Object.keys(colors) as Array<any>).map(c => (
         <Box key={c} p={3} m={2} bgColor={c} color={colors[c]}>
           {c}
@@ -76,7 +75,7 @@ export const Background = () => {
 
 export const Gradient = () => {
   return (
-    <Box style={{ width: 400 }}>
+    <Box width={400}>
       {(Object.keys(colors) as Array<any>)
         .filter(c => gradientIgnore.indexOf(c) == -1)
         .map(c => (
@@ -90,7 +89,7 @@ export const Gradient = () => {
 
 export const Shadow = () => {
   return (
-    <Box style={{ width: 400 }}>
+    <Box width={400}>
       <Box shadow={false} p={3} mb={5} bgColor="light" rounded={2}>
         No shadow
       </Box>
@@ -109,7 +108,7 @@ export const Shadow = () => {
 
 export const Display = () => {
   return (
-    <Box style={{ width: 400 }}>
+    <Box width={400}>
       <Box mb={2}>
         <Box d="inline" p={1} bgColor="primary" color="white">
           inline
@@ -205,7 +204,7 @@ export const PointerEvents = () => {
 
 export const Text = () => {
   return (
-    <Box style={{ width: 400 }}>
+    <Box width={400}>
       <Box p={1} mb={1} color="primary">
         text-primary
       </Box>
@@ -343,7 +342,8 @@ export const Overflow = () => {
           me: 3,
         }}
         bgColor="light"
-        style={{ maxWidth: 260, maxHeight: 100 }}
+        maxWidth={260}
+        maxHeight={100}
       >
         This is an example of using <code>.overflow-auto</code> on an element
         with set width and height dimensions. By design, this content will
@@ -358,7 +358,8 @@ export const Overflow = () => {
           me: 3,
         }}
         bgColor="light"
-        style={{ maxWidth: 260, maxHeight: 100 }}
+        maxWidth={260}
+        maxHeight={100}
       >
         This is an example of using <code>.overflow-hidden</code> on an element
         with set width and height dimensions.
@@ -372,7 +373,8 @@ export const Overflow = () => {
           me: 3,
         }}
         bgColor="light"
-        style={{ maxWidth: 260, maxHeight: 100 }}
+        maxWidth={260}
+        maxHeight={100}
       >
         This is an example of using <code>.overflow-visible</code> on an element
         with set width and height dimensions.
@@ -381,7 +383,8 @@ export const Overflow = () => {
         overflow="scroll"
         p={3}
         bgColor="light"
-        style={{ maxWidth: 260, maxHeight: 100 }}
+        maxWidth={260}
+        maxHeight={100}
       >
         This is an example of using <code>.overflow-scroll</code> on an element
         with set width and height dimensions.
