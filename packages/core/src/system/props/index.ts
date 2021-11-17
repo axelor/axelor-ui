@@ -7,5 +7,4 @@ export * from './layout';
 export * from './position';
 export * from './space';
 export * from './text';
-export * from './flex';
 export * from './grid';
