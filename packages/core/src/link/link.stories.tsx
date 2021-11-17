@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '../box';
-import { Link } from '../link';
+import { Link } from './link';
 
 export default {
   component: Link,
@@ -11,49 +11,49 @@ export default {
 export const Basic = () => {
   return (
     <Box>
-      <Link m={2} href="#" onClick={() => console.log('Link Clicked')}>
+      <Link href="#" onClick={() => console.log('Link Clicked')}>
         Link
       </Link>
     </Box>
   );
 };
 
-export const Underline = () => {
+export const Colored = () => {
   return (
     <Box>
-      <Link m={2} href="#" underline={true}>
-        Link
-      </Link>
-    </Box>
-  );
-};
-
-export const Color = () => {
-  return (
-    <Box>
-      <Link m={2} href="#" color="primary">
+      <Link href="#" color="primary">
         Primary link
-      </Link>
-      <Link m={2} href="#" color="secondary">
+      </Link>{' '}
+      <Link href="#" color="secondary">
         Secondary link
-      </Link>
-      <Link m={2} href="#" color="success">
+      </Link>{' '}
+      <Link href="#" color="success">
         Success link
-      </Link>
-      <Link m={2} href="#" color="danger">
+      </Link>{' '}
+      <Link href="#" color="danger">
         Danger link
-      </Link>
-      <Link m={2} href="#" color="warning">
+      </Link>{' '}
+      <Link href="#" color="warning">
         Warning link
-      </Link>
-      <Link m={2} href="#" color="info">
+      </Link>{' '}
+      <Link href="#" color="info">
         Info link
-      </Link>
-      <Link m={2} href="#" color="light" bg="dark">
+      </Link>{' '}
+      <Link href="#" color="light">
         Light link
-      </Link>
-      <Link m={2} href="#" color="dark">
+      </Link>{' '}
+      <Link href="#" color="dark">
         Dark link
+      </Link>
+    </Box>
+  );
+};
+
+export const Underlined = () => {
+  return (
+    <Box>
+      <Link href="#" underline={true}>
+        Link
       </Link>
     </Box>
   );
