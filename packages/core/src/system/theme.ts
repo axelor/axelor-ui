@@ -1,3 +1,5 @@
+import { css } from '@emotion/css';
+
 export type TVariant =
   | 'primary'
   | 'secondary'
@@ -54,4 +56,23 @@ export const computeStyle = (name: string, value: any, size?: string) => {
   if (value !== undefined && value !== null) {
     return (size ? [name, size, value] : [name, value]).join('-');
   }
+};
+
+// as per bootstrap break points
+const breakpoints: any = {
+  sm: 576,
+  md: 768,
+  lg: 992,
+  xl: 1200,
+  xxl: 1400,
+};
+
+export const computeCss = (name: string, value: any, size?: string) => {
+  if (value == undefined || value == null) return value;
+  const style = { [name]: value };
+  if (size) {
+    const bp = breakpoints[size];
+    return css({ [`@media (min-width: ${bp}px)`]: style });
+  }
+  return css(style);
 };
