@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { ReactComponent as BiHeartFill } from 'bootstrap-icons/icons/heart-fill.svg';
 import { ReactComponent as BiShop } from 'bootstrap-icons/icons/shop.svg';
 import { ReactComponent as BiToggles } from 'bootstrap-icons/icons/toggles.svg';

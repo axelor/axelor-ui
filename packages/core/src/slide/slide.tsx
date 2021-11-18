@@ -1,4 +1,4 @@
-import React from 'react';
+import { isValidElement, cloneElement } from 'react';
 import { Transition } from 'react-transition-group';
 import { TransitionProps } from '../transitions/types';
 import {
@@ -144,9 +144,9 @@ export function Slide({
       {...props}
     >
       {state => {
-        if (React.isValidElement(children)) {
+        if (isValidElement(children)) {
           const style = getTransitionStyle(state, styles as any, children);
-          return React.cloneElement(children, {
+          return cloneElement(children, {
             style,
           });
         }

@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 import { styleNames } from '../styles';
 import { makeStyles, omitStyles, SystemProps } from '../system';
@@ -12,7 +12,7 @@ export interface InputLabelProps extends SystemProps {
   invalid?: boolean;
 }
 
-export const InputLabel = React.forwardRef<HTMLLabelElement, InputLabelProps>(
+export const InputLabel = forwardRef<HTMLLabelElement, InputLabelProps>(
   ({ invalid, disabled, required, className, children, ...props }, ref) => {
     const $styles = makeStyles(props);
     const rest = omitStyles(props);

@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 
 import { Box } from '../box';
 import { Button } from '../button';
@@ -13,8 +13,8 @@ export default {
 };
 
 export const Basic = function () {
-  const [show, setShow] = React.useState(false);
-  const [direction, setDirection] = React.useState<any>('start');
+  const [show, setShow] = useState(false);
+  const [direction, setDirection] = useState<any>('start');
 
   const toggle = function () {
     setShow(prev => !prev);

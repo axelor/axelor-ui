@@ -2,8 +2,6 @@
  * @title Component
  */
 
-import React from 'react';
-
 import { SchedulerEvent } from '../types';
 import Basic from './basic';
 

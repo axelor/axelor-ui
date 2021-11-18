@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { SystemProps, makeStyles, omitStyles } from '../system';
 import { styleNames } from '../styles';
 import OverflowDropdown from './overflow-dropdown';

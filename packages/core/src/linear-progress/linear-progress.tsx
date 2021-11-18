@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 import styles from './linear-progress.module.css';
 import { styleNames } from '../styles';
@@ -12,7 +12,7 @@ export interface LinearProgressProps extends SystemProps {
   value?: number;
 }
 
-export const LinearProgress = React.forwardRef<
+export const LinearProgress = forwardRef<
   HTMLDivElement,
   LinearProgressProps
 >(

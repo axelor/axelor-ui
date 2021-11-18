@@ -1,7 +1,6 @@
 /**
  * @title Column Editor
  */
-import React from 'react';
 import { Box, Input, Button } from '@axelor-ui/core';
 import { ColumnRenderer } from '../types';
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { css, CSSInterpolation } from '@emotion/css';
 
 import { Responsive } from './theme';

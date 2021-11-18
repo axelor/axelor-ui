@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Popper } from '../popper';
 import { Fade } from '../fade';
 import { Box } from '../box';

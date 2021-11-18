@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { styleNames } from '../styles';
 import {
   TVariant,

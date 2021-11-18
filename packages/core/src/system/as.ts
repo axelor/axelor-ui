@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 export type DistributiveOmit<T, K extends keyof any> = T extends any
   ? Omit<T, K>

@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 import { styleNames } from '../styles';
 import { makeStyles, omitStyles, SystemProps } from '../system';
@@ -8,7 +8,7 @@ export interface ListProps extends SystemProps {
   flush?: boolean;
 }
 
-export const List = React.forwardRef<
+export const List = forwardRef<
   HTMLUListElement | HTMLOListElement,
   ListProps
 >(({ numbered, flush, className, ...props }, ref) => {

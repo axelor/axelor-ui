@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 import { Box } from '../box';
 import { styleNames } from '../styles';
@@ -10,7 +10,7 @@ export interface LinkProps extends SystemProps {
   underline?: boolean;
 }
 
-export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
+export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
   ({ color = 'primary', underline, className, ...props }, ref) => {
     props.textDecoration = underline ? 'underline' : 'none';
 

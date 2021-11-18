@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 import { styleNames } from '../styles';
 import { makeStyles, omitStyles, SystemProps } from '../system';
 
@@ -7,7 +7,7 @@ export interface ButtonGroupProps extends SystemProps {
   vertical?: boolean;
 }
 
-export const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
+export const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(
   ({ size, vertical, className, role = 'group', ...props }, ref) => {
     const styles = makeStyles(props);
     const rest = omitStyles(props);

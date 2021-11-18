@@ -1,8 +1,6 @@
 /**
  * @title Readonly Column
  */
-import React from 'react';
-
 import Basic from './basic';
 import { getId, getRecords } from './data';
 

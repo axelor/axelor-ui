@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { Box } from '@axelor-ui/core';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 

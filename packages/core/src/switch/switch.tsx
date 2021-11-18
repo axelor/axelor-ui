@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 import { Input, InputProps } from '../input/input';
 
 import { styleNames } from '../styles';
@@ -14,7 +14,7 @@ export interface SwitchProps extends Omit<InputProps, 'type'> {
   size?: 'sm' | 'lg';
 }
 
-export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
+export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
   ({ readOnly, className, size, ...rest }, ref) => {
     const classes = styleNames(className, { [styles[`size-${size}`]]: size });
 

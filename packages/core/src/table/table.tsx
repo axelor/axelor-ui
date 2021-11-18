@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 import { styleNames } from '../styles';
 import { makeStyles, omitStyles, SystemProps, TVariant } from '../system';
@@ -11,7 +11,7 @@ export interface TableProps extends SystemProps {
   size?: 'sm' | 'md';
 }
 
-export const Table = React.forwardRef<HTMLTableElement, TableProps>(
+export const Table = forwardRef<HTMLTableElement, TableProps>(
   (
     { className, color, striped, bordered, hover, size = 'md', ...props },
     ref

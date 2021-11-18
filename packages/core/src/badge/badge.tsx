@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 import { Box } from '../box';
 import { styleNames } from '../styles';
@@ -17,7 +17,7 @@ export interface BadgeProps extends SystemProps {
   rounded?: StyleProps['rounded'];
 }
 
-export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
+export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
   ({ className, bg = 'secondary', ...props }, ref) => {
     const styles = makeStyles(props);
     const rest = omitStyles(props);

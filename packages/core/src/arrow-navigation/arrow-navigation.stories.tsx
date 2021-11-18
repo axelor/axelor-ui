@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useCallback } from 'react';
 
 import { Box } from '../box';
 import { Button } from '../button';
@@ -21,9 +21,9 @@ function CustomButton(props: any) {
 }
 
 export const Basic = function () {
-  const [box, setBox] = React.useState<HTMLElement | null>(null);
+  const [box, setBox] = useState<HTMLElement | null>(null);
 
-  const selector: any = React.useCallback(() => {
+  const selector: any = useCallback(() => {
     if (box) {
       return [
         box.querySelectorAll('div:nth-child(1) > button'),

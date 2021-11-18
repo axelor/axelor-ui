@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 import { Collapse, CollapseProps } from '../collapse/collapse';
 import { styleNames } from '../styles';

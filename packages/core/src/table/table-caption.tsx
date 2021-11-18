@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 import { styleNames } from '../styles';
 import { makeStyles, omitStyles, SystemProps } from '../system';
@@ -7,7 +7,7 @@ export interface TableCaptionProps extends SystemProps {
   placement?: 'top' | 'bottom';
 }
 
-export const TableCaption = React.forwardRef<
+export const TableCaption = forwardRef<
   HTMLTableCaptionElement,
   TableCaptionProps
 >(({ className, placement, ...props }, ref) => {

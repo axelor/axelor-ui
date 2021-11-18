@@ -1,4 +1,4 @@
-import React from 'react';
+import { useRef } from 'react';
 import { SystemProps, makeStyles, omitStyles } from '../system';
 import { Fade } from '../fade';
 import { Slide } from '../slide';
@@ -33,7 +33,7 @@ export const Drawer = ({
   children,
   ...props
 }: DrawerProps) => {
-  const contentRef = React.useRef<HTMLElement | null>(null);
+  const contentRef = useRef<HTMLElement | null>(null);
   const classes = makeStyles(props);
   const rest = omitStyles(props);
 

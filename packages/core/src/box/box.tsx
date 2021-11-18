@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 import { styleNames } from '../styles';
 import {
@@ -11,7 +11,7 @@ import {
 
 export interface BoxProps extends SystemProps, OverridableProps {}
 
-export const Box: OverridableComponent<'div', BoxProps> = React.forwardRef<
+export const Box: OverridableComponent<'div', BoxProps> = forwardRef<
   HTMLDivElement,
   BoxProps
 >(({ as, className, ...props }, ref) => {

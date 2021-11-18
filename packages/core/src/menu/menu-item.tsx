@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 import { styleNames } from '../styles';
 import {
   makeStyles,
@@ -16,7 +16,7 @@ export interface MenuItemProps extends SystemProps, OverridableProps {
 }
 
 export const MenuItem: OverridableComponent<'div', MenuItemProps> =
-  React.forwardRef<HTMLAnchorElement, MenuItemProps>(
+  forwardRef<HTMLAnchorElement, MenuItemProps>(
     ({ as, disabled, active, className, ...props }, ref) => {
       const styles = makeStyles(props);
       const rest = omitStyles(props);

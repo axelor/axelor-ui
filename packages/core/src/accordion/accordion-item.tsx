@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 import { styleNames } from '../styles';
 import { SystemProps, makeStyles, omitStyles } from '../system';
@@ -7,7 +7,7 @@ export interface AccordionItemProps extends SystemProps {
   flush?: boolean;
 }
 
-export const AccordionItem = React.forwardRef<
+export const AccordionItem = forwardRef<
   HTMLDivElement,
   AccordionItemProps
 >(({ flush, className, ...props }, ref) => {

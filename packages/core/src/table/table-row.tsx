@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 import { styleNames } from '../styles';
 import { makeStyles, omitStyles, SystemProps, TVariant } from '../system';
@@ -8,7 +8,7 @@ export interface TableRowProps extends SystemProps {
   selected?: boolean;
 }
 
-export const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
+export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
   ({ className, color, selected, ...props }, ref) => {
     const styles = makeStyles(props);
     const rest = omitStyles(props);

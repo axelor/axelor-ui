@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 import styles from './circular-progress.module.css';
 import { styleNames } from '../styles';
@@ -13,7 +13,7 @@ export interface CircularProgressProps extends SystemProps {
   value?: number;
 }
 
-export const CircularProgress = React.forwardRef<
+export const CircularProgress = forwardRef<
   HTMLDivElement,
   CircularProgressProps
 >(

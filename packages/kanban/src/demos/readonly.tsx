@@ -1,8 +1,6 @@
 /**
  * @title Readonly
  */
-import React from 'react';
-
 import Basic from './basic';
 
 function ReadonlyDemo() {

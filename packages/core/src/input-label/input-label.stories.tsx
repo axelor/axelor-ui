@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Box } from '../box';
 import { Input } from '../input';
 import { InputLabel } from './input-label';

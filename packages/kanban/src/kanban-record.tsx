@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box } from '@axelor-ui/core';
 import { Draggable } from 'react-beautiful-dnd';
 

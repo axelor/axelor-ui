@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 import { styleNames } from '../styles';
 import { makeStyles, omitStyles, SystemProps } from '../system';
@@ -12,7 +12,7 @@ export interface ImageProps extends SystemProps {
   thumbnail?: boolean;
 }
 
-export const Image = React.forwardRef<HTMLImageElement, ImageProps>(
+export const Image = forwardRef<HTMLImageElement, ImageProps>(
   ({ className, responsive, thumbnail, srcSet, sizes, ...props }, ref) => {
     const styles = makeStyles(props);
     const rest = omitStyles(props);

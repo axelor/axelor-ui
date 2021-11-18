@@ -2,7 +2,7 @@
  * @title Basic
  */
 
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 
 import Kanban, { KanbanProps } from '../kanban';
 import { getDefaultColumns } from './data';

@@ -2,7 +2,7 @@
  * @title Basic
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import Scheduler, { SchedulerProps } from '../scheduler';
 import { SchedulerEvent } from '../types';

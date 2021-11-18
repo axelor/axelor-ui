@@ -1,7 +1,8 @@
 /**
  * @title Record Menu
  */
-import React, { useCallback, useContext, useState } from 'react';
+import { createContext, useCallback, useContext, useState, useMemo } from 'react';
+
 import {
   Box,
   Button,
@@ -15,9 +16,8 @@ import { RecordRenderer } from '../types';
 
 import Basic from './basic';
 import { getId, getTitle } from './data';
-import { useMemo } from 'react';
 
-const StoreContext = React.createContext<{
+const StoreContext = createContext<{
   onEdit(value: any): void;
   onDelete(value: any): void;
 }>({ onEdit: () => null, onDelete: () => null });

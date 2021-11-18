@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 import { styleNames } from '../styles';
 import { SystemProps, makeStyles, omitStyles } from '../system';
@@ -7,7 +7,7 @@ export interface AccordionHeaderProps extends SystemProps {
   collapsed?: boolean;
 }
 
-export const AccordionHeader = React.forwardRef<
+export const AccordionHeader = forwardRef<
   HTMLButtonElement,
   AccordionHeaderProps
 >(({ collapsed, className, ...props }, ref) => {

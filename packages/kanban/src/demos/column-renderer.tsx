@@ -1,7 +1,6 @@
 /**
  * @title Column Renderer
  */
-import React from 'react';
 import { Box } from '@axelor-ui/core';
 import { ColumnRenderer } from '../types';
 

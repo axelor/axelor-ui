@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { useRefs } from '../hooks';
 import {
   ownerDocument,

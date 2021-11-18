@@ -1,7 +1,6 @@
 /**
  * @title Dropdown Inverse
  */
-import React from 'react';
 import { Icon, OverflowList, Box } from '@axelor-ui/core';
 
 function Tab({ title, ...rest }: any) {

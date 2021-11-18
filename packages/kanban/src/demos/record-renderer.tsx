@@ -1,7 +1,6 @@
 /**
  * @title Record Renderer
  */
-import React from 'react';
 import { Box } from '@axelor-ui/core';
 import { RecordRenderer } from '../types';
 

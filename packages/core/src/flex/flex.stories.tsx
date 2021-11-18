@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Box, BoxProps } from '../box/box';
 
 export default {

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { styleNames } from '../styles';
 import cssStyles from './overflow-list.module.css';
 

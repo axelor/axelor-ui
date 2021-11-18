@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { TransitionStatus } from 'react-transition-group';
 
 export const reflow = (node: Element) => node.scrollTop;

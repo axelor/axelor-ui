@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 import { styleNames } from '../styles';
 import { makeStyles, omitStyles, SystemProps } from '../system';
@@ -8,7 +8,7 @@ export interface ListItemProps extends SystemProps {
   disabled?: boolean;
 }
 
-export const ListItem = React.forwardRef<HTMLLIElement, ListItemProps>(
+export const ListItem = forwardRef<HTMLLIElement, ListItemProps>(
   ({ active, disabled, className, ...props }, ref) => {
     const styles = makeStyles(props);
     const rest = omitStyles(props);

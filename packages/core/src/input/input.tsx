@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 import { styleNames } from '../styles';
 import { makeStyles, omitStyles, SystemProps } from '../system';
@@ -40,7 +40,7 @@ export interface InputProps extends SystemProps {
   invalid?: boolean;
 }
 
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(
+export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className, type = 'text', min, max, invalid, ...props }, ref) => {
     const styles = makeStyles(props);
     const rest = omitStyles(props);

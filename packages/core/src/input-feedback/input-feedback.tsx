@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 import { styleNames } from '../styles';
 import {
@@ -16,7 +16,7 @@ export interface InputFeedbackProps extends SystemProps, OverridableProps {
 }
 
 export const InputFeedback: OverridableComponent<'div', InputFeedbackProps> =
-  React.forwardRef<HTMLLabelElement, InputFeedbackProps>(
+  forwardRef<HTMLLabelElement, InputFeedbackProps>(
     ({ invalid, className, children, as, ...props }, ref) => {
       const styles = makeStyles(props);
       const rest = omitStyles(props);

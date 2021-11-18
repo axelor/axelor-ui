@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import BsIcons from 'bootstrap-icons/bootstrap-icons.svg';
 
 import { styleNames } from '../styles';

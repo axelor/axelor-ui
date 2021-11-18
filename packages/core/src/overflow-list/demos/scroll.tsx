@@ -1,7 +1,6 @@
 /**
  * @title Scrollable (start/end)
  */
-import React from 'react';
 import { Icon, OverflowList, Box } from '@axelor-ui/core';
 
 function Tab({ title }: any) {
