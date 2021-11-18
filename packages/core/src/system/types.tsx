@@ -1,4 +1,6 @@
 import React from 'react';
+import { css, CSSInterpolation } from '@emotion/css';
+
 import { Responsive } from './theme';
 import {
   BackgroundProps,
@@ -56,7 +58,11 @@ export interface StyleProps
 export interface SystemProps
   extends Omit<React.HTMLAttributes<HTMLElement>, keyof StyleProps>,
     StyleProps,
-    Responsive<SpaceProps & DisplayProps & TextAlignProps & FlexProps & GridProps> {}
+    Responsive<
+      SpaceProps & DisplayProps & TextAlignProps & FlexProps & GridProps
+    > {
+  sx?: CSSInterpolation;
+}
 
 const sizes = ['sm', 'md', 'lg', 'xl', 'xxl'];
 
@@ -91,6 +97,7 @@ const compute = [
 export const omitStyles = (props: Record<string, any>) => {
   var keys = configs.flatMap(c => Object.keys(c));
   var result: any = { ...props };
+  delete result.sx;
   keys.forEach(k => delete result[k]);
   sizes.forEach(k => delete result[k]);
   return result;
@@ -99,7 +106,9 @@ export const omitStyles = (props: Record<string, any>) => {
 export const makeStyles = (props: Record<string, any>) => {
   var base = compute;
   var resp = compute.filter(fn => fn.length === 2);
+  var sx = props.sx ? css(props.sx) : undefined;
   return [
+    sx,
     base.flatMap(fn => fn(props)),
     (sizes as Array<any>).flatMap(n => {
       const nested = (props as any)[n];

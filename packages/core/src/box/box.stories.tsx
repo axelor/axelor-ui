@@ -392,3 +392,22 @@ export const Overflow = () => {
     </Box>
   );
 };
+
+export const Emotion = () => {
+  return (
+    <Box
+      sx={{
+        width: 350,
+        padding: 32,
+        backgroundColor: 'hotpink',
+        fontSize: 24,
+        borderRadius: 4,
+        '&:hover': {
+          color: 'white',
+        },
+      }}
+    >
+      Hover to change color.
+    </Box>
+  );
+};
