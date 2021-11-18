@@ -1,33 +1,66 @@
 import * as React from 'react';
 import { SystemProps, makeStyles, omitStyles } from '../system';
 import { styleNames } from '../styles';
-import OverflowDropdown from './overflow-dropdown';
+import { Box } from '../box';
+import OverflowDropdown, { TOverflowListItem } from './overflow-dropdown';
 import OverflowScrollList from './overflow-scroll-list';
 import cssStyles from './overflow-list.module.css';
 
-export interface OverflowListProps extends SystemProps {
+export interface OverflowListProps<T> extends SystemProps {
   scrollable?: boolean;
   inverse?: boolean;
   vertical?: boolean;
-  dropdown?: (props: any) => React.ReactNode;
-  dropdownButton?: (props: any) => React.ReactNode;
-  scrollButtonStart?: (props: any) => React.ReactNode;
-  scrollButtonEnd?: (props: any) => React.ReactNode;
-  children: (value: { closeOverflowPopup: () => void }) => React.ReactNode;
+  items: T[];
+  renderList?: (items: T[]) => React.ReactNode;
+  renderListItem?: (
+    item: T,
+    props?: React.HTMLAttributes<HTMLElement>
+  ) => React.ReactChild;
+  renderOverflow?: (items: T[], closeDropdown?: () => void) => React.ReactNode;
+  renderOverflowItem?: (
+    item: T,
+    closeDropdown?: () => void
+  ) => React.ReactChild;
+  renderButton?: (
+    type: 'scroll-left' | 'scroll-right' | 'dropdown',
+    props?: React.HTMLAttributes<HTMLElement>
+  ) => React.ReactChild | null;
 }
 
-export const OverflowList = React.forwardRef<HTMLDivElement, OverflowListProps>(
+function RenderListItem({
+  item,
+}: {
+  item: TOverflowListItem | React.ReactChild;
+}) {
+  return (
+    <Box
+      p={2}
+      d="flex"
+      justifyContent="center"
+      border
+      className={cssStyles.defaultItem}
+    >
+      {React.isValidElement(item) ? item : (item as TOverflowListItem).title}
+    </Box>
+  );
+}
+
+export const OverflowList = React.forwardRef<
+  HTMLDivElement,
+  OverflowListProps<TOverflowListItem | React.ReactChild>
+>(
   (
     {
-      children,
+      items,
       className,
       scrollable = false,
       inverse = false,
       vertical = false,
-      dropdown,
-      dropdownButton,
-      scrollButtonStart,
-      scrollButtonEnd,
+      renderList,
+      renderListItem,
+      renderOverflow,
+      renderOverflowItem,
+      renderButton,
       ...props
     },
     ref
@@ -35,8 +68,20 @@ export const OverflowList = React.forwardRef<HTMLDivElement, OverflowListProps>(
     const styles = makeStyles(props);
     const rest = omitStyles(props);
     const Component: any = scrollable ? OverflowScrollList : OverflowDropdown;
+    let children = renderList && renderList(items);
+
+    if (!children) {
+      children = items.map((item, index) =>
+        renderListItem ? (
+          renderListItem(item)
+        ) : (
+          <RenderListItem key={index} item={item} />
+        )
+      );
+    }
+
     return (
-      <div
+      <Box
         ref={ref}
         className={styleNames(cssStyles.container, {
           [cssStyles.vertical]: vertical,
@@ -49,18 +94,17 @@ export const OverflowList = React.forwardRef<HTMLDivElement, OverflowListProps>(
             inverse,
             vertical,
             children,
+            renderButton,
             ...(scrollable
-              ? {
-                  scrollButtonStart,
-                  scrollButtonEnd,
-                }
+              ? {}
               : {
-                  dropdown,
-                  dropdownButton,
+                  items,
+                  renderOverflow,
+                  renderOverflowItem,
                 }),
           }}
         />
-      </div>
+      </Box>
     );
   }
 );

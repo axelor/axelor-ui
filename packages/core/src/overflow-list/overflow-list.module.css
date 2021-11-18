@@ -28,3 +28,8 @@
 .hidden {
   visibility: hidden;
 }
+
+.defaultItem {
+  min-width: 120px;
+  cursor: pointer;
+}

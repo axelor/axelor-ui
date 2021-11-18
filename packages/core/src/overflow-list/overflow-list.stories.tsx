@@ -12,7 +12,15 @@ export default {
   title: 'Core/OverflowList',
 };
 
-function Tab({ title, ...rest }: any) {
+export const Basic = () => {
+  const items = new Array(20)
+    .fill(0)
+    .map((_, ind) => ({ title: ` Tab ${ind + 1} ` }));
+
+  return <OverflowList d="flex" scrollable items={items} />;
+};
+
+function Tab({ title, ...rest }: { title: string }) {
   return (
     <Box
       p={2}
@@ -27,50 +35,53 @@ function Tab({ title, ...rest }: any) {
   );
 }
 
-function DropdownMenu({ children }: any) {
-  return <Box>{children}</Box>;
-}
-
-const DropdownButton = (props: any) => {
-  return (
-    <Box {...props} d="flex" justifyContent="center" alignItems="center" px={2}>
-      <Icon use="three-dots" />
-    </Box>
-  );
-};
-
-export const Basic = () => {
-  return (
-    <OverflowList d="flex" scrollable>
-      {() =>
-        new Array(20)
-          .fill(0)
-          .map((_, ind) => <Tab key={ind} title={` Tab ${ind + 1} `} />)
-      }
-    </OverflowList>
-  );
-};
-
 export const Dropdown = ({ inverse = false }) => {
+  const items = new Array(10)
+    .fill(0)
+    .map((_, ind) => ({ title: ` Tab ${ind + 1} ` }));
+
   return (
     <OverflowList
-      inverse={inverse}
       d="flex"
-      dropdown={props => <DropdownMenu {...props} />}
-      dropdownButton={props => <DropdownButton {...props} />}
-    >
-      {({ closeOverflowPopup }) =>
-        new Array(10)
-          .fill(0)
-          .map((_, ind) => (
-            <Tab
-              key={ind}
-              onClick={closeOverflowPopup}
-              title={` Tab ${ind + 1} `}
-            />
-          ))
-      }
-    </OverflowList>
+      inverse={inverse}
+      items={items}
+      renderListItem={(item: any) => (
+        <Tab key={item.title} title={item.title} />
+      )}
+      renderOverflowItem={(item: any, onClick: any) => (
+        <Tab key={item.title} title={item.title} onClick={onClick} />
+      )}
+      renderButton={(type, props: any) => {
+        if (type === 'scroll-left') {
+          return (
+            <Box d="flex" justifyContent="center" alignItems="center" px={2}>
+              <Icon use="chevron-left" {...props} />
+            </Box>
+          );
+        }
+        if (type === 'scroll-right') {
+          return (
+            <Box d="flex" justifyContent="center" alignItems="center" px={2}>
+              <Icon use="chevron-right" {...props} />
+            </Box>
+          );
+        }
+        if (type === 'dropdown') {
+          return (
+            <Box
+              {...props}
+              d="flex"
+              justifyContent="center"
+              alignItems="center"
+              px={2}
+            >
+              <Icon use="three-dots" />
+            </Box>
+          );
+        }
+        return null;
+      }}
+    />
   );
 };
 
@@ -78,55 +89,73 @@ export const DropdownInverse = () => {
   return <Dropdown inverse={true} />;
 };
 
-function TabStart(props: any) {
-  return (
-    <Box d="flex" justifyContent="center" alignItems="center" px={2}>
-      <Icon use="chevron-left" {...props} />
-    </Box>
-  );
-}
-
-function TabEnd(props: any) {
-  return (
-    <Box d="flex" justifyContent="center" alignItems="center" px={2}>
-      <Icon use="chevron-right" {...props} />
-    </Box>
-  );
-}
-
 export const Scroll = () => {
+  const items = new Array(20)
+    .fill(0)
+    .map((_, ind) => ({ title: ` Tab ${ind + 1} ` }));
+
   return (
     <OverflowList
       d="flex"
       scrollable
-      scrollButtonStart={props => <TabStart {...props} />}
-      scrollButtonEnd={props => <TabEnd {...props} />}
-    >
-      {() =>
-        new Array(20)
-          .fill(0)
-          .map((_, ind) => <Tab key={ind} title={` Tab ${ind + 1} `} />)
+      items={items}
+      renderList={items =>
+        items.map((item: any, ind) => <Tab key={ind} title={item.title} />)
       }
-    </OverflowList>
+      renderButton={(type, props) => {
+        if (type === 'scroll-left') {
+          return (
+            <Box d="flex" justifyContent="center" alignItems="center" px={2}>
+              <Icon use="chevron-left" {...props} />
+            </Box>
+          );
+        }
+        if (type === 'scroll-right') {
+          return (
+            <Box d="flex" justifyContent="center" alignItems="center" px={2}>
+              <Icon use="chevron-right" {...props} />
+            </Box>
+          );
+        }
+        return null;
+      }}
+    />
   );
 };
 
 export const ScrollVertical = () => {
+  const items = new Array(20)
+    .fill(0)
+    .map((_, ind) => ({ title: ` Tab ${ind + 1} ` }));
+
   return (
     <OverflowList
       d="flex"
       flexDirection="column"
-      scrollable
-      scrollButtonStart={props => <TabStart {...props} use="chevron-up" />}
-      scrollButtonEnd={props => <TabEnd {...props} use="chevron-down" />}
-      vertical
       style={{ maxHeight: 290, width: 200 }}
-    >
-      {() =>
-        new Array(20)
-          .fill(0)
-          .map((_, ind) => <Tab key={ind} title={` Tab ${ind + 1} `} />)
+      scrollable
+      vertical
+      items={items}
+      renderList={items =>
+        items.map((item: any, ind) => <Tab key={ind} title={item.title} />)
       }
-    </OverflowList>
+      renderButton={(type, props) => {
+        if (type === 'scroll-left') {
+          return (
+            <Box d="flex" justifyContent="center" alignItems="center" px={2}>
+              <Icon use="chevron-up" {...props} />
+            </Box>
+          );
+        }
+        if (type === 'scroll-right') {
+          return (
+            <Box d="flex" justifyContent="center" alignItems="center" px={2}>
+              <Icon use="chevron-down" {...props} />
+            </Box>
+          );
+        }
+        return null;
+      }}
+    />
   );
 };
