@@ -9,27 +9,33 @@ export type TVerticalAlignment =
   | 'text-top'
   | 'text-bottom';
 
+export type TDimension = 25 | 50 | 75 | 100 | 'auto';
+
 export interface LayoutProps {
   verticalAlign?: TVerticalAlignment;
   overflow?: 'auto' | 'hidden' | 'visible' | 'scroll';
   float?: 'start' | 'end' | 'none';
 
-  w?: CSS.Property.Width | number;
-  width?: CSS.Property.Width | number;
+  w?: TDimension;
+  h?: TDimension;
 
-  h?: CSS.Property.Height | number;
-  height?: CSS.Property.Height | number;
-
-  maxW?: CSS.Property.MaxWidth | number;
-  maxWidth?: CSS.Property.MaxWidth | number;
-  maxH?: CSS.Property.MaxHeight | number;
-  maxHeight?: CSS.Property.MaxWidth | number;
+  maxW?: boolean;
+  maxH?: boolean;
 
   vw?: boolean;
   vh?: boolean;
 
   minVW?: boolean;
   minVH?: boolean;
+
+  width?: CSS.Property.Width | number;
+  height?: CSS.Property.Height | number;
+
+  minWidth?: CSS.Property.MinWidth | number;
+  minHeight?: CSS.Property.MinWidth | number;
+
+  maxWidth?: CSS.Property.MaxWidth | number;
+  maxHeight?: CSS.Property.MaxWidth | number;
 }
 
 export const LayoutConfig: Config<LayoutProps> = {
@@ -38,21 +44,25 @@ export const LayoutConfig: Config<LayoutProps> = {
   float: true,
 
   w: true,
-  width: true,
-
   h: true,
-  height: true,
 
   maxW: true,
-  maxWidth: true,
   maxH: true,
-  maxHeight: true,
 
   vw: true,
   vh: true,
 
   minVW: true,
   minVH: true,
+
+  width: true,
+  height: true,
+
+  minWidth: true,
+  minHeight: true,
+
+  maxWidth: true,
+  maxHeight: true,
 };
 
 export const layoutStyles: ComputeStyles<LayoutProps> = ({
@@ -61,14 +71,18 @@ export const layoutStyles: ComputeStyles<LayoutProps> = ({
   float,
 
   w,
-  width,
-
   h,
-  height,
 
   maxW,
-  maxWidth,
   maxH,
+
+  width,
+  height,
+
+  minWidth,
+  minHeight,
+
+  maxWidth,
   maxHeight,
 
   vw,
@@ -81,13 +95,19 @@ export const layoutStyles: ComputeStyles<LayoutProps> = ({
     computeStyle('align', verticalAlign),
     computeStyle('overflow', overflow),
     computeStyle('float', float),
-    computeCss('width', w ?? width),
-    computeCss('height', h ?? height),
-    computeCss('minWidth', maxW ?? maxWidth),
-    computeCss('minHeight', maxH ?? maxHeight),
+    computeStyle('w', w),
+    computeStyle('h', h),
+    computeStyle('mw', maxW),
+    computeStyle('mh', maxH),
     computeStyle('vw', vw),
     computeStyle('vh', vh),
     computeStyle('min-vw', minVW),
     computeStyle('min-vh', minVH),
+    computeCss('width', width),
+    computeCss('height', height),
+    computeCss('maxWidth', maxWidth),
+    computeCss('maxHeight', maxHeight),
+    computeCss('minWidth', minWidth),
+    computeCss('minHeight', minHeight),
   ];
 };
