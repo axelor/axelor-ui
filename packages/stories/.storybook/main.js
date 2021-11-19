@@ -13,6 +13,15 @@ module.exports = {
     return {
       ...config,
       plugins: [...config.plugins, svgr()],
+      resolve: {
+        ...config.resolve,
+        alias: [
+          {
+            find: /^~.+/,
+            replacement: value => value.replace(/^~/, ''),
+          },
+        ],
+      },
     };
   },
 };
