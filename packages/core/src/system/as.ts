@@ -28,5 +28,5 @@ export interface OverridableComponent<T extends React.ElementType, P = {}> {
 export function forwardRef<T extends React.ElementType, P>(
   render: React.ForwardRefRenderFunction<any, OverridableComponentProps<T, P>>
 ) {
-  return React.forwardRef(render) as OverridableComponent<T, P>;
+  return React.forwardRef(render) as unknown as OverridableComponent<T, P>;
 }
