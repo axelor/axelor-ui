@@ -2,7 +2,18 @@ const webpackFinal = require('./webpack.final');
 
 module.exports = {
   stories: ['../../**/*.stories.tsx'],
-  addons: ['@storybook/addon-a11y', '@storybook/addon-toolbars'],
+  addons: [
+    {
+      name: '@storybook/preset-scss',
+      options: {
+        cssLoaderOptions: {
+          modules: true,
+        },
+      },
+    },
+    '@storybook/addon-a11y',
+    '@storybook/addon-toolbars',
+  ],
   core: {
     builder: 'webpack5',
   },
