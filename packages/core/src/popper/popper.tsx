@@ -45,19 +45,20 @@ export interface PopperProps {
     onEnter: () => void;
     onExited: () => void;
   }>;
+  disablePortal?: boolean;
 }
 
 const PlacementMapping: Record<PopperPlacement, Placement> = {
-  'start': 'left',
+  start: 'left',
   'start-top': 'left-start',
   'start-bottom': 'left-end',
-  'end': 'right',
+  end: 'right',
   'end-top': 'right-start',
   'end-bottom': 'right-end',
-  'top': 'top',
+  top: 'top',
   'top-start': 'top-start',
   'top-end': 'top-end',
-  'bottom': 'bottom',
+  bottom: 'bottom',
   'bottom-start': 'bottom-start',
   'bottom-end': 'bottom-end',
 };
@@ -141,6 +142,7 @@ export const Popper = ({
   container,
   transition = Fade,
   children,
+  disablePortal,
   ...props
 }: PopperProps) => {
   const [exited, setExited] = React.useState(true);
@@ -172,25 +174,29 @@ export const Popper = ({
     return null;
   }
 
-  return (
-    <Portal container={container}>
-      <PopperWrapper
-        placement={placement}
-        arrow={arrow}
-        shadow={shadow}
-        open={open || !exited}
-        {...props}
-      >
-        {transition
-          ? transition({
-              in: open,
-              appear: true,
-              onEnter: handleEnter,
-              onExited: handleExited,
-              children: render(),
-            })
-          : render()}
-      </PopperWrapper>
-    </Portal>
+  const wrapper = (
+    <PopperWrapper
+      placement={placement}
+      arrow={arrow}
+      shadow={shadow}
+      open={open || !exited}
+      {...props}
+    >
+      {transition
+        ? transition({
+            in: open,
+            appear: true,
+            onEnter: handleEnter,
+            onExited: handleExited,
+            children: render(),
+          })
+        : render()}
+    </PopperWrapper>
+  );
+
+  return disablePortal ? (
+    wrapper
+  ) : (
+    <Portal container={container}>{wrapper}</Portal>
   );
 };
