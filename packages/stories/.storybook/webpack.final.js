@@ -1,14 +1,27 @@
-const isCssRule = x => x && x.test && x.test.toString() === '/\\.css$/';
-const isCssLoader = x => x && x.loader && x.loader.match(/[\/\\]css-loader/g);
+const cssRegex = /\.css$/;
+const scssRegex = /\.s[ca]ss$/;
+
+const configureStyle = (type, pattern, config) => {
+  const rule = config.module.rules.find(
+    x => x.test && x.test.toString() === pattern.toString()
+  );
+
+  const loader = rule.use.find(
+    x => x.loader && x.loader.match(/[\/\\]css-loader/g)
+  );
+
+  loader.options = {
+    ...loader.options,
+    modules: {
+      auto: css => css.endsWith(`.module.${type}`),
+      mode: css => (css.endsWith(`.module.${type}`) ? 'local' : 'pure'),
+      localIdentName: 'css-[hash:base64:5]',
+    },
+  };
+};
 
 module.exports = function webpackFinal(config) {
-  const cssRule = config.module.rules.find(isCssRule);
-  const cssLoader = cssRule.use.find(isCssLoader);
-
-  cssLoader.options.modules = {
-    auto: css => css.endsWith('.module.css'),
-    mode: css => (css.endsWith('.module.css') ? 'local' : 'pure'),
-  };
-
+  configureStyle('css', cssRegex, config);
+  configureStyle('scss', scssRegex, config);
   return config;
 };
