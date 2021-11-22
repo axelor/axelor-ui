@@ -1,4 +1,4 @@
-import bootstrap from './bootstrap.module.css';
+import bootstrap from './bootstrap.module.scss';
 import { cx } from '@emotion/css';
 
 type Value = string | number | boolean | undefined | null;
