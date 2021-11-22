@@ -7,4 +7,4 @@ export * from './sizes';
 export * from './position';
 export * from './space';
 export * from './text';
-export * from './grid';
+export * from './layout';
