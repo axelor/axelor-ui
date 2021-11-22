@@ -40,6 +40,13 @@ export const ArrowNavigation = React.forwardRef(
           selector === LAYOUT.HORIZONTAL ? 'ArrowRight' : 'ArrowDown';
         const activeElement = ownerDocument(list).activeElement as HTMLElement;
 
+        if (
+          activeElement?.parentNode !== nodeRef.current &&
+          activeElement !== nodeRef.current
+        ) {
+          return;
+        }
+
         if ([prevKey, nextKey].includes(e.key)) {
           e.preventDefault();
         }
