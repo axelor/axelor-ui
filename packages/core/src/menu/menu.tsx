@@ -31,6 +31,7 @@ export interface MenuProps
   onHide?: any;
   className?: string;
   disablePortal?: boolean;
+  navigation?: boolean;
   children?: React.ReactElement | Array<React.ReactElement>;
 }
 
@@ -52,6 +53,7 @@ export const Menu: OverridableComponent<'div', MenuProps> = React.forwardRef<
       alignment = '',
       className,
       disablePortal,
+      navigation,
       ...props
     },
     ref
@@ -62,6 +64,23 @@ export const Menu: OverridableComponent<'div', MenuProps> = React.forwardRef<
     const $placement: any = `${placement}${alignment ? `-${alignment}` : ''}`;
 
     const [buttonRef, setButtonRef] = React.useState<any>(null);
+
+    const content = (
+      <Component
+        ref={ref}
+        className={styleNames(
+          className,
+          cssStyles.dropdownMenu,
+          'dropdown-menu',
+          {
+            show,
+            [`dropdown-menu-${placement}`]: placement,
+          },
+          classes
+        )}
+        {...rest}
+      ></Component>
+    );
 
     return (
       <>
@@ -81,24 +100,15 @@ export const Menu: OverridableComponent<'div', MenuProps> = React.forwardRef<
           disablePortal={disablePortal}
         >
           <ClickAwayListener onClickAway={onHide}>
-            <FocusTrap>
-              <ArrowNavigation selector="auto-vertical">
-                <Component
-                  ref={ref}
-                  className={styleNames(
-                    className,
-                    cssStyles.dropdownMenu,
-                    'dropdown-menu',
-                    {
-                      show,
-                      [`dropdown-menu-${placement}`]: placement,
-                    },
-                    classes
-                  )}
-                  {...rest}
-                ></Component>
-              </ArrowNavigation>
-            </FocusTrap>
+            {navigation ? (
+              <FocusTrap>
+                <ArrowNavigation selector="auto-vertical">
+                  {content}
+                </ArrowNavigation>
+              </FocusTrap>
+            ) : (
+              content
+            )}
           </ClickAwayListener>
         </Popper>
       </>
