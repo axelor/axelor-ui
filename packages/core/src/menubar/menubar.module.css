@@ -1,0 +1,13 @@
+.active {
+  color: #1e2125 !important;
+  background-color: #e9ecef !important;
+}
+
+.menuItem:hover {
+  color: unset;
+  background-color: unset;
+}
+
+.submenu + div {
+  filter: unset !important; /* Disable popper filter */
+}
