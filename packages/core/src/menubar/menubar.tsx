@@ -12,8 +12,10 @@ import { Menu as AxMenu } from '../menu/menu';
 import { ArrowNavigation } from '../arrow-navigation';
 import { MenuItem as AxMenuItem } from '../menu/menu-item';
 import { styleNames } from '../styles';
+import { tryFocus } from './utils';
 
 import styles from './menubar.module.css';
+import { isElementDisabled, isElementHidden } from '../arrow-navigation/utils';
 
 const MenubarContext = React.createContext<any>({});
 
@@ -25,36 +27,147 @@ function isSubmenu(menuItem: any) {
   );
 }
 
-function Menu({ children, onMouseLeave, onHide, ...rest }: any) {
-  const [active, setActive] = useState<any>({
-    submenu: false,
-    text: '',
-  });
+function getDefaultActive() {
+  return { submenu: false, text: '' };
+}
+
+function Menu({
+  children,
+  className,
+  show: showProp,
+  onMouseLeave,
+  onKeyDown,
+  onHide,
+  ...rest
+}: any) {
+  const [active, setActive] = useState<any>(getDefaultActive());
 
   const [show, setShow] = useState<boolean>(false);
+  const menuRef = useRef<HTMLElement>(null);
   const { hideMenu: hideParentMenu } = useMenubar();
 
+  const focusMenu = () => {
+    tryFocus(menuRef.current);
+  };
+
   const handleMouseLeave = (event: React.MouseEvent<HTMLElement>) => {
-    onMouseLeave && onMouseLeave(event);
     if ((active.text && !active.submenu) || (!show && active.text)) {
-      setActive({ submenu: false, text: '' });
+      setActive(getDefaultActive());
+    }
+    onMouseLeave && onMouseLeave(event);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    const { key } = event;
+
+    if (!(menuRef && menuRef.current)) return;
+
+    const list = Array.from(menuRef.current.children);
+
+    const getCurrentIndex = () => {
+      return (
+        active.text &&
+        list.findIndex((item: any) => item.dataset.text === active.text)
+      );
+    };
+
+    const getNextItem = () => {
+      let index = active.text ? (getCurrentIndex() + 1) % list.length : 0;
+      let element: any = null;
+
+      while (!element) {
+        const item = list[index] as HTMLElement;
+        if (item && (isElementDisabled(item) || isElementHidden(item))) {
+          index = (index + 1) % list.length;
+        } else {
+          element = item;
+        }
+      }
+
+      return element;
+    };
+
+    const getPreviousItem = () => {
+      let currentIndex = getCurrentIndex();
+
+      const lastIndex = list.length - 1;
+
+      let index = active.text
+        ? currentIndex === 0
+          ? lastIndex
+          : currentIndex - 1
+        : lastIndex;
+
+      let element: any = null;
+
+      while (!element) {
+        const item = list[index] as HTMLElement;
+        if (item && (isElementDisabled(item) || isElementHidden(item))) {
+          index = index === 0 ? lastIndex : index - 1;
+        } else {
+          element = item;
+        }
+      }
+
+      return element;
+    };
+
+    switch (key) {
+      case 'ArrowDown': {
+        event.stopPropagation();
+        const item = getNextItem();
+        const { text, submenu }: any = item.dataset;
+        tryFocus(item);
+        setActive({ text, submenu });
+        break;
+      }
+      case 'ArrowUp': {
+        event.stopPropagation();
+        const item = getPreviousItem();
+        const { text, submenu }: any = item.dataset;
+        tryFocus(item);
+        setActive({ text, submenu });
+        break;
+      }
+      case 'ArrowRight': {
+        if (active.submenu) {
+          setShow(true);
+        } else {
+          onKeyDown && onKeyDown(event);
+        }
+        break;
+      }
+      default: {
+        onKeyDown && onKeyDown(event);
+      }
     }
   };
 
   useEffect(() => {
-    if (!rest.show) {
-      setActive({ submenu: false, text: '' });
+    if (!showProp) {
+      setActive(getDefaultActive());
       setShow(false);
     }
-  }, [rest.show]);
+  }, [showProp]);
+
+  useEffect(() => {
+    if (showProp) {
+      focusMenu();
+    }
+  }, [showProp]);
 
   return (
     <AxMenu
       placement="bottom"
       alignment="start"
       disablePortal
-      onMouseLeave={handleMouseLeave}
       onHide={onHide}
+      onKeyDown={handleKeyDown}
+      onMouseLeave={handleMouseLeave}
+      tabIndex={1}
+      ref={menuRef}
+      className={styleNames(className, styles.menu)}
+      show={showProp}
       {...rest}
     >
       {React.Children.map(children, child => {
@@ -91,9 +204,35 @@ function Menu({ children, onMouseLeave, onHide, ...rest }: any) {
           onClick && onClick(event);
         };
 
+        const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+          const { key } = event;
+          switch (key) {
+            case 'Escape':
+            case 'ArrowLeft': {
+              if (isActiveItem && show) {
+                event.stopPropagation();
+                setShow(false);
+                focusMenu();
+              }
+              break;
+            }
+          }
+        };
+
+        const handleMenuKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+          const { key } = event;
+          switch (key) {
+            case 'ArrowRight': {
+              onKeyDown && onKeyDown(event); // next/prev menu control
+              break;
+            }
+          }
+        };
+
         const common = {
           ...props,
-          className: styleNames(styles.menuItem, {
+          as: 'button',
+          className: styleNames(styles.item, {
             [styles.active]: isActiveItem,
             [styles.submenu]: submenu,
           }),
@@ -103,9 +242,16 @@ function Menu({ children, onMouseLeave, onHide, ...rest }: any) {
         };
 
         return submenu ? (
-          <MenuItem {...common} MenuProps={{ show: show && isActiveItem }} />
+          <MenuItem
+            {...common}
+            onKeyDown={handleKeyDown}
+            MenuProps={{
+              show: show && isActiveItem,
+              onKeyDown: handleMenuKeyDown,
+            }}
+          />
         ) : (
-          <AxMenuItem {...common} />
+          <AxMenuItem {...common} data-text={text} />
         );
       })}
     </AxMenu>
@@ -117,6 +263,7 @@ function MenuItem({
   children,
   onMouseLeave,
   onMouseEnter,
+  onKeyDown,
   MenuProps,
   ...rest
 }: any) {
@@ -148,10 +295,16 @@ function MenuItem({
   );
 
   return (
-    <div tabIndex={-1} onMouseLeave={handleMouseLeave}>
+    <div
+      tabIndex={-1}
+      data-text={text}
+      data-submenu={true}
+      onMouseLeave={handleMouseLeave}
+      onKeyDown={onKeyDown}
+      className={styles.menu}
+    >
       <AxMenuItem
         {...rest}
-        as="button"
         text={text}
         ref={setTarget}
         endIcon={'caret-right-fill'}
@@ -187,10 +340,60 @@ export function Menubar({ children }: any) {
     setShow(true);
   }, []);
 
-  const hideMenu = useCallback(() => {
-    setActive(undefined);
-    setShow(false);
-  }, []);
+  const hideMenu = useCallback(
+    (text?: string) => {
+      if (text && active !== text) return;
+      setActive(text);
+      setShow(false);
+    },
+    [active]
+  );
+
+  const getCurrentIndex = useCallback(
+    () => menus.findIndex((item: any) => item.props.text === active),
+    [menus, active]
+  );
+
+  const showNext = useCallback(() => {
+    const current = getCurrentIndex();
+    const menu: any = menus[(current + 1) % menus.length];
+    showMenu(menu.props.text);
+  }, [getCurrentIndex]);
+
+  const showPrevious = useCallback(() => {
+    const current = getCurrentIndex();
+    const menu: any = menus[current === 0 ? menus.length - 1 : current - 1];
+    showMenu(menu.props.text);
+  }, [getCurrentIndex]);
+
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLElement>) => {
+      const { key } = event;
+      switch (key) {
+        case 'ArrowRight': {
+          showNext();
+          break;
+        }
+        case 'ArrowLeft': {
+          showPrevious();
+          break;
+        }
+        case 'Escape': {
+          hideMenu();
+          break;
+        }
+        case 'Tab': {
+          event.preventDefault();
+          if (event.shiftKey) {
+            showPrevious();
+          } else {
+            showNext();
+          }
+        }
+      }
+    },
+    [showNext, showPrevious, hideMenu]
+  );
 
   const value = useMemo(() => ({ hideMenu }), [hideMenu]);
 
@@ -207,7 +410,7 @@ export function Menubar({ children }: any) {
             };
 
             const handleHide = (event: React.SyntheticEvent) => {
-              hideMenu();
+              hideMenu(text);
               onHide && onHide(event);
             };
 
@@ -218,6 +421,7 @@ export function Menubar({ children }: any) {
                 show={show && active === text}
                 onShow={handleShow}
                 onHide={handleHide}
+                onKeyDown={handleKeyDown}
               />
             );
           })}
