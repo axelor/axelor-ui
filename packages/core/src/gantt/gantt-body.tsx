@@ -30,15 +30,22 @@ const GanttRowCells = React.memo(function GanttRowCells({
 
 const GanttRows = React.memo(function GanttRows({
   totalRecords,
+  activeRowIndex,
   items,
 }: {
   totalRecords: number;
+  activeRowIndex: number;
   items: TYPES.GanttHeaderItem[];
 }) {
   return (
     <>
       {new Array(totalRecords).fill(0).map((_, i) => (
-        <div key={i} className={classes.ganttRow}>
+        <div
+          key={i}
+          className={styleNames(classes.ganttRow, {
+            [classes.active]: activeRowIndex === i,
+          })}
+        >
           <GanttRowCells items={items} />
         </div>
       ))}
@@ -48,10 +55,12 @@ const GanttRows = React.memo(function GanttRows({
 
 export function GanttBody({
   totalRecords,
+  activeRowIndex,
   children,
   items,
 }: {
   totalRecords: number;
+  activeRowIndex: number;
   children: React.ReactElement | React.ReactElement[];
   items: TYPES.GanttHeaderItem[];
 }) {
@@ -170,7 +179,11 @@ export function GanttBody({
 
   return (
     <div ref={bodyRef} className={classes.ganttBody}>
-      <GanttRows items={items} totalRecords={totalRecords} />
+      <GanttRows
+        activeRowIndex={activeRowIndex}
+        items={items}
+        totalRecords={totalRecords}
+      />
       {children}
     </div>
   );

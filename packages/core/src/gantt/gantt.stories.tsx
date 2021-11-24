@@ -52,21 +52,22 @@ export const Basic = () => {
   const handleRecordDisconnect = React.useCallback(
     ({ startId, finishId, source, target }) => {
       const flag = window.confirm('Are you sure want to remove?');
-      flag && setRecords(records => {
-        const set = connectSetTypes[`${source}_${target}`];
-        const index = records.findIndex(r => r.id === finishId);
-        const oldSet = records[index][set] || [];
-        if (oldSet.find(obj => obj.id === startId)) {
-          records[index] = {
-            ...records[index],
-            [set]: (records[index][set] || []).filter(
-              x => `${x.id}` !== `${startId}`
-            ),
-          };
-          return [...records];
-        }
-        return records;
-      });
+      flag &&
+        setRecords(records => {
+          const set = connectSetTypes[`${source}_${target}`];
+          const index = records.findIndex(r => r.id === finishId);
+          const oldSet = records[index][set] || [];
+          if (oldSet.find(obj => obj.id === startId)) {
+            records[index] = {
+              ...records[index],
+              [set]: (records[index][set] || []).filter(
+                x => `${x.id}` !== `${startId}`
+              ),
+            };
+            return [...records];
+          }
+          return records;
+        });
     },
     []
   );
@@ -88,7 +89,7 @@ export const Basic = () => {
         </Box>
         <Gantt
           view={view}
-          items={[]}
+          items={response.items}
           records={records}
           onRecordConnect={handleRecordConnect}
           onRecordDisconnect={handleRecordDisconnect}

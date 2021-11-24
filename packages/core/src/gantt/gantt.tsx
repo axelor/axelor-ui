@@ -6,11 +6,13 @@ import { GanttHeader } from './gantt-header';
 import { GanttBody } from './gantt-body';
 import { GanttEdge } from './gantt-edge';
 import { Box } from '../box';
+import { styleNames } from '../styles';
 import { getGraphConfig, getHeader, getGraphEdges } from './utils';
 import classes from './gantt.module.css';
 
 function GanttView(props: {
   view: TYPES.GanttType;
+  activeRowIndex: number;
   records: TYPES.GanttRecord[];
   startDate: moment.Moment;
   endDate: moment.Moment;
@@ -22,6 +24,7 @@ function GanttView(props: {
   const {
     view,
     records,
+    activeRowIndex,
     startDate,
     hourSize,
     endDate,
@@ -42,7 +45,11 @@ function GanttView(props: {
     <div className={classes.body}>
       <GanttHeader list={list} subList={items} />
       <div className={classes.ganttRows}>
-        <GanttBody items={items} totalRecords={records.length}>
+        <GanttBody
+          items={items}
+          activeRowIndex={activeRowIndex}
+          totalRecords={records.length}
+        >
           {records.map((record, i) => {
             return (
               <GanttLine
@@ -70,11 +77,13 @@ function GanttView(props: {
 export function Gantt({
   records,
   view,
+  items,
   onRecordUpdate,
   onRecordConnect,
   onRecordDisconnect,
 }: TYPES.GanttProps) {
   const [container, setContainer] = React.useState<HTMLDivElement | null>(null);
+  const [activeRowIndex, setActiveRowIndex] = React.useState(-1);
 
   const config = React.useMemo(
     () => container && getGraphConfig(records, view, container.offsetWidth),
@@ -82,26 +91,58 @@ export function Gantt({
   );
 
   return (
-    <Box ref={setContainer} className={classes.container}>
-      {config && (
-        <div
-          className={classes.gantt}
-          style={{
-            width: config.totalWidth,
-          }}
-        >
-          <GanttView
-            view={view}
-            hourSize={config.hourSize}
-            startDate={config.startDate}
-            endDate={config.endDate}
-            records={records}
-            onRecordConnect={onRecordConnect}
-            onRecordDisconnect={onRecordDisconnect}
-            onRecordUpdate={onRecordUpdate}
-          />
+    <Box d="flex" className={classes.container}>
+      <Box className={classes.table}>
+        <div className={classes.tableHeader}>
+          {items.map(item => (
+            <div key={item.name} className={classes.tableHeaderCell}>
+              {item.title}
+            </div>
+          ))}
         </div>
-      )}
+        <div className={classes.tableBody}>
+          {records.map((record, ind) => (
+            <div
+              key={ind}
+              className={styleNames(classes.tableBodyRow, {
+                [classes.active]: activeRowIndex === ind,
+              })}
+              onClick={e => setActiveRowIndex(ind)}
+            >
+              {items.map(item => (
+                <div key={item.name} className={classes.tableBodyRowCell}>
+                  {item.targetName
+                    ? record[item.name] &&
+                      (record[item.name] as any)[item.targetName]
+                    : record[item.name]}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </Box>
+      <Box flex="1" ref={setContainer}>
+        {config && (
+          <div
+            className={classes.gantt}
+            style={{
+              width: config.totalWidth,
+            }}
+          >
+            <GanttView
+              view={view}
+              hourSize={config.hourSize}
+              startDate={config.startDate}
+              endDate={config.endDate}
+              activeRowIndex={activeRowIndex}
+              records={records}
+              onRecordConnect={onRecordConnect}
+              onRecordDisconnect={onRecordDisconnect}
+              onRecordUpdate={onRecordUpdate}
+            />
+          </div>
+        )}
+      </Box>
     </Box>
   );
 }

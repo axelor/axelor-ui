@@ -42,6 +42,9 @@
   height: 36px;
   display: flex;
 }
+.ganttRow.active {
+  background: #fff3a1;
+}
 .ganttCell {
   height: 100%;
 }
@@ -204,4 +207,43 @@
   pointer-events: none;
   color: orange;
   transform: rotate(270deg);
+}
+
+.table {
+  min-width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+.tableHeader {
+  height: 63px;
+  border: 1px solid #ddd;
+  border-right: none;
+  display: flex;
+}
+.tableHeaderCell {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  color: #a6a6a6;
+  font-weight: bold;
+  font-size: 15px;
+  padding-left: 10px;
+}
+.tableBodyRow {
+  display: flex;
+  height: 36px;
+  border-bottom: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  cursor: pointer;
+}
+.tableBodyRowCell {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  pointer-events: none;
+}
+.tableBodyRow:hover,
+.tableBodyRow.active {
+  background-color: #fff3a1;
 }

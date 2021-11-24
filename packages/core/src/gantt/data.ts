@@ -353,4 +353,62 @@ const modifyData = data
     []
   );
 
-export default { ...response, data: modifyData };
+const schema = {
+  status: 0,
+  data: {
+    view: {
+      viewId: 123,
+      modelId: 53,
+      name: 'project-task-gantt',
+      title: 'Task Planning',
+      model: 'com.axelor.project.db.ProjectTask',
+      taskStart: 'plannedStartDate',
+      taskDuration: 'plannedDuration',
+      taskParent: 'parentTask',
+      taskSequence: 'sequence',
+      taskProgress: 'plannedProgress',
+      startToStart: 'startToStartTaskSet',
+      startToFinish: 'startToFinishTaskSet',
+      finishToStart: 'finishToStartTaskSet',
+      finishToFinish: 'finishToFinishTaskSet',
+      items: [
+        { type: 'field', name: 'name', autoTitle: 'Name' },
+        { type: 'field', name: 'project', autoTitle: 'Project' },
+        { type: 'field', name: 'user', autoTitle: 'User' },
+      ],
+      type: 'gantt',
+    },
+    perms: null,
+    fields: [
+      { name: 'name', type: 'STRING', title: 'Task Summary', required: true },
+      {
+        targetName: 'name',
+        targetSearch: ['name'],
+        name: 'project',
+        perms: null,
+        type: 'MANY_TO_ONE',
+        title: 'Project',
+        target: 'com.axelor.project.db.Project',
+      },
+      {
+        targetName: 'name',
+        targetSearch: ['name', 'code'],
+        name: 'user',
+        perms: null,
+        type: 'MANY_TO_ONE',
+        title: 'User',
+        required: true,
+        target: 'com.axelor.auth.db.User',
+      },
+    ],
+  },
+};
+
+export default {
+  ...response,
+  items: schema.data.view.items.map(item => {
+    const field = schema.data.fields.find(f => f.name === item.name);
+    return { ...item, ...field };
+  }),
+  data: modifyData,
+};
