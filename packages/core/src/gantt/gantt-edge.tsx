@@ -11,9 +11,9 @@ const Line = React.memo<{
   pointer: boolean;
   source: number;
   target: number;
-  sourceStart?: TYPES.GanttEdgeType;
-  targetEnd?: TYPES.GanttEdgeType;
-  onDeleteConnector?: (data: any) => void;
+  sourceStart: TYPES.GanttEdgeType;
+  targetEnd: TYPES.GanttEdgeType;
+  onDeleteConnector?: (data: TYPES.ConnectProps) => void;
 }>(function Line({
   x1,
   y1,
@@ -35,10 +35,10 @@ const Line = React.memo<{
     () =>
       onDeleteConnector &&
       onDeleteConnector({
-        source,
-        target,
-        targetEnd,
-        sourceStart,
+        startId: source,
+        finishId: target,
+        source: sourceStart,
+        target: targetEnd,
       }),
     [source, target, targetEnd, sourceStart, onDeleteConnector]
   );
@@ -74,7 +74,7 @@ const Line = React.memo<{
 
 export type GanttEdgeProps = {
   edge: TYPES.GanttEdge;
-  onDelete?: () => void;
+  onDelete?: TYPES.GanttProps['onRecordDisconnect'];
 };
 
 export const GanttEdge = React.memo<GanttEdgeProps>(props => {
@@ -116,7 +116,7 @@ export const GanttEdge = React.memo<GanttEdgeProps>(props => {
   }, [startPoint, endPoint, bendPoints]);
 
   return (
-    <>
+    <div className={classes.ganttEdgeLines}>
       {lines.map(({ start, end, pointer }, i) => (
         <Line
           key={i}
@@ -129,6 +129,6 @@ export const GanttEdge = React.memo<GanttEdgeProps>(props => {
           {...{ source, target, targetEnd, sourceStart }}
         />
       ))}
-    </>
+    </div>
   );
 });

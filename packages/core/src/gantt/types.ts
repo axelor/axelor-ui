@@ -39,8 +39,8 @@ export type GanttPoint = {
 export type GanttEdge = {
   source: number;
   target: number;
-  start?: GanttEdgeType;
-  end?: GanttEdgeType;
+  start: GanttEdgeType;
+  end: GanttEdgeType;
   startPoint?: GanttPoint;
   endPoint?: GanttPoint;
   bendPoints?: GanttPoint[];
@@ -60,10 +60,18 @@ export type GanttDragItem = {
   setVirtualLineTarget?: (offset: GanttVirtualLinePoint) => void;
 };
 
+export interface ConnectProps {
+  startId: number;
+  finishId: number;
+  source: GanttEdgeType;
+  target: GanttEdgeType;
+}
+
 export interface GanttProps {
   view: GanttType;
   items: GanttField[];
   records: GanttRecord[];
   onRecordUpdate?: (record: GanttRecord, changes?: any) => any;
-  onRecordConnect?: (connectProps: any) => any;
+  onRecordConnect?: (connectProps: ConnectProps) => any;
+  onRecordDisconnect?: (connectProps: ConnectProps) => any;
 }

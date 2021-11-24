@@ -17,6 +17,7 @@ function GanttView(props: {
   hourSize: number;
   onRecordUpdate?: TYPES.GanttProps['onRecordUpdate'];
   onRecordConnect?: TYPES.GanttProps['onRecordConnect'];
+  onRecordDisconnect?: TYPES.GanttProps['onRecordDisconnect'];
 }) {
   const {
     view,
@@ -26,6 +27,7 @@ function GanttView(props: {
     endDate,
     onRecordUpdate,
     onRecordConnect,
+    onRecordDisconnect,
   } = props;
   const [list, items] = React.useMemo(
     () => getHeader(view, startDate, endDate, hourSize),
@@ -58,7 +60,7 @@ function GanttView(props: {
           })}
         </GanttBody>
         {edges.map((edge, i) => (
-          <GanttEdge key={i} edge={edge} />
+          <GanttEdge key={i} edge={edge} onDelete={onRecordDisconnect} />
         ))}
       </div>
     </div>
@@ -70,19 +72,17 @@ export function Gantt({
   view,
   onRecordUpdate,
   onRecordConnect,
+  onRecordDisconnect,
 }: TYPES.GanttProps) {
   const [container, setContainer] = React.useState<HTMLDivElement | null>(null);
-  const [, refresh] = React.useReducer(x => x + 1, 0);
 
   const config = React.useMemo(
     () => container && getGraphConfig(records, view, container.offsetWidth),
     [container, records, view]
   );
 
-  console.count('gantt');
   return (
     <Box ref={setContainer} className={classes.container}>
-      {/* <button onClick={() => refresh()}> refresh </button> */}
       {config && (
         <div
           className={classes.gantt}
@@ -97,6 +97,7 @@ export function Gantt({
             endDate={config.endDate}
             records={records}
             onRecordConnect={onRecordConnect}
+            onRecordDisconnect={onRecordDisconnect}
             onRecordUpdate={onRecordUpdate}
           />
         </div>

@@ -96,11 +96,16 @@
   color: #222;
   font-weight: 500;
 }
-
+.ganttEdgeLines {
+  display: inline;
+}
 .ganttEdgeLine {
   position: absolute;
-  border: 0.5px solid orange;
+  border: 1.2px solid orange;
   cursor: pointer;
+}
+.ganttEdgeLines:hover .ganttEdgeLine {
+  box-shadow: 0 0px 8px orange;
 }
 .ganttEdgeIconContainer {
   position: absolute;
