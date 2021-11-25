@@ -2,10 +2,10 @@ import React from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 
-import { Box } from '../box';
+import { Box } from '@axelor-ui/core';
 import { Gantt } from './gantt';
 import { GANTT_TYPES } from './utils';
-import { styleNames } from '../styles';
+import { styleNames } from '@axelor-ui/core/styles';
 
 import response from './data';
 

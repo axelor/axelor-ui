@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box } from '../box';
-import { styleNames } from '../styles';
+import { Box } from '@axelor-ui/core';
+import { styleNames } from '@axelor-ui/core/styles';
 import * as TYPES from './types';
 import classes from './gantt.module.css';
 

@@ -2,9 +2,9 @@ import React from 'react';
 import moment from 'moment';
 import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
+import { Icon } from '@axelor-ui/core';
+import { styleNames } from '@axelor-ui/core/styles';
 
-import { Icon } from '../icon';
-import { styleNames } from '../styles';
 import { CONFIG, getDateFromOffset } from './utils';
 import * as TYPES from './types';
 import classes from './gantt.module.css';

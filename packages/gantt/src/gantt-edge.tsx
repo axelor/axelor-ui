@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Icon } from '../icon';
+import { Icon } from '@axelor-ui/core';
 import classes from './gantt.module.css';
 import * as TYPES from './types';
 

@@ -1,9 +1,9 @@
 import React from 'react';
+import { styleNames } from '@axelor-ui/core/styles';
 import { useDrop } from 'react-dnd';
 
 import * as TYPES from './types';
 import { CONFIG } from './utils';
-import { styleNames } from '../styles';
 import classes from './gantt.module.css';
 
 const { DND_TYPES } = CONFIG;
