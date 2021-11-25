@@ -17,6 +17,7 @@ function GanttView(props: {
   startDate: moment.Moment;
   endDate: moment.Moment;
   hourSize: number;
+  cellSize: number;
   onRecordUpdate?: TYPES.GanttProps['onRecordUpdate'];
   onRecordConnect?: TYPES.GanttProps['onRecordConnect'];
   onRecordDisconnect?: TYPES.GanttProps['onRecordDisconnect'];
@@ -26,6 +27,7 @@ function GanttView(props: {
     records,
     activeRowIndex,
     startDate,
+    cellSize,
     hourSize,
     endDate,
     onRecordUpdate,
@@ -59,6 +61,7 @@ function GanttView(props: {
                 startDate={startDate}
                 endDate={endDate}
                 hourSize={hourSize}
+                cellSize={cellSize}
                 data={record}
                 onUpdate={onRecordUpdate}
                 onConnect={onRecordConnect}
@@ -132,6 +135,7 @@ export function Gantt({
             <GanttView
               view={view}
               hourSize={config.hourSize}
+              cellSize={config.cellWidth}
               startDate={config.startDate}
               endDate={config.endDate}
               activeRowIndex={activeRowIndex}

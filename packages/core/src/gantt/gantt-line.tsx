@@ -51,6 +51,7 @@ function VirtualLine({
 
 export const GanttLine = React.memo(function GanttLine(props: {
   hourSize: number;
+  cellSize: number;
   index: number;
   startDate: moment.Moment;
   endDate: moment.Moment;
@@ -73,7 +74,16 @@ export const GanttLine = React.memo(function GanttLine(props: {
     target?: TYPES.GanttVirtualLinePoint;
   } | null>(null);
 
-  const { startDate, index, hourSize, view, data, onUpdate, onConnect } = props;
+  const {
+    startDate,
+    index,
+    hourSize,
+    cellSize,
+    view,
+    data,
+    onUpdate,
+    onConnect,
+  } = props;
   const { id, duration } = data;
 
   const { x, y, width } = (() => {
@@ -109,7 +119,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
     getDragProps(DND_TYPES.LINE, {
       end: (item: TYPES.GanttDragItem, monitor: DragSourceMonitor) => {
         const line = refs.current.element;
-        const date = getDateFromOffset(line.x, startDate, view);
+        const date = getDateFromOffset(line.x, startDate, view, cellSize);
         onUpdate &&
           onUpdate(data, {
             startDate: date,
@@ -122,7 +132,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
     getDragProps(DND_TYPES.RESIZE_LEFT, {
       end: (item: TYPES.GanttDragItem, monitor: DragSourceMonitor) => {
         const line = refs.current.element;
-        const date = getDateFromOffset(line.x, startDate, view);
+        const date = getDateFromOffset(line.x, startDate, view, cellSize);
         const duration = (line.width / hourSize).toFixed(2);
         onUpdate &&
           onUpdate(data, {

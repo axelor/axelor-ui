@@ -337,11 +337,11 @@ export function getHeader(
 export function getDateFromOffset(
   offsetX: number,
   startDate: moment.Moment,
-  view: TYPES.GanttType
-  // cellWidth: number
+  view: TYPES.GanttType,
+  cellSize: number
 ) {
   const { type, width } = viewConfig[view];
-  const total = Number((offsetX / width).toFixed(0));
+  const total = Number((offsetX / cellSize).toFixed(0));
   let date = startDate.clone();
   date = date.add(total, type);
   return date.utc().format();
