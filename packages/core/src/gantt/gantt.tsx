@@ -5,8 +5,8 @@ import { GanttLine } from './gantt-line';
 import { GanttHeader } from './gantt-header';
 import { GanttBody } from './gantt-body';
 import { GanttEdge } from './gantt-edge';
+import { GanttTable } from './gantt-table';
 import { Box } from '../box';
-import { styleNames } from '../styles';
 import { getGraphConfig, getHeader, getGraphEdges } from './utils';
 import classes from './gantt.module.css';
 
@@ -95,35 +95,7 @@ export function Gantt({
 
   return (
     <Box d="flex" className={classes.container}>
-      <Box className={classes.table}>
-        <div className={classes.tableHeader}>
-          {items.map(item => (
-            <div key={item.name} className={classes.tableHeaderCell}>
-              {item.title}
-            </div>
-          ))}
-        </div>
-        <div className={classes.tableBody}>
-          {records.map((record, ind) => (
-            <div
-              key={ind}
-              className={styleNames(classes.tableBodyRow, {
-                [classes.active]: activeRowIndex === ind,
-              })}
-              onClick={e => setActiveRowIndex(ind)}
-            >
-              {items.map(item => (
-                <div key={item.name} className={classes.tableBodyRowCell}>
-                  {item.targetName
-                    ? record[item.name] &&
-                      (record[item.name] as any)[item.targetName]
-                    : record[item.name]}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </Box>
+      <GanttTable {...{ items, records, activeRowIndex, setActiveRowIndex }} />
       <Box flex="1" ref={setContainer}>
         {config && (
           <div

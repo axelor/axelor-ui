@@ -408,7 +408,11 @@ export default {
   ...response,
   items: schema.data.view.items.map(item => {
     const field = schema.data.fields.find(f => f.name === item.name);
-    return { ...item, ...field };
+    const attrs: any = {};
+    if (field?.type === 'MANY_TO_ONE' && field.targetName) {
+      attrs.formatter = (value: any) => value && value[field.targetName];
+    }
+    return { ...item, ...field, ...attrs };
   }),
   data: modifyData,
 };
