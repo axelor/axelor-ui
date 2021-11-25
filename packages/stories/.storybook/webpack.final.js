@@ -1,3 +1,5 @@
+const path = require('path')
+
 const cssRegex = /\.css$/;
 const scssRegex = /\.s[ca]ss$/;
 
@@ -23,5 +25,12 @@ const configureStyle = (type, pattern, config) => {
 module.exports = function webpackFinal(config) {
   configureStyle('css', cssRegex, config);
   configureStyle('scss', scssRegex, config);
+
+  config.resolve = config.resolve || {};
+  config.resolve.alias = {
+    ...config.resolve.alias,
+    '@axelor-ui/core': path.resolve(__dirname, '../../core/src'),
+  };
+
   return config;
 };
