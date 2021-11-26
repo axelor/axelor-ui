@@ -117,56 +117,58 @@ export function getGraphConfig(
 function getBendingPoints(coordinates) {
   const { sx, sy, ex, ey, sheight, sourceStart, targetEnd } = coordinates;
   const points = [];
+  const offset = 20;
+
   if (sourceStart === CONNECT_START && targetEnd === CONNECT_START) {
     if (ex < sx) {
-      points.push({ x: ex - 10, y: sy });
-      points.push({ x: ex - 10, y: ey });
+      points.push({ x: ex - offset, y: sy });
+      points.push({ x: ex - offset, y: ey });
     } else {
-      points.push({ x: sx - 10, y: sy });
-      points.push({ x: sx - 10, y: ey });
+      points.push({ x: sx - offset, y: sy });
+      points.push({ x: sx - offset, y: ey });
     }
   } else if (sourceStart === CONNECT_START && targetEnd === CONNECT_FINISH) {
     if (ex < sx - 20) {
-      points.push({ x: sx - 10, y: sy });
-      points.push({ x: sx - 10, y: ey < sy ? ey : ey + 2 });
+      points.push({ x: sx - offset, y: sy });
+      points.push({ x: sx - offset, y: ey < sy ? ey : ey + 2 });
     } else {
       let midHeightConstant =
         ey < sy ? sy - sheight / 2 - 5 : sy + sheight / 2 + 5;
-      points.push({ x: sx - 10, y: sy });
-      points.push({ x: sx - 10, y: midHeightConstant });
+      points.push({ x: sx - offset, y: sy });
+      points.push({ x: sx - offset, y: midHeightConstant });
       points.push({
-        x: ex + 10,
+        x: ex + offset,
         y: ey < sy ? midHeightConstant + 2 : midHeightConstant,
       });
-      points.push({ x: ex + 10, y: ey < sy ? ey : ey + 2 });
+      points.push({ x: ex + offset, y: ey < sy ? ey : ey + 2 });
     }
   } else if (sourceStart === CONNECT_FINISH && targetEnd === CONNECT_FINISH) {
     if (sx + 20 < ex) {
-      points.push({ x: ex + 10, y: ey < sy ? sy + 2 : sy });
-      points.push({ x: ex + 10, y: ey < sy ? ey : ey + 2 });
+      points.push({ x: ex + offset, y: ey < sy ? sy + 2 : sy });
+      points.push({ x: ex + offset, y: ey < sy ? ey : ey + 2 });
     } else {
-      points.push({ x: sx + 10, y: ey < sy ? sy + 2 : sy });
-      points.push({ x: sx + 10, y: ey < sy ? ey : ey + 2 });
+      points.push({ x: sx + offset, y: ey < sy ? sy + 2 : sy });
+      points.push({ x: sx + offset, y: ey < sy ? ey : ey + 2 });
     }
   } else {
     if (sx + 20 < ex) {
       if (sy > ey) {
-        points.push({ x: sx + 10, y: sy + 2 });
+        points.push({ x: sx + offset, y: sy + 2 });
       } else {
-        points.push({ x: sx + 10, y: sy });
+        points.push({ x: sx + offset, y: sy });
       }
-      points.push({ x: sx + 10, y: ey });
+      points.push({ x: sx + offset, y: ey });
     } else {
       if (sy > ey) {
-        points.push({ x: sx + 10, y: sy + 2 });
-        points.push({ x: sx + 10, y: sy - sheight + 5 / 2 });
-        points.push({ x: ex - 10, y: sy - sheight + 5 / 2 });
+        points.push({ x: sx + offset, y: sy + 2 });
+        points.push({ x: sx + offset, y: sy - sheight + 5 / 2 });
+        points.push({ x: ex - offset, y: sy - sheight + 5 / 2 });
       } else {
-        points.push({ x: sx + 10, y: sy });
-        points.push({ x: sx + 10, y: sy + sheight / 2 + 5 });
-        points.push({ x: ex - 10, y: sy + sheight / 2 + 3 });
+        points.push({ x: sx + offset, y: sy });
+        points.push({ x: sx + offset, y: sy + sheight / 2 + 5 });
+        points.push({ x: ex - offset, y: sy + sheight / 2 + 3 });
       }
-      points.push({ x: ex - 10, y: ey });
+      points.push({ x: ex - offset, y: ey });
     }
   }
   return points;
