@@ -11,6 +11,7 @@ export type GanttHeaderItem = {
   title: string;
   width: number;
   hours?: number;
+  highlight?: boolean;
 };
 
 export type GanttRecord = {

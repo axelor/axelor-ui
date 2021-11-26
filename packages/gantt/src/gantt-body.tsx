@@ -4,29 +4,14 @@ import { useDrop } from 'react-dnd';
 
 import * as TYPES from './types';
 import { CONFIG } from './utils';
+import { RenderList } from './gantt-header';
 import classes from './gantt.module.css';
 
 const { DND_TYPES } = CONFIG;
 
-const GanttRowCells = React.memo(function GanttRowCells({
-  items,
-}: {
-  items: TYPES.GanttHeaderItem[];
-}) {
-  return (
-    <>
-      {items.map((item, i: number) => (
-        <div
-          className={styleNames(classes.block, classes.ganttCell)}
-          key={i}
-          style={{ width: item.width }}
-        >
-          {' '}
-        </div>
-      ))}
-    </>
-  );
-});
+function EmptyCell() {
+  return null;
+}
 
 const GanttRows = React.memo(function GanttRows({
   totalRecords,
@@ -46,7 +31,11 @@ const GanttRows = React.memo(function GanttRows({
             [classes.active]: activeRowIndex === i,
           })}
         >
-          <GanttRowCells items={items} />
+          <RenderList
+            items={items}
+            itemClassName={classes.ganttCell}
+            itemRenderer={EmptyCell}
+          />
         </div>
       ))}
     </>

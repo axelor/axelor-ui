@@ -247,3 +247,7 @@
 .tableBodyRow.active {
   background-color: #fff3a1;
 }
+
+.highlight {
+  background: #eee;
+}

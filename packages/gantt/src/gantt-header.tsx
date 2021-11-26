@@ -1,18 +1,35 @@
 import React from 'react';
 import * as TYPES from './types';
+import { styleNames } from '@axelor-ui/core/styles';
 import classes from './gantt.module.css';
 
-function RenderList({ data }: { data: TYPES.GanttHeaderItem[] }) {
+export const RenderList = React.memo(function RenderList({
+  items,
+  itemClassName,
+  itemRenderer,
+}: {
+  items: TYPES.GanttHeaderItem[];
+  itemClassName?: string;
+  itemRenderer?: (item: TYPES.GanttHeaderItem) => any;
+}) {
   return (
     <>
-      {data.map((item, i: number) => (
-        <div className={classes.block} key={i} style={{ width: item.width }}>
-          {item.title}
+      {items.map((item, i: number) => (
+        <div
+          className={styleNames(classes.block, itemClassName, {
+            [classes.highlight]: item.highlight,
+          })}
+          key={i}
+          style={{
+            width: item.width,
+          }}
+        >
+          {itemRenderer ? itemRenderer(item) : item.title}
         </div>
       ))}
     </>
   );
-}
+});
 
 export const GanttHeader = React.memo(function GanttHeader(props: {
   list: TYPES.GanttHeaderItem[];
@@ -22,10 +39,10 @@ export const GanttHeader = React.memo(function GanttHeader(props: {
   return (
     <div>
       <div className={classes.header}>
-        <RenderList data={list} />
+        <RenderList items={list} />
       </div>
       <div className={classes.subHeader}>
-        <RenderList data={subList} />
+        <RenderList items={subList} />
       </div>
     </div>
   );
