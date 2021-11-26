@@ -124,10 +124,10 @@ export function GanttBody({
           break;
         case DND_TYPES.PROGRESS:
           const progressElement = dragLine.querySelector(
-            `.${classes.ganttLineProgress}`
+            `.${CSS.escape(classes.ganttLineProgress)}`
           );
           const labelElement = dragLine.querySelector(
-            `.${classes.ganttLineProgressLabel}`
+            `.${CSS.escape(classes.ganttLineProgressLabel)}`
           );
           const { width } = refs.current.element;
           const value = Math.min(width, offset.x);
