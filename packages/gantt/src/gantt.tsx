@@ -95,9 +95,9 @@ export function Gantt({
   );
 
   return (
-    <Box d="flex" className={classes.container}>
+    <Box d="flex">
       <GanttTable {...{ items, records, activeRowIndex, setActiveRowIndex }} />
-      <Box flex="1" ref={setContainer}>
+      <Box flex="1" className={classes.container} ref={setContainer}>
         {config && (
           <div
             className={classes.gantt}
