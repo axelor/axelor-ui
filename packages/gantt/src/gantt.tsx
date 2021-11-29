@@ -35,6 +35,7 @@ function GanttView(props: {
     onRecordConnect,
     onRecordDisconnect,
   } = props;
+
   const [list, items] = React.useMemo(
     () => getHeader(view, startDate, endDate, hourSize),
     [view, startDate, endDate, hourSize]
@@ -93,12 +94,22 @@ export function Gantt({
     () => container && getGraphConfig(records, view, container.offsetWidth),
     [container, records, view]
   );
+  const startDateStr = config?.startDate.format();
+  const endDateStr = config?.endDate.format();
+
+  const [startDate, endDate] = React.useMemo(
+    () => [
+      startDateStr && moment(startDateStr),
+      endDateStr && moment(endDateStr),
+    ],
+    [startDateStr, endDateStr]
+  );
 
   return (
     <Box d="flex">
       <GanttTable {...{ items, records, activeRowIndex, setActiveRowIndex }} />
       <Box flex="1" className={classes.container} ref={setContainer}>
-        {config && (
+        {config && startDate && endDate && (
           <div
             className={classes.gantt}
             style={{
@@ -109,8 +120,8 @@ export function Gantt({
               view={view}
               hourSize={config.hourSize}
               cellSize={config.cellWidth}
-              startDate={config.startDate}
-              endDate={config.endDate}
+              startDate={startDate}
+              endDate={endDate}
               activeRowIndex={activeRowIndex}
               records={records}
               onRecordConnect={onRecordConnect}
