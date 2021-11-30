@@ -115,23 +115,33 @@ export function GanttBody({
           const progressElement = dragLine.querySelector(
             `.${CSS.escape(classes.ganttLineProgress)}`
           );
+          const progressContentElement = dragLine.querySelector(
+            `.${CSS.escape(classes.ganttLineProgressContent)}`
+          );
           const labelElement = dragLine.querySelector(
             `.${CSS.escape(classes.ganttLineProgressLabel)}`
           );
           const { width } = refs.current.element;
-          const value = Math.min(width, offset.x);
-          const progressValue = Math.min(
-            100,
-            (Math.max(0, value) * 100) / refs.current.element.width
+          const value = Math.max(0, Math.min(width, offset.x));
+          const progressValue = Math.max(
+            0,
+            Math.min(
+              100,
+              (Math.max(0, value) * 100) / refs.current.element.width
+            )
           );
 
           progressElement &&
             ((progressElement as HTMLDivElement).style.width = `${value}px`);
+          progressContentElement &&
+            ((
+              progressContentElement as HTMLDivElement
+            ).style.left = `${value}px`);
+
           refs.current.progress = progressValue.toFixed(2);
 
           if (labelElement) {
-            labelElement.innerHTML =
-              progressValue > 0 ? `${Math.round(progressValue)}%` : '';
+            labelElement.innerHTML = `${Math.round(progressValue)}%`;
           }
           break;
         case DND_TYPES.LINE:

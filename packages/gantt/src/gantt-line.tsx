@@ -64,7 +64,6 @@ export const GanttLine = React.memo(function GanttLine(props: {
   const leftConnectRef = React.useRef<HTMLDivElement>(null);
   const rightConnectRef = React.useRef<HTMLDivElement>(null);
   const progressElement = React.useRef<HTMLDivElement>(null);
-  const progressLabelElement = React.useRef<HTMLDivElement>(null);
   const refs = React.useRef<{ element: any; progress: string | null }>({
     progress: null,
     element: null,
@@ -180,8 +179,8 @@ export const GanttLine = React.memo(function GanttLine(props: {
         const parentBound =
           dragLineRef.current.parentElement.getBoundingClientRect();
         const source: TYPES.GanttVirtualLinePoint = {
-          x: clientOffset.x - parentBound.left + 20,
-          y: clientOffset.y - parentBound.top + 5,
+          x: clientOffset.x - parentBound.left + 10,
+          y: clientOffset.y - parentBound.top - 5,
           type: 'start',
         };
         setVirtualLineSource(source);
@@ -208,8 +207,8 @@ export const GanttLine = React.memo(function GanttLine(props: {
         const parentBound =
           dragLineRef.current.parentElement.getBoundingClientRect();
         const source: TYPES.GanttVirtualLinePoint = {
-          x: clientOffset.x - parentBound.left - 15,
-          y: clientOffset.y - parentBound.top + 5,
+          x: clientOffset.x - parentBound.left - 5,
+          y: clientOffset.y - parentBound.top - 5,
           type: 'finish',
         };
         setVirtualLineSource(source);
@@ -334,6 +333,23 @@ export const GanttLine = React.memo(function GanttLine(props: {
         }}
       >
         <div
+          ref={progressElement}
+          className={classes.ganttLineProgress}
+          style={{
+            height: CONFIG.LINE_HEIGHT,
+            width: `${progress}%`,
+          }}
+        >
+          <div
+            className={classes.ganttLineProgressContent}
+            style={{ left: `${progress}%` }}
+          >
+            <div className={classes.ganttLineProgressLabel}>
+              {`${progress > 0 ? Math.round(progress) : '0'}%`}
+            </div>
+          </div>
+        </div>
+        <div
           ref={leftConnectRef}
           className={styleNames(classes.ganttConnector, classes.left, {
             [classes.show]:
@@ -345,11 +361,13 @@ export const GanttLine = React.memo(function GanttLine(props: {
         >
           <div className={classes.ganttConnectorLink} />
         </div>
+
+        <div className={styleNames(classes.ganttLineDragArea, classes.left)} />
+
         <div
           ref={leftResizeDrag}
           className={styleNames(classes.ganttLineDrag, classes.left)}
         />
-        <div className={styleNames(classes.ganttLineDragArea, classes.left)} />
 
         <div
           ref={rightConnectRef}
@@ -363,40 +381,28 @@ export const GanttLine = React.memo(function GanttLine(props: {
         >
           <div className={classes.ganttConnectorLink} />
         </div>
+
+        <div className={styleNames(classes.ganttLineDragArea, classes.right)} />
+
         <div
           ref={rightResizeDrag}
           className={styleNames(classes.ganttLineDrag, classes.right)}
         />
-        <div className={styleNames(classes.ganttLineDragArea, classes.right)} />
-        <div
-          ref={progressElement}
-          className={classes.ganttLineProgress}
-          style={{
-            height: CONFIG.LINE_HEIGHT,
-            width: `${progress}%`,
-          }}
-        >
-          <div className={classes.ganttLineProgressIcon} />
+
+        <div className={classes.ganttLineTitle}>
+          <span>{data.name}</span>
         </div>
 
         <div
           ref={progressDrag}
           className={classes.ganttLineProgressIndicator}
           style={{
-            left: Math.max(0, progressWidth - (progressWidth > 5 ? 5 : 0)),
+            left: Math.min(
+              width - 10,
+              Math.max(0, progressWidth - (progressWidth > 5 ? 5 : 0))
+            ),
           }}
         ></div>
-        <span>{data.name}</span>
-        <div
-          ref={progressLabelElement}
-          style={{
-            left: -(`${data.progress}`.length * 10),
-            top: -2,
-          }}
-          className={classes.ganttLineProgressLabel}
-        >
-          {progress > 0 && `${Math.round(progress)}%`}
-        </div>
       </div>
 
       {virtualLine && virtualLine.source && virtualLine.target && (
