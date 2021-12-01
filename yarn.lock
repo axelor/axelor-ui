@@ -2601,7 +2601,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-transition-group@^4.4.2":
+"@types/react-transition-group@^4.4.0", "@types/react-transition-group@^4.4.2":
   version "4.4.4"
   resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-4.4.4.tgz#acd4cceaa2be6b757db61ed7b432e103242d163e"
   integrity sha512-7gAPz7anVK5xzbeQW9wFBDg7G++aPLAFY0QaSMOou9rJZpbuI58WAuJrgu+qR92l61grlnCUe7AFX8KGahAgug==
@@ -6169,7 +6169,7 @@ hmac-drbg@^1.0.1:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
-hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
+hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.1, hoist-non-react-statics@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
@@ -7359,7 +7359,7 @@ memfs@^3.1.2, memfs@^3.2.2:
   dependencies:
     fs-monkey "1.0.3"
 
-memoize-one@^5.1.1:
+memoize-one@^5.0.0, memoize-one@^5.1.1:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-5.2.1.tgz#8337aa3c4335581839ec01c3d594090cebe8f00e"
   integrity sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q==
@@ -8980,6 +8980,19 @@ react-router@6.1.1, react-router@^6.0.0:
   dependencies:
     history "^5.1.0"
 
+react-select@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.2.1.tgz#416c25c6b79b94687702374e019c4f2ed9d159d6"
+  integrity sha512-OOyNzfKrhOcw/BlembyGWgdlJ2ObZRaqmQppPFut1RptJO423j+Y+JIsmxkvsZ4D/3CpOmwIlCvWbbAWEdh12A==
+  dependencies:
+    "@babel/runtime" "^7.12.0"
+    "@emotion/cache" "^11.4.0"
+    "@emotion/react" "^11.1.1"
+    "@types/react-transition-group" "^4.4.0"
+    memoize-one "^5.0.0"
+    prop-types "^15.6.0"
+    react-transition-group "^4.3.0"
+
 react-sizeme@^3.0.1:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/react-sizeme/-/react-sizeme-3.0.2.tgz#4a2f167905ba8f8b8d932a9e35164e459f9020e4"
@@ -9010,7 +9023,7 @@ react-textarea-autosize@^8.3.0:
     use-composed-ref "^1.0.0"
     use-latest "^1.0.0"
 
-react-transition-group@^4.4.2:
+react-transition-group@^4.3.0, react-transition-group@^4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.2.tgz#8b59a56f09ced7b55cbd53c36768b922890d5470"
   integrity sha512-/RNYfRAMlZwDSr6z4zNKV6xu53/e2BuaBbGhbyYIXTrmgu/bGHzmqOs7mJSJBHy9Ud+ApHx3QjrkKSp1pxvlFg==
