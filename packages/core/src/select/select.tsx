@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactSelect from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import AsyncSelect from 'react-select/async';
+import AsyncCreatableSelect from 'react-select/async-creatable';
 
 export type SelectOption = any;
 
@@ -9,6 +11,7 @@ export interface SelectProps {
   autoFocus?: boolean;
   isMulti?: boolean;
   isClearable?: boolean;
+  isCreatable?: boolean;
   isDisabled?: boolean;
   isRtl?: boolean;
   isSearchable?: boolean;
@@ -21,6 +24,9 @@ export interface SelectProps {
   fetchOptions?: (searchInput: string) => Promise<unknown>;
   optionLabel?: string | ((option: SelectOption) => string);
   optionValue?: string | ((option: SelectOption) => string);
+  createOption?: (inputString: string) => React.ReactNode;
+  createOptionPosition?: 'first' | 'last';
+  onCreate?: (value: SelectOption) => void;
 }
 
 export function useDebounce(cb: (...args: any) => any, duration: number) {
@@ -47,6 +53,7 @@ export function Select({
   isClearable = true,
   isDisabled = false,
   isRtl = false,
+  isCreatable = false,
   isSearchable = true,
   value,
   onChange,
@@ -57,14 +64,21 @@ export function Select({
   fetchOptions,
   optionLabel = 'label',
   optionValue = 'value',
+  createOption,
+  createOptionPosition = 'last',
+  onCreate,
 }: SelectProps) {
   const isAsync = Boolean(fetchOptions);
 
   const getOptionLabel = React.useCallback(
-    option =>
-      typeof optionLabel === 'function'
+    option => {
+      if (option.__isNew__) {
+        return option.label;
+      }
+      return typeof optionLabel === 'function'
         ? optionLabel(option)
-        : option[optionLabel],
+        : option[optionLabel];
+    },
     [optionLabel]
   );
   const getOptionValue = React.useCallback(
@@ -84,7 +98,13 @@ export function Select({
     [fetchOptionsDelay]
   );
 
-  const SelectComponent = isAsync ? AsyncSelect : ReactSelect;
+  const SelectComponent = isAsync
+    ? isCreatable
+      ? AsyncCreatableSelect
+      : AsyncSelect
+    : isCreatable
+    ? CreatableSelect
+    : ReactSelect;
 
   return (
     <SelectComponent
@@ -109,6 +129,13 @@ export function Select({
         onKeyDown,
         getOptionLabel,
         getOptionValue,
+        ...(isCreatable
+          ? {
+              formatCreateLabel: createOption,
+              createOptionPosition,
+              onCreateOption: onCreate,
+            }
+          : {}),
       }}
     />
   );

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Input } from '../input';
 import { Box } from '../box';
 import { Select } from '../select';
 
@@ -63,7 +64,7 @@ const fetchColors = (colorStr: string) => {
             )
           : colors
       );
-    }, 1500);
+    }, 800);
   });
 };
 
@@ -95,5 +96,78 @@ export const Multiple = () => {
         optionValue="code"
       />
     </FormControl>
+  );
+};
+
+function CreateNewOption(str: string) {
+  return `Create.. "${str}"`;
+}
+
+export const Creatable = () => {
+  const [isAsync, setAsync] = React.useState(true);
+
+  const [value, setValue] = React.useState<any>(null);
+  const [multiValue, setMultiValue] = React.useState<any[]>([]);
+
+  const handleOnCreate = React.useCallback(function handleOnCreate(value) {
+    const newColor = {
+      title: value,
+      code: value.toLowerCase(),
+    };
+    setValue(newColor);
+    colors.push(newColor);
+  }, []);
+
+  const handleMultiOnCreate = React.useCallback(function handleOnCreate(value) {
+    const newColor = {
+      title: value,
+      code: value.toLowerCase(),
+    };
+    setMultiValue(values => (values || []).concat(newColor));
+    colors.push(newColor);
+  }, []);
+
+  const handleChecked = (event: any) => {
+    setAsync(event.target.checked);
+  };
+
+  const selectProps = isAsync
+    ? { key: 'async-select', fetchOptions: fetchColors }
+    : { key: 'static-select', options: colors };
+
+  return (
+    <Box>
+      <Box m={1}>
+        <Input type="checkbox" checked={isAsync} onChange={handleChecked} />
+        <Box as="label" ms={2}>
+          Async
+        </Box>
+      </Box>
+      <FormControl label="Colors">
+        <Select
+          isCreatable
+          value={value}
+          optionLabel="title"
+          optionValue="code"
+          createOption={CreateNewOption}
+          onChange={setValue}
+          onCreate={handleOnCreate}
+          {...selectProps}
+        />
+      </FormControl>
+      <FormControl label="Colors (Multi)">
+        <Select
+          isCreatable
+          isMulti
+          value={multiValue}
+          optionLabel="title"
+          optionValue="code"
+          createOption={CreateNewOption}
+          onChange={setMultiValue}
+          onCreate={handleMultiOnCreate}
+          {...selectProps}
+        />
+      </FormControl>
+    </Box>
   );
 };
