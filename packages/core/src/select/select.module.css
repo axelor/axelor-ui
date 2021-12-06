@@ -1,0 +1,7 @@
+.indicators {
+  cursor: pointer;
+}
+
+.indicatorActions {
+  color: hsl(0, 0%, 80%);
+}

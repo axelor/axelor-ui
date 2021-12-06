@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input } from '../input';
 import { Box } from '../box';
+import { Icon } from '../icon';
 import { Select } from '../select';
 
 export default {
@@ -16,11 +17,6 @@ function FormControl({ label, children }: any) {
     </Box>
   );
 }
-
-const alphabets = new Array(26).fill(65).map((code, i) => {
-  const char = String.fromCharCode(code + i);
-  return { title: char, value: char.toLowerCase() };
-});
 
 const colors = [
   { title: 'Green', code: 'green' },
@@ -40,21 +36,22 @@ const colors = [
 ];
 
 export const Basic = () => {
-  const [value, setValue] = React.useState<any>(alphabets[0]);
+  const [value, setValue] = React.useState<any>(colors[0]);
   return (
-    <FormControl label="Characters">
+    <FormControl label="Colors">
       <Select
         value={value}
         onChange={setValue}
-        options={alphabets}
+        options={colors}
         optionLabel="title"
-        optionValue="value"
+        optionValue="code"
       />
     </FormControl>
   );
 };
 
 const fetchColors = (colorStr: string) => {
+  console.log('fetch colors');
   return new Promise(resolve => {
     setTimeout(() => {
       resolve(
@@ -84,7 +81,7 @@ export const Async = () => {
 };
 
 export const Multiple = () => {
-  const [value, setValue] = React.useState<any>(null);
+  const [value, setValue] = React.useState<any>(colors.slice(0, 2));
   return (
     <FormControl label="Colors">
       <Select
@@ -166,6 +163,98 @@ export const Creatable = () => {
           onChange={setMultiValue}
           onCreate={handleMultiOnCreate}
           {...selectProps}
+        />
+      </FormControl>
+    </Box>
+  );
+};
+
+export const Actions = () => {
+  const [value, setValue] = React.useState<any>(colors[0]);
+  const [canCreate, setCreate] = React.useState(true);
+  const [canRead, setRead] = React.useState(true);
+  const [canEdit, setEdit] = React.useState(true);
+
+  return (
+    <Box>
+      <Box d="flex">
+        <Box m={1}>
+          <Input
+            type="checkbox"
+            checked={canCreate}
+            onChange={e => setCreate((e.target as HTMLInputElement).checked)}
+          />
+          <Box as="label" ms={2}>
+            Create
+          </Box>
+        </Box>
+        <Box m={1}>
+          <Input
+            type="checkbox"
+            checked={canRead}
+            onChange={e => setRead((e.target as HTMLInputElement).checked)}
+          />
+          <Box as="label" ms={2}>
+            Read
+          </Box>
+        </Box>
+        <Box m={1}>
+          <Input
+            type="checkbox"
+            checked={canEdit}
+            onChange={e => setEdit((e.target as HTMLInputElement).checked)}
+          />
+          <Box as="label" ms={2}>
+            Edit
+          </Box>
+        </Box>
+      </Box>
+      <FormControl label="Colors">
+        <Select
+          actions={
+            (canRead || canCreate || canEdit) && (
+              <Box d="flex">
+                {value && canEdit && (
+                  <Box
+                    p={1}
+                    d="flex"
+                    alignItems="center"
+                    title="Edit"
+                    onClick={() => console.log('do edit')}
+                  >
+                    <Icon use="pencil" />
+                  </Box>
+                )}
+                {canCreate && (
+                  <Box
+                    p={1}
+                    d="flex"
+                    alignItems="center"
+                    title="New"
+                    onClick={() => console.log('do create')}
+                  >
+                    <Icon use="plus-square" />
+                  </Box>
+                )}
+                {value && canRead && (
+                  <Box
+                    p={1}
+                    d="flex"
+                    alignItems="center"
+                    title="View"
+                    onClick={() => console.log('do view')}
+                  >
+                    <Icon use="file-earmark-text" />
+                  </Box>
+                )}
+              </Box>
+            )
+          }
+          value={value}
+          onChange={setValue}
+          options={colors}
+          optionLabel="title"
+          optionValue="code"
         />
       </FormControl>
     </Box>

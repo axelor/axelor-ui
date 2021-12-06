@@ -1,10 +1,15 @@
 import React from 'react';
-import ReactSelect from 'react-select';
+import ReactSelect, {
+  components,
+  ControlProps,
+  IndicatorsContainerProps,
+} from 'react-select';
 import CreatableSelect from 'react-select/creatable';
-import AsyncSelect from 'react-select/async';
-import AsyncCreatableSelect from 'react-select/async-creatable';
 
-export type SelectOption = any;
+import { Box } from '../box';
+import selectStyles from './select.module.css';
+
+export type SelectOption = unknown;
 
 export interface SelectProps {
   className?: string;
@@ -24,27 +29,49 @@ export interface SelectProps {
   fetchOptions?: (searchInput: string) => Promise<unknown>;
   optionLabel?: string | ((option: SelectOption) => string);
   optionValue?: string | ((option: SelectOption) => string);
+  actions?: React.ReactNode;
   createOption?: (inputString: string) => React.ReactNode;
   createOptionPosition?: 'first' | 'last';
   onCreate?: (value: SelectOption) => void;
 }
 
-export function useDebounce(cb: (...args: any) => any, duration: number) {
-  const timer = React.useRef<any>(null);
+const ControlContainer = (props: ControlProps<SelectOption, true>) => {
+  const { onMouseDown, onTouchEnd } = props.innerProps;
+  function handleMouseDown(e: React.SyntheticEvent<HTMLElement>) {
+    if (!e.defaultPrevented) {
+      onMouseDown && onMouseDown(e);
+    }
+  }
+  return (
+    <components.Control
+      {...props}
+      innerProps={{
+        onMouseDown: handleMouseDown,
+        onTouchEnd,
+      }}
+    />
+  );
+};
 
-  const clearTimer = () => timer.current && clearTimeout(timer.current);
-
-  React.useEffect(() => {
-    return () => clearTimer();
-  }, []);
-
-  return (...args: any) => {
-    clearTimer();
-    return new Promise(resolve => {
-      timer.current = setTimeout(() => resolve(cb(...args)), duration);
-    });
-  };
-}
+const IndicatorsContainer = (
+  props: IndicatorsContainerProps<SelectOption, true>
+) => {
+  function handleMouseDown(e: React.SyntheticEvent) {
+    e.preventDefault();
+  }
+  return (
+    <Box d="flex" className={selectStyles.indicators}>
+      <Box
+        d="flex"
+        className={selectStyles.indicatorActions}
+        onMouseDown={handleMouseDown}
+      >
+        {(props.selectProps.components as any)?.actions}
+      </Box>
+      <components.IndicatorsContainer {...props} />
+    </Box>
+  );
+};
 
 export function Select({
   className,
@@ -62,6 +89,7 @@ export function Select({
   onKeyDown,
   options,
   fetchOptions,
+  actions,
   optionLabel = 'label',
   optionValue = 'value',
   createOption,
@@ -69,6 +97,18 @@ export function Select({
   onCreate,
 }: SelectProps) {
   const isAsync = Boolean(fetchOptions);
+  const [$options, setOptions] = React.useState(options);
+  const [inputText, setInputText] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const timer = React.useRef<any>(null);
+
+  const setTimer = React.useCallback(callback => {
+    timer.current = setTimeout(callback, 500);
+  }, []);
+
+  const clearTimer = React.useCallback(() => {
+    timer.current && clearTimeout(timer.current);
+  }, []);
 
   const getOptionLabel = React.useCallback(
     option => {
@@ -88,47 +128,76 @@ export function Select({
         : option[optionValue],
     [optionValue]
   );
-  const fetchOptionsDelay = fetchOptions && useDebounce(fetchOptions, 500);
+
   const loadOptions = React.useCallback(
-    (searchString, callback) => {
-      if (fetchOptionsDelay) {
-        fetchOptionsDelay(searchString).then(callback);
+    searchString => {
+      if (fetchOptions) {
+        setLoading(true);
+        clearTimer();
+        setTimer(async () => {
+          try {
+            const list = await fetchOptions(searchString);
+            setOptions(list as SelectOption[]);
+          } finally {
+            setLoading(false);
+          }
+        });
       }
     },
-    [fetchOptionsDelay]
+    [fetchOptions, clearTimer]
   );
 
-  const SelectComponent = isAsync
-    ? isCreatable
-      ? AsyncCreatableSelect
-      : AsyncSelect
-    : isCreatable
-    ? CreatableSelect
-    : ReactSelect;
+  const handleFocus = React.useCallback(
+    (e: React.SyntheticEvent) => {
+      onFocus && onFocus(e);
+      loadOptions('');
+    },
+    [loadOptions, onFocus]
+  );
+
+  const handleInputChange = React.useCallback(value => {
+    setInputText(value);
+  }, []);
+
+  React.useEffect(() => {
+    setOptions(options);
+  }, [options]);
+
+  React.useEffect(() => {
+    inputText && loadOptions(inputText);
+  }, [inputText, loadOptions]);
+
+  React.useEffect(() => {
+    return () => clearTimer();
+  }, [clearTimer]);
+
+  const SelectComponent = (isCreatable ? CreatableSelect : ReactSelect) as any;
 
   return (
     <SelectComponent
       className={className}
       classNamePrefix="ax-select"
-      isDisabled={isDisabled}
-      {...(fetchOptions
-        ? { defaultOptions: true, loadOptions }
-        : {
-            options,
-          })}
       {...{
+        options: $options,
         isMulti,
+        isDisabled,
         isRtl,
         isClearable,
         isSearchable,
+        isLoading: loading,
         autoFocus,
         value,
         onChange,
-        onFocus,
+        onInputChange: handleInputChange,
+        onFocus: handleFocus,
         onBlur,
         onKeyDown,
         getOptionLabel,
         getOptionValue,
+        allowCreateWhileLoading: false,
+        components: actions
+          ? { Control: ControlContainer, IndicatorsContainer, actions }
+          : {},
         ...(isCreatable
           ? {
               formatCreateLabel: createOption,
