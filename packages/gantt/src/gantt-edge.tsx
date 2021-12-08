@@ -56,18 +56,18 @@ const Line = React.memo<{
           left,
           top,
         }}
-      ></div>
-      {pointer && (
-        <span
-          style={{ left: x2 - (isStartPointer ? 9 : 3), top: y2 - 13 }}
-          className={classes.ganttEdgeIconContainer}
-        >
+      >
+        {pointer && (
           <Icon
             use={isStartPointer ? 'caret-right-fill' : 'caret-left-fill'}
-            className={classes.ganttEdgeIcon}
+            className={
+              isStartPointer
+                ? classes.ganttEdgeIconStart
+                : classes.ganttEdgeIconEnd
+            }
           />
-        </span>
-      )}
+        )}
+      </div>
     </>
   );
 });

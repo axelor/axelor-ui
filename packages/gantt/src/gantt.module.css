@@ -57,19 +57,23 @@
 }
 .ganttEdgeLine {
   position: absolute;
-  border: 1.2px solid orange;
+  padding: 1.2px;
+  color: orange;
+  background-color: orange;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
 }
 .ganttEdgeLines:hover .ganttEdgeLine {
   box-shadow: 0 0px 8px orange;
 }
-.ganttEdgeIconContainer {
+.ganttEdgeIconStart {
   position: absolute;
+  right: -0.25em;
 }
-.ganttEdgeIcon {
-  color: orange;
-  font-size: 12px;
-  position: relative;
+.ganttEdgeIconEnd {
+  position: absolute;
+  left: -0.25em;
 }
 
 /* gantt line styles */
@@ -150,6 +154,9 @@
   display: inline-block;
   width: 100%;
   text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 0 4px;
 }
 
 .ganttLineDrag {
