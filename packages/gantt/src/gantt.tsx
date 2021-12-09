@@ -105,10 +105,25 @@ export function Gantt({
     [startDateStr, endDateStr]
   );
 
+  function handleScroll() {
+    if (container) {
+      const tableElement = container.previousSibling;
+      const { scrollTop } = container;
+      if (tableElement && scrollTop >= 0) {
+        (tableElement as HTMLElement).scrollTop = scrollTop;
+      }
+    }
+  }
+
   return (
-    <Box d="flex">
+    <Box d="flex" className={classes.root}>
       <GanttTable {...{ items, records, activeRowIndex, setActiveRowIndex }} />
-      <Box flex="1" className={classes.container} ref={setContainer}>
+      <Box
+        ref={setContainer}
+        flex="1"
+        className={classes.container}
+        onScroll={handleScroll}
+      >
         {config && startDate && endDate && (
           <div
             className={classes.gantt}
