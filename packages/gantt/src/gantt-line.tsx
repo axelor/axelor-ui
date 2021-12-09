@@ -317,6 +317,14 @@ export const GanttLine = React.memo(function GanttLine(props: {
     refs.current.element = { x, y, width };
   }, [x, y, width]);
 
+  React.useEffect(() => {
+    const dragLine = dragLineRef.current;
+    if (dragLine) {
+      dragLine.style.left = `${x}px`;
+      dragLine.style.top = `${y}px`;
+    }
+  }, [x, y, data]);
+
   return (
     <>
       <div
