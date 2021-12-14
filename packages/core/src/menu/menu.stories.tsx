@@ -34,7 +34,7 @@ export const Basic = () => {
       >
         Menu
       </Button>
-      <Menu target={target} show={show} onHide={hideMenu}>
+      <Menu navigation target={target} show={show} onHide={hideMenu}>
         <MenuItem href="#option1" onClick={hideMenu}>
           Option 1
         </MenuItem>
@@ -71,7 +71,7 @@ export const Header = () => {
       >
         Menu
       </Button>
-      <Menu target={target} show={show} onHide={hideMenu}>
+      <Menu navigation target={target} show={show} onHide={hideMenu}>
         <MenuHeader>Options</MenuHeader>
         <MenuItem href="#option1" onClick={hideMenu}>
           Option 1
@@ -138,7 +138,13 @@ export const Positions = () => {
 
   return (
     <Box style={{ width: 500 }} m="auto">
-      <Menu {...menuProps} target={targetEl} show={open} onHide={hide}>
+      <Menu
+        navigation
+        {...menuProps}
+        target={targetEl}
+        show={open}
+        onHide={hide}
+      >
         <MenuItem href="#option1" onClick={hide}>
           Option 1
         </MenuItem>
