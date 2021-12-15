@@ -1,5 +1,4 @@
-import { computeCss, computeStyle, ComputeStyles, Config } from '../theme';
-import CSS from 'csstype';
+import { computeStyle, ComputeStyles, Config } from '../theme';
 
 export type TVerticalAlignment =
   | 'baseline'
@@ -27,15 +26,6 @@ export interface LayoutProps {
 
   minVW?: boolean;
   minVH?: boolean;
-
-  width?: CSS.Property.Width | number;
-  height?: CSS.Property.Height | number;
-
-  minWidth?: CSS.Property.MinWidth | number;
-  minHeight?: CSS.Property.MinWidth | number;
-
-  maxWidth?: CSS.Property.MaxWidth | number;
-  maxHeight?: CSS.Property.MaxWidth | number;
 }
 
 export const LayoutConfig: Config<LayoutProps> = {
@@ -54,15 +44,6 @@ export const LayoutConfig: Config<LayoutProps> = {
 
   minVW: true,
   minVH: true,
-
-  width: true,
-  height: true,
-
-  minWidth: true,
-  minHeight: true,
-
-  maxWidth: true,
-  maxHeight: true,
 };
 
 export const layoutStyles: ComputeStyles<LayoutProps> = ({
@@ -75,15 +56,6 @@ export const layoutStyles: ComputeStyles<LayoutProps> = ({
 
   maxW,
   maxH,
-
-  width,
-  height,
-
-  minWidth,
-  minHeight,
-
-  maxWidth,
-  maxHeight,
 
   vw,
   vh,
@@ -103,11 +75,5 @@ export const layoutStyles: ComputeStyles<LayoutProps> = ({
     computeStyle('vh', vh),
     computeStyle('min-vw', minVW),
     computeStyle('min-vh', minVH),
-    computeCss('width', width),
-    computeCss('height', height),
-    computeCss('maxWidth', maxWidth),
-    computeCss('maxHeight', maxHeight),
-    computeCss('minWidth', minWidth),
-    computeCss('minHeight', minHeight),
   ];
 };

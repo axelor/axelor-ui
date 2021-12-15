@@ -55,7 +55,7 @@ export const Direction = () => {
 
 export const Wrap = () => {
   return (
-    <Container flexDirection="column" width={300}>
+    <Container flexDirection="column" style={{ width: 300 }}>
       <Container flexWrap="nowrap">
         <Cell>Item 1</Cell>
         <Cell>Item 2</Cell>
@@ -124,27 +124,27 @@ export const JustifyContent = () => {
 export const AlignItems = () => {
   return (
     <Container flexDirection="column">
-      <Container alignItems="flex-start" height={100}>
+      <Container alignItems="flex-start" style={{ height: 100 }}>
         <Cell>Item 1</Cell>
         <Cell>Item 2</Cell>
         <Cell>Item 3</Cell>
       </Container>
-      <Container alignItems="flex-end" height={100}>
+      <Container alignItems="flex-end" style={{ height: 100 }}>
         <Cell>Item 1</Cell>
         <Cell>Item 2</Cell>
         <Cell>Item 3</Cell>
       </Container>
-      <Container alignItems="center" height={100}>
+      <Container alignItems="center" style={{ height: 100 }}>
         <Cell>Item 1</Cell>
         <Cell>Item 2</Cell>
         <Cell>Item 3</Cell>
       </Container>
-      <Container alignItems="stretch" height={100}>
+      <Container alignItems="stretch" style={{ height: 100 }}>
         <Cell>Item 1</Cell>
         <Cell>Item 2</Cell>
         <Cell>Item 3</Cell>
       </Container>
-      <Container alignItems="baseline" height={100}>
+      <Container alignItems="baseline" style={{ height: 100 }}>
         <Cell>Item 1</Cell>
         <Cell>Item 2</Cell>
         <Cell>Item 3</Cell>
@@ -159,8 +159,7 @@ export const AlignContent = () => {
       <Container
         flexWrap="wrap"
         alignContent="flex-start"
-        width={380}
-        height={200}
+        style={{ width: 380, height: 200 }}
       >
         <Cell>Item 1</Cell>
         <Cell>Item 2</Cell>
@@ -173,8 +172,7 @@ export const AlignContent = () => {
       <Container
         flexWrap="wrap"
         alignContent="flex-end"
-        width={380}
-        height={200}
+        style={{ width: 380, height: 200 }}
       >
         <Cell>Item 1</Cell>
         <Cell>Item 2</Cell>
@@ -184,7 +182,11 @@ export const AlignContent = () => {
         <Cell>Item 6</Cell>
         <Cell>Item 7</Cell>
       </Container>
-      <Container flexWrap="wrap" alignContent="center" width={380} height={200}>
+      <Container
+        flexWrap="wrap"
+        alignContent="center"
+        style={{ width: 380, height: 200 }}
+      >
         <Cell>Item 1</Cell>
         <Cell>Item 2</Cell>
         <Cell>Item 3</Cell>
@@ -196,8 +198,7 @@ export const AlignContent = () => {
       <Container
         flexWrap="wrap"
         alignContent="space-between"
-        width={380}
-        height={200}
+        style={{ width: 380, height: 200 }}
       >
         <Cell>Item 1</Cell>
         <Cell>Item 2</Cell>
@@ -210,8 +211,7 @@ export const AlignContent = () => {
       <Container
         flexWrap="wrap"
         alignContent="space-around"
-        width={380}
-        height={200}
+        style={{ width: 380, height: 200 }}
       >
         <Cell>Item 1</Cell>
         <Cell>Item 2</Cell>
@@ -224,8 +224,7 @@ export const AlignContent = () => {
       <Container
         flexWrap="wrap"
         alignContent="space-evenly"
-        width={380}
-        height={200}
+        style={{ width: 380, height: 200 }}
       >
         <Cell>Item 1</Cell>
         <Cell>Item 2</Cell>
@@ -238,8 +237,7 @@ export const AlignContent = () => {
       <Container
         flexWrap="wrap"
         alignContent="stretch"
-        width={380}
-        height={200}
+        style={{ width: 380, height: 200 }}
       >
         <Cell>Item 1</Cell>
         <Cell>Item 2</Cell>
@@ -276,7 +274,7 @@ export const Grow = () => {
 export const Shrink = () => {
   return (
     <Container>
-      <Cell width="100%">Item 1</Cell>
+      <Cell w={100}>Item 1</Cell>
       <Cell flexShrink={1}>Item 2</Cell>
       <Cell flexShrink={0}>Item 3</Cell>
     </Container>
@@ -285,7 +283,7 @@ export const Shrink = () => {
 
 export const AlignSelf = () => {
   return (
-    <Container alignItems="flex-start" height={150}>
+    <Container alignItems="flex-start" style={{ height: 150 }}>
       <Cell>Item 1</Cell>
       <Cell alignSelf="flex-end">Item 2</Cell>
       <Cell>Item 3</Cell>
