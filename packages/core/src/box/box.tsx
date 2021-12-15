@@ -1,12 +1,9 @@
 import { forwardRef } from 'react';
-
-import { styleNames } from '../styles';
 import {
   OverridableComponent,
   OverridableProps,
   SystemProps,
-  makeStyles,
-  omitStyles,
+  useStyleProps,
 } from '../system';
 
 export interface BoxProps extends SystemProps, OverridableProps {}
@@ -14,15 +11,7 @@ export interface BoxProps extends SystemProps, OverridableProps {}
 export const Box: OverridableComponent<'div', BoxProps> = forwardRef<
   HTMLDivElement,
   BoxProps
->(({ as, className, ...props }, ref) => {
-  const classes = makeStyles(props);
-  const rest = omitStyles(props);
-  const Component = as || 'div';
-  return (
-    <Component
-      ref={ref}
-      className={styleNames(className, classes)}
-      {...rest}
-    ></Component>
-  );
+>(({ as: Component = 'div', ...props }, ref) => {
+  const rest = useStyleProps(props);
+  return <Component ref={ref} {...rest}></Component>;
 });

@@ -1,4 +1,5 @@
 import { css } from '@emotion/css';
+import { styleNames } from '../styles';
 
 export type TVariant =
   | 'primary'
@@ -56,6 +57,23 @@ export const computeStyle = (name: string, value: any, size?: string) => {
   if (value !== undefined && value !== null) {
     return (size ? [name, size, value] : [name, value]).join('-');
   }
+};
+
+export const computeVar = (name: string, value: any, size?: string) => {
+  if (value === null || value === undefined) {
+    return value;
+  }
+  const classVar = size ? `l-${name}-${size}` : `l-${name}`;
+  const className = styleNames(classVar);
+
+  const style = {
+    [`--${classVar}`]: value,
+  };
+
+  return {
+    className,
+    style,
+  };
 };
 
 // as per bootstrap break points

@@ -39,6 +39,7 @@ import {
   GridConfig,
   gridStyles,
 } from './props';
+import { styleNames } from '../styles';
 
 export interface StyleProps
   extends BackgroundProps,
@@ -94,9 +95,54 @@ const compute = [
   gridStyles,
 ];
 
+const compact = (value: any) =>
+  Array.isArray(value) ? value.flat(2).filter(Boolean) : value;
+
+const collectStyles = (value: any, styles: object) => {
+  if (value.className) {
+    Object.assign(styles, value.style);
+    return value.className;
+  }
+  return value;
+};
+
+const extractStyles = (props: Record<string, any>) => {
+  let base = compute.map(fn => fn(props));
+  let resp = sizes.map(sz => {
+    let nested = (props as any)[sz];
+    if (nested) {
+      return compute.filter(fn => fn.length === 2).map(fn => fn(nested, sz));
+    }
+  });
+
+  let styles = {};
+
+  base = compact(base).map((item: any) => collectStyles(item, styles));
+  resp = compact(resp).map((item: any) => collectStyles(item, styles));
+
+  return {
+    classes: [...base, ...resp],
+    styles,
+  };
+};
+
+export function useStyleProps(props: Record<string, any>) {
+  const { className, style, ...otherProps } = props;
+  const { classes, styles } = extractStyles(otherProps);
+  const rest = omitStyles(otherProps);
+  return {
+    className: styleNames(className, classes),
+    style: {
+      ...style,
+      ...styles,
+    },
+    ...rest,
+  };
+}
+
 export const omitStyles = (props: Record<string, any>) => {
-  var keys = configs.flatMap(c => Object.keys(c));
-  var result: any = { ...props };
+  const keys = configs.flatMap(c => Object.keys(c));
+  const result: any = { ...props };
   delete result.sx;
   keys.forEach(k => delete result[k]);
   sizes.forEach(k => delete result[k]);
@@ -104,15 +150,6 @@ export const omitStyles = (props: Record<string, any>) => {
 };
 
 export const makeStyles = (props: Record<string, any>) => {
-  var base = compute;
-  var resp = compute.filter(fn => fn.length === 2);
-  var sx = props.sx ? css(props.sx) : undefined;
-  return [
-    sx,
-    base.flatMap(fn => fn(props)),
-    (sizes as Array<any>).flatMap(n => {
-      const nested = (props as any)[n];
-      return nested ? resp.flatMap(fn => fn((props as any)[n], n)) : [];
-    }),
-  ];
+  const { classes } = extractStyles(props);
+  return classes;
 };

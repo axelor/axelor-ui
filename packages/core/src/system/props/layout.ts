@@ -1,5 +1,5 @@
 import CSS from 'csstype';
-import { computeCss, ComputeStyles, Config } from '../theme';
+import { computeVar, ComputeStyles, Config } from '../theme';
 
 export interface FlexProps {
   flex?: CSS.Property.Flex;
@@ -76,6 +76,9 @@ export const GridConfig: Config<GridProps> = {
   gridArea: true,
 };
 
+const toPixel = (value: any) =>
+  typeof value === 'number' ? `${value}px` : value;
+
 export const flexStyles: ComputeStyles<FlexProps> = (
   {
     flex,
@@ -99,23 +102,23 @@ export const flexStyles: ComputeStyles<FlexProps> = (
   size
 ) => {
   return [
-    computeCss('flex', flex, size),
-    computeCss('flexBasis', flexBasis, size),
-    computeCss('flexDirection', flexDirection, size),
-    computeCss('flexFlow', flexFlow, size),
-    computeCss('flexGrow', flexGrow, size),
-    computeCss('flexShrink', flexShrink, size),
-    computeCss('flexWrap', flexWrap, size),
-    computeCss('order', order, size),
-    computeCss('justifyContent', justifyContent, size),
-    computeCss('alignContent', alignContent, size),
-    computeCss('alignItems', alignItems, size),
-    computeCss('alignSelf', alignSelf, size),
-    computeCss('placeContent', placeContent, size),
-    computeCss('placeItems', placeItems, size),
-    computeCss('rowGap', rowGap, size),
-    computeCss('columnGap', columnGap, size),
-    computeCss('gap', gap, size),
+    computeVar('flex', flex, size),
+    computeVar('flex-basis', flexBasis, size),
+    computeVar('flex-direction', flexDirection, size),
+    computeVar('flex-flow', flexFlow, size),
+    computeVar('flex-grow', flexGrow, size),
+    computeVar('flex-shrink', flexShrink, size),
+    computeVar('flex-wrap', flexWrap, size),
+    computeVar('order', order, size),
+    computeVar('justify-content', justifyContent, size),
+    computeVar('align-content', alignContent, size),
+    computeVar('align-items', alignItems, size),
+    computeVar('align-self', alignSelf, size),
+    computeVar('place-content', placeContent, size),
+    computeVar('place-items', placeItems, size),
+    computeVar('row-gap', toPixel(rowGap), size),
+    computeVar('column-gap', toPixel(columnGap), size),
+    computeVar('gap', toPixel(gap), size),
   ];
 };
 
@@ -139,19 +142,19 @@ export const gridStyles: ComputeStyles<GridProps> = (
   size
 ) => {
   return [
-    computeCss('gridGap', gridGap, size),
-    computeCss('gridRowGap', gridRowGap, size),
-    computeCss('gridColumnGap', gridColumnGap, size),
-    computeCss('gridRow', gridRow, size),
-    computeCss('gridColumn', gridColumn, size),
-    computeCss('gridRowEnd', gridRowEnd, size),
-    computeCss('gridColumnEnd', gridColumnEnd, size),
-    computeCss('gridAutoRows', gridAutoRows, size),
-    computeCss('gridAutoColumns', gridAutoColumns, size),
-    computeCss('gridAutoFlow', gridAutoFlow, size),
-    computeCss('gridTemplateRows', gridTemplateRows, size),
-    computeCss('gridTemplateColumns', gridTemplateColumns, size),
-    computeCss('gridTemplateAreas', gridTemplateAreas, size),
-    computeCss('gridArea', gridArea, size),
+    computeVar('grid-gap', toPixel(gridGap), size),
+    computeVar('grid-row-gap', toPixel(gridRowGap), size),
+    computeVar('grid-column-gap', toPixel(gridColumnGap), size),
+    computeVar('grid-row', gridRow, size),
+    computeVar('grid-column', gridColumn, size),
+    computeVar('grid-row-end', gridRowEnd, size),
+    computeVar('grid-column-end', gridColumnEnd, size),
+    computeVar('grid-auto-rows', gridAutoRows, size),
+    computeVar('grid-auto-columns', gridAutoColumns, size),
+    computeVar('grid-auto-flow', gridAutoFlow, size),
+    computeVar('grid-template-rows', gridTemplateRows, size),
+    computeVar('grid-template-columns', gridTemplateColumns, size),
+    computeVar('grid-template-areas', gridTemplateAreas, size),
+    computeVar('grid-area', gridArea, size),
   ];
 };
