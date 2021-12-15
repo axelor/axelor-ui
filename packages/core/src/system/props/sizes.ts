@@ -10,7 +10,7 @@ export type TVerticalAlignment =
 
 export type TDimension = 25 | 50 | 75 | 100 | 'auto';
 
-export interface LayoutProps {
+export interface SizeProps {
   verticalAlign?: TVerticalAlignment;
   overflow?: 'auto' | 'hidden' | 'visible' | 'scroll';
   float?: 'start' | 'end' | 'none';
@@ -28,7 +28,7 @@ export interface LayoutProps {
   minVH?: boolean;
 }
 
-export const LayoutConfig: Config<LayoutProps> = {
+export const SizeConfig: Config<SizeProps> = {
   verticalAlign: true,
   overflow: true,
   float: true,
@@ -46,7 +46,7 @@ export const LayoutConfig: Config<LayoutProps> = {
   minVH: true,
 };
 
-export const layoutStyles: ComputeStyles<LayoutProps> = ({
+export const sizeStyles: ComputeStyles<SizeProps> = ({
   verticalAlign,
   overflow,
   float,
