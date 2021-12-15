@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { css, CSSInterpolation } from '@emotion/css';
 
 import { Responsive } from './theme';
 import {
@@ -61,9 +60,7 @@ export interface SystemProps
     StyleProps,
     Responsive<
       SpaceProps & DisplayProps & TextAlignProps & FlexProps & GridProps
-    > {
-  sx?: CSSInterpolation;
-}
+    > {}
 
 const sizes = ['sm', 'md', 'lg', 'xl', 'xxl'];
 
@@ -143,7 +140,6 @@ export function useStyleProps(props: Record<string, any>) {
 export const omitStyles = (props: Record<string, any>) => {
   const keys = configs.flatMap(c => Object.keys(c));
   const result: any = { ...props };
-  delete result.sx;
   keys.forEach(k => delete result[k]);
   sizes.forEach(k => delete result[k]);
   return result;

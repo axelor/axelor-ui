@@ -1,5 +1,4 @@
 import styles from './styles.module.scss';
-import { cx } from '@emotion/css';
 
 type Value = string | number | boolean | undefined | null;
 type Argument = Value | Record<string, Value> | Argument[];
@@ -22,5 +21,7 @@ const names = (item: Argument): string[] => {
 };
 
 export function styleNames(...args: Argument[]) {
-  return cx(names(args).flatMap(name => styles[name] ?? name));
+  return names(args)
+    .flatMap(name => styles[name] ?? name)
+    .join(' ');
 }
