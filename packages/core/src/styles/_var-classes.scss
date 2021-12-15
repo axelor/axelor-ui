@@ -1,0 +1,95 @@
+$var-classes: (
+  flex: (
+    prop: flex,
+  ),
+  flex-basis: (
+    prop: flex-basis,
+  ),
+  flex-direction: (
+    prop: flex-direction,
+  ),
+  flex-flow: (
+    prop: flex-flow,
+  ),
+  flex-grow: (
+    prop: flex-grow,
+  ),
+  flex-shrink: (
+    prop: flex-shrink,
+  ),
+  flex-wrap: (
+    prop: flex-wrap,
+  ),
+  order: (
+    prop: order,
+  ),
+  justify-content: (
+    prop: justify-content,
+  ),
+  align-content: (
+    prop: align-content,
+  ),
+  align-items: (
+    prop: align-items,
+  ),
+  align-self: (
+    prop: align-self,
+  ),
+  place-content: (
+    prop: place-content,
+  ),
+  place-items: (
+    prop: place-items,
+  ),
+  row-gap: (
+    prop: row-gap,
+  ),
+  column-gap: (
+    prop: column-gap,
+  ),
+  gap: (
+    prop: gap,
+  ),
+  grid-gap: (
+    prop: grid-gap,
+  ),
+  grid-row-gap: (
+    prop: grid-row-gap,
+  ),
+  grid-column-gap: (
+    prop: grid-column-gap,
+  ),
+  grid-row: (
+    prop: grid-row,
+  ),
+  grid-column: (
+    prop: grid-column,
+  ),
+  grid-row-end: (
+    prop: grid-row-end,
+  ),
+  grid-column-end: (
+    prop: grid-column-end,
+  ),
+  grid-auto-rows: (
+    prop: grid-auto-rows,
+  ),
+  grid-auto-columns: (
+    prop: grid-auto-columns,
+  ),
+  grid-auto-flow: (
+    prop: grid-auto-flow,
+  ),
+  grid-template-rows: (
+    prop: grid-template-rows,
+  ),
+  grid-template-columns: (
+    prop: grid-template-columns,
+  ),
+  grid-template-areas: (
+    prop: grid-template-areas,
+  ),
+  grid-area: (
+    prop: grid-area,
+  ),
+);

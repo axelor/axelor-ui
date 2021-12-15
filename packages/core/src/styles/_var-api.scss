@@ -1,0 +1,17 @@
+@mixin generate-local($key, $options, $infix) {
+  $name: if(map-get($options, name) == null, $key, map-get($options, name));
+  $prop: if(map-get($options, prop) == null, $key, map-get($options, prop));
+  $prefix: "l-";
+  .#{$prefix + $name + $infix} {
+    #{$prop}: var(--#{$prefix + $name + $infix}) !important;
+  }
+}
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+    @each $key, $options in $var-classes {
+      @include generate-local($key, $options, $infix);
+    }
+  }
+}

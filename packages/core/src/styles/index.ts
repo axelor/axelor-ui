@@ -1,4 +1,4 @@
-import bootstrap from './bootstrap.module.scss';
+import styles from './styles.module.scss';
 import { cx } from '@emotion/css';
 
 type Value = string | number | boolean | undefined | null;
@@ -22,5 +22,5 @@ const names = (item: Argument): string[] => {
 };
 
 export function styleNames(...args: Argument[]) {
-  return cx(names(args).flatMap(name => bootstrap[name] ?? name));
+  return cx(names(args).flatMap(name => styles[name] ?? name));
 }
