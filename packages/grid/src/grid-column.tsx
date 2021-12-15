@@ -41,10 +41,13 @@ export function GridColumn(props: GridColumnProps) {
 
   return (
     <ColumnComponent
-      {...renderer ? {} : { ref: columnRef }}
+      {...(renderer ? {} : { ref: columnRef })}
       {...rendererProps}
       onClick={e => onClick && onClick(e, data, index)}
-      className={styleNames(styles.column, { [styles.selected]: selected })}
+      className={styleNames(styles.column, {
+        [styles.center]: ['row-checked'].includes(data.type || ''),
+        [styles.selected]: selected,
+      })}
       style={{ minWidth: width, width }}
     >
       {children}

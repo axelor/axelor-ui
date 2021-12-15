@@ -50,10 +50,19 @@
   display: flex;
   align-items: center;
   padding: 0px !important;
+  font-weight: 400;
+}
+
+.header:not(.sticky.shadow) .column {
+  border-bottom-width: 2px !important;
 }
 
 .column.selected {
   background: #e0e0e0;
+}
+.column.center {
+  display: flex;
+  justify-content: center;
 }
 
 .dragColumn {
@@ -65,6 +74,12 @@
   flex: 1;
   display: flex;
   align-items: center;
+}
+.headerColumnTitle.center {
+  justify-content: center;
+}
+.headerColumnTitle input {
+  margin: 0;
 }
 
 .headerColumnDropdown {
@@ -80,7 +95,7 @@
   padding-left: 4px;
 }
 
-.headerColumnDropdownList li {
+.headerColumnDropdownList > div {
   display: flex;
   flex-direction: column;
   cursor: pointer;
@@ -128,6 +143,12 @@
 .row .column {
   padding: 4px;
   border: 1px solid #eee;
+}
+.body .row .column {
+  border-top: none;
+}
+.row .column:not(:first-child) {
+  border-left: none;
 }
 
 .container .drag-over-current {

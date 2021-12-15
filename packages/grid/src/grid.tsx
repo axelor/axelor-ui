@@ -162,7 +162,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
               (total, col) => total + parseFloat(`${col.width}`),
               0
             );
-          const colWidth = Math.floor(remainWidth / unComputedColumns.length);
+          const colWidth = remainWidth / unComputedColumns.length;
 
           state.columns = columns.map(col => {
             if (col.computed) return col;
