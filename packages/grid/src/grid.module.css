@@ -8,6 +8,9 @@
 
 .resizingColumns {
 }
+.focusElement {
+  cursor: pointer;
+}
 
 .body {
   min-width: 100%;

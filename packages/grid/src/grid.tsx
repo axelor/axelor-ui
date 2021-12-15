@@ -655,6 +655,11 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       if (
         state.editRow ||
         event.isPropagationStopped() ||
+        event.defaultPrevented ||
+        (event.target &&
+          (event.target as HTMLElement).classList.contains(
+            styles.focusElement
+          )) ||
         ctrlKey ||
         ![
           'Enter',

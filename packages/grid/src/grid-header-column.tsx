@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Input,
-  Icon,
-  Popper,
-  List,
-  ListItem,
-  ClickAwayListener,
-} from '@axelor-ui/core';
+import { Input, Icon, Menu, MenuItem } from '@axelor-ui/core';
 import { styleNames } from '@axelor-ui/core/styles';
 
 import { GridColumn, GridColumnProps } from './grid-column';
@@ -42,6 +35,12 @@ export interface GridHeaderColumnProps extends GridColumnProps {
   onResizeEnd?: ResizeHandler;
 }
 
+function GridMenuItem(menuProps: any) {
+  return (
+    <MenuItem as="button" className={styles.focusElement} {...menuProps} />
+  );
+}
+
 export function GridHeaderColumn(props: GridHeaderColumnProps) {
   const [dropdownEl, setDropdownEl] = React.useState<HTMLSpanElement | null>(
     null
@@ -74,7 +73,8 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
     showDropdown();
   }
 
-  function handleDropdownClose(cb: () => void) {
+  function handleDropdownClose(e: React.SyntheticEvent, cb: () => void) {
+    e.preventDefault();
     hideDropdown();
     cb();
   }
@@ -83,7 +83,11 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
     if (column.type === 'row-checked') {
       const canCheck = Boolean(onCheckAll);
       return (
-        <span className={styles.headerColumnTitle}>
+        <span
+          className={styleNames(styles.headerColumnTitle, {
+            [styles.center]: ['row-checked'].includes(data.type || ''),
+          })}
+        >
           <Input
             type="checkbox"
             key={canCheck ? 'check-all' : 'check-all-disable'}
@@ -146,86 +150,88 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
           </span>
         )}
 
-        <Popper
-          open={dropdownOpen}
+        <Menu
+          navigation
           target={dropdownEl}
-          placement={'bottom-start'}
+          show={dropdownOpen}
+          onHide={hideDropdown}
+          className={styles.headerColumnDropdownList}
+          disablePortal
         >
-          <ClickAwayListener onClickAway={hideDropdown}>
-            <List className={styles.headerColumnDropdownList}>
-              {onSort && (
-                <ListItem>
-                  <span
-                    onClick={e =>
-                      handleDropdownClose(() => onSort(e, data, index, 'asc'))
-                    }
-                  >
-                    Sort Ascending
-                  </span>
-                  <span
-                    onClick={e =>
-                      handleDropdownClose(() => onSort(e, data, index, 'desc'))
-                    }
-                  >
-                    Sort Descending
-                  </span>
-                </ListItem>
-              )}
-              {(onGroup || onUngroup) && (
-                <ListItem>
-                  <span
-                    onClick={e =>
-                      handleDropdownClose(
-                        () => onGroup && onGroup(e, { name: data.name })
-                      )
-                    }
-                  >
-                    Group by <i>{data.title}</i>
-                  </span>
-                  <span
-                    onClick={e =>
-                      handleDropdownClose(
-                        () => onUngroup && onUngroup(e, { name: data.name })
-                      )
-                    }
-                  >
-                    Ungroup
-                  </span>
-                </ListItem>
-              )}
-              {(onHide || onShow) && (
-                <ListItem>
-                  {onHide && (
-                    <span
-                      onClick={e => handleDropdownClose(() => onHide(e, data))}
-                    >
-                      Hide <i>{data.title}</i>
-                    </span>
-                  )}
-                  {onShow &&
-                    (hiddenColumns || []).map(column => (
-                      <span
-                        key={column.name}
-                        onClick={e =>
-                          handleDropdownClose(() => onShow(e, column))
-                        }
-                      >
-                        Show <i>{column.title}</i>
-                      </span>
-                    ))}
-                </ListItem>
-              )}
-              {onCustomize && (
-                <ListItem
-                  onClick={e => handleDropdownClose(() => onCustomize(e, data))}
-                >
-                  <span>Customize...</span>
-                </ListItem>
-              )}
-            </List>
-          </ClickAwayListener>
-        </Popper>
+          <React.Fragment>
+            {onSort && (
+              <GridMenuItem
+                onClick={e =>
+                  handleDropdownClose(e, () => onSort(e, data, index, 'asc'))
+                }
+              >
+                Sort Ascending
+              </GridMenuItem>
+            )}
 
+            {onSort && (
+              <GridMenuItem
+                onClick={e =>
+                  handleDropdownClose(e, () => onSort(e, data, index, 'desc'))
+                }
+              >
+                Sort Descending
+              </GridMenuItem>
+            )}
+
+            {onGroup && (
+              <GridMenuItem
+                onClick={e =>
+                  handleDropdownClose(
+                    e,
+                    () => onGroup && onGroup(e, { name: data.name })
+                  )
+                }
+              >
+                Group by <i>{data.title}</i>
+              </GridMenuItem>
+            )}
+
+            {onUngroup && (
+              <GridMenuItem
+                onClick={e =>
+                  handleDropdownClose(
+                    e,
+                    () => onUngroup && onUngroup(e, { name: data.name })
+                  )
+                }
+              >
+                Ungroup
+              </GridMenuItem>
+            )}
+
+            {onHide && (
+              <GridMenuItem
+                onClick={e => handleDropdownClose(e, () => onHide(e, data))}
+              >
+                Hide <i>{data.title}</i>
+              </GridMenuItem>
+            )}
+
+            {onShow && (
+              <GridMenuItem
+                onClick={e => handleDropdownClose(e, () => onShow(e, column))}
+              >
+                Show <i>{data.title}</i>
+              </GridMenuItem>
+            )}
+
+            {onCustomize && (
+              <GridMenuItem
+                onClick={e =>
+                  handleDropdownClose(e, () => onCustomize(e, data))
+                }
+              >
+                <span>Customize...</span>
+              </GridMenuItem>
+            )}
+          </React.Fragment>
+        </Menu>
         {onResizeStart && onResize && onResizeEnd && (
           <GridColumResizer
             className={styles.columnResizer}
