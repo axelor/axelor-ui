@@ -3,6 +3,7 @@ import { Input } from '@axelor-ui/core';
 import { styleNames } from '@axelor-ui/core/styles';
 
 import { GridColumn } from './grid-column';
+import { isRowCheck } from './utils';
 import * as TYPES from './types';
 import styles from './grid.module.css';
 
@@ -32,7 +33,7 @@ export function GridBodyRow(props: TYPES.GridRowProps) {
   );
 
   function renderColumn(column: TYPES.GridColumn) {
-    if (column.type === 'row-checked') {
+    if (isRowCheck(column)) {
       return <Input type="checkbox" checked={selected} onChange={() => {}} />;
     }
     return data.record[column.name];

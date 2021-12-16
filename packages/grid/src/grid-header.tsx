@@ -7,12 +7,14 @@ import {
 import { DropHandler } from './grid-drag-element';
 import * as TYPES from './types';
 import styles from './grid.module.css';
+import { isRowCheck } from './utils';
 
 export interface GridHeaderProps
   extends Pick<TYPES.GridState, 'selectedCols' | 'columns' | 'orderBy'> {
   className?: string;
   hiddenColumns?: TYPES.GridColumn[];
   rowRenderer?: TYPES.Renderer;
+  checkType?: GridHeaderColumnProps['checkType'];
   onCheckAll?: (checked: boolean) => void;
   onColumnDrop?: DropHandler;
   onColumnResizeStart?: ResizeHandler;
@@ -38,6 +40,7 @@ export function GridHeader(props: GridHeaderProps) {
     columns = [],
     hiddenColumns,
     orderBy,
+    checkType,
     rowRenderer,
     onCheckAll,
     onColumnDrop,
@@ -80,6 +83,7 @@ export function GridHeader(props: GridHeaderProps) {
               onResize={onColumnResize}
               onResizeStart={onColumnResizeStart}
               onResizeEnd={onColumnResizeEnd}
+              {...(isRowCheck(column) ? { checkType } : {})}
             />
           );
         })}

@@ -16,6 +16,8 @@ export const isRowVisible = (rows: GridRow[], { parent }: any): boolean => {
   return (row || {}).state === 'open' && isRowVisible(rows, row);
 };
 
+export const isRowCheck = (column: GridColumn) => column.type === 'row-checked';
+
 export const getRows = ({
   columns,
   orderBy,

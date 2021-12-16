@@ -13,6 +13,7 @@ import {
   navigator,
   getRows,
   isRowVisible,
+  isRowCheck,
 } from './utils';
 import * as TYPES from './types';
 import styles from './grid.module.css';
@@ -684,7 +685,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       let isHeaderCell = selectedCols.length > 0;
 
       if (key === 'Enter') {
-        const isCheckboxCell = (columns[col] || {}).type === 'row-checked';
+        const isCheckboxCell = columns[col] && isRowCheck(columns[col]);
         if (isHeaderCell) {
           if (isCheckboxCell) {
             //@ts-ignore
@@ -1019,6 +1020,18 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       [state.columns]
     );
     const isEditMode = Boolean(state.editRow);
+    const checkType = React.useMemo(() => {
+      if ((state.selectedRows || []).length === 0) {
+        return 'unchecked';
+      }
+      if (
+        state.rows.filter(row => row.type === ROW_TYPE.ROW).length ===
+        state.selectedRows?.length
+      ) {
+        return 'checked';
+      }
+      return 'indeterminate';
+    }, [state.rows, state.selectedRows]);
 
     return (
       <div
@@ -1050,6 +1063,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           columns={displayColumns}
           hiddenColumns={hiddenColumns}
           rowRenderer={headerRowRenderer}
+          checkType={checkType}
           {...(!isEditMode
             ? {
                 ...(allowColumnResize

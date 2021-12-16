@@ -1,10 +1,11 @@
 import React from 'react';
-import { Input, Icon, Menu, MenuItem } from '@axelor-ui/core';
+import { Box, Input, Icon, Menu, MenuItem } from '@axelor-ui/core';
 import { styleNames } from '@axelor-ui/core/styles';
 
 import { GridColumn, GridColumnProps } from './grid-column';
 import { GridColumResizer } from './grid-column-resizer';
 import GridDragElement, { DropHandler } from './grid-drag-element';
+import { isRowCheck } from './utils';
 import * as TYPES from './types';
 import styles from './grid.module.css';
 
@@ -16,6 +17,7 @@ export type ResizeHandler = (
 
 export interface GridHeaderColumnProps extends GridColumnProps {
   sort?: null | 'asc' | 'desc';
+  checkType?: 'checked' | 'unchecked' | 'indeterminate';
   hiddenColumns?: TYPES.GridColumn[];
   onCheckAll?: (checked: boolean) => void;
   onSort?: (
@@ -41,6 +43,44 @@ function GridMenuItem(menuProps: any) {
   );
 }
 
+function GridHeaderCheckbox({
+  checkType,
+  onCheckAll,
+}: Pick<GridHeaderColumnProps, 'checkType' | 'onCheckAll'>) {
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const canCheck = Boolean(onCheckAll);
+
+  React.useEffect(() => {
+    const input = inputRef.current;
+    if (checkType && input) {
+      let checked = false,
+        indeterminate = false;
+      if (checkType === 'checked') {
+        checked = true;
+      } else if (checkType === 'indeterminate') {
+        indeterminate = true;
+      }
+      input.checked = checked;
+      input.indeterminate = indeterminate;
+    }
+  }, [checkType]);
+
+  return (
+    <span className={styleNames(styles.headerColumnTitle, styles.center)}>
+      <Input
+        ref={inputRef}
+        type="checkbox"
+        key={canCheck ? 'check-all' : 'check-all-disable'}
+        {...(onCheckAll
+          ? {
+              onChange: e => onCheckAll((e.target as HTMLInputElement).checked),
+            }
+          : { defaultChecked: false })}
+      />
+    </span>
+  );
+}
+
 export function GridHeaderColumn(props: GridHeaderColumnProps) {
   const [dropdownEl, setDropdownEl] = React.useState<HTMLSpanElement | null>(
     null
@@ -50,6 +90,7 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
     data,
     sort,
     index,
+    checkType,
     hiddenColumns,
     onCheckAll,
     onSort,
@@ -64,7 +105,6 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
     onResize,
     onResizeEnd,
   } = props;
-
   const showDropdown = () => setDropdownOpen(true);
   const hideDropdown = () => setDropdownOpen(false);
 
@@ -80,25 +120,9 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
   }
 
   function renderColumn(column: TYPES.GridColumn, index: number) {
-    if (column.type === 'row-checked') {
-      const canCheck = Boolean(onCheckAll);
+    if (isRowCheck(column)) {
       return (
-        <span
-          className={styleNames(styles.headerColumnTitle, {
-            [styles.center]: ['row-checked'].includes(data.type || ''),
-          })}
-        >
-          <Input
-            type="checkbox"
-            key={canCheck ? 'check-all' : 'check-all-disable'}
-            {...(onCheckAll
-              ? {
-                  onChange: e =>
-                    onCheckAll((e.target as HTMLInputElement).checked),
-                }
-              : { defaultChecked: false })}
-          />
-        </span>
+        <GridHeaderCheckbox checkType={checkType} onCheckAll={onCheckAll} />
       );
     }
 
