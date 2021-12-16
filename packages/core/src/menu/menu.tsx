@@ -53,6 +53,7 @@ export const Menu: OverridableComponent<'div', MenuProps> = React.forwardRef<
       alignment = '',
       className,
       disablePortal,
+      offset,
       navigation,
       ...props
     },
@@ -97,6 +98,7 @@ export const Menu: OverridableComponent<'div', MenuProps> = React.forwardRef<
           placement={$placement}
           target={target || buttonRef}
           open={show}
+          offset={offset}
           disablePortal={disablePortal}
         >
           <ClickAwayListener onClickAway={onHide}>
