@@ -180,7 +180,9 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
           show={dropdownOpen}
           onHide={hideDropdown}
           className={styles.headerColumnDropdownList}
-          disablePortal
+          placement="bottom"
+          alignment="end"
+          offset={[6, 0]}
         >
           <React.Fragment>
             {onSort && (
