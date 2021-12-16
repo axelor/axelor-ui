@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Input, Icon, Menu, MenuItem } from '@axelor-ui/core';
+import { Box, Divider, Input, Icon, Menu, MenuItem } from '@axelor-ui/core';
 import { styleNames } from '@axelor-ui/core/styles';
 
 import { GridColumn, GridColumnProps } from './grid-column';
@@ -37,7 +37,18 @@ export interface GridHeaderColumnProps extends GridColumnProps {
   onResizeEnd?: ResizeHandler;
 }
 
-function GridMenuItem(menuProps: any) {
+function Italic({ children }: { children: React.ReactNode }) {
+  return (
+    <Box as="i" ms={1}>
+      {children}
+    </Box>
+  );
+}
+
+function GridMenuItem(menuProps: {
+  children: React.ReactNode;
+  onClick: (e: React.SyntheticEvent) => void;
+}) {
   return (
     <MenuItem as="button" className={styles.focusElement} {...menuProps} />
   );
@@ -206,16 +217,19 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
             )}
 
             {onGroup && (
-              <GridMenuItem
-                onClick={e =>
-                  handleDropdownClose(
-                    e,
-                    () => onGroup && onGroup(e, { name: data.name })
-                  )
-                }
-              >
-                Group by <i>{data.title}</i>
-              </GridMenuItem>
+              <>
+                {onSort && <Divider aria-disabled="true" />}
+                <GridMenuItem
+                  onClick={e =>
+                    handleDropdownClose(
+                      e,
+                      () => onGroup && onGroup(e, { name: data.name })
+                    )
+                  }
+                >
+                  Group by <Italic>{data.title}</Italic>
+                </GridMenuItem>
+              </>
             )}
 
             {onUngroup && (
@@ -232,20 +246,28 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
             )}
 
             {onHide && (
-              <GridMenuItem
-                onClick={e => handleDropdownClose(e, () => onHide(e, data))}
-              >
-                Hide <i>{data.title}</i>
-              </GridMenuItem>
+              <>
+                {(onSort || onGroup || onUngroup) && (
+                  <Divider aria-disabled="true" />
+                )}
+                <GridMenuItem
+                  onClick={e => handleDropdownClose(e, () => onHide(e, data))}
+                >
+                  Hide <Italic>{data.title}</Italic>
+                </GridMenuItem>
+              </>
             )}
 
-            {onShow && (
-              <GridMenuItem
-                onClick={e => handleDropdownClose(e, () => onShow(e, column))}
-              >
-                Show <i>{data.title}</i>
-              </GridMenuItem>
-            )}
+            {onShow &&
+              hiddenColumns &&
+              hiddenColumns.map(column => (
+                <GridMenuItem
+                  key={column.name}
+                  onClick={e => handleDropdownClose(e, () => onShow(e, column))}
+                >
+                  Show <Italic>{column.title}</Italic>
+                </GridMenuItem>
+              ))}
 
             {onCustomize && (
               <GridMenuItem
@@ -258,6 +280,7 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
             )}
           </React.Fragment>
         </Menu>
+
         {onResizeStart && onResize && onResizeEnd && (
           <GridColumResizer
             className={styles.columnResizer}

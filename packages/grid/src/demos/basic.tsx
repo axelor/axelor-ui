@@ -51,6 +51,7 @@
            allowSelection
            allowCheckboxSelection
            allowCellSelection
+           allowColumnHide
            sortType="state"
            groupingText={'Drag columns here...'}
            selectionType="multiple"
