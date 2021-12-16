@@ -1059,6 +1059,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           className={styleNames(styles.header, {
             [styles.sticky]: stickyHeader,
           })}
+          groupBy={state.groupBy}
           orderBy={state.orderBy}
           columns={displayColumns}
           hiddenColumns={hiddenColumns}

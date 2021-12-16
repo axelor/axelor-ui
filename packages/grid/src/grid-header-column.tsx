@@ -2,10 +2,10 @@ import React from 'react';
 import { Box, Divider, Input, Icon, Menu, MenuItem } from '@axelor-ui/core';
 import { styleNames } from '@axelor-ui/core/styles';
 
+import GridDragElement, { DropHandler } from './grid-drag-element';
 import { GridColumn, GridColumnProps } from './grid-column';
 import { GridColumResizer } from './grid-column-resizer';
-import GridDragElement, { DropHandler } from './grid-drag-element';
-import { isRowCheck } from './utils';
+import { capitalizeWord, isRowCheck } from './utils';
 import * as TYPES from './types';
 import styles from './grid.module.css';
 
@@ -19,6 +19,7 @@ export interface GridHeaderColumnProps extends GridColumnProps {
   sort?: null | 'asc' | 'desc';
   checkType?: 'checked' | 'unchecked' | 'indeterminate';
   hiddenColumns?: TYPES.GridColumn[];
+  groupBy?: TYPES.GridState['groupBy'];
   onCheckAll?: (checked: boolean) => void;
   onSort?: (
     e: React.SyntheticEvent,
@@ -102,6 +103,7 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
     sort,
     index,
     checkType,
+    groupBy,
     hiddenColumns,
     onCheckAll,
     onSort,
@@ -143,6 +145,7 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
           className={styles.headerColumnTitle}
           onClick={e => onClick && onClick(e, data, index)}
         >
+          <Box as="span" flex={1}>{column.title}</Box>
           {sort && (
             <Icon
               size={1}
@@ -150,7 +153,6 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
               title="Sort Icon"
             />
           )}
-          {column.title}
         </span>
       );
     }
@@ -192,8 +194,7 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
           onHide={hideDropdown}
           className={styles.headerColumnDropdownList}
           placement="bottom"
-          alignment="end"
-          offset={[6, 0]}
+          alignment="start"
         >
           <React.Fragment>
             {onSort && (
@@ -232,18 +233,21 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
               </>
             )}
 
-            {onUngroup && (
-              <GridMenuItem
-                onClick={e =>
-                  handleDropdownClose(
-                    e,
-                    () => onUngroup && onUngroup(e, { name: data.name })
-                  )
-                }
-              >
-                Ungroup
-              </GridMenuItem>
-            )}
+            {onUngroup &&
+              groupBy &&
+              groupBy.map(group => (
+                <GridMenuItem
+                  key={group.name}
+                  onClick={e =>
+                    handleDropdownClose(
+                      e,
+                      () => onUngroup && onUngroup(e, group)
+                    )
+                  }
+                >
+                  Ungroup by <Italic>{capitalizeWord(group.name)}</Italic>
+                </GridMenuItem>
+              ))}
 
             {onHide && (
               <>
@@ -270,13 +274,16 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
               ))}
 
             {onCustomize && (
-              <GridMenuItem
-                onClick={e =>
-                  handleDropdownClose(e, () => onCustomize(e, data))
-                }
-              >
-                <span>Customize...</span>
-              </GridMenuItem>
+              <>
+                <Divider aria-disabled="true" />
+                <GridMenuItem
+                  onClick={e =>
+                    handleDropdownClose(e, () => onCustomize(e, data))
+                  }
+                >
+                  <span>Customize...</span>
+                </GridMenuItem>
+              </>
             )}
           </React.Fragment>
         </Menu>

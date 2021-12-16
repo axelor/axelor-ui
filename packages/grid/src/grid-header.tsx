@@ -10,7 +10,10 @@ import styles from './grid.module.css';
 import { isRowCheck } from './utils';
 
 export interface GridHeaderProps
-  extends Pick<TYPES.GridState, 'selectedCols' | 'columns' | 'orderBy'> {
+  extends Pick<
+    TYPES.GridState,
+    'selectedCols' | 'columns' | 'orderBy' | 'groupBy'
+  > {
   className?: string;
   hiddenColumns?: TYPES.GridColumn[];
   rowRenderer?: TYPES.Renderer;
@@ -41,6 +44,7 @@ export function GridHeader(props: GridHeaderProps) {
     hiddenColumns,
     orderBy,
     checkType,
+    groupBy,
     rowRenderer,
     onCheckAll,
     onColumnDrop,
@@ -71,6 +75,7 @@ export function GridHeader(props: GridHeaderProps) {
               data={column}
               sort={sortColumn ? sortColumn.order : null}
               hiddenColumns={hiddenColumns}
+              groupBy={groupBy}
               onCheckAll={onCheckAll}
               onSort={onColumnSort}
               onShow={onColumnShow}

@@ -67,6 +67,7 @@
 
 .dragColumn {
   flex: 1;
+  overflow: hidden;
 }
 
 .headerColumnTitle {
@@ -74,6 +75,11 @@
   flex: 1;
   display: flex;
   align-items: center;
+}
+.headerColumnTitle span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .headerColumnTitle.center {
   justify-content: center;
