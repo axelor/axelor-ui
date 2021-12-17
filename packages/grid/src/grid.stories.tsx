@@ -17,10 +17,15 @@ export default {
   title: 'Components/Grid',
 };
 
+const SingleSelection = () => {
+  return <Selection singleSelection />;
+};
+
 export {
   Basic,
   Sorting,
   Selection,
+  SingleSelection,
   Navigation,
   Grouping,
   Aggregation,

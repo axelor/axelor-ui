@@ -10,7 +10,7 @@ import { GridState } from '../types';
 
 import { columns, records } from './demo-data';
 
-export default function () {
+export default function ({ singleSelection }: { singleSelection: boolean }) {
   const [state, setState] = React.useState<GridState>({
     columns: [],
     rows: [],
@@ -20,9 +20,10 @@ export default function () {
     <DndProvider backend={HTML5Backend}>
       <Box>
         <Grid
-          allowSelection={true}
-          allowCheckboxSelection={true}
-          selectionType="multiple"
+          allowSelection
+          allowCheckboxSelection
+          allowCellSelection
+          selectionType={singleSelection ? 'single' : 'multiple'}
           records={records}
           columns={columns}
           state={state}

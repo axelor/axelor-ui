@@ -11,9 +11,10 @@ import { isRowCheck } from './utils';
 
 export interface GridHeaderProps
   extends Pick<
-    TYPES.GridState,
-    'selectedCols' | 'columns' | 'orderBy' | 'groupBy'
-  > {
+      TYPES.GridState,
+      'selectedCols' | 'columns' | 'orderBy' | 'groupBy'
+    >,
+    Pick<TYPES.GridProps, 'selectionType'> {
   className?: string;
   hiddenColumns?: TYPES.GridColumn[];
   rowRenderer?: TYPES.Renderer;
@@ -44,6 +45,7 @@ export function GridHeader(props: GridHeaderProps) {
     hiddenColumns,
     orderBy,
     checkType,
+    selectionType,
     groupBy,
     rowRenderer,
     onCheckAll,
@@ -88,7 +90,7 @@ export function GridHeader(props: GridHeaderProps) {
               onResize={onColumnResize}
               onResizeStart={onColumnResizeStart}
               onResizeEnd={onColumnResizeEnd}
-              {...(isRowCheck(column) ? { checkType } : {})}
+              {...(isRowCheck(column) ? { checkType, selectionType } : {})}
             />
           );
         })}

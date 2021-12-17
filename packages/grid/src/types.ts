@@ -124,6 +124,7 @@ export interface GridRowProps {
   editCell?: number | null;
   renderer?: Renderer;
   cellRenderer?: Renderer;
+  selectionType?: GridProps['selectionType'];
   onSave?: GridProps['onRecordSave'];
   onCancel?: GridProps['onRecordDiscard'];
   onCellClick?: GridProps['onCellClick'];

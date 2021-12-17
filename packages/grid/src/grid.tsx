@@ -63,7 +63,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     const containerRef = React.useRef<any>();
     const refs = React.useRef<any>({});
     const { className, state, setState, columns, records } = props;
-    const { editable, sortType, selectionType } = props;
+    const { editable, sortType, selectionType = 'multiple' } = props;
     const {
       allowSelection,
       allowSorting,
@@ -333,7 +333,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             }
 
             // if no shift/control operation performed
-            if ((!withShift && !withControl) || !isMultiple) {
+            if ((!withShift && !withControl) || (!isMultiple && !withControl)) {
               _selectedRows = [rowIndex];
             }
 
@@ -1065,6 +1065,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           hiddenColumns={hiddenColumns}
           rowRenderer={headerRowRenderer}
           checkType={checkType}
+          selectionType={selectionType}
           {...(!isEditMode
             ? {
                 ...(allowColumnResize
@@ -1104,6 +1105,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           editRow={state.editRow}
           selectedRows={state.selectedRows}
           selectedCell={state.selectedCell}
+          selectionType={selectionType}
           {...{
             cellRenderer,
             rowRenderer,

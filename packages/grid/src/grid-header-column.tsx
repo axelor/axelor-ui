@@ -18,6 +18,7 @@ export type ResizeHandler = (
 export interface GridHeaderColumnProps extends GridColumnProps {
   sort?: null | 'asc' | 'desc';
   checkType?: 'checked' | 'unchecked' | 'indeterminate';
+  selectionType?: TYPES.GridProps['selectionType'];
   hiddenColumns?: TYPES.GridColumn[];
   groupBy?: TYPES.GridState['groupBy'];
   onCheckAll?: (checked: boolean) => void;
@@ -75,7 +76,7 @@ function GridHeaderCheckbox({
       input.checked = checked;
       input.indeterminate = indeterminate;
     }
-  }, [checkType]);
+  }, [canCheck, checkType]);
 
   return (
     <span className={styleNames(styles.headerColumnTitle, styles.center)}>
@@ -103,6 +104,7 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
     sort,
     index,
     checkType,
+    selectionType,
     groupBy,
     hiddenColumns,
     onCheckAll,
@@ -135,7 +137,9 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
   function renderColumn(column: TYPES.GridColumn, index: number) {
     if (isRowCheck(column)) {
       return (
-        <GridHeaderCheckbox checkType={checkType} onCheckAll={onCheckAll} />
+        selectionType !== 'single' && (
+          <GridHeaderCheckbox checkType={checkType} onCheckAll={onCheckAll} />
+        )
       );
     }
 
@@ -145,7 +149,9 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
           className={styles.headerColumnTitle}
           onClick={e => onClick && onClick(e, data, index)}
         >
-          <Box as="span" flex={1}>{column.title}</Box>
+          <Box as="span" flex={1}>
+            {column.title}
+          </Box>
           {sort && (
             <Icon
               size={1}

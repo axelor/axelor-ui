@@ -15,6 +15,7 @@ export interface GridBodyProps
     >,
     Pick<
       TYPES.GridProps,
+      | 'selectionType'
       | 'cellRenderer'
       | 'rowGroupHeaderRenderer'
       | 'rowGroupFooterRenderer'
@@ -39,6 +40,7 @@ export function GridBody(props: GridBodyProps) {
     columns,
     selectedRows,
     selectedCell,
+    selectionType,
     rowRenderer,
     cellRenderer,
     rowGroupHeaderRenderer,
@@ -85,6 +87,7 @@ export function GridBody(props: GridBodyProps) {
           columns,
           data: row,
           className: `row-${index}`,
+          selectionType,
           selectedCell:
             selectedCell && selectedCell[0] === index ? selectedCell[1] : null,
           selected: (selectedRows || []).includes(index),

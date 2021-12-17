@@ -16,11 +16,11 @@ export function GridBodyRow(props: TYPES.GridRowProps) {
     selectedCell,
     data,
     index: rowIndex,
+    selectionType,
     renderer,
     cellRenderer,
     onCellClick,
     onDoubleClick,
-    onMove,
     onClick,
   } = props;
 
@@ -34,7 +34,13 @@ export function GridBodyRow(props: TYPES.GridRowProps) {
 
   function renderColumn(column: TYPES.GridColumn) {
     if (isRowCheck(column)) {
-      return <Input type="checkbox" checked={selected} onChange={() => {}} />;
+      return (
+        <Input
+          type={selectionType === 'single' ? 'radio' : 'checkbox'}
+          checked={selected}
+          onChange={() => {}}
+        />
+      );
     }
     return data.record[column.name];
   }
