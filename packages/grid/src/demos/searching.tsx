@@ -6,6 +6,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { Box, Input } from '@axelor-ui/core';
 import { Grid } from '../grid';
+import { isRowCheck } from '../utils';
 import { GridState, GridColumn } from '../types';
 
 import { columns, records as records_data } from './demo-data';
@@ -19,13 +20,16 @@ function SearchRow(props: any) {
 function SearchColumn({ column }: { column: GridColumn }) {
   const { onSearch }: any = React.useContext(SearchContext);
 
-  function handleKeyDown(e) {
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.keyCode === 13) {
-      onSearch && onSearch(column, e.target.value);
+      e.preventDefault();
+      onSearch && onSearch(column, (e.target as HTMLInputElement).value);
     }
   }
 
-  return <Input placeholder={column.title} onKeyDown={handleKeyDown} />;
+  return !isRowCheck(column) ? (
+    <Input placeholder={column.title} onKeyDown={handleKeyDown} />
+  ) : null;
 }
 
 export default function () {
@@ -39,10 +43,12 @@ export default function () {
     (column: GridColumn, value: string) => {
       if (value) {
         setRecords(
-          records_data.filter((record: any) => {
-            const str = record[column.name] as string;
-            return (str || '').toString().toLowerCase().includes((`${value}`).toLowerCase());
-          })
+          records_data.filter((record: any) =>
+            ((record[column.name] as string) || '')
+              .toString()
+              .toLowerCase()
+              .includes(`${value}`.toLowerCase())
+          )
         );
       } else {
         setRecords([...records_data]);
@@ -59,6 +65,9 @@ export default function () {
         >
           <Grid
             allowSearch
+            allowSelection
+            allowCellSelection
+            allowCheckboxSelection
             searchRowRenderer={SearchRow}
             searchColumnRenderer={SearchColumn}
             records={records}
