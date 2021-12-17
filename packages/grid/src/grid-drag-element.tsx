@@ -1,5 +1,5 @@
 import React from 'react';
-import { DragSource, DropTarget } from 'react-dnd';
+import { useDrag, useDrop } from 'react-dnd';
 import { styleNames } from '@axelor-ui/core/styles';
 import * as TYPES from './types';
 import classes from './grid.module.css';
@@ -18,93 +18,73 @@ export type DropHandler = (
   target: Record<'column' | 'group', Object>
 ) => void;
 
+export interface GridDragElementProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onDrop'> {
+  canDrag?: boolean;
+  column?: TYPES.GridColumn;
+  group?: TYPES.GridGroup;
+  onDrop?: DropHandler;
+}
+
 const GridDragElementComponent = React.memo(function GridDragElementComponent(
-  props: any
+  props: GridDragElementProps
 ) {
-  const {
-    className = '',
-    style = {},
-    isOver,
-    isOverCurrent,
-    isDragging,
-    connectDragSource,
-    connectDropTarget,
-    children,
-  } = props;
-  return connectDragSource(
-    connectDropTarget(
-      <div
-        className={styleNames(className, {
-          [classes['drag-over-current']]: isOver || isOverCurrent,
-        })}
-        style={{
-          opacity: isDragging ? 0.8 : 1,
-          ...style,
-        }}
-      >
-        {children}
-      </div>
-    )
+  const { canDrag = true, className, column, group, onDrop, ...rest } = props;
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [{ isDragging }, drag] = useDrag(
+    () => ({
+      type: DND_TYPES.ELEMENT,
+      item: { ...column, ...group },
+      canDrag: () => canDrag,
+      collect: monitor => ({
+        isDragging: monitor.isDragging(),
+      }),
+      end: (item: any, monitor: any) => {
+        if (!monitor.didDrop()) {
+          return;
+        }
+        const dropResult = monitor.getDropResult();
+        if (dropResult) {
+          onDrop && onDrop(props as any, dropResult);
+        }
+      },
+    }),
+    [canDrag, column, group, onDrop]
+  );
+
+  const [{ isOver, isOverCurrent }, drop] = useDrop(
+    () => ({
+      accept: DND_TYPES.ELEMENT,
+      drop: (item, monitor) => {
+        if (monitor.didDrop()) {
+          return;
+        }
+        return props;
+      },
+      canDrop(_item, monitor) {
+        const item: any = monitor.getItem();
+        return item.name !== (column || {}).name;
+      },
+      collect: monitor => ({
+        isOver: monitor.isOver(),
+        isOverCurrent: monitor.isOver({ shallow: true }),
+      }),
+    }),
+    [column]
+  );
+
+  drag(drop(ref));
+
+  return (
+    <div
+      ref={ref}
+      className={styleNames(className, classes.dragElement, {
+        [classes['drag-over-current']]: isOver || isOverCurrent,
+        [classes.dragging]: isDragging,
+      })}
+      {...rest}
+    />
   );
 });
 
-const cardSource = {
-  canDrag({ canDrag = true }: { canDrag: boolean }) {
-    return canDrag;
-  },
-  beginDrag(props: any) {
-    const item = { ...props.column, ...props.group };
-    return item;
-  },
-  endDrag(props: any, monitor: any) {
-    if (!monitor.didDrop()) {
-      return;
-    }
-    const dropResult = monitor.getDropResult();
-    if (dropResult) {
-      props.onDrop && props.onDrop(props, dropResult.props);
-    }
-  },
-};
-
-const cardTarget = {
-  canDrop(props: any, monitor: any) {
-    const item = monitor.getItem();
-    return item.name !== (props.column || {}).name;
-  },
-  drop(props: any, monitor: any) {
-    if (monitor.didDrop()) {
-      return;
-    }
-    return { moved: true, props };
-  },
-};
-
-function sourceCollect(connect: any, monitor: any) {
-  return {
-    connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging(),
-  };
-}
-
-function targetCollect(connect: any, monitor: any) {
-  return {
-    connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver(),
-    isOverCurrent: monitor.isOver({ shallow: true }),
-    canDrop: monitor.canDrop(),
-    itemType: monitor.getItemType(),
-  };
-}
-
-export default DragSource(
-  DND_TYPES.ELEMENT,
-  cardSource,
-  sourceCollect
-)(
-  DropTarget(
-    DND_TYPES.ELEMENT,
-    cardTarget,
-    targetCollect
-  )(GridDragElementComponent)
-);
+export default GridDragElementComponent;

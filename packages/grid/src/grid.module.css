@@ -12,6 +12,13 @@
   cursor: pointer;
 }
 
+.dragElement {
+  opacity: 1;
+}
+.dragElement.dragging {
+  opacity: 0.8;
+}
+
 .body {
   min-width: 100%;
   width: fit-content;
