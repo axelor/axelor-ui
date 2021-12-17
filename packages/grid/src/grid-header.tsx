@@ -38,7 +38,9 @@ export interface GridHeaderProps
   onColumnSort?: GridHeaderColumnProps['onSort'];
 }
 
-export function GridHeader(props: GridHeaderProps) {
+export const GridHeader = React.memo(function GridHeader(
+  props: GridHeaderProps
+) {
   const {
     className,
     columns = [],
@@ -97,4 +99,4 @@ export function GridHeader(props: GridHeaderProps) {
       </RowRenderer>
     </div>
   );
-}
+});

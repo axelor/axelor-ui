@@ -5,7 +5,9 @@ import { styleNames } from '@axelor-ui/core/styles';
 import * as TYPES from './types';
 import styles from './grid.module.css';
 
-export function GridGroupRow(props: TYPES.GridRowProps) {
+export const GridGroupRow = React.memo(function GridGroupRow(
+  props: TYPES.GridRowProps
+) {
   const { className, selected, data, index, renderer, onClick } = props;
   const { state, record } = data;
   const { level, value } = record;
@@ -35,4 +37,4 @@ export function GridGroupRow(props: TYPES.GridRowProps) {
       </div>
     </RowRenderer>
   );
-}
+});

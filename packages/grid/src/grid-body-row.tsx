@@ -7,7 +7,9 @@ import { isRowCheck } from './utils';
 import * as TYPES from './types';
 import styles from './grid.module.css';
 
-export function GridBodyRow(props: TYPES.GridRowProps) {
+export const GridBodyRow = React.memo(function GridBodyRow(
+  props: TYPES.GridRowProps
+) {
   const {
     className,
     columns = [],
@@ -74,4 +76,4 @@ export function GridBodyRow(props: TYPES.GridRowProps) {
       </RowComponent>
     </>
   );
-}
+});

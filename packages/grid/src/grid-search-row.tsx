@@ -7,7 +7,9 @@ interface GridSearchRowProps
   extends Pick<TYPES.GridRowProps, 'columns'>,
     Pick<TYPES.GridProps, 'searchRowRenderer' | 'searchColumnRenderer'> {}
 
-export function GridSearchRow(props: GridSearchRowProps) {
+export const GridSearchRow = React.memo(function GridSearchRow(
+  props: GridSearchRowProps
+) {
   const { columns = [], searchRowRenderer, searchColumnRenderer } = props;
   const SearchRow = searchRowRenderer || 'div';
   const ColumnRenderer = searchColumnRenderer;
@@ -23,4 +25,4 @@ export function GridSearchRow(props: GridSearchRowProps) {
       ))}
     </SearchRow>
   );
-}
+});

@@ -57,12 +57,14 @@ export function GridBody(props: GridBodyProps) {
     onRowDoubleClick,
   } = props;
 
-  const renderRows = React.useMemo(() => {
-    return rows.map(row => ({
-      row,
-      visible: isRowVisible(rows, row),
-    }));
-  }, [rows]);
+  const renderRows = React.useMemo(
+    () =>
+      rows.map(row => ({
+        row,
+        visible: isRowVisible(rows, row),
+      })),
+    [rows]
+  );
 
   return (
     <div className={styles.body}>

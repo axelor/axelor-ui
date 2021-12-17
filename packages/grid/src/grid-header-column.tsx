@@ -94,7 +94,9 @@ function GridHeaderCheckbox({
   );
 }
 
-export function GridHeaderColumn(props: GridHeaderColumnProps) {
+export const GridHeaderColumn = React.memo(function GridHeaderColumn(
+  props: GridHeaderColumnProps
+) {
   const [dropdownEl, setDropdownEl] = React.useState<HTMLSpanElement | null>(
     null
   );
@@ -316,4 +318,4 @@ export function GridHeaderColumn(props: GridHeaderColumnProps) {
       {renderColumn(data, index)}
     </GridColumn>
   );
-}
+});

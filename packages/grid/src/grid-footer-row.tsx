@@ -1,11 +1,13 @@
+import React from 'react';
 import { styleNames } from '@axelor-ui/core/styles';
 import { GridColumn } from './grid-column';
 import { capitalizeWord } from './utils';
 import * as TYPES from './types';
 import styles from './grid.module.css';
 
-
-export function GridFooterRow(props: TYPES.GridRowProps) {
+export const GridFooterRow = React.memo(function GridFooterRow(
+  props: TYPES.GridRowProps
+) {
   const {
     className,
     selected,
@@ -39,4 +41,4 @@ export function GridFooterRow(props: TYPES.GridRowProps) {
       ))}
     </RowRenderer>
   );
-}
+});

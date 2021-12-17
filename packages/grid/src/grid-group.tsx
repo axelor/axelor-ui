@@ -28,7 +28,10 @@ const GridGroupTag = ({
       group={data}
       onDrop={onDrop}
     >
-      <div onClick={e => onClick && onClick(e, data)} className={styles.groupTag}>
+      <div
+        onClick={e => onClick && onClick(e, data)}
+        className={styles.groupTag}
+      >
         {sort && (
           <span className={styles.groupTagIcon}>
             <Icon use={sort === 'asc' ? 'arrow-up' : 'arrow-down'} />
@@ -70,30 +73,28 @@ export const GridGroup = React.memo(function GridGroup(props: GridGroupProps) {
   } = props;
 
   return groupBy && groupBy.length ? (
-    <React.Fragment>
-      <div className={styles.groupTagContainer}>
-        {groupBy.map(group => {
-          const sort = (orderBy || []).find(x => x.name === group.name);
-          const column = columns.find(x => x.name === group.name);
-          return (
-            <GridGroupTag
-              key={group.name}
-              title={column && column.title}
-              name={group.name}
-              sort={sort ? sort.order : null}
-              onRemove={onGroupTagRemove}
-              onClick={onGroupTagClick}
-              onDrop={onGroupTagDrop}
-            />
-          );
-        })}
-        <GridDragWidget
-          canDrag={false}
-          className={styles.groupDumpTag}
-          onDrop={onGroupTagDrop}
-        />
-      </div>
-    </React.Fragment>
+    <div className={styles.groupTagContainer}>
+      {groupBy.map(group => {
+        const sort = (orderBy || []).find(x => x.name === group.name);
+        const column = columns.find(x => x.name === group.name);
+        return (
+          <GridGroupTag
+            key={group.name}
+            title={column && column.title}
+            name={group.name}
+            sort={sort ? sort.order : null}
+            onRemove={onGroupTagRemove}
+            onClick={onGroupTagClick}
+            onDrop={onGroupTagDrop}
+          />
+        );
+      })}
+      <GridDragWidget
+        canDrag={false}
+        className={styles.groupDumpTag}
+        onDrop={onGroupTagDrop}
+      />
+    </div>
   ) : (
     <GridDragWidget
       canDrag={false}
