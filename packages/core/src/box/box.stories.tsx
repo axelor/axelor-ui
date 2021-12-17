@@ -258,17 +258,16 @@ export const TextAlign = () => {
       <Box as="p" textAlign="end">
         End aligned text on all viewport sizes.
       </Box>
-
-      <Box as="p" sm={{ textAlign: 'start' }}>
+      <Box as="p" textAlign={{ sm: 'start' }}>
         Start aligned text on viewports sized SM (small) or wider.
       </Box>
-      <Box as="p" md={{ textAlign: 'start' }}>
+      <Box as="p" textAlign={{ md: 'start' }}>
         Start aligned text on viewports sized MD (medium) or wider.
       </Box>
-      <Box as="p" lg={{ textAlign: 'start' }}>
+      <Box as="p" textAlign={{ lg: 'start' }}>
         Start aligned text on viewports sized LG (large) or wider.
       </Box>
-      <Box as="p" xl={{ textAlign: 'start' }}>
+      <Box as="p" textAlign={{ xl: 'start' }}>
         Start aligned text on viewports sized XL (extra-large) or wider.
       </Box>
     </Box>
@@ -334,10 +333,12 @@ export const Overflow = () => {
       <Box
         overflow="auto"
         p={3}
-        mb={3}
-        md={{
-          mb: 0,
-          me: 3,
+        mb={{
+          base: 3,
+          md: 0,
+        }}
+        me={{
+          md: 3,
         }}
         bgColor="light"
         style={{
@@ -352,10 +353,12 @@ export const Overflow = () => {
       <Box
         overflow="hidden"
         p={3}
-        mb={3}
-        md={{
-          mb: 0,
-          me: 3,
+        mb={{
+          base: 3,
+          md: 0,
+        }}
+        me={{
+          md: 3,
         }}
         bgColor="light"
         style={{
@@ -369,10 +372,12 @@ export const Overflow = () => {
       <Box
         overflow="visible"
         p={3}
-        mb={3}
-        md={{
-          mb: 0,
-          me: 3,
+        mb={{
+          base: 3,
+          md: 0,
+        }}
+        me={{
+          md: 3,
         }}
         bgColor="light"
         style={{

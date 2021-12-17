@@ -1,10 +1,13 @@
-import { computeStyle, ComputeStyles, Config } from '../theme';
+import type { Config, Responsive } from '../types';
 
 export type SpaceValue = 0 | 1 | 2 | 3 | 4 | 5;
-export type SpaceType<T> = T | [T, T, T, T] | [T, T, T] | [T, T] | [T];
+export type SpaceType<T> = Responsive<T | [T, T, T, T] | [T, T, T] | [T, T] | [T]>;
 
 export type MarginValue = SpaceValue | 'auto';
 export type PaddingValue = SpaceValue;
+
+export type MarginType = Responsive<MarginValue>;
+export type PaddingType = Responsive<PaddingValue>;
 
 export interface SpaceProps {
   /**
@@ -15,32 +18,32 @@ export interface SpaceProps {
   /**
    * Margin on top
    */
-  mt?: MarginValue;
+  mt?: MarginType;
 
   /**
    * Margin on bottom
    */
-  mb?: MarginValue;
+  mb?: MarginType;
 
   /**
    * Margin on start (left, or right if RTL)
    */
-  ms?: MarginValue;
+  ms?: MarginType;
 
   /**
    * Margin on end (right, or left if RTL)
    */
-  me?: MarginValue;
+  me?: MarginType;
 
   /**
    * Margin on start and end
    */
-  mx?: MarginValue;
+  mx?: MarginType;
 
   /**
    * Margin on top and bottom
    */
-  my?: MarginValue;
+  my?: MarginType;
 
   /**
    * Padding
@@ -50,77 +53,67 @@ export interface SpaceProps {
   /**
    * Padding on top
    */
-  pt?: PaddingValue;
+  pt?: PaddingType;
 
   /**
    * Padding on bottom
    */
-  pb?: PaddingValue;
+  pb?: PaddingType;
 
   /**
    * Padding on start (left, or right if RTL)
    */
-  ps?: PaddingValue;
+  ps?: PaddingType;
 
   /**
    * Padding on end (right, or left if RTL)
    */
-  pe?: PaddingValue;
+  pe?: PaddingType;
 
   /**
    * Padding on start and end
    */
-  px?: PaddingValue;
+  px?: PaddingType;
 
   /**
    * Padding on top and bottom
    */
-  py?: PaddingValue;
+  py?: PaddingType;
+}
+
+const suffixes = [[''], ['y', 'x'], ['t', 'x', 'b'], ['t', 'e', 'b', 's']];
+
+const space = (cls: string) => (value: any, breakpoint?: string) => {
+  const className = breakpoint
+    ? `${cls}-${breakpoint}-${value}`
+    : `${cls}-${value}`;
+  return {
+    classes: [className],
+    styles: {},
+  };
+}
+
+const spaces = (cls: string) => (value: any, breakpoints?: string) => {
+  const values = Array.isArray(value) ? value : [value];
+  const names = suffixes[values.length - 1];
+  return names
+    .map(x => cls + x)
+    .map((x, i) => space(x)(values[i], breakpoints));
 }
 
 export const SpaceConfig: Config<SpaceProps> = {
-  m: true,
-  mt: true,
-  mb: true,
-  ms: true,
-  me: true,
-  mx: true,
-  my: true,
-  p: true,
-  pt: true,
-  pb: true,
-  ps: true,
-  pe: true,
-  px: true,
-  py: true,
-};
-
-const names = [[''], ['y', 'x'], ['t', 'x', 'b'], ['t', 'e', 'b', 's']];
-
-const computeSides = (n: any, v: any, s: any) => {
-  const values = [v].flat().filter(x => x !== undefined);
-  const sides = names[values.length - 1] || [];
-  return sides.map((x, i) => computeStyle(n + x, values[i], s));
-};
-
-export const spaceStyles: ComputeStyles<SpaceProps> = (
-  { m, mt, mb, ms, me, mx, my, p, pt, pb, ps, pe, px, py },
-  size
-) => {
-  return [
-    computeSides('m', m, size),
-    computeStyle('mt', mt, size),
-    computeStyle('mb', mb, size),
-    computeStyle('me', me, size),
-    computeStyle('ms', ms, size),
-    computeStyle('mx', mx, size),
-    computeStyle('my', my, size),
-    computeSides('p', p, size),
-    computeStyle('pt', pt, size),
-    computeStyle('pb', pb, size),
-    computeStyle('pe', pe, size),
-    computeStyle('ps', ps, size),
-    computeStyle('px', px, size),
-    computeStyle('py', py, size),
-  ];
+  m: spaces('m'),
+  mt: space('mt'),
+  mb: space('mb'),
+  ms: space('ms'),
+  me: space('me'),
+  mx: space('mx'),
+  my: space('my'),
+  p: spaces('p'),
+  pt: space('pt'),
+  pb: space('pb'),
+  ps: space('ps'),
+  pe: space('pe'),
+  px: space('px'),
+  py: space('py'),
 };

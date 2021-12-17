@@ -1,18 +1,15 @@
-import { ComputeStyles, Config } from '../theme';
+import { Config } from "../types";
 
 export interface EffectProps {
   shadow?: boolean | 'sm' | 'lg';
 }
 
 export const EffectConfig: Config<EffectProps> = {
-  shadow: true,
-};
-
-export const effectStyles: ComputeStyles<EffectProps> = ({ shadow }) => {
-  return [
-    shadow === true && `shadow`,
-    shadow === false && `shadow-none`,
-    shadow === 'sm' && `shadow-sm`,
-    shadow === 'lg' && `shadow-lg`,
-  ];
+  shadow: value => ({
+    classes: {
+      [`shadow`]: value === true,
+      [`shadow-none`]: value === false,
+      [`shadow-${value}`]: value,
+    }
+  })
 };

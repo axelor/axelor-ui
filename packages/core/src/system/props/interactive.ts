@@ -1,4 +1,4 @@
-import { ComputeStyles, Config } from '../theme';
+import { Config } from "../types";
 
 export interface InteractiveProps {
   userSelect?: 'all' | 'auto' | 'none';
@@ -7,20 +7,12 @@ export interface InteractiveProps {
 }
 
 export const InteractiveConfig: Config<InteractiveProps> = {
-  userSelect: true,
-  pointerEvents: true,
-  visible: true,
-};
-
-export const interactiveStyles: ComputeStyles<InteractiveProps> = ({
-  userSelect,
-  pointerEvents,
-  visible,
-}) => {
-  return {
-    [`user-select-${userSelect}`]: userSelect,
-    [`pe-${pointerEvents}`]: pointerEvents,
-    [`visible`]: visible === true,
-    [`invisible`]: visible === false,
-  };
+  userSelect: value => `user-select-${value}`,
+  pointerEvents: value => `pe-${value}`,
+  visible: value => ({
+    classes: {
+      [`visible`]: value == true,
+      [`invisible`]: value === false,
+    },
+  }),
 };

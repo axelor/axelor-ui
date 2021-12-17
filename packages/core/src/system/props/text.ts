@@ -1,8 +1,10 @@
-import { computeStyle, ComputeStyles, Config, TForeground } from '../theme';
+import { TForeground } from '../theme';
+import { Config, Responsive } from '../types';
 
 export interface TextProps {
   color?: TForeground;
   linkColor?: TForeground;
+  textAlign?: Responsive<'start' | 'center' | 'end'>;
   textWrap?: boolean;
   textBreak?: boolean;
   textTruncate?: boolean;
@@ -15,58 +17,29 @@ export interface TextProps {
   lineHeight?: 1 | 'sm' | 'base' | 'lg';
 }
 
-export interface TextAlignProps {
-  textAlign?: 'start' | 'center' | 'end';
+const textStyle = (name: string) => (value: any, breakpoint?: string) => {
+  return breakpoint
+    ? `${name}-${breakpoint}-${value}`
+    : `${name}-${value}`;
 }
 
-export const TextConfig: Config<TextProps & TextAlignProps> = {
-  color: true,
-  linkColor: true,
-  textAlign: true,
-  textWrap: true,
-  textBreak: true,
-  textTruncate: true,
-  textTransform: true,
-  textDecoration: true,
-  fontSize: true,
-  fontWeight: true,
-  fontStyle: true,
-  fontMono: true,
-  lineHeight: true,
-};
-
-export const textStyles: ComputeStyles<TextProps & TextAlignProps> = (
-  {
-    color,
-    linkColor,
-    textAlign,
-    textWrap,
-    textBreak,
-    textTruncate,
-    textTransform,
-    textDecoration,
-    fontSize,
-    fontWeight,
-    fontStyle,
-    fontMono,
-    lineHeight,
-  },
-  size
-) => {
-  return [
-    computeStyle('text', color),
-    computeStyle('link', linkColor),
-    computeStyle('text', textAlign, size),
-    textWrap === true && 'text-wrap',
-    textWrap === false && 'text-nowrap',
-    textBreak === true && 'text-break',
-    textTruncate === true && 'text-truncate',
-    computeStyle('text', textTransform),
-    computeStyle('text-decoration', textDecoration),
-    computeStyle('fs', fontSize),
-    computeStyle('fw', fontWeight),
-    computeStyle('fst', fontStyle),
-    fontMono === true && 'font-monospace',
-    computeStyle('lh', lineHeight),
-  ];
+export const TextConfig: Config<TextProps> = {
+  color: textStyle('text'),
+  linkColor: textStyle('link'),
+  textAlign: textStyle('text'),
+  textWrap: value => ({
+    classes: {
+      [`text-wrap`]: value === true,
+      [`text-nowrap`]: value === false,
+    },
+  }),
+  textBreak: value => value && `text-break`,
+  textTruncate: value => value && `text-truncate`,
+  textTransform: textStyle('text'),
+  textDecoration: textStyle('text-decoration'),
+  fontSize: textStyle('fs'),
+  fontWeight: textStyle('fw'),
+  fontStyle: textStyle('fst'),
+  fontMono: value => value && `font-monospace`,
+  lineHeight: textStyle('lh'),
 };

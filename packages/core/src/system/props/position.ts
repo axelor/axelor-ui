@@ -1,4 +1,4 @@
-import { computeStyle, ComputeStyles, Config } from '../theme';
+import { Config } from "../types";
 
 export type TPosition = 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
 
@@ -19,24 +19,19 @@ export interface PositionProps {
 }
 
 export const PositionConfig: Config<PositionProps> = {
-  pos: true,
-  position: true,
-  edge: true,
-};
-
-export const positionStyles: ComputeStyles<PositionProps> = ({
-  pos,
-  position,
-  edge: { t, b, s, e, middle } = {},
-}) => {
-  return [
-    computeStyle('position', pos ?? position),
-    computeStyle('top', t),
-    computeStyle('bottom', b),
-    computeStyle('start', s),
-    computeStyle('end', e),
-    middle === true && `translate-middle`,
-    middle === 'x' && `translate-middle-x`,
-    middle === 'y' && `translate-middle-y`,
-  ];
+  pos: value => `position-${value}`,
+  position: value => `position-${value}`,
+  edge: ({ t, b, s, e, middle }) => {
+    return {
+      classes: {
+        [`top-${t}`]: t,
+        [`bottom-${b}`]: b,
+        [`start-${s}`]: s,
+        [`end-${e}`]: e,
+        [`translate-middle`]: middle === true,
+        [`translate-x`]: middle === 'x',
+        [`translate-y`]: middle === 'y',
+      }
+    }
+  },
 };

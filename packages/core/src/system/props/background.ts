@@ -1,4 +1,5 @@
-import { TBackground, Config, ComputeStyles } from '../theme';
+import { TBackground } from '../theme';
+import { Config } from '../types';
 
 export interface BackgroundProps {
   bg?: TBackground;
@@ -7,19 +8,7 @@ export interface BackgroundProps {
 }
 
 export const BackgroundConfig: Config<BackgroundProps> = {
-  bg: true,
-  bgColor: true,
-  bgGradient: true,
-};
-
-export const backgroundStyles: ComputeStyles<BackgroundProps> = ({
-  bg,
-  bgColor,
-  bgGradient,
-}) => {
-  return {
-    [`bg-${bg}`]: bg,
-    [`bg-${bgColor}`]: bgColor,
-    [`bg-gradient`]: bgGradient,
-  };
+  bg: value => `bg-${value}`,
+  bgColor: value => `bg-${value}`,
+  bgGradient: value => value && `bg-gradient`,
 };

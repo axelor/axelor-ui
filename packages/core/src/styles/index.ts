@@ -1,12 +1,15 @@
 import styles from './styles.module.scss';
 
-type Value = string | number | boolean | undefined | null;
-type Argument = Value | Record<string, Value> | Argument[];
+export type StyleNameValue = string | number | boolean | undefined | null;
+export type StyleName =
+  | StyleNameValue
+  | Record<string, StyleNameValue>
+  | StyleName[];
 
 const clean = (names: string[]) =>
   names.flatMap(n => n.trim().split(/\s+/)).filter(Boolean);
 
-const names = (item: Argument): string[] => {
+const names = (item: StyleName): string[] => {
   if (Array.isArray(item)) return item.flatMap(names);
   if (typeof item === 'object') {
     let items: string[] = [];
@@ -20,7 +23,7 @@ const names = (item: Argument): string[] => {
   return item ? clean([item.toString()]) : [];
 };
 
-export function styleNames(...args: Argument[]) {
+export function styleNames(...args: StyleName[]) {
   return names(args)
     .flatMap(name => styles[name] ?? name)
     .join(' ');

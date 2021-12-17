@@ -1,4 +1,4 @@
-import { computeStyle, ComputeStyles, Config } from '../theme';
+import { Config } from "../types";
 
 export type TVerticalAlignment =
   | 'baseline'
@@ -28,52 +28,26 @@ export interface SizeProps {
   minVH?: boolean;
 }
 
+const size = (cls: string) => (value: any, breakpoint?: string) => {
+  return breakpoint
+    ? `${cls}-${breakpoint}-${value}`
+    : `${cls}-${value}`;
+}
+
 export const SizeConfig: Config<SizeProps> = {
-  verticalAlign: true,
-  overflow: true,
-  float: true,
+  verticalAlign: size('align'),
+  overflow: size('overflow'),
+  float: size('float'),
 
-  w: true,
-  h: true,
+  w: size('w'),
+  h: size('h'),
 
-  maxW: true,
-  maxH: true,
+  maxW: size('mw'),
+  maxH: size('mh'),
 
-  vw: true,
-  vh: true,
+  vw: size('vw'),
+  vh: size('vh'),
 
-  minVW: true,
-  minVH: true,
-};
-
-export const sizeStyles: ComputeStyles<SizeProps> = ({
-  verticalAlign,
-  overflow,
-  float,
-
-  w,
-  h,
-
-  maxW,
-  maxH,
-
-  vw,
-  vh,
-
-  minVW,
-  minVH,
-}) => {
-  return [
-    computeStyle('align', verticalAlign),
-    computeStyle('overflow', overflow),
-    computeStyle('float', float),
-    computeStyle('w', w),
-    computeStyle('h', h),
-    computeStyle('mw', maxW),
-    computeStyle('mh', maxH),
-    computeStyle('vw', vw),
-    computeStyle('vh', vh),
-    computeStyle('min-vw', minVW),
-    computeStyle('min-vh', minVH),
-  ];
+  minVW: size('min-vw'),
+  minVH: size('min-vh'),
 };

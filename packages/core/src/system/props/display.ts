@@ -1,4 +1,4 @@
-import { computeStyle, ComputeStyles, Config } from '../theme';
+import { Config, Responsive } from "../types";
 
 export type TDisplay =
   | 'none'
@@ -13,26 +13,22 @@ export type TDisplay =
   | 'inline-flex';
 
 export interface DisplayProps {
-  d?: TDisplay;
-  display?: TDisplay;
+  d?: Responsive<TDisplay>;
+  display?: Responsive<TDisplay>;
 }
 
 export interface DisplayPrintProps {
   print?: TDisplay;
 }
 
-export const DisplayConfig: Config<DisplayProps & DisplayPrintProps> = {
-  d: true,
-  display: true,
-  print: true,
-};
+const display = (name: string) => (value: any, breakpoint?: string) => {
+  return breakpoint
+    ? `${name}-${breakpoint}-${value}`
+    : `${name}-${value}`;
+}
 
-export const displayStyles: ComputeStyles<DisplayProps & DisplayPrintProps> = (
-  { d, display, print },
-  size
-) => {
-  return [
-    computeStyle('d', d ?? display, size),
-    computeStyle('d-print', print),
-  ];
+export const DisplayConfig: Config<DisplayProps & DisplayPrintProps> = {
+  d: display('d'),
+  display: display('d'),
+  print: display('d-print'),
 };
