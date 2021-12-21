@@ -333,8 +333,12 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             }
 
             // if no shift/control operation performed
-            if ((!withShift && !withControl) || (!isMultiple && !withControl)) {
+            if (!withShift && !withControl) {
               _selectedRows = [rowIndex];
+            } else if (!isMultiple) {
+              _selectedRows = draft.selectedRows?.includes(rowIndex)
+                ? []
+                : [rowIndex];
             }
 
             if (_selectedCols.length && _selectedRows.length) {
