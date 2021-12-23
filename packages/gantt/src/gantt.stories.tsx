@@ -11,7 +11,7 @@ import response from './data';
 
 export default {
   component: Gantt,
-  title: 'Components/Gantt',
+  title: 'Advance/Gantt',
 };
 
 const connectSetTypes: any = {

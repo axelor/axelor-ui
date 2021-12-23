@@ -14,7 +14,7 @@ import Sorting from './demos/sorting';
 
 export default {
   component: Grid,
-  title: 'Components/Grid',
+  title: 'Advance/Grid',
 };
 
 const SingleSelection = () => {
