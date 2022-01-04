@@ -1,45 +1,24 @@
-import { styleNames } from '../styles';
-import {
-  TVariant,
-  SystemProps,
-  OverridableProps,
-  forwardRef,
-  makeStyles,
-  omitStyles,
-} from '../system';
+import styled from '../styled';
+import { TVariant } from '../system';
 
-export interface ButtonProps extends OverridableProps, SystemProps {
+export interface ButtonProps {
   disabled?: boolean;
   outline?: boolean;
-  type?: 'button' | 'reset' | 'submit' | string;
+  type?: 'button' | 'reset' | 'submit';
   size?: 'sm' | 'lg';
   variant?: TVariant | 'link';
 }
 
-export const Button = forwardRef<'button', ButtonProps>(
-  (
+export const Button = styled.button<ButtonProps>(
+  ({ disabled, variant, outline, size }) => [
+    { disabled },
     {
-      as,
-      disabled = false,
-      outline = false,
-      type = 'button',
-      variant,
-      size,
-      className,
-      ...props
-    },
-    ref
-  ) => {
-    const styles = makeStyles(props);
-    const rest = omitStyles(props);
-    const classes = styleNames(className, styles, 'btn', {
+      [`btn`]: true,
       [`btn-outline-${variant}`]: outline,
       [`btn-${variant}`]: !outline,
       [`btn-${size}`]: size,
-      disabled,
-    });
-    const Comp = as || 'button';
-    const more = Comp === 'button' ? { disabled, type } : { role: 'button' };
-    return <Comp ref={ref} className={classes} {...{ ...more, ...rest }} />;
-  }
+    },
+  ],
+  ({ as = 'button', type = 'button', role = 'button', disabled }) =>
+    as !== 'button' ? { role } : { disabled, type }
 );
