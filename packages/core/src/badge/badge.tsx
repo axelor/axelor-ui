@@ -1,29 +1,8 @@
-import { forwardRef } from 'react';
+import styled from '../styled';
 
-import { Box } from '../box';
-import { styleNames } from '../styles';
-import {
-  makeStyles,
-  omitStyles,
-  StyleProps,
-  SystemProps,
-  TBackground,
-  TForeground,
-} from '../system';
-
-export interface BadgeProps extends SystemProps {
-  bg?: TBackground;
-  color?: TForeground;
-  rounded?: StyleProps['rounded'];
-}
-
-export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
-  ({ className, bg = 'secondary', ...props }, ref) => {
-    const styles = makeStyles(props);
-    const rest = omitStyles(props);
-
-    const classes = styleNames(styles, 'badge', className);
-
-    return <Box ref={ref} className={classes} bg={bg} {...rest} as="span" />;
-  }
+export const Badge = styled.span(
+  props => ['badge'],
+  props => ({
+    bg: props.bg || 'secondary',
+  })
 );
