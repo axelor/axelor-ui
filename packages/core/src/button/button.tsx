@@ -2,9 +2,7 @@ import styled from '../styled';
 import { TVariant } from '../system';
 
 export interface ButtonProps {
-  disabled?: boolean;
   outline?: boolean;
-  type?: 'button' | 'reset' | 'submit';
   size?: 'sm' | 'lg';
   variant?: TVariant | 'link';
 }
