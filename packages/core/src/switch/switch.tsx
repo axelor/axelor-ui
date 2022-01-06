@@ -1,33 +1,27 @@
-import { forwardRef } from 'react';
-import { Input, InputProps } from '../input/input';
-
-import { styleNames } from '../styles';
+import { Input } from '../input';
+import styled, { withStyled } from '../styled';
+import { useStyleNames } from '../system';
 import styles from './switch.module.css';
 
-export interface SwitchProps extends Omit<InputProps, 'type'> {
-  checked?: boolean;
-  readOnly?: boolean;
-  required?: boolean;
-  disabled?: boolean;
-  invalid?: boolean;
-  value?: string;
+export interface SwitchProps {
   size?: 'sm' | 'lg';
+  type?: 'checkbox';
 }
 
-export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
-  ({ readOnly, className, size, ...rest }, ref) => {
-    const classes = styleNames(className, { [styles[`size-${size}`]]: size });
-
-    return (
-      <div className={styleNames('form-check', 'form-switch')}>
-        <Input
-          ref={ref}
-          className={classes}
-          {...rest}
-          type="checkbox"
-          {...(readOnly ? { pointerEvents: 'none' } : {})}
-        />
-      </div>
-    );
-  }
+const SwitchInput = styled(Input)<SwitchProps>(
+  ({ size }) => [size && styles[`size-${size}`]],
+  ({ readOnly, pointerEvents, role = 'switch' }) => ({
+    role,
+    type: 'checkbox',
+    pointerEvents: pointerEvents ?? readOnly ? 'none' : undefined,
+  })
 );
+
+export const Switch = withStyled(SwitchInput)((props, ref) => {
+  const className = useStyleNames(() => ['form-check', 'form-switch'], []);
+  return (
+    <div className={className}>
+      <SwitchInput {...props} ref={ref} />
+    </div>
+  );
+});
