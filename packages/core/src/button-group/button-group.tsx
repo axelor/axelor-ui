@@ -1,21 +1,17 @@
-import { forwardRef } from 'react';
-import { styleNames } from '../styles';
-import { makeStyles, omitStyles, SystemProps } from '../system';
+import styled from '../styled';
 
-export interface ButtonGroupProps extends SystemProps {
+export interface ButtonGroupProps {
   size?: 'sm' | 'lg';
   vertical?: boolean;
 }
 
-export const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(
-  ({ size, vertical, className, role = 'group', ...props }, ref) => {
-    const styles = makeStyles(props);
-    const rest = omitStyles(props);
-    const classes = styleNames(className, styles, {
+export const ButtonGroup = styled.div<ButtonGroupProps>(
+  ({ size, vertical }) => [
+    {
       [`btn-group`]: !vertical,
       [`btn-group-vertical`]: vertical,
       [`btn-group-${size}`]: size,
-    });
-    return <div ref={ref} className={classes} role={role} {...rest} />;
-  }
+    },
+  ],
+  ({ role = 'group' }) => ({ role })
 );
