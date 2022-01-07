@@ -1,20 +1,16 @@
-import { useRef } from 'react';
-import { SystemProps, makeStyles, omitStyles } from '../system';
 import { Fade } from '../fade';
-import { Slide } from '../slide';
 import { Portal } from '../portal';
-import { styleNames } from '../styles';
-
-import cssStyles from './drawer.module.css';
+import { Slide } from '../slide';
+import styled, { withStyled } from '../styled';
+import styles from './drawer.module.css';
 
 export type DrawerPlacement = 'start' | 'end' | 'top' | 'bottom';
 
-export interface DrawerProps extends Omit<SystemProps, 'shadow'> {
+export interface DrawerProps {
   placement?: DrawerPlacement;
   backdrop?: boolean;
-  shadow?: boolean | string;
-  open: boolean;
-  onClose: () => void;
+  open?: boolean;
+  onClose?: () => void;
 }
 
 const mapDrawerPlacement = (placement: DrawerPlacement) => {
@@ -24,41 +20,34 @@ const mapDrawerPlacement = (placement: DrawerPlacement) => {
   return 'start';
 };
 
-export const Drawer = ({
-  className,
-  placement = 'start',
-  backdrop = false,
-  open,
-  onClose,
-  children,
-  ...props
-}: DrawerProps) => {
-  const contentRef = useRef<HTMLElement | null>(null);
-  const classes = makeStyles(props);
-  const rest = omitStyles(props);
+const DrawerBackdrop = styled.div(props => [styles.backdrop]);
 
-  return (
-    <Portal>
-      {backdrop && (
-        <Fade in={open}>
-          <div onClick={onClose} className={styleNames(cssStyles.backdrop)} />
-        </Fade>
-      )}
-      <Slide in={open} direction={mapDrawerPlacement(placement)} unmountOnExit>
-        <div
-          className={styleNames(cssStyles.drawer, {
-            [cssStyles[placement]]: placement,
-          })}
+const DrawerRoot = styled.div<DrawerProps>(({ placement }) => [
+  styles.drawer,
+  placement && styles[placement],
+]);
+
+const DrawerContent = styled.div<DrawerProps>(props => [styles.content]);
+
+export const Drawer = withStyled(DrawerContent)(
+  ({ placement = 'start', backdrop, open, onClose, ...props }, ref) => {
+    return (
+      <Portal>
+        {backdrop && (
+          <Fade in={open}>
+            <DrawerBackdrop onClick={onClose} />
+          </Fade>
+        )}
+        <Slide
+          in={open}
+          direction={mapDrawerPlacement(placement)}
+          unmountOnExit
         >
-          <div
-            ref={contentRef}
-            className={styleNames(className, cssStyles.content, classes)}
-            {...rest}
-          >
-            {children}
-          </div>
-        </div>
-      </Slide>
-    </Portal>
-  );
-};
+          <DrawerRoot placement={placement}>
+            <DrawerContent ref={ref} {...props} />
+          </DrawerRoot>
+        </Slide>
+      </Portal>
+    );
+  }
+);
