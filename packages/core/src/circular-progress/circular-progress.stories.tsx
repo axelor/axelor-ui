@@ -42,10 +42,10 @@ export const Indeterminate = () => {
 export const Sizes = () => {
   return (
     <Box>
-      <CircularProgress color="primary" size={70} value={25} />{' '}
-      <CircularProgress color="primary" size={70} value={50} />{' '}
-      <CircularProgress color="primary" size={70} value={75} />{' '}
-      <CircularProgress color="primary" size={70} value={100} />{' '}
+      <CircularProgress color="primary" size={30} indeterminate value={30} />{' '}
+      <CircularProgress color="primary" size={40} indeterminate value={40} />{' '}
+      <CircularProgress color="primary" size={50} indeterminate value={50} />{' '}
+      <CircularProgress color="primary" size={60} indeterminate value={60} />{' '}
       <CircularProgress color="primary" size={70} indeterminate />
     </Box>
   );

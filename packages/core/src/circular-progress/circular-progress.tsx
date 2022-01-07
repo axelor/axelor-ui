@@ -1,51 +1,62 @@
-import { forwardRef } from 'react';
-
+import { useMemo } from 'react';
+import styled, { withStyled } from '../styled';
+import { useStyleNames } from '../system';
 import styles from './circular-progress.module.css';
-import { styleNames } from '../styles';
-import { makeStyles, omitStyles, SystemProps } from '../system';
 
 const SIZE = 40;
+const VIEW_BOX = `${SIZE / 2} ${SIZE / 2} ${SIZE} ${SIZE}`;
 
-export interface CircularProgressProps extends SystemProps {
+export interface CircularProgressProps {
   indeterminate?: boolean;
   size?: number | string;
   thickness?: number;
   value?: number;
 }
 
-export const CircularProgress = forwardRef<
-  HTMLDivElement,
-  CircularProgressProps
->(
+const CircularProgressRoot = styled.div<CircularProgressProps>();
+
+export const CircularProgress = withStyled(CircularProgressRoot)(
   (
     {
-      className,
       indeterminate,
-      size = 40,
+      className,
+      style,
       thickness = 4,
       value = 0,
-      style: styleProp,
+      size = 40,
       ...props
     },
     ref
   ) => {
-    const $styles = makeStyles(props);
-    const rest = omitStyles(props);
-    const determinate = !indeterminate;
-    const style = { height: size, width: size, ...styleProp };
+    const rootClass = useStyleNames(
+      () => [
+        styles.root,
+        {
+          [styles['root-determinate']]: !indeterminate,
+        },
+      ],
+      [className, indeterminate]
+    );
 
-    const classes = styleNames(
-      styles.root,
-      { [styles['root-determinate']]: determinate },
-      $styles,
-      className
+    const svgClass = useStyleNames(
+      () => ({ [styles['svg-indeterminate']]: indeterminate }),
+      [indeterminate]
+    );
+
+    const circleClass = useStyleNames(
+      () => ({
+        [styles['indeterminate']]: indeterminate,
+        [styles['determinate']]: !indeterminate,
+      }),
+      [indeterminate]
     );
 
     const radius = (SIZE - thickness) / 2;
 
-    const getCircleStyle = () => {
-      if (indeterminate) return;
-
+    const circleStyle = useMemo(() => {
+      if (indeterminate) {
+        return;
+      }
       const circumference = 2 * Math.PI * radius; // 2πr
       const strokeDasharray = circumference.toFixed(3);
       const offset = (((100 - value) / 100) * circumference).toFixed(3);
@@ -53,40 +64,28 @@ export const CircularProgress = forwardRef<
         strokeDasharray,
         strokeDashoffset: `${offset}px`,
       };
-    };
+    }, [indeterminate, radius, value]);
 
     return (
-      <div
-        role="progressbar"
+      <CircularProgressRoot
+        {...props}
+        className={rootClass}
+        style={{ height: size, width: size, ...style }}
         ref={ref}
-        className={classes}
-        aria-valuenow={value}
-        aria-valuemin={0}
-        aria-valuemax={100}
-        {...rest}
-        style={style}
       >
-        <svg
-          className={styleNames({
-            [styles['svg-indeterminate']]: indeterminate,
-          })}
-          viewBox={`${SIZE / 2} ${SIZE / 2} ${SIZE} ${SIZE}`}
-        >
+        <svg className={svgClass} viewBox={VIEW_BOX}>
           <circle
-            className={styleNames({
-              [styles['indeterminate']]: indeterminate,
-              [styles['determinate']]: determinate,
-            })}
+            className={circleClass}
             cx={SIZE}
             cy={SIZE}
             r={radius}
             fill="none"
             stroke="currentColor"
             strokeWidth={thickness}
-            style={getCircleStyle()}
-          ></circle>
+            style={circleStyle}
+          />
         </svg>
-      </div>
+      </CircularProgressRoot>
     );
   }
 );
