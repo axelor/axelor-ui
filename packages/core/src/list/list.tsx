@@ -1,31 +1,32 @@
-import { forwardRef } from 'react';
+import styled from '../styled';
 
-import { styleNames } from '../styles';
-import { makeStyles, omitStyles, SystemProps } from '../system';
-
-export interface ListProps extends SystemProps {
+export interface ListProps {
   numbered?: boolean;
   flush?: boolean;
 }
 
-export const List = forwardRef<
-  HTMLUListElement | HTMLOListElement,
-  ListProps
->(({ numbered, flush, className, ...props }, ref) => {
-  const styles = makeStyles(props);
-  const rest = omitStyles(props);
+export interface ListItemProps {
+  active?: boolean;
+  disabled?: boolean;
+}
 
-  const classes = styleNames(
-    styles,
+export const ListItem = styled.li<ListItemProps>(({ active, disabled }) => [
+  'list-group-item',
+  {
+    active,
+    disabled,
+  },
+]);
+
+export const List = styled.ul<ListProps>(
+  ({ numbered, flush }) => [
     'list-group',
     {
       'list-group-numbered': numbered,
       'list-group-flush': flush,
     },
-    className
-  );
-
-  const ListComponent = numbered ? 'ol' : 'ul';
-
-  return <ListComponent ref={ref} className={classes} {...rest} />;
-});
+  ],
+  ({ as, numbered }) => ({
+    as: as ?? numbered ? 'ol' : 'ul',
+  })
+);

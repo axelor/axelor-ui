@@ -1,7 +1,6 @@
 import { Box } from '../box';
 import { Icon } from '../icon';
-import { List } from './list';
-import { ListItem } from './list-item';
+import { List, ListItem } from './list';
 
 export default {
   component: List,
