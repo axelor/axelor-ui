@@ -1,9 +1,7 @@
-import { forwardRef } from 'react';
+import styled from '../styled';
+import { TVariant } from '../system';
 
-import { styleNames } from '../styles';
-import { makeStyles, omitStyles, SystemProps, TVariant } from '../system';
-
-export interface TableProps extends SystemProps {
+export interface TableProps {
   color?: TVariant;
   striped?: boolean;
   bordered?: boolean;
@@ -11,27 +9,15 @@ export interface TableProps extends SystemProps {
   size?: 'sm' | 'md';
 }
 
-export const Table = forwardRef<HTMLTableElement, TableProps>(
-  (
-    { className, color, striped, bordered, hover, size = 'md', ...props },
-    ref
-  ) => {
-    const styles = makeStyles(props);
-    const rest = omitStyles(props);
-
-    const classes = styleNames(
-      styles,
-      'table',
-      {
-        [`table-${color}`]: color,
-        'table-striped': striped,
-        'table-bordered': bordered,
-        'table-hover': hover,
-        [`table-${size}`]: size !== 'md',
-      },
-      className
-    );
-
-    return <table ref={ref} className={classes} {...rest} />;
-  }
+export const Table = styled.table<TableProps>(
+  ({ color, striped, bordered, hover, size = 'md' }) => [
+    'table',
+    {
+      [`table-${color}`]: color,
+      'table-striped': striped,
+      'table-bordered': bordered,
+      'table-hover': hover,
+      [`table-${size}`]: size !== 'md',
+    },
+  ]
 );

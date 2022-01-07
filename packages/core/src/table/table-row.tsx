@@ -1,27 +1,14 @@
-import { forwardRef } from 'react';
+import styled from '../styled';
+import { TVariant } from '../system';
 
-import { styleNames } from '../styles';
-import { makeStyles, omitStyles, SystemProps, TVariant } from '../system';
-
-export interface TableRowProps extends SystemProps {
+export interface TableRowProps {
   color?: TVariant;
   selected?: boolean;
 }
 
-export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
-  ({ className, color, selected, ...props }, ref) => {
-    const styles = makeStyles(props);
-    const rest = omitStyles(props);
-
-    const classes = styleNames(
-      styles,
-      {
-        [`table-${color}`]: color,
-        'table-active': selected,
-      },
-      className
-    );
-
-    return <tr ref={ref} className={classes} {...rest} />;
-  }
-);
+export const TableRow = styled.tr<TableRowProps>(({ color, selected }) => [
+  {
+    [`table-${color}`]: color,
+    'table-active': selected,
+  },
+]);

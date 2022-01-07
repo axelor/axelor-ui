@@ -1,23 +1,10 @@
-import { forwardRef } from 'react';
+import styled from '../styled';
+import { TVariant } from '../system';
 
-import { styleNames } from '../styles';
-import { makeStyles, omitStyles, SystemProps, TVariant } from '../system';
-
-export interface TableHeadProps extends SystemProps {
+export interface TableHeadProps {
   color?: TVariant;
 }
 
-export const TableHead = forwardRef<HTMLElement, TableHeadProps>(
-  ({ className, color, ...props }, ref) => {
-    const styles = makeStyles(props);
-    const rest = omitStyles(props);
-
-    const classes = styleNames(
-      styles,
-      { [`table-${color}`]: color },
-      className
-    );
-
-    return <thead ref={ref} className={classes} {...rest} />;
-  }
-);
+export const TableHead = styled.thead<TableHeadProps>(({ color }) => [
+  { [`table-${color}`]: color },
+]);

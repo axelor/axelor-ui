@@ -1,23 +1,10 @@
-import { forwardRef } from 'react';
+import styled from '../styled';
+import { TVariant } from '../system';
 
-import { styleNames } from '../styles';
-import { makeStyles, omitStyles, SystemProps, TVariant } from '../system';
-
-export interface TableFootProps extends SystemProps {
+export interface TableFootProps {
   color?: TVariant;
 }
 
-export const TableFoot = forwardRef<HTMLElement, TableFootProps>(
-  ({ className, color, ...props }, ref) => {
-    const styles = makeStyles(props);
-    const rest = omitStyles(props);
-
-    const classes = styleNames(
-      styles,
-      { [`table-${color}`]: color },
-      className
-    );
-
-    return <tfoot ref={ref} className={classes} {...rest} />;
-  }
-);
+export const TableFoot = styled.tfoot<TableFootProps>(({ color }) => [
+  { [`table-${color}`]: color },
+]);
