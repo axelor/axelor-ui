@@ -1,9 +1,6 @@
-import { forwardRef } from 'react';
+import styled from '../styled';
 
-import { styleNames } from '../styles';
-import { makeStyles, omitStyles, SystemProps } from '../system';
-
-export interface ImageProps extends SystemProps {
+export interface ImageProps {
   alt: string;
   src: string;
   srcSet?: string | string[];
@@ -12,31 +9,15 @@ export interface ImageProps extends SystemProps {
   thumbnail?: boolean;
 }
 
-export const Image = forwardRef<HTMLImageElement, ImageProps>(
-  ({ className, responsive, thumbnail, srcSet, sizes, ...props }, ref) => {
-    const styles = makeStyles(props);
-    const rest = omitStyles(props);
+const join = (values: Array<string> | string | undefined) =>
+  Array.isArray(values) ? values.join(',') : values;
 
-    const classes = styleNames(
-      styles,
-      {
-        'img-fluid': responsive,
-        'img-thumbnail': thumbnail,
-      },
-      className
-    );
-
-    srcSet = Array.isArray(srcSet) ? srcSet.join(',') : srcSet;
-    sizes = Array.isArray(sizes) ? sizes.join(',') : sizes;
-
-    return (
-      <img
-        ref={ref}
-        className={classes}
-        srcSet={srcSet}
-        sizes={sizes}
-        {...rest}
-      />
-    );
-  }
+export const Image = styled.img<ImageProps>(
+  ({ responsive, thumbnail }) => [
+    { 'img-fluid': responsive, 'img-thumbnail': thumbnail },
+  ],
+  ({ srcSet, sizes }) => ({
+    srcSet: join(srcSet),
+    sizes: join(sizes),
+  })
 );
