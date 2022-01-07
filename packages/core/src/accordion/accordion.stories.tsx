@@ -1,10 +1,12 @@
 import { useCallback, useState } from 'react';
 
 import { Box } from '../box';
-import { Accordion } from './accordion';
-import { AccordionItem } from './accordion-item';
-import { AccordionHeader } from './accordion-header';
-import { AccordionCollapse } from './accordion-collapse';
+import {
+  Accordion,
+  AccordionHeader,
+  AccordionItem,
+  AccordionBody,
+} from './accordion';
 
 export default {
   component: Accordion,
@@ -53,7 +55,7 @@ export const Basic = () => {
             <AccordionHeader onClick={toggleShow(id)} collapsed={show !== id}>
               {title}
             </AccordionHeader>
-            <AccordionCollapse in={show === id}>{content}</AccordionCollapse>
+            <AccordionBody in={show === id}>{content}</AccordionBody>
           </AccordionItem>
         ))}
       </Accordion>
@@ -79,7 +81,7 @@ export const Flush = () => {
             <AccordionHeader onClick={toggleShow(id)} collapsed={show !== id}>
               {title}
             </AccordionHeader>
-            <AccordionCollapse in={show === id}>{content}</AccordionCollapse>
+            <AccordionBody in={show === id}>{content}</AccordionBody>
           </AccordionItem>
         ))}
       </Accordion>
