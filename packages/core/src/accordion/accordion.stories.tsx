@@ -38,24 +38,43 @@ const items = [
 ];
 
 export const Basic = () => {
-  const [show, setShow] = useState<number>(1);
-
-  const toggleShow = (id: number) =>
-    useCallback(() => {
-      setShow((show: number) => {
-        return show === id ? -1 : id;
-      });
-    }, []);
-
   return (
     <Box>
       <Accordion>
         {items.map(({ id, title, content }) => (
-          <AccordionItem key={id}>
-            <AccordionHeader onClick={toggleShow(id)} collapsed={show !== id}>
-              {title}
-            </AccordionHeader>
-            <AccordionBody in={show === id}>{content}</AccordionBody>
+          <AccordionItem key={id} eventKey={id}>
+            <AccordionHeader>{title}</AccordionHeader>
+            <AccordionBody>{content}</AccordionBody>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </Box>
+  );
+};
+
+export const AlwaysOpen = () => {
+  return (
+    <Box>
+      <Accordion alwaysOpen>
+        {items.map(({ id, title, content }) => (
+          <AccordionItem key={id} eventKey={id}>
+            <AccordionHeader>{title}</AccordionHeader>
+            <AccordionBody>{content}</AccordionBody>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </Box>
+  );
+};
+
+export const Active = () => {
+  return (
+    <Box>
+      <Accordion active={[2, 3]} alwaysOpen>
+        {items.map(({ id, title, content }) => (
+          <AccordionItem key={id} eventKey={id}>
+            <AccordionHeader>{title}</AccordionHeader>
+            <AccordionBody>{content}</AccordionBody>
           </AccordionItem>
         ))}
       </Accordion>
@@ -64,24 +83,13 @@ export const Basic = () => {
 };
 
 export const Flush = () => {
-  const [show, setShow] = useState<number>(-1);
-
-  const toggleShow = (id: number) =>
-    useCallback(() => {
-      setShow((show: number) => {
-        return show === id ? -1 : id;
-      });
-    }, []);
-
   return (
     <Box>
       <Accordion flush>
         {items.map(({ id, title, content }) => (
-          <AccordionItem key={id}>
-            <AccordionHeader onClick={toggleShow(id)} collapsed={show !== id}>
-              {title}
-            </AccordionHeader>
-            <AccordionBody in={show === id}>{content}</AccordionBody>
+          <AccordionItem key={id} eventKey={id}>
+            <AccordionHeader>{title}</AccordionHeader>
+            <AccordionBody>{content}</AccordionBody>
           </AccordionItem>
         ))}
       </Accordion>
