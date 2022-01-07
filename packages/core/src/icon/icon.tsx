@@ -1,8 +1,5 @@
-import * as React from 'react';
 import BsIcons from 'bootstrap-icons/bootstrap-icons.svg';
-
-import { styleNames } from '../styles';
-import { makeStyles, omitStyles } from '../system';
+import styled, { withStyled } from '../styled';
 
 type SvgIcon = React.FunctionComponent<React.SVGProps<SVGSVGElement>> & {
   title?: string;
@@ -23,38 +20,37 @@ const IconSize = {
   10: '10em',
 } as const;
 
-export interface IconProps extends React.HTMLAttributes<HTMLElement> {
+export interface IconProps {
   use: string | SvgIcon;
   size?: keyof typeof IconSize;
   title?: string;
 }
 
-export const Icon = React.forwardRef<SVGSVGElement, IconProps>(
-  ({ className, use, size = 1, title, ...props }, ref) => {
-    const classes = makeStyles(props);
-    const rest = omitStyles(props);
+const SvgIcon = styled.svg<IconProps>();
 
+export const Icon = withStyled(SvgIcon)(
+  ({ use, title, size = 1, ...props }, ref) => {
     const attrs = {
-      ...rest,
+      ...props,
       strokeWidth: 0,
       stroke: 'currentColor',
       fill: 'currentColor',
       width: IconSize[size],
       height: IconSize[size],
-      className: styleNames(className, classes),
       ref,
     };
 
     if (typeof use === 'string') {
       const href = `${BsIcons}#${use}`;
       return (
-        <svg {...attrs}>
+        <SvgIcon {...attrs}>
           <use href={href} />
-        </svg>
+        </SvgIcon>
       );
     }
 
-    const Component = use;
-    return <Component {...attrs} />;
+    attrs.as = use;
+
+    return <SvgIcon {...attrs} viewBox="0 0 16 16" />;
   }
 );
