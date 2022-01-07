@@ -1,47 +1,40 @@
-import * as React from 'react';
-
-import { styleNames } from '../styles';
-import {
-  OverridableComponent,
-  OverridableProps,
-  makeStyles,
-  omitStyles,
-} from '../system';
-import { Popper, PopperProps } from '../popper/popper';
-import { ClickAwayListener } from '../click-away-listener';
+import { useState } from 'react';
 import { ArrowNavigation } from '../arrow-navigation';
-import { FocusTrap } from '../focus-trap';
-import cssStyles from './menu.module.css';
 import { Button } from '../button';
-
-export type MenuPlacement = 'top' | 'bottom' | 'start' | 'end';
-export type MenuAlignment = 'top' | 'bottom' | 'start' | 'end';
+import { ClickAwayListener } from '../click-away-listener';
+import { FocusTrap } from '../focus-trap';
+import { Popper, PopperProps } from '../popper/popper';
+import styled, { withStyled } from '../styled';
+import styles from './menu.module.css';
 
 export interface MenuProps
-  extends Omit<PopperProps, 'shadow' | 'children' | 'target'>,
-    OverridableProps {
+  extends Pick<PopperProps, 'placement' | 'container' | 'offset'> {
   target?: HTMLElement | null;
-  placement?: MenuPlacement;
-  alignment?: MenuAlignment;
   flip?: boolean;
   show?: boolean;
-  shadow?: boolean | string;
   text?: string;
   onShow?: any;
   onHide?: any;
-  className?: string;
   disablePortal?: boolean;
   navigation?: boolean;
-  children?: React.ReactElement | Array<React.ReactElement>;
 }
 
-export const Menu: OverridableComponent<'div', MenuProps> = React.forwardRef<
-  HTMLDivElement,
-  MenuProps
->(
+const MenuContent = styled.div<MenuProps>(({ show, placement }) => [
+  styles.dropdownMenu,
+  'dropdown-menu',
+  {
+    show,
+    [`dropdown-menu-${placement}`]: placement,
+  },
+]);
+
+const MenuButton = styled(Button)<MenuProps>(props => {
+  return props.show ? { variant: 'light' } : {};
+});
+
+export const Menu = withStyled(MenuContent)(
   (
     {
-      as,
       flip,
       show,
       text,
@@ -49,9 +42,7 @@ export const Menu: OverridableComponent<'div', MenuProps> = React.forwardRef<
       onHide,
       container = document.body,
       target,
-      placement = 'bottom',
-      alignment = '',
-      className,
+      placement = 'bottom-start',
       disablePortal,
       offset,
       navigation,
@@ -59,43 +50,16 @@ export const Menu: OverridableComponent<'div', MenuProps> = React.forwardRef<
     },
     ref
   ) => {
-    const classes = makeStyles(props);
-    const rest = omitStyles(props);
-    const Component = as || 'div';
-    const $placement: any = `${placement}${alignment ? `-${alignment}` : ''}`;
-
-    const [buttonRef, setButtonRef] = React.useState<any>(null);
-
-    const content = (
-      <Component
-        ref={ref}
-        className={styleNames(
-          className,
-          cssStyles.dropdownMenu,
-          'dropdown-menu',
-          {
-            show,
-            [`dropdown-menu-${placement}`]: placement,
-          },
-          classes
-        )}
-        {...rest}
-      ></Component>
-    );
-
+    const [buttonRef, setButtonRef] = useState<any>(null);
     return (
       <>
         {text && (
-          <Button
-            ref={setButtonRef}
-            onClick={onShow}
-            {...(show ? { variant: 'light' } : {})}
-          >
+          <MenuButton ref={setButtonRef} onClick={onShow} show={show}>
             {text}
-          </Button>
+          </MenuButton>
         )}
         <Popper
-          placement={$placement}
+          placement={placement}
           target={target || buttonRef}
           open={show}
           offset={offset}
@@ -105,11 +69,21 @@ export const Menu: OverridableComponent<'div', MenuProps> = React.forwardRef<
             {navigation ? (
               <FocusTrap>
                 <ArrowNavigation selector="auto-vertical">
-                  {content}
+                  <MenuContent
+                    {...props}
+                    show={show}
+                    placement={placement}
+                    ref={ref}
+                  />
                 </ArrowNavigation>
               </FocusTrap>
             ) : (
-              content
+              <MenuContent
+                {...props}
+                show={show}
+                placement={placement}
+                ref={ref}
+              />
             )}
           </ClickAwayListener>
         </Popper>

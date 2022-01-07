@@ -1,91 +1,40 @@
-import { forwardRef } from 'react';
-  
 import { Box } from '../box';
 import { Icon } from '../icon';
-import { styleNames } from '../styles';
-import {
-  makeStyles,
-  omitStyles,
-  SystemProps,
-  OverridableComponent,
-  OverridableProps,
-} from '../system';
-import cssStyles from './menu.module.css';
+import styled, { withStyled } from '../styled';
+import styles from './menu.module.css';
 
-export interface MenuItemProps extends SystemProps, OverridableProps {
+export interface MenuItemProps {
   text?: string;
+  label?: string;
   startIcon?: string;
   endIcon?: string;
-  label?: string;
   disabled?: boolean;
   active?: boolean;
-  href?: string;
 }
 
-export const MenuItem: OverridableComponent<'div', MenuItemProps> = forwardRef<
-  HTMLAnchorElement,
-  MenuItemProps
->(
-  (
-    {
-      as,
-      disabled,
-      active,
-      className,
-      text,
-      startIcon,
-      endIcon,
-      label,
-      children,
-      ...props
-    },
-    ref
-  ) => {
-    const styles = makeStyles(props);
-    const rest = omitStyles(props);
+const MenuItemBase = styled.a<MenuItemProps>(
+  ({ active, disabled }) => [
+    'dropdown-item',
+    styles.menuItem,
+    { active, disabled },
+  ],
+  ({ disabled, tabIndex = 1 }) =>
+    disabled ? { tabIndex: -1, 'aria-disabled': true } : { tabIndex }
+);
 
-    const classes = styleNames(
-      className,
-      cssStyles.menuItem,
-      'dropdown-item',
-      {
-        active,
-        disabled,
-      },
-      styles
-    );
-
-    const Component = as || 'a';
-
-    const content = (
-      <Box d="flex" alignItems="center">
-        {startIcon && <Box as={Icon} me={1} use={startIcon} size="sm" />}
-        <Box d="inline-flex" flexGrow={1}>
-          {children || text}
-        </Box>
-        {label && <Box d="inline-flex">{label}</Box>}
-        {endIcon && (
-          <Box as={Icon} float="end" ms={1} use={endIcon} size="sm" />
-        )}
-      </Box>
-    );
-
+export const MenuItem = withStyled(MenuItemBase)(
+  ({ startIcon, endIcon, text, label, children, ...props }, ref) => {
     return (
-      <Component
-        ref={ref}
-        {...(disabled
-          ? {
-              tabIndex: -1,
-              'aria-disabled': true,
-            }
-          : {
-              tabIndex: 1,
-            })}
-        className={classes}
-        {...rest}
-      >
-        {content}
-      </Component>
+      <MenuItemBase {...props} ref={ref}>
+        <Box d="flex" alignItems="center">
+          {startIcon && <Icon use={startIcon} me={1} size="sm" />}
+          <Box d="inline-flex" flexGrow={1}>
+            {children || text}
+          </Box>
+          {label && <Box d="inline-flex">{label}</Box>}
+          {endIcon && <Icon use={endIcon} float="end" ms={1} size="sm" />}
+        </Box>
+      </MenuItemBase>
     );
   }
 );

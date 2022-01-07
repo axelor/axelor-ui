@@ -112,15 +112,12 @@ export const Positions = () => {
   });
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const [placement, alignment] = (
-      e.currentTarget?.textContent || 'bottom-start'
-    ).split('-');
+    const placement = e.currentTarget?.textContent || 'buttom-start';
     setOpen(true);
     setTargetEl(e.currentTarget);
     setMenuProps({
       target: e.currentTarget,
       placement,
-      alignment,
     });
     clearTimeout(refs.current.timer);
     refs.current.clicked = true;

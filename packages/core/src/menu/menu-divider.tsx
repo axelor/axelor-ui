@@ -1,11 +1,3 @@
-import React from 'react';
+import styled from '../styled';
 
-import { Divider, DividerProps } from '../divider/divider';
-
-export interface MenuDividerProps extends DividerProps {}
-
-export const MenuDivider = React.forwardRef<HTMLElement, MenuDividerProps>(
-  (props, ref) => {
-    return <Divider aria-disabled={true} {...props} ref={ref} />;
-  }
-);
+export const MenuDivider = styled.hr(() => ({ 'aria-disabled': true }));
