@@ -1,6 +1,16 @@
 .indeterminate {
   position: relative;
-  animation: progress-indeterminate 1.5s linear infinite;
+  animation: 1.5s linear infinite progress-indeterminate;
+}
+
+.animated {
+  animation: 1s linear infinite progress-bar-stripes;
+}
+
+@keyframes progress-bar-stripes {
+  0% {
+    background-position-x: 1rem;
+  }
 }
 
 @keyframes progress-indeterminate {

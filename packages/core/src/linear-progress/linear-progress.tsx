@@ -1,10 +1,7 @@
-import { forwardRef } from 'react';
-
+import styled, { withStyled } from '../styled';
 import styles from './linear-progress.module.css';
-import { styleNames } from '../styles';
-import { makeStyles, omitStyles, SystemProps } from '../system';
 
-export interface LinearProgressProps extends SystemProps {
+export interface LinearProgressProps {
   indeterminate?: boolean;
   striped?: boolean;
   animated?: boolean;
@@ -12,45 +9,50 @@ export interface LinearProgressProps extends SystemProps {
   value?: number;
 }
 
-export const LinearProgress = forwardRef<
-  HTMLDivElement,
-  LinearProgressProps
->(
+const Inner = styled.div<LinearProgressProps>(
+  ({ indeterminate, striped, animated }) => [
+    'progress-bar',
+    {
+      'progress-bar-striped': striped,
+      [styles.animated]: animated,
+      [styles.indeterminate]: indeterminate,
+    },
+  ]
+);
+
+const Outer = styled.div<LinearProgressProps>(
+  () => ['progress'],
+  ({ thickness }) => ({
+    style: { height: thickness },
+  })
+);
+
+export const LinearProgress = withStyled(Outer)(
   (
     {
-      className,
       indeterminate,
       striped,
       animated,
-      thickness,
       value = 0,
-      style: styleProp,
+      role = 'progressbar',
       ...props
     },
     ref
   ) => {
-    const $styles = makeStyles(props);
-    const rest = omitStyles(props);
-    const classes = styleNames($styles, 'progress', className);
-
-    const style = { ...(thickness ? { height: thickness } : {}), ...styleProp };
-    const percentageWidth = (value * 100) / 100;
-
     return (
-      <div ref={ref} className={classes} {...rest} style={style}>
-        <div
-          role="progressbar"
-          className={styleNames('progress-bar', {
-            'progress-bar-striped': striped,
-            'progress-bar-animated': animated,
-            [styles.indeterminate]: indeterminate,
-          })}
+      <Outer {...props} ref={ref}>
+        <Inner
+          indeterminate={indeterminate}
+          animated={animated}
+          striped={striped}
+          value={value}
+          role={role}
+          style={{ width: `${(value * 100) / 100}%` }}
           aria-valuenow={value}
           aria-valuemin={0}
           aria-valuemax={100}
-          style={{ width: `${percentageWidth}%` }}
         />
-      </div>
+      </Outer>
     );
   }
 );
