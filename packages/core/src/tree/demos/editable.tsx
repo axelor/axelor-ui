@@ -4,8 +4,9 @@
 import React from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
-import { Tree, Input } from '@axelor-ui/core';
-import { styleNames } from '@axelor-ui/core/styles';
+import { Tree } from '../tree';
+import { Input } from '../../input';
+import { styleNames } from '../../styles';
 
 const columns = [
   { name: 'title', title: 'Title', type: 'String' },

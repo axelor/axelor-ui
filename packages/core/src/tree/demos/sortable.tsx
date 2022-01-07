@@ -4,7 +4,7 @@
 import React from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
-import { Tree } from '@axelor-ui/core';
+import { Tree } from '../tree';
 
 const columns = [
   { name: 'title', title: 'Title', type: 'String' },
