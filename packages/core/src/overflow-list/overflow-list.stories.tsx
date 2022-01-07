@@ -1,8 +1,3 @@
-/**
- * @title Dropdown
- */
-import React from 'react';
-
 import { Box } from '../box';
 import { Icon } from '../icon';
 import { OverflowList } from './overflow-list';

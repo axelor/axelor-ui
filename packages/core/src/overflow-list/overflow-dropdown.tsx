@@ -203,7 +203,7 @@ export default function OverflowDropdown({
         <Popper
           open
           arrow
-          bg={'white'}
+          bg={'light'}
           color={'dark'}
           transition={Fade}
           container={document.body}

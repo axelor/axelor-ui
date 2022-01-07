@@ -1,12 +1,15 @@
 import * as React from 'react';
-import { SystemProps, makeStyles, omitStyles } from '../system';
-import { styleNames } from '../styles';
 import { Box } from '../box';
 import OverflowDropdown, { TOverflowListItem } from './overflow-dropdown';
 import OverflowScrollList from './overflow-scroll-list';
 import cssStyles from './overflow-list.module.css';
+import styled, { withStyled } from '../styled';
+import { useStyleNames } from '../system';
 
-export interface OverflowListProps<T> extends SystemProps {
+const StyledOverflowScrollList = styled(OverflowScrollList)();
+const StyledOverflowDropdown = styled(OverflowDropdown)();
+
+export interface OverflowListProps<T> {
   scrollable?: boolean;
   inverse?: boolean;
   vertical?: boolean;
@@ -45,66 +48,63 @@ function RenderListItem({
   );
 }
 
-export const OverflowList = React.forwardRef<
-  HTMLDivElement,
+export const OverflowList = withStyled(Box)<
   OverflowListProps<TOverflowListItem | React.ReactChild>
->(
-  (
-    {
-      items,
-      className,
-      scrollable = false,
-      inverse = false,
-      vertical = false,
-      renderList,
-      renderListItem,
-      renderOverflow,
-      renderOverflowItem,
-      renderButton,
-      ...props
-    },
-    ref
-  ) => {
-    const styles = makeStyles(props);
-    const rest = omitStyles(props);
-    const Component: any = scrollable ? OverflowScrollList : OverflowDropdown;
-    let children = renderList && renderList(items);
+>((props, ref) => {
+  const {
+    items,
+    scrollable = false,
+    inverse = false,
+    vertical = false,
+    renderList,
+    renderListItem,
+    renderOverflow,
+    renderOverflowItem,
+    renderButton,
+    ...rest
+  } = props;
+  const Component: any = scrollable
+    ? StyledOverflowScrollList
+    : StyledOverflowDropdown;
+  let children = renderList && renderList(items);
 
-    if (!children) {
-      children = items.map((item, index) =>
-        renderListItem ? (
-          renderListItem(item)
-        ) : (
-          <RenderListItem key={index} item={item} />
-        )
-      );
-    }
-
-    return (
-      <Box
-        ref={ref}
-        className={styleNames(cssStyles.container, {
-          [cssStyles.vertical]: vertical,
-        })}
-        {...rest}
-      >
-        <Component
-          {...{
-            className: styleNames(className, styles),
-            inverse,
-            vertical,
-            children,
-            renderButton,
-            ...(scrollable
-              ? {}
-              : {
-                  items,
-                  renderOverflow,
-                  renderOverflowItem,
-                }),
-          }}
-        />
-      </Box>
+  if (!children) {
+    children = items.map((item, index) =>
+      renderListItem ? (
+        renderListItem(item)
+      ) : (
+        <RenderListItem key={index} item={item} />
+      )
     );
   }
-);
+  const classes = useStyleNames(
+    () => [
+      cssStyles.container,
+      {
+        [cssStyles.vertical]: vertical,
+      },
+    ],
+    [vertical]
+  );
+
+  return (
+    <Box ref={ref} className={classes}>
+      <Component
+        {...{
+          inverse,
+          vertical,
+          children,
+          renderButton,
+          ...(scrollable
+            ? {}
+            : {
+                items,
+                renderOverflow,
+                renderOverflowItem,
+              }),
+        }}
+        {...rest}
+      />
+    </Box>
+  );
+});
