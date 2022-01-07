@@ -40,11 +40,11 @@ export const Dropdown = ({ inverse = false }) => {
       d="flex"
       inverse={inverse}
       items={items}
-      renderListItem={(item: any) => (
-        <Tab key={item.title} title={item.title} />
+      renderListItem={(item: any, index) => (
+        <Tab key={index} title={item.title} />
       )}
-      renderOverflowItem={(item: any, onClick: any) => (
-        <Tab key={item.title} title={item.title} onClick={onClick} />
+      renderOverflowItem={(item: any, index, onClick: any) => (
+        <Tab key={index} title={item.title} onClick={onClick} />
       )}
       renderButton={(type, props: any) => {
         if (type === 'scroll-left') {

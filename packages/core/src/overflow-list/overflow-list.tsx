@@ -17,11 +17,13 @@ export interface OverflowListProps<T> {
   renderList?: (items: T[]) => React.ReactNode;
   renderListItem?: (
     item: T,
+    index: number,
     props?: React.HTMLAttributes<HTMLElement>
   ) => React.ReactChild;
   renderOverflow?: (items: T[], closeDropdown?: () => void) => React.ReactNode;
   renderOverflowItem?: (
     item: T,
+    index: number,
     closeDropdown?: () => void
   ) => React.ReactChild;
   renderButton?: (
@@ -35,7 +37,9 @@ function RenderListItem({
 }: {
   item: TOverflowListItem | React.ReactChild;
 }) {
-  return (
+  return React.isValidElement(item) ? (
+    item
+  ) : (
     <Box
       p={2}
       d="flex"
@@ -43,7 +47,7 @@ function RenderListItem({
       border
       className={cssStyles.defaultItem}
     >
-      {React.isValidElement(item) ? item : (item as TOverflowListItem).title}
+      {(item as TOverflowListItem).title}
     </Box>
   );
 }
@@ -71,7 +75,7 @@ export const OverflowList = withStyled(Box)<
   if (!children) {
     children = items.map((item, index) =>
       renderListItem ? (
-        renderListItem(item)
+        renderListItem(item, index)
       ) : (
         <RenderListItem key={index} item={item} />
       )

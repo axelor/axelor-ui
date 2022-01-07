@@ -6,6 +6,7 @@ import { Icon } from '../icon';
 import { ClickAwayListener } from '../click-away-listener';
 import { styleNames } from '../styles';
 import cssStyles from './overflow-list.module.css';
+import { withStyled } from '../styled';
 
 export type TOverflowListItem = { title: string; icon?: string };
 
@@ -16,7 +17,11 @@ export type OverflowDropdownProps<T> = {
   items: T[];
   children: React.ReactElement;
   renderOverflow?: (items: T[], closeDropdown?: () => void) => React.ReactNode;
-  renderOverflowItem?: (item: T, closeDropdown?: () => void) => React.ReactNode;
+  renderOverflowItem?: (
+    item: T,
+    index: number,
+    closeDropdown?: () => void
+  ) => React.ReactNode;
   renderButton?: (
     type: 'dropdown',
     props: React.HTMLAttributes<HTMLElement>
@@ -66,13 +71,20 @@ function getContentOffset(
   return inverse ? -1 : children.length;
 }
 
-function DropdownButton(props: React.HTMLAttributes<HTMLElement>) {
+const DropdownButton = withStyled(Box)((props, ref) => {
   return (
-    <Box d="flex" justifyContent="center" alignItems="center" px={2}>
-      <Icon use="three-dots" {...props} />
+    <Box
+      ref={ref}
+      d="flex"
+      justifyContent="center"
+      alignItems="center"
+      px={2}
+      {...props}
+    >
+      <Icon use="three-dots" />
     </Box>
   );
-}
+});
 
 function DropdownMenuItem({
   item,
@@ -193,7 +205,9 @@ export default function OverflowDropdown({
         renderOverflow(listItems, closeDropdown)
       ) : renderOverflowItem ? (
         <Box>
-          {listItems.map(item => renderOverflowItem(item, closeDropdown))}
+          {listItems.map((item, index) =>
+            renderOverflowItem(item, index, closeDropdown)
+          )}
         </Box>
       ) : null;
     }
