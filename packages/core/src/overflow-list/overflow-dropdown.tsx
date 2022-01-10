@@ -1,21 +1,45 @@
 import * as React from 'react';
-import { Popper } from '../popper';
 import { Fade } from '../fade';
 import { Box } from '../box';
 import { Icon } from '../icon';
-import { ClickAwayListener } from '../click-away-listener';
-import { styleNames } from '../styles';
+import { Menu, MenuProps } from '../menu/menu';
+import { MenuItem } from '../menu/menu-item';
 import cssStyles from './overflow-list.module.css';
-import { withStyled } from '../styled';
+import styled, { withStyled } from '../styled';
+import { styleNames } from '../styles';
+
+type OverflowState = {
+  measure: boolean;
+  offset: number;
+  listOffset: number;
+  compute: number;
+};
+
+type Mode = 'shrink' | 'grow';
+type Action = Mode | 'measure' | 'compute';
+
+const MODE: Record<string, Mode> = {
+  SHRINK: 'shrink',
+  GROW: 'grow',
+};
+
+const ACTIONS: Record<string, Action> = {
+  ...MODE,
+  MEASURE: 'measure',
+  COMPUTE: 'compute',
+};
+
+const RESIZE_DELAY = 16;
 
 export type TOverflowListItem = { title: string; icon?: string };
 
-export type OverflowDropdownProps<T> = {
+export interface OverflowDropdownProps<T> {
   className?: string;
   inverse?: boolean;
   vertical?: boolean;
   items: T[];
   children: React.ReactElement;
+  dropdownMenuProps?: Partial<MenuProps>;
   renderOverflow?: (items: T[], closeDropdown?: () => void) => React.ReactNode;
   renderOverflowItem?: (
     item: T,
@@ -26,49 +50,7 @@ export type OverflowDropdownProps<T> = {
     type: 'dropdown',
     props: React.HTMLAttributes<HTMLElement>
   ) => React.ReactNode;
-};
-
-function getDropdown(content: HTMLElement): HTMLElement | null {
-  return content.querySelector(`.${cssStyles.dropdownIcon}`);
-}
-
-function getContentOffset(
-  content: HTMLElement,
-  attr: 'clientHeight' | 'clientWidth',
-  inverse: boolean
-): number {
-  const dropdown = getDropdown(content);
-  const dropdownWidth = dropdown ? dropdown.offsetWidth : 0;
-  const size = content[attr] - dropdownWidth;
-  const children = Array.from(content.children).filter(
-    item => item !== dropdown
-  );
-
-  let total = 0;
-
-  const isContentOverflow = (i: number, isLast: boolean): boolean => {
-    const element: any = children[i];
-    total =
-      total +
-      element[attr.replace('client', 'offset')] -
-      (isLast ? dropdownWidth : 0);
-    return total > size;
-  };
-
-  if (inverse) {
-    for (let i = children.length - 1; i >= 0; i--) {
-      if (isContentOverflow(i, i === 0)) {
-        return i;
-      }
-    }
-  } else {
-    for (let i = 0; i < children.length; i++) {
-      if (isContentOverflow(i, i === children.length - 1)) {
-        return i;
-      }
-    }
-  }
-  return inverse ? -1 : children.length;
+  onOverflowChange?: (offset: number) => void;
 }
 
 const DropdownButton = withStyled(Box)((props, ref) => {
@@ -94,191 +76,249 @@ function DropdownMenuItem({
   item: TOverflowListItem | React.ReactChild;
 }) {
   return (
-    <Box
-      p={2}
-      d="flex"
-      justifyContent="center"
-      border
-      className={cssStyles.defaultItem}
-      onClick={onClick}
-    >
+    <MenuItem as="button" className={cssStyles.defaultItem} onClick={onClick}>
       {React.isValidElement(item) ? item : (item as TOverflowListItem).title}
-    </Box>
+    </MenuItem>
   );
 }
 
-export default function OverflowDropdown({
-  inverse = false,
-  className,
-  vertical,
-  items,
-  children,
-  renderButton,
-  renderOverflow,
-  renderOverflowItem,
-}: OverflowDropdownProps<TOverflowListItem | React.ReactChild>) {
-  const [content, setContent] = React.useState<HTMLElement | null>(null);
-  const [offset, setOffset] = React.useState<number | null>(null);
+const DropdownList = styled.div<
+  OverflowDropdownProps<TOverflowListItem | React.ReactChild>
+>(({ vertical }) => [
+  cssStyles.dropdownList,
+  {
+    [cssStyles.vertical]: vertical,
+  },
+]);
+
+export const OverflowDropdown = withStyled(DropdownList)((props, ref) => {
+  const {
+    inverse = false,
+    vertical,
+    items,
+    children,
+    renderButton,
+    renderOverflow,
+    renderOverflowItem,
+    dropdownMenuProps,
+    onOverflowChange,
+  } = props;
+  const container = React.useRef<HTMLDivElement | null>(null);
+  const listContainer = React.useRef<HTMLDivElement | null>(null);
+  const dropdownRef = React.useRef<HTMLElement | null>(null);
+
+  const mode = React.useRef<Mode>(MODE.SHRINK);
+  const maxOffset = items.length;
+
   const [popover, setPopover] = React.useState<Record<'target', any> | null>(
     null
   );
+  const [{ measure, compute, offset, listOffset }, dispatch] = React.useReducer(
+    (state: OverflowState, action: Action) => {
+      switch (action) {
+        case ACTIONS.GROW:
+        case ACTIONS.SHRINK:
+          const offset = Math.min(
+            maxOffset,
+            state.offset + (action === ACTIONS.GROW ? 1 : -1)
+          );
+          return { ...state, offset };
+        case ACTIONS.MEASURE:
+          return { ...state, listOffset: state.offset, measure: false };
+        case ACTIONS.COMPUTE:
+          return { ...state, measure: true, compute: state.compute + 1 };
+        default:
+          return state;
+      }
+    },
+    {
+      measure: true,
+      compute: 0,
+      offset: maxOffset,
+      listOffset: maxOffset,
+    }
+  );
 
-  const clientProp = vertical ? 'clientHeight' : 'clientWidth';
+  const computeOffset = React.useCallback(
+    (offset: number) => {
+      const _container = container.current;
+      const _listContainer = listContainer.current;
+      const prop = vertical ? 'offsetHeight' : 'offsetWidth';
+      if (_container && _listContainer) {
+        const size = _container[prop];
+        const innerSize = _listContainer[prop];
+
+        if (mode.current === ACTIONS.GROW) {
+          if (size > innerSize) {
+            if (offset === maxOffset) {
+              dispatch(ACTIONS.MEASURE);
+            } else {
+              dispatch(ACTIONS.GROW);
+            }
+          } else {
+            mode.current = MODE.SHRINK;
+            dispatch(ACTIONS.SHRINK);
+          }
+        } else if (mode.current === MODE.SHRINK) {
+          if (innerSize > size) {
+            dispatch(ACTIONS.SHRINK);
+          } else {
+            dispatch(ACTIONS.MEASURE);
+          }
+        }
+      }
+    },
+    [maxOffset, vertical]
+  );
 
   function openDropdown(e: React.SyntheticEvent) {
     setPopover({
-      target: e.target,
+      target: dropdownRef.current || e.target,
     });
   }
 
   function closeDropdown() {
     setPopover(null);
   }
+  React.useEffect(() => {
+    computeOffset(offset);
+  }, [offset, compute, computeOffset]);
 
-  const hasDropdown =
-    (offset || 0) >= 0 &&
-    (offset || 0) < React.Children.toArray(children).length;
+  React.useEffect(() => {
+    listOffset !== null && onOverflowChange && onOverflowChange(listOffset);
+  }, [listOffset, onOverflowChange]);
 
-  const computeOffset = React.useCallback(() => {
-    if (content) {
-      const offset = getContentOffset(content, clientProp, inverse);
-      setOffset(offset);
-      setPopover(null);
+  React.useImperativeHandle(ref, () => ({
+    compute: () => dispatch(ACTIONS.COMPUTE),
+  }));
+
+  React.useEffect(() => {
+    if (container.current) {
+      let timer: NodeJS.Timeout;
+      let init = false;
+      let _size = 0;
+
+      const clear = () => clearTimeout(timer);
+      const resizer = (args: any) =>
+        window.requestAnimationFrame(() => {
+          if (!init) {
+            return (init = true);
+          }
+          const [
+            {
+              contentRect: { width, height },
+            },
+          ] = args;
+          clear();
+          timer = setTimeout(() => {
+            let size = vertical ? height : width;
+            mode.current = size > _size ? MODE.GROW : MODE.SHRINK;
+            _size = size;
+            dispatch('compute');
+          }, RESIZE_DELAY);
+        });
+
+      const resizeObserver = new ResizeObserver(resizer);
+      resizeObserver.observe(container.current);
+
+      return () => {
+        clear();
+        resizeObserver.disconnect();
+      };
     }
-    if (content && inverse) {
-      const getLeft = (element: HTMLElement | null) =>
-        (element?.getBoundingClientRect() || {}).left || 0;
+  }, [container, vertical]);
 
-      const dropdown = getDropdown(content);
-      const containerLeft = getLeft(content.parentElement);
-      const dropdownLeft =
-        getLeft(dropdown) + Math.abs(parseInt(content.style.left));
-
-      content.style.left =
-        dropdownLeft > containerLeft
-          ? `-${dropdownLeft - containerLeft}px`
-          : '0px';
-    }
-  }, [content, inverse, clientProp]);
-
-  function renderDropdownButton() {
-    const props = {
-      className: cssStyles.dropdownIcon,
-      onClick: (e: React.SyntheticEvent) =>
-        popover ? closeDropdown() : openDropdown(e),
-    };
-
-    return (
-      hasDropdown &&
-      (renderButton ? (
-        renderButton('dropdown', props)
-      ) : (
-        <DropdownButton {...props} />
-      ))
-    );
-  }
-
-  function renderPopover() {
+  function renderPopover(offset: number) {
     function renderList() {
-      const listItems =
-        offset !== null
-          ? inverse
-            ? items.slice(0, offset + 1).reverse()
-            : items.slice(offset)
-          : [];
+      const listItems = inverse
+        ? (() => {
+            let _list = items.slice(0, items.length - offset);
+            return vertical ? _list : _list.reverse();
+          })()
+        : items.slice(offset);
 
       if (!renderOverflow && !renderOverflowItem) {
-        return (
-          <Box d="flex" flexDirection="column">
-            {listItems.map((item, index) => (
-              <DropdownMenuItem
-                key={index}
-                item={item}
-                onClick={closeDropdown}
-              />
-            ))}
-          </Box>
-        );
+        return listItems.map((item, index) => (
+          <DropdownMenuItem key={index} item={item} onClick={closeDropdown} />
+        ));
       }
 
-      return renderOverflow ? (
-        renderOverflow(listItems, closeDropdown)
-      ) : renderOverflowItem ? (
-        <Box>
-          {listItems.map((item, index) =>
-            renderOverflowItem(item, index, closeDropdown)
-          )}
-        </Box>
-      ) : null;
+      return renderOverflow
+        ? renderOverflow(listItems, closeDropdown)
+        : renderOverflowItem
+        ? listItems.map((item, index) => (
+            <MenuItem as="button" key={index} onClick={closeDropdown}>
+              {renderOverflowItem(item, index, closeDropdown)}
+            </MenuItem>
+          ))
+        : null;
     }
 
     return (
       popover && (
-        <Popper
-          open
+        <Menu
+          show
           arrow
           bg={'light'}
           color={'dark'}
           transition={Fade}
           container={document.body}
+          placement={vertical ? 'end' : 'bottom'}
+          navigation
+          {...dropdownMenuProps}
           target={popover.target}
-          placement={'bottom'}
+          onHide={closeDropdown}
         >
-          <ClickAwayListener onClickAway={closeDropdown}>
-            <Box>{renderList()}</Box>
-          </ClickAwayListener>
-        </Popper>
+          {renderList() as any}
+        </Menu>
       )
     );
   }
 
-  function renderChildren() {
-    return (
-      <div
-        ref={setContent}
-        className={styleNames(className, cssStyles.content, {
-          [cssStyles.inverse]: inverse,
-        })}
-      >
-        {offset !== null ? (
-          React.Children.map(children, (element: React.ReactChild, i) => {
-            const isOverflowStart = i === offset;
-            const isOverflow = inverse ? i <= offset : i >= offset;
-            return (
-              <React.Fragment>
-                {isOverflowStart && !inverse && renderDropdownButton()}
-                {isOverflow ? (
-                  <div className={cssStyles.hidden}>{element}</div>
-                ) : (
-                  element
-                )}
-                {isOverflowStart && inverse && renderDropdownButton()}
-              </React.Fragment>
-            );
-          })
-        ) : (
-          <>
-            {children}
-            {renderDropdownButton()}
-          </>
-        )}
-      </div>
+  function renderDropdownButton(offset: number) {
+    if (offset >= items.length) return null;
+
+    const props = {
+      // ref: dropdownRef,
+      onClick: (e: React.SyntheticEvent) =>
+        popover ? closeDropdown() : openDropdown(e),
+    };
+
+    return renderButton ? (
+      renderButton('dropdown', props)
+    ) : (
+      <DropdownButton {...props} />
     );
   }
 
-  React.useEffect(() => {
-    if (content) {
-      const resizeObserver = new ResizeObserver(computeOffset);
-      resizeObserver.observe(content);
-      computeOffset();
-      return () => resizeObserver.disconnect();
-    }
-  }, [content, computeOffset]);
+  function renderList(offset: number, _props?: any) {
+    return (
+      <DropdownList {...props} {..._props}>
+        {inverse && renderDropdownButton(offset)}
+        {React.Children.toArray(children).slice(
+          ...(inverse ? [items.length - offset] : [0, offset])
+        )}
+        {!inverse && renderDropdownButton(offset)}
+      </DropdownList>
+    );
+  }
 
   return (
-    <>
-      {renderChildren()}
-      {renderPopover()}
-    </>
+    <div
+      ref={container}
+      className={styleNames(cssStyles.dropdownListContainer, {
+        [cssStyles.inverse]: inverse,
+      })}
+    >
+      {measure &&
+        renderList(offset, {
+          ref: listContainer,
+          className: cssStyles.temp,
+        })}
+      {renderList(listOffset)}
+      {renderPopover(listOffset)}
+    </div>
   );
-}
+});
+
+export default OverflowDropdown;

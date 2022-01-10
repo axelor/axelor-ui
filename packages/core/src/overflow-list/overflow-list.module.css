@@ -20,6 +20,25 @@
   overflow: hidden;
 }
 
+.dropdownListContainer {
+  display: flex;
+  overflow: hidden;
+  flex: 1;
+}
+
+.dropdownList {
+  display: flex;
+}
+
+.dropdownList.temp {
+  position: fixed;
+  visibility: hidden;
+}
+
+.dropdownList.vertical {
+  flex-direction: column;
+}
+
 .dropdownIcon {
   cursor: pointer;
   position: relative;

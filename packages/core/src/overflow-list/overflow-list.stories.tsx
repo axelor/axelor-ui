@@ -1,18 +1,13 @@
+import React from 'react';
 import { Box } from '../box';
+import { Button } from '../button';
+import { ButtonGroup } from '../button-group';
 import { Icon } from '../icon';
 import { OverflowList } from './overflow-list';
 
 export default {
   component: OverflowList,
   title: 'Core/OverflowList',
-};
-
-export const Basic = () => {
-  const items = new Array(20)
-    .fill(0)
-    .map((_, ind) => ({ title: ` Tab ${ind + 1} ` }));
-
-  return <OverflowList d="flex" scrollable items={items} />;
 };
 
 function Tab({ title, ...rest }: { title: string }) {
@@ -30,26 +25,42 @@ function Tab({ title, ...rest }: { title: string }) {
   );
 }
 
-export const Dropdown = ({ inverse = false }) => {
+export const Dropdown = ({ inverse = false, vertical = false }) => {
   const items = new Array(10)
     .fill(0)
-    .map((_, ind) => ({ title: ` Tab ${ind + 1} ` }));
+    .map((_, ind) => ({ title: ` Item ${ind + 1} ` }));
 
   return (
     <OverflowList
       d="flex"
+      vertical={vertical}
       inverse={inverse}
       items={items}
+      as={ButtonGroup}
       renderListItem={(item: any, index) => (
-        <Tab key={index} title={item.title} />
+        <Button
+          border
+          variant="light"
+          style={{ minWidth: 120, whiteSpace: 'nowrap' }}
+          key={index}
+        >
+          {item.title}
+        </Button>
       )}
       renderOverflowItem={(item: any, index, onClick: any) => (
-        <Tab key={index} title={item.title} onClick={onClick} />
+        <Box key={index} onClick={onClick}>
+          {item.title}
+        </Box>
       )}
       renderButton={(type, props: any) => {
         if (type === 'scroll-left') {
           return (
-            <Box d="flex" justifyContent="center" alignItems="center" px={2}>
+            <Box
+              d="flex"
+              style={{ justifyContent: 'center' }}
+              alignItems="center"
+              px={2}
+            >
               <Icon use="chevron-left" {...props} />
             </Box>
           );
@@ -63,15 +74,19 @@ export const Dropdown = ({ inverse = false }) => {
         }
         if (type === 'dropdown') {
           return (
-            <Box
+            <Button
+              variant="light"
+              border
               {...props}
               d="flex"
               justifyContent="center"
               alignItems="center"
               px={2}
             >
-              <Icon use="three-dots" />
-            </Box>
+              <span>
+                <Icon use="three-dots" />
+              </span>
+            </Button>
           );
         }
         return null;
@@ -80,9 +95,26 @@ export const Dropdown = ({ inverse = false }) => {
   );
 };
 
-export const DropdownInverse = () => {
-  return <Dropdown inverse={true} />;
+export const DropdownVertical = () => {
+  return (
+    <Box d="flex" p={1} style={{ height: '25vh' }}>
+      <Dropdown vertical />
+    </Box>
+  );
 };
+
+export const DropdownInverse = () => {
+  return <Dropdown inverse />;
+};
+
+export const DropdownVerticalInverse = () => {
+  return (
+    <Box d="flex" style={{ height: '25vh' }}>
+      <Dropdown vertical inverse />
+    </Box>
+  );
+};
+
 
 export const Scroll = () => {
   const items = new Array(20)
@@ -127,7 +159,7 @@ export const ScrollVertical = () => {
     <OverflowList
       d="flex"
       flexDirection="column"
-      style={{ maxHeight: 290, width: 200 }}
+      style={{ maxHeight: 380, width: 200 }}
       scrollable
       vertical
       items={items}
