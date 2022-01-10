@@ -41,3 +41,4 @@ export { OverflowList } from './overflow-list';
 export { ArrowNavigation } from './arrow-navigation';
 export { Menu, MenuItem, MenuHeader, MenuDivider } from './menu';
 export { Tree } from './tree';
+export { Tabs } from './tabs';
