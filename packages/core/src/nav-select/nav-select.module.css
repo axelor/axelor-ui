@@ -1,0 +1,71 @@
+.root {
+  overflow: hidden;
+}
+.root > * > [data-popper-placement] {
+  z-index: 1;
+}
+.list {
+  display: flex;
+  max-width: 100%;
+}
+.listItem {
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  user-select: none;
+}
+.overflowListItem {
+  min-width: 120px;
+  cursor: pointer;
+}
+.overflowListItem:hover {
+  background: #eee;
+}
+.overflowListItem.active {
+  background: #e2e2e2;
+}
+.listItem a {
+  background: #e2e2e2;
+  display: inline;
+  position: relative;
+  line-height: 32px;
+  padding: 0 16px 0 32px;
+  white-space: nowrap;
+}
+.listItem a:after {
+  content: '';
+  width: 32px;
+  height: 32px;
+  transform: scale(0.72) rotate(45deg);
+  position: absolute;
+  right: -16px;
+  z-index: 1;
+  background: #e2e2e2;
+  box-shadow: 2px -2px 0 1px rgb(255 255 255);
+}
+.listItem.last a:after {
+  display: none;
+}
+.listItem.active a,
+.listItem.active a:after {
+  background: #0275d8;
+  transition: background-color 0.3s;
+  color: #f0f0f0 !important;
+}
+
+.listItem.dropdown a:after {
+  display: none;
+}
+.listItem.dropdown {
+  padding: 0;
+  height: 32px;
+}
+.listItem.dropdown a {
+  padding: 0 10px 0 25px;
+}
+.listItem.drodown svg {
+  font-size: 0.85em;
+}
+.listItem.dropdown.active svg {
+  margin-left: 5px;
+}

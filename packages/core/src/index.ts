@@ -42,3 +42,4 @@ export { ArrowNavigation } from './arrow-navigation';
 export { Menu, MenuItem, MenuHeader, MenuDivider } from './menu';
 export { Tree } from './tree';
 export { Tabs } from './tabs';
+export { NavSelect } from './nav-select';
