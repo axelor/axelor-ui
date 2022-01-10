@@ -8,7 +8,10 @@ import styled, { withStyled } from '../styled';
 import styles from './menu.module.css';
 
 export interface MenuProps
-  extends Pick<PopperProps, 'placement' | 'container' | 'offset'> {
+  extends Pick<
+    PopperProps,
+    'placement' | 'container' | 'offset' | 'arrow' | 'transition'
+  > {
   target?: HTMLElement | null;
   flip?: boolean;
   show?: boolean;
@@ -46,6 +49,8 @@ export const Menu = withStyled(MenuContent)(
       disablePortal,
       offset,
       navigation,
+      arrow,
+      transition,
       ...props
     },
     ref
@@ -64,6 +69,8 @@ export const Menu = withStyled(MenuContent)(
           open={show}
           offset={offset}
           disablePortal={disablePortal}
+          arrow={arrow}
+          transition={transition}
         >
           <ClickAwayListener onClickAway={onHide}>
             {navigation ? (
