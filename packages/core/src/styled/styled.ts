@@ -79,9 +79,14 @@ const createStyled: CreateStyled =
       }, [props]);
     }
 
-    function useElement(props: any, ref: any) {
+    function useElement(inProps: any, ref: any) {
       return useMemo(() => {
-        const Component = props.as || component;
+        let { as, ...props } = inProps;
+        let Component = component;
+        if (typeof component === 'string') {
+          Component = as || component;
+          as = undefined;
+        }
         const shouldForward = shouldForwardProp
           ? shouldForwardProp
           : typeof Component === 'string'
@@ -95,10 +100,10 @@ const createStyled: CreateStyled =
             return prev;
           }, {} as any);
 
-        const attrs = { ...result, ref };
+        const attrs = { ...result, as, ref };
 
         return createElement(Component, attrs);
-      }, [props, ref]);
+      }, [inProps, ref]);
     }
 
     const Styled = forwardRef<any, any>((props, ref) => {

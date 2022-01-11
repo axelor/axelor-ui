@@ -24,9 +24,7 @@ export interface IconProps {
   size?: keyof typeof IconSize;
 }
 
-export const Icon = styled('svg', {
-  shouldForwardProp: name => name !== 'as',
-})<IconProps>(({ size = 1 }) => ({
+export const Icon = styled.svg<IconProps>(({ size = 1 }) => ({
   strokeWidth: 0,
   stroke: 'currentColor',
   fill: 'currentColor',
