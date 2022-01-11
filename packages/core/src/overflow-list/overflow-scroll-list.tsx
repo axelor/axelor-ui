@@ -27,7 +27,7 @@ const Icons: Record<string, IconProps['as']> = {
 const Content = styled.div(() => [cssStyles.content, cssStyles.scrollable]);
 
 const OverflowScrollList = withStyled(Content)<OverflowScrollListProps>(
-  props => {
+  (props, ref) => {
     const { vertical, renderButton } = props;
     const contentRef = React.useRef<HTMLDivElement | null>(null);
     const clientProp = vertical ? 'clientHeight' : 'clientWidth';
