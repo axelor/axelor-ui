@@ -9,6 +9,7 @@ import { MenuItem } from '../menu/menu-item';
 import cssStyles from './overflow-list.module.css';
 import styled, { withStyled } from '../styled';
 import { styleNames } from '../styles';
+import isPropValid from '@emotion/is-prop-valid';
 
 type OverflowState = {
   measure: boolean;
@@ -84,14 +85,17 @@ function DropdownMenuItem({
   );
 }
 
-const DropdownList = styled.div<
-  OverflowDropdownProps<TOverflowListItem | React.ReactChild>
->(({ vertical }) => [
-  cssStyles.dropdownList,
-  {
-    [cssStyles.vertical]: vertical,
-  },
-]);
+const DropdownList = styled('div', {
+  shouldForwardProp: prop =>
+    prop === 'onOverflowChange' ? false : isPropValid(prop),
+})<OverflowDropdownProps<TOverflowListItem | React.ReactChild>>(
+  ({ vertical }) => [
+    cssStyles.dropdownList,
+    {
+      [cssStyles.vertical]: vertical,
+    },
+  ]
+);
 
 export const OverflowDropdown = withStyled(DropdownList)((props, ref) => {
   const {
