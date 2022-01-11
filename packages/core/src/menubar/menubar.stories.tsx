@@ -1,3 +1,9 @@
+import { ReactComponent as BiArrowCounterclockwise } from 'bootstrap-icons/icons/arrow-counterclockwise.svg';
+import { ReactComponent as BiArrowClockwise } from 'bootstrap-icons/icons/arrow-clockwise.svg';
+import { ReactComponent as BiScissors } from 'bootstrap-icons/icons/scissors.svg';
+import { ReactComponent as BiClipboard } from 'bootstrap-icons/icons/clipboard.svg';
+import { ReactComponent as BiClipboardCheck } from 'bootstrap-icons/icons/clipboard-check.svg';
+
 import { Menu } from '../menu/menu';
 import { MenuItem } from '../menu/menu-item';
 import { MenuDivider } from '../menu/menu-divider';
@@ -29,14 +35,14 @@ export const Basic = () => {
       <Menu text="Edit">
         <MenuItem
           text="Undo"
-          startIcon="arrow-counterclockwise"
+          startIcon={BiArrowCounterclockwise}
           label="Ctrl+Z"
         />
-        <MenuItem text="Redo" startIcon="arrow-clockwise" label="Ctrl+Y" />
+        <MenuItem text="Redo" startIcon={BiArrowClockwise} label="Ctrl+Y" />
         <MenuDivider />
-        <MenuItem text="Cut" startIcon="scissors" label="Ctrl+X" />
-        <MenuItem text="Copy" startIcon="clipboard" label="Ctrl+C" />
-        <MenuItem text="Paste" startIcon="clipboard-check" label="Ctrl+P" />
+        <MenuItem text="Cut" startIcon={BiScissors} label="Ctrl+X" />
+        <MenuItem text="Copy" startIcon={BiClipboard} label="Ctrl+C" />
+        <MenuItem text="Paste" startIcon={BiClipboardCheck} label="Ctrl+P" />
       </Menu>
       <Menu text="View">
         <MenuItem text="Print Layout" />
