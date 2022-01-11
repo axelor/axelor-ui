@@ -1,6 +1,7 @@
 import { ReactComponent as BiHeartFill } from 'bootstrap-icons/icons/heart-fill.svg';
 import { ReactComponent as BiShop } from 'bootstrap-icons/icons/shop.svg';
 import { ReactComponent as BiToggles } from 'bootstrap-icons/icons/toggles.svg';
+import { ReactComponent as BiAlarm } from 'bootstrap-icons/icons/alarm.svg';
 
 import { Box } from '../box';
 import { Icon } from './icon';
@@ -13,7 +14,7 @@ export default {
 export const Name = () => {
   return (
     <Box>
-      <Icon use="alarm" size={2} title="Alarm" color="primary" />
+      <Icon as={BiAlarm} size={2} title="Alarm" color="primary" />
     </Box>
   );
 };
@@ -21,9 +22,9 @@ export const Name = () => {
 export const Svg = () => {
   return (
     <Box>
-      <Icon use={BiHeartFill} size={2} title="Heart" />
-      <Icon use={BiToggles} size={2} title="Toggle" />
-      <Icon use={BiShop} size={2} title="Shope" />
+      <Icon as={BiHeartFill} size={2} title="Heart" />
+      <Icon as={BiToggles} size={2} title="Toggle" />
+      <Icon as={BiShop} size={2} title="Shope" />
     </Box>
   );
 };

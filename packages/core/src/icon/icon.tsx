@@ -1,5 +1,4 @@
-import BsIcons from 'bootstrap-icons/bootstrap-icons.svg';
-import styled, { withStyled } from '../styled';
+import styled from '../styled';
 
 type SvgIcon = React.FunctionComponent<React.SVGProps<SVGSVGElement>> & {
   title?: string;
@@ -21,36 +20,15 @@ const IconSize = {
 } as const;
 
 export interface IconProps {
-  use: string | SvgIcon;
+  as: SvgIcon;
   size?: keyof typeof IconSize;
-  title?: string;
 }
 
-const SvgIcon = styled.svg<IconProps>();
-
-export const Icon = withStyled(SvgIcon)(
-  ({ use, title, size = 1, ...props }, ref) => {
-    const attrs = {
-      ...props,
-      strokeWidth: 0,
-      stroke: 'currentColor',
-      fill: 'currentColor',
-      width: IconSize[size],
-      height: IconSize[size],
-      ref,
-    };
-
-    if (typeof use === 'string') {
-      const href = `${BsIcons}#${use}`;
-      return (
-        <SvgIcon {...attrs}>
-          <use href={href} />
-        </SvgIcon>
-      );
-    }
-
-    attrs.as = use;
-
-    return <SvgIcon {...attrs} viewBox="0 0 16 16" />;
-  }
-);
+export const Icon = styled.svg<IconProps>(({ size = 1 }) => ({
+  strokeWidth: 0,
+  stroke: 'currentColor',
+  fill: 'currentColor',
+  width: IconSize[size],
+  height: IconSize[size],
+  viewBox: '0 0 16 16',
+}));
