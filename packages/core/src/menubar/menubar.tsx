@@ -159,8 +159,7 @@ function Menu({
 
   return (
     <AxMenu
-      placement="bottom"
-      alignment="start"
+      placement="bottom-start"
       disablePortal
       onHide={onHide}
       onKeyDown={handleKeyDown}
@@ -313,8 +312,7 @@ function MenuItem({
       />
       <Menu
         target={target}
-        placement="end"
-        alignment="top"
+        placement="end-top"
         onMouseEnter={handleMouseEnter}
         {...MenuProps}
       >
