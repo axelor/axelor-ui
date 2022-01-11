@@ -44,9 +44,7 @@ function RenderListItem({
 }: {
   item: TOverflowListItem | React.ReactChild;
 }) {
-  return React.isValidElement(item) ? (
-    item
-  ) : (
+  return (
     <Box
       p={2}
       d="flex"
@@ -85,6 +83,8 @@ export const OverflowList = withStyled(Box)<
     children = items.map((item, index) =>
       renderListItem ? (
         renderListItem(item, index)
+      ) : React.isValidElement(item) ? (
+        item
       ) : (
         <RenderListItem key={index} item={item} />
       )
@@ -113,7 +113,7 @@ export const OverflowList = withStyled(Box)<
             ? {}
             : {
                 items,
-                renderAs: as,
+                as,
                 renderOverflow,
                 renderOverflowItem,
                 dropdownMenuProps,

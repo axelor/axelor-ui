@@ -253,7 +253,7 @@ export const OverflowDropdown = withStyled(DropdownList)((props, ref) => {
         ? renderOverflow(listItems, closeDropdown)
         : renderOverflowItem
         ? listItems.map((item, index) => (
-            <MenuItem as="button" key={index} onClick={closeDropdown}>
+            <MenuItem as="button" key={index}>
               {renderOverflowItem(item, index, closeDropdown)}
             </MenuItem>
           ))
