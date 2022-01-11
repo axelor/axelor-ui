@@ -1,5 +1,11 @@
 import React from 'react';
 import { ReactComponent as BiThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg';
+import { ReactComponent as BiPlus } from 'bootstrap-icons/icons/plus.svg';
+import { ReactComponent as BiPencil } from 'bootstrap-icons/icons/pencil.svg';
+import { ReactComponent as BiTrash } from 'bootstrap-icons/icons/trash.svg';
+import { ReactComponent as BiArchive } from 'bootstrap-icons/icons/archive.svg';
+import { ReactComponent as BiArchiveFill } from 'bootstrap-icons/icons/archive-fill.svg';
+import { ReactComponent as BiArrowRepeat } from 'bootstrap-icons/icons/arrow-repeat.svg';
 
 import { Box } from '../box';
 import { Icon } from '../icon';
@@ -23,12 +29,12 @@ const toolbar: {
   items: TToolbarItem[];
 } = {
   items: [
-    { title: 'New', icon: 'plus' },
-    { title: 'Edit', icon: 'pencil' },
-    { title: 'Delete', icon: 'trash' },
-    { title: 'Archive', icon: 'archive' },
-    { title: 'Unarchive', icon: 'archive-fill' },
-    { title: 'Refresh', icon: 'arrow-repeat' },
+    { title: 'New', icon: BiPlus },
+    { title: 'Edit', icon: BiPencil },
+    { title: 'Delete', icon: BiTrash },
+    { title: 'Archive', icon: BiArchive },
+    { title: 'Unarchive', icon: BiArchiveFill },
+    { title: 'Refresh', icon: BiArrowRepeat },
     {
       title: 'Advance Search',
       renderer: (
