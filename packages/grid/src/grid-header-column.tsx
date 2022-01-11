@@ -1,6 +1,9 @@
 import React from 'react';
 import { Box, Divider, Input, Icon, Menu, MenuItem } from '@axelor-ui/core';
 import { styleNames } from '@axelor-ui/core/styles';
+import { ReactComponent as BiSortUpAlt } from 'bootstrap-icons/icons/sort-up-alt.svg';
+import { ReactComponent as BiSortDownAlt } from 'bootstrap-icons/icons/sort-down-alt.svg';
+import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-down-fill.svg';
 
 import GridDragElement, { DropHandler } from './grid-drag-element';
 import { GridColumn, GridColumnProps } from './grid-column';
@@ -157,7 +160,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
           {sort && (
             <Icon
               size={1}
-              use={sort === 'asc' ? 'sort-up-alt' : 'sort-down-alt'}
+              as={sort === 'asc' ? BiSortUpAlt : BiSortDownAlt}
               title="Sort Icon"
             />
           )}
@@ -191,7 +194,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
               [styles.hasResize]: Boolean(onResize),
             })}
           >
-            <Icon size={1} use={'caret-down-fill'} title="Sort Icon" />
+            <Icon size={1} as={BiCaretDownFill} title="Sort Icon" />
           </span>
         )}
 

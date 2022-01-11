@@ -1,4 +1,10 @@
 import React from 'react';
+import { ReactComponent as BiChevronLeft } from 'bootstrap-icons/icons/chevron-left.svg';
+import { ReactComponent as BiChevronRight } from 'bootstrap-icons/icons/chevron-right.svg';
+import { ReactComponent as BiChevronUp } from 'bootstrap-icons/icons/chevron-up.svg';
+import { ReactComponent as BiChevronDown } from 'bootstrap-icons/icons/chevron-down.svg';
+import { ReactComponent as BiThreeDots } from 'bootstrap-icons/icons/three-dots.svg';
+
 import { Box } from '../box';
 import { Button } from '../button';
 import { ButtonGroup } from '../button-group';
@@ -61,14 +67,14 @@ export const Dropdown = ({ inverse = false, vertical = false }) => {
               alignItems="center"
               px={2}
             >
-              <Icon use="chevron-left" {...props} />
+              <Icon as={BiChevronLeft} {...props} />
             </Box>
           );
         }
         if (type === 'scroll-right') {
           return (
             <Box d="flex" justifyContent="center" alignItems="center" px={2}>
-              <Icon use="chevron-right" {...props} />
+              <Icon as={BiChevronRight} {...props} />
             </Box>
           );
         }
@@ -84,7 +90,7 @@ export const Dropdown = ({ inverse = false, vertical = false }) => {
               px={2}
             >
               <span>
-                <Icon use="three-dots" />
+                <Icon as={BiThreeDots} />
               </span>
             </Button>
           );
@@ -115,7 +121,6 @@ export const DropdownVerticalInverse = () => {
   );
 };
 
-
 export const Scroll = () => {
   const items = new Array(20)
     .fill(0)
@@ -133,14 +138,14 @@ export const Scroll = () => {
         if (type === 'scroll-left') {
           return (
             <Box d="flex" justifyContent="center" alignItems="center" px={2}>
-              <Icon use="chevron-left" {...props} />
+              <Icon as={BiChevronLeft} {...props} />
             </Box>
           );
         }
         if (type === 'scroll-right') {
           return (
             <Box d="flex" justifyContent="center" alignItems="center" px={2}>
-              <Icon use="chevron-right" {...props} />
+              <Icon as={BiChevronRight} {...props} />
             </Box>
           );
         }
@@ -170,14 +175,14 @@ export const ScrollVertical = () => {
         if (type === 'scroll-left') {
           return (
             <Box d="flex" justifyContent="center" alignItems="center" px={2}>
-              <Icon use="chevron-up" {...props} />
+              <Icon as={BiChevronUp} {...props} />
             </Box>
           );
         }
         if (type === 'scroll-right') {
           return (
             <Box d="flex" justifyContent="center" alignItems="center" px={2}>
-              <Icon use="chevron-down" {...props} />
+              <Icon as={BiChevronDown} {...props} />
             </Box>
           );
         }

@@ -1,4 +1,7 @@
 import React from 'react';
+import { ReactComponent as BiSortUpAlt } from 'bootstrap-icons/icons/sort-up-alt.svg';
+import { ReactComponent as BiSortDownAlt } from 'bootstrap-icons/icons/sort-down-alt.svg';
+
 import * as TYPES from './types';
 import { styleNames } from '../styles';
 import styles from './tree.module.css';
@@ -16,7 +19,7 @@ export function TreeColumn({ data, sort, onSort }: TYPES.TreeColumnProps) {
       {sort && (
         <span className={styles.columnSortIcon}>
           <Icon
-            use={sort === 'asc' ? 'sort-up-alt' : 'sort-down-alt'}
+            as={sort === 'asc' ? BiSortUpAlt : BiSortDownAlt}
             size={1}
           />
         </span>

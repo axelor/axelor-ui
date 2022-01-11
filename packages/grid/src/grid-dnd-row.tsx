@@ -5,6 +5,8 @@ import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { Icon } from '@axelor-ui/core';
 import { XYCoord } from 'dnd-core';
+import { ReactComponent as BiList } from 'bootstrap-icons/icons/list.svg';
+
 import { GridRowProps, GridRow } from './types';
 
 const ItemTypes = {
@@ -112,7 +114,7 @@ export function GridDNDColumn({ className, style, onClick }: any) {
       style={{ cursor: 'move', ...style }}
       {...{ className, onClick }}
     >
-      <Icon use="list" />
+      <Icon as={BiList} />
     </div>
   );
 }

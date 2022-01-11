@@ -1,9 +1,19 @@
 import React, { ReactElement, useState } from 'react';
+import { ReactComponent as BiArchive } from 'bootstrap-icons/icons/archive.svg';
+import { ReactComponent as BiCardImage } from 'bootstrap-icons/icons/card-image.svg';
+import { ReactComponent as BiBank } from 'bootstrap-icons/icons/bank.svg';
+import { ReactComponent as BiChevronUp } from 'bootstrap-icons/icons/chevron-up.svg';
+import { ReactComponent as BiChevronDown } from 'bootstrap-icons/icons/chevron-down.svg';
+import { ReactComponent as BiSendFill } from 'bootstrap-icons/icons/send-fill.svg';
+import { ReactComponent as BiMailBox } from 'bootstrap-icons/icons/mailbox.svg';
+import { ReactComponent as BiInboxFill } from 'bootstrap-icons/icons/inbox-fill.svg';
+import { ReactComponent as BiSendCheckFill } from 'bootstrap-icons/icons/send-check-fill.svg';
 
 import { Collapse } from '../collapse';
 import { Box } from '../box';
 import { Icon } from '../icon';
 import { List, ListItem } from './list';
+import { IconProps } from '../icon/icon';
 
 export default {
   component: List,
@@ -103,8 +113,8 @@ export const Flush = () => {
 export const FolderList = () => {
   return (
     <List>
-      {['archive', 'card-image', 'bank'].map(icon => (
-        <ListItem key={icon}>
+      {[BiArchive, BiCardImage, BiBank].map((icon, i) => (
+        <ListItem key={i}>
           <Box d="flex" alignItems="center">
             <Box
               me={2}
@@ -116,7 +126,7 @@ export const FolderList = () => {
               alignItems="center"
               justifyContent="center"
             >
-              <Icon use={icon} />
+              <Icon as={icon} />
             </Box>
             <Box>
               <Box as="p" mb={0}>
@@ -145,10 +155,10 @@ export const Numbered = () => {
   );
 };
 
-function ListItemIcon({ name }: { name: string }) {
+function ListItemIcon({ icon }: { icon: IconProps['as'] }) {
   return (
     <Box as="span" me={2}>
-      <Icon use={name} />
+      <Icon as={icon} />
     </Box>
   );
 }
@@ -190,7 +200,7 @@ function NestedListItem({
 }: {
   children: React.ReactNode;
   title: string;
-  icon?: string;
+  icon?: IconProps['as'];
   isOpen?: boolean;
   onOpen?: (title: string) => void;
   onClose?: () => void;
@@ -212,10 +222,10 @@ function NestedListItem({
         onClick={toggle}
       >
         <Box>
-          {icon && <ListItemIcon name={icon} />}
+          {icon && <ListItemIcon icon={icon} />}
           {title}
         </Box>
-        <Icon use={isOpen ? 'chevron-up' : 'chevron-down'} />
+        <Icon as={isOpen ? BiChevronUp : BiChevronDown} />
       </Box>
       <Collapse in={isOpen}>{children}</Collapse>
     </ListItem>
@@ -226,14 +236,14 @@ export const Nested = () => {
   return (
     <NestedList>
       <ListItem>
-        <ListItemIcon name={'send-fill'} />
+        <ListItemIcon icon={BiSendFill} />
         Sent mail
       </ListItem>
       <ListItem>
-        <ListItemIcon name={'mailbox'} />
+        <ListItemIcon icon={BiMailBox} />
         Drafts
       </ListItem>
-      <NestedListItem title="Inbox" icon={'inbox-fill'}>
+      <NestedListItem title="Inbox" icon={BiInboxFill}>
         <NestedList flush>
           <ListItem>Primary</ListItem>
           <NestedListItem title="Social">
@@ -253,7 +263,7 @@ export const Nested = () => {
           <ListItem>Forums</ListItem>
         </NestedList>
       </NestedListItem>
-      <NestedListItem title="Outbox" icon={'send-check-fill'}>
+      <NestedListItem title="Outbox" icon={BiSendCheckFill}>
         <NestedList flush>
           <ListItem>Primary</ListItem>
           <NestedListItem title="Social">

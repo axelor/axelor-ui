@@ -1,5 +1,7 @@
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+import { ReactComponent as BiChevronDown } from 'bootstrap-icons/icons/chevron-down.svg';
+import { ReactComponent as BiChevronRight } from 'bootstrap-icons/icons/chevron-right.svg';
 
 import styles from './tree.module.css';
 import { styleNames } from '../styles';
@@ -27,7 +29,7 @@ const TreeNodeContent = React.forwardRef<
                 {hasChildren(data) && (
                   <Icon
                     size={1}
-                    use={data.expanded ? 'chevron-down' : 'chevron-right'}
+                    as={data.expanded ? BiChevronDown : BiChevronRight}
                     className={styles.icon}
                   />
                 )}
@@ -130,9 +132,7 @@ export const TreeNode = React.memo(function TreeNode({
         : {
             data,
           })}
-      {...(edit
-        ? { node: data, index, columns, onCancel, onSave }
-        : {})}
+      {...(edit ? { node: data, index, columns, onCancel, onSave } : {})}
     >
       <NodeComponent
         data={data}

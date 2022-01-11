@@ -1,6 +1,7 @@
 import faker from 'faker';
 import { useState, useCallback } from 'react';
 import { Box, Input, Button, Icon, Menu, MenuItem } from '@axelor-ui/core';
+import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-down-fill.svg';
 
 import Kanban, { KanbanProps } from './kanban';
 import { CardEvent, Column, ColumnEvent } from './types';
@@ -253,7 +254,7 @@ const Record = ({ record, column, onEdit, onDelete }: any) => {
         <Box as="p">{record.title}</Box>
         <Box>
           <Button p={0} ref={setTargetEl} onClick={toggle} d="inline-flex">
-            <Icon use="caret-down-fill" />
+            <Icon as={BiCaretDownFill} />
           </Button>
         </Box>
         <Menu show={open} target={targetEl} onHide={closeMenu}>

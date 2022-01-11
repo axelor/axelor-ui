@@ -1,4 +1,6 @@
 import React from 'react';
+import { ReactComponent as BiThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg';
+
 import { Box } from '../box';
 import { Icon } from '../icon';
 import { ButtonGroup } from '../button-group';
@@ -51,7 +53,7 @@ const ToolbarItem = withStyled(Button)<TToolbarItem>(
       border
       title={title}
     >
-      <span>{renderer ? renderer : icon ? <Icon use={icon} /> : title}</span>
+      <span>{renderer ? renderer : icon ? <Icon as={icon} /> : title}</span>
     </Button>
   )
 );
@@ -73,7 +75,7 @@ function OverflowToolbarItem({ title, icon, onClick }: TOverflowToolbarItem) {
       {icon && (
         <Box d="inline-block" me={2}>
           {' '}
-          <Icon use={icon} />
+          <Icon as={icon} />
         </Box>
       )}
       {title}
@@ -100,7 +102,7 @@ function Toolbar() {
       )}
       renderButton={(type, props: any) => {
         if (type === 'dropdown') {
-          return <ToolbarItem {...props} icon={'three-dots-vertical'} />;
+          return <ToolbarItem {...props} icon={BiThreeDotsVertical} />;
         }
         return null;
       }}

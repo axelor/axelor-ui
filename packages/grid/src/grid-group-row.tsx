@@ -1,6 +1,8 @@
 import React from 'react';
 import { Icon } from '@axelor-ui/core';
 import { styleNames } from '@axelor-ui/core/styles';
+import { ReactComponent as BiCaretRightFill } from 'bootstrap-icons/icons/caret-right-fill.svg';
+import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-down-fill.svg';
 
 import * as TYPES from './types';
 import styles from './grid.module.css';
@@ -29,7 +31,7 @@ export const GridGroupRow = React.memo(function GridGroupRow(
       >
         <Icon
           className={styles.groupRowIcon}
-          use={state === 'close' ? 'caret-right-fill' : 'caret-down-fill'}
+          as={state === 'close' ? {BiCaretRightFill} : {BiCaretDownFill}}
           size={1}
           title={state === 'close' ? 'Collapse' : 'Expand'}
         />

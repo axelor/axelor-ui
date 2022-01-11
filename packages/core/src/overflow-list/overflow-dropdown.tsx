@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { ReactComponent as BiThreeDots } from 'bootstrap-icons/icons/three-dots.svg';
+
 import { Fade } from '../fade';
 import { Box } from '../box';
 import { Icon } from '../icon';
@@ -63,7 +65,7 @@ const DropdownButton = withStyled(Box)((props, ref) => {
       px={2}
       {...props}
     >
-      <Icon use="three-dots" />
+      <Icon as={BiThreeDots} />
     </Box>
   );
 });

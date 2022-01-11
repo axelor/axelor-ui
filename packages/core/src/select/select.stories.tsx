@@ -1,4 +1,8 @@
 import React from 'react';
+import { ReactComponent as BiPencil } from 'bootstrap-icons/icons/pencil.svg';
+import { ReactComponent as BiPlusSquare } from 'bootstrap-icons/icons/plus-square.svg';
+import { ReactComponent as BiFileEarmark } from 'bootstrap-icons/icons/file-earmark-text.svg';
+
 import { Input } from '../input';
 import { Box } from '../box';
 import { Icon } from '../icon';
@@ -222,7 +226,7 @@ export const Actions = () => {
                     title="Edit"
                     onClick={() => console.log('do edit')}
                   >
-                    <Icon use="pencil" />
+                    <Icon as={BiPencil} />
                   </Box>
                 )}
                 {canCreate && (
@@ -233,7 +237,7 @@ export const Actions = () => {
                     title="New"
                     onClick={() => console.log('do create')}
                   >
-                    <Icon use="plus-square" />
+                    <Icon as={BiPlusSquare} />
                   </Box>
                 )}
                 {value && canRead && (
@@ -244,7 +248,7 @@ export const Actions = () => {
                     title="View"
                     onClick={() => console.log('do view')}
                   >
-                    <Icon use="file-earmark-text" />
+                    <Icon as={BiFileEarmark} />
                   </Box>
                 )}
               </Box>

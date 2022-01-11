@@ -1,4 +1,6 @@
 import React from 'react';
+import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-down-fill.svg';
+
 import { Box } from '../box/box';
 import { Icon } from '../icon';
 import { OverflowList } from '../overflow-list';
@@ -139,7 +141,7 @@ export function NavSelect({
                 )}
               >
                 {selectedInDropdown && selectedHidden && selectedHidden.title}
-                <Icon use="caret-down-fill" />
+                <Icon as={BiCaretDownFill} />
               </NavSelectItem>
             );
           }

@@ -1,8 +1,12 @@
 import * as React from 'react';
+import { ReactComponent as BiChevronLeft } from 'bootstrap-icons/icons/chevron-left.svg';
+import { ReactComponent as BiChevronRight } from 'bootstrap-icons/icons/chevron-right.svg';
+
 import { Box } from '../box';
 import { Icon } from '../icon';
 import cssStyles from './overflow-list.module.css';
 import styled, { withStyled } from '../styled';
+import { IconProps } from '../icon/icon';
 
 export interface OverflowScrollListProps {
   className?: string;
@@ -14,6 +18,11 @@ export interface OverflowScrollListProps {
     props: React.HTMLAttributes<HTMLElement>
   ) => React.ReactNode;
 }
+
+const Icons: Record<string, IconProps['as']> = {
+  'chevron-right': BiChevronRight,
+  'chevron-left': BiChevronLeft,
+};
 
 const Content = styled.div(() => [cssStyles.content, cssStyles.scrollable]);
 
@@ -61,7 +70,7 @@ const OverflowScrollList = withStyled(Content)<OverflowScrollListProps>(
             px={2}
             {...props}
           >
-            <Icon use={`chevron-${type}`} />
+            <Icon as={Icons[`chevron-${type}`]} />
           </Box>
         );
       }

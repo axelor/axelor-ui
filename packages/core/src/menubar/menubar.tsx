@@ -6,6 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { ReactComponent as BiCaretRightFill } from 'bootstrap-icons/icons/caret-right-fill.svg';
 
 import { Box } from '../box';
 import { Menu as AxMenu } from '../menu/menu';
@@ -13,9 +14,9 @@ import { ArrowNavigation } from '../arrow-navigation';
 import { MenuItem as AxMenuItem } from '../menu/menu-item';
 import { styleNames } from '../styles';
 import { tryFocus } from './utils';
+import { isElementDisabled, isElementHidden } from '../arrow-navigation/utils';
 
 import styles from './menubar.module.css';
-import { isElementDisabled, isElementHidden } from '../arrow-navigation/utils';
 
 const MenubarContext = React.createContext<any>({});
 
@@ -307,7 +308,7 @@ function MenuItem({
         {...rest}
         text={text}
         ref={setTarget}
-        endIcon={'caret-right-fill'}
+        endIcon={BiCaretRightFill}
         onMouseEnter={handleItemMouseEnter}
       />
       <Menu

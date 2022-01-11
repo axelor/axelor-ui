@@ -1,6 +1,9 @@
 import React from 'react';
 import { Icon } from '@axelor-ui/core';
 import { styleNames } from '@axelor-ui/core/styles';
+import { ReactComponent as BiArrowUp } from 'bootstrap-icons/icons/arrow-up.svg';
+import { ReactComponent as BiArrowDown } from 'bootstrap-icons/icons/arrow-down.svg';
+import { ReactComponent as BiX } from 'bootstrap-icons/icons/x.svg';
 
 import GridDragWidget from './grid-drag-element';
 import * as TYPES from './types';
@@ -34,7 +37,7 @@ const GridGroupTag = ({
       >
         {sort && (
           <span className={styles.groupTagIcon}>
-            <Icon use={sort === 'asc' ? 'arrow-up' : 'arrow-down'} />
+            <Icon as={sort === 'asc' ? BiArrowUp : BiArrowDown} />
           </span>
         )}
         <label className={styles.groupTagTitle}>{data.title}</label>
@@ -46,7 +49,7 @@ const GridGroupTag = ({
           }}
           className={styles.groupTagRemove}
         >
-          <Icon size={2} use={'x'} />
+          <Icon size={2} as={BiX} />
         </span>
       </div>
     </GridDragWidget>

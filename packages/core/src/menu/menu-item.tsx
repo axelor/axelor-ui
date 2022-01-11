@@ -1,15 +1,16 @@
 import { Box } from '../box';
 import { Icon } from '../icon';
+import { IconProps } from '../icon/icon';
 import styled, { withStyled } from '../styled';
 import styles from './menu.module.css';
 
 export interface MenuItemProps {
   text?: string;
   label?: string;
-  startIcon?: string;
-  endIcon?: string;
-  disabled?: boolean;
+  startIcon?: IconProps['as'];
+  endIcon?: IconProps['as'];
   active?: boolean;
+  disabled?: boolean;
 }
 
 const MenuItemBase = styled.a<MenuItemProps>(
@@ -27,12 +28,12 @@ export const MenuItem = withStyled(MenuItemBase)(
     return (
       <MenuItemBase {...props} ref={ref}>
         <Box d="flex" alignItems="center">
-          {startIcon && <Icon use={startIcon} me={1} size="sm" />}
+          {startIcon && <Icon as={startIcon} me={1} size="sm" />}
           <Box d="inline-flex" flexGrow={1}>
             {children || text}
           </Box>
           {label && <Box d="inline-flex">{label}</Box>}
-          {endIcon && <Icon use={endIcon} float="end" ms={1} size="sm" />}
+          {endIcon && <Icon as={endIcon} float="end" ms={1} size="sm" />}
         </Box>
       </MenuItemBase>
     );

@@ -1,4 +1,6 @@
 import React from 'react';
+import { ReactComponent as BiArrowLeftCircle } from 'bootstrap-icons/icons/arrow-left-circle.svg';
+import { ReactComponent as BiArrowRightCircle } from 'bootstrap-icons/icons/arrow-right-circle.svg';
 
 import { Icon } from '../icon';
 import { Box } from '../box';
@@ -83,12 +85,12 @@ export const ScrollButtons = () => {
       <Tabs
         scrollLeft={
           <Box d="flex" justifyContent="center" alignItems="center" px={2}>
-            <Icon use="arrow-left-circle" />
+            <Icon as={BiArrowLeftCircle} />
           </Box>
         }
         scrollRight={
           <Box d="flex" justifyContent="center" alignItems="center" px={2}>
-            <Icon use="arrow-right-circle" />
+            <Icon as={BiArrowRightCircle} />
           </Box>
         }
         value={active}

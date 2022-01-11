@@ -1,4 +1,7 @@
 import React, { useCallback } from 'react';
+import { ReactComponent as BiCaretRightFill } from 'bootstrap-icons/icons/caret-right-fill.svg';
+import { ReactComponent as BiCaretLeftFill } from 'bootstrap-icons/icons/caret-left-fill.svg';
+
 import { Icon } from '@axelor-ui/core';
 import classes from './gantt.module.css';
 import * as TYPES from './types';
@@ -59,7 +62,7 @@ const Line = React.memo<{
       >
         {pointer && (
           <Icon
-            use={isStartPointer ? 'caret-right-fill' : 'caret-left-fill'}
+            as={isStartPointer ? BiCaretRightFill : BiCaretLeftFill}
             className={
               isStartPointer
                 ? classes.ganttEdgeIconStart
