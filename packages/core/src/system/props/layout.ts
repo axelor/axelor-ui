@@ -1,23 +1,32 @@
 import CSS from 'csstype';
+import { SpaceValue } from '.';
 import { Config } from '../types';
 import { toPixel } from '../utils';
 
 const convert = (value: any) => value;
 
-const computeVar = (name: string, conv = convert) => (value: any, breakpoint?: string) => {
-  const className = breakpoint
-    ? `l-${name}-${breakpoint}`
-    : `l-${name}`;
+const computeVar =
+  (name: string, conv = convert) =>
+  (value: any, breakpoint?: string) => {
+    const className = breakpoint ? `l-${name}-${breakpoint}` : `l-${name}`;
 
-  const styles = {
-    [`--${className}`]: conv(value),
+    const styles = {
+      [`--${className}`]: conv(value),
+    };
+
+    return {
+      classes: [className],
+      styles,
+    };
   };
 
-  return {
-    classes: [className],
-    styles,
-  };
-}
+const computeGap = (value: SpaceValue | undefined, breakpoint?: string) => {
+  return value || value === 0
+    ? breakpoint
+      ? `gap-${breakpoint}-${value}`
+      : `gap-${value}`
+    : undefined;
+};
 
 export interface FlexProps {
   flex?: CSS.Property.Flex;
@@ -37,6 +46,7 @@ export interface FlexProps {
   rowGap?: CSS.Property.RowGap | number;
   columnGap?: CSS.Property.ColumnGap | number;
   gap?: CSS.Property.Gap | number;
+  g?: SpaceValue;
 }
 
 export const FlexConfig: Config<FlexProps> = {
@@ -57,6 +67,7 @@ export const FlexConfig: Config<FlexProps> = {
   rowGap: computeVar('row-gap', toPixel),
   columnGap: computeVar('column-gap', toPixel),
   gap: computeVar('gap', toPixel),
+  g: computeGap,
 };
 
 export interface GridProps {
@@ -75,6 +86,8 @@ export interface GridProps {
   gridTemplateColumns?: CSS.Property.GridTemplateColumns;
   gridTemplateAreas?: CSS.Property.GridTemplateAreas;
   gridArea?: CSS.Property.GridArea;
+  gap?: CSS.Property.Gap | number;
+  g?: SpaceValue;
 }
 
 export const GridConfig: Config<GridProps> = {
@@ -92,4 +105,6 @@ export const GridConfig: Config<GridProps> = {
   gridTemplateColumns: computeVar('grid-template-columns'),
   gridTemplateAreas: computeVar('grid-template-areas'),
   gridArea: computeVar('grid-area'),
+  gap: computeVar('gap', toPixel),
+  g: computeGap,
 };

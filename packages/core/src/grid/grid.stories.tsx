@@ -1,13 +1,12 @@
 import { Box } from '../box';
-import { BoxProps } from '../box/box';
 
 export default {
   component: Box,
   title: 'Layout/Grid',
 };
 
-const Container = (props: BoxProps) => <Box {...props} display="grid" />;
-const Cell = (props: BoxProps) => <Box {...props} border p={2} />;
+const Container = (props: any) => <Box {...props} display="grid" />;
+const Cell = (props: any) => <Box {...props} border p={2} />;
 
 export const Basic = () => {
   return (
@@ -15,6 +14,23 @@ export const Basic = () => {
       gridTemplateColumns="150px 150px 150px"
       gridTemplateRows="150px 150px"
       gridGap={2}
+    >
+      <Cell></Cell>
+      <Cell></Cell>
+      <Cell></Cell>
+      <Cell></Cell>
+      <Cell></Cell>
+      <Cell></Cell>
+    </Container>
+  );
+};
+
+export const Spacing = () => {
+  return (
+    <Container
+      gridTemplateColumns="150px 150px 150px"
+      gridTemplateRows="150px 150px"
+      g={2}
     >
       <Cell></Cell>
       <Cell></Cell>
