@@ -15,6 +15,7 @@ import { MenuItem as AxMenuItem } from '../menu/menu-item';
 import { styleNames } from '../styles';
 import { tryFocus } from './utils';
 import { isElementDisabled, isElementHidden } from '../arrow-navigation/utils';
+import { withStyled } from '../styled';
 
 import styles from './menubar.module.css';
 
@@ -322,17 +323,22 @@ function MenuItem({
   );
 }
 
-export function Menubar({ children }: any) {
+export const Menubar = withStyled(Box)((props, ref) => {
   const [active, setActive] = useState<string | undefined>(undefined);
   const [show, setShow] = useState<boolean>(false);
+  const { children } = props;
 
-  const menus = useMemo(
-    () =>
-      React.Children.toArray(children).filter(
-        (child: any) => child.type === AxMenu && child.props.text
-      ),
-    [children]
-  );
+  const [beforeElements, menus, afterElements] = useMemo(() => {
+    const all = React.Children.toArray(children).flat();
+    const menuStartIndex = all.findIndex(
+      (item: any) => item && item.type === AxMenu
+    );
+    return [
+      all.slice(0, menuStartIndex),
+      all.filter((child: any) => child.type === AxMenu && child.props.text),
+      all.slice(menuStartIndex).filter((item: any) => item?.type !== AxMenu),
+    ];
+  }, [children]);
 
   const showMenu = useCallback((text: string) => {
     setActive(text);
@@ -399,7 +405,8 @@ export function Menubar({ children }: any) {
   return (
     <MenubarContext.Provider value={value}>
       <ArrowNavigation selector="auto-horizontal">
-        <Box d="flex">
+        <Box ref={ref} d="flex" {...props}>
+          {beforeElements}
           {menus.map((menu: any) => {
             const { text, onShow, onHide } = menu.props;
 
@@ -424,8 +431,9 @@ export function Menubar({ children }: any) {
               />
             );
           })}
+          {afterElements}
         </Box>
       </ArrowNavigation>
     </MenubarContext.Provider>
   );
-}
+});
