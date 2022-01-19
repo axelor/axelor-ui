@@ -1,5 +1,4 @@
 import { Box } from '../box';
-import { BoxProps } from '../box/box';
 import { Stack } from './stack';
 
 export default {

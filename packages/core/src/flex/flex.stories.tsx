@@ -1,15 +1,15 @@
-import { Box, BoxProps } from '../box/box';
+import { Box } from '../box/box';
 
 export default {
   component: Box,
   title: 'Layout/Flex',
 };
 
-const Container = (props: BoxProps) => (
+const Container = (props: any) => (
   <Box {...props} border p={2} display="flex" gap={8} />
 );
 
-const Cell = (props: BoxProps) => <Box {...props} border p={2} />;
+const Cell = (props: any) => <Box {...props} border p={2} />;
 
 export const Basic = () => {
   return (

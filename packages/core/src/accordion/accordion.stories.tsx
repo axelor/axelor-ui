@@ -1,5 +1,3 @@
-import { useCallback, useState } from 'react';
-
 import { Box } from '../box';
 import {
   Accordion,
