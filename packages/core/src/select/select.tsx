@@ -37,7 +37,7 @@ export interface SelectProps {
 
 const ControlContainer = (props: ControlProps<SelectOption, true>) => {
   const { onMouseDown, onTouchEnd } = props.innerProps;
-  function handleMouseDown(e: React.SyntheticEvent<HTMLElement>) {
+  function handleMouseDown(e: React.MouseEvent<HTMLDivElement>) {
     if (!e.defaultPrevented) {
       onMouseDown && onMouseDown(e);
     }

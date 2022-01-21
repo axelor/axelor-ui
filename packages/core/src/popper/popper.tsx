@@ -137,7 +137,7 @@ export const Popper = ({
   rounded = true,
   shadow = true,
   role = 'tooltip',
-  bg = 'white',
+  bg = 'light',
   color = 'body',
   container,
   transition = Fade,
