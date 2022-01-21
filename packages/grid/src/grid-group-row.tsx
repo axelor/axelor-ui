@@ -31,7 +31,7 @@ export const GridGroupRow = React.memo(function GridGroupRow(
       >
         <Icon
           className={styles.groupRowIcon}
-          as={state === 'close' ? {BiCaretRightFill} : {BiCaretDownFill}}
+          as={state === 'close' ? BiCaretRightFill : BiCaretDownFill}
           size={1}
           title={state === 'close' ? 'Collapse' : 'Expand'}
         />

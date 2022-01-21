@@ -204,8 +204,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
           show={dropdownOpen}
           onHide={hideDropdown}
           className={styles.headerColumnDropdownList}
-          placement="bottom"
-          alignment="start"
+          placement="bottom-start"
         >
           <React.Fragment>
             {onSort && (
