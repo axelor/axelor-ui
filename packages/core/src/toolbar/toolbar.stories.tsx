@@ -11,7 +11,7 @@ import { Box } from '../box';
 import { Icon } from '../icon';
 import { ButtonGroup } from '../button-group';
 import { Button } from '../button';
-import { OverflowList } from '../overflow-list';
+import { OverflowList, OverflowListTypes } from '../overflow-list';
 import { withStyled } from '../styled';
 
 export default {
@@ -94,19 +94,20 @@ function Toolbar() {
     <OverflowList
       items={toolbar.items}
       as={ButtonGroup}
-      renderList={items =>
+      renderList={(items: OverflowListTypes.OverflowListItemProps[]) =>
         items.map((item, index) => (
           <ToolbarItem key={index} {...(item as TToolbarItem)} />
         ))
       }
-      renderOverflowItem={(props, index, closePopup) => (
-        <OverflowToolbarItem
-          key={index}
-          {...(props as TOverflowToolbarItem)}
-          onClick={closePopup}
-        />
-      )}
-      renderButton={(type, props: any) => {
+      renderOverflowItem={(
+        item: OverflowListTypes.OverflowListItemProps,
+        index: number,
+        closePopup?: () => void
+      ) => <OverflowToolbarItem key={index} {...item} onClick={closePopup} />}
+      renderButton={(
+        type: OverflowListTypes.OverflowListButtonType,
+        props: any
+      ) => {
         if (type === 'dropdown') {
           return <ToolbarItem {...props} icon={BiThreeDotsVertical} />;
         }

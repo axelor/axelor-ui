@@ -10,6 +10,7 @@ import { Button } from '../button';
 import { ButtonGroup } from '../button-group';
 import { Icon } from '../icon';
 import { OverflowList } from './overflow-list';
+import { OverflowListItemProps, OverflowListButtonType } from './types';
 
 export default {
   component: OverflowList,
@@ -43,7 +44,7 @@ export const Dropdown = ({ inverse = false, vertical = false }) => {
       inverse={inverse}
       items={items}
       as={ButtonGroup}
-      renderListItem={(item: any, index) => (
+      renderListItem={(item: OverflowListItemProps, index: number) => (
         <Button
           border
           variant="light"
@@ -53,31 +54,21 @@ export const Dropdown = ({ inverse = false, vertical = false }) => {
           {item.title}
         </Button>
       )}
-      renderOverflowItem={(item: any, index, onClick: any) => (
-        <Box key={index} onClick={onClick}>
-          {item.title}
-        </Box>
-      )}
-      renderButton={(type, props: any) => {
-        if (type === 'scroll-left') {
-          return (
-            <Box
-              d="flex"
-              style={{ justifyContent: 'center' }}
-              alignItems="center"
-              px={2}
-            >
-              <Icon as={BiChevronLeft} {...props} />
-            </Box>
-          );
-        }
-        if (type === 'scroll-right') {
-          return (
-            <Box d="flex" justifyContent="center" alignItems="center" px={2}>
-              <Icon as={BiChevronRight} {...props} />
-            </Box>
-          );
-        }
+      renderOverflowItem={(
+        item: OverflowListItemProps,
+        index: number,
+        closeDropdown?: () => void
+      ) => {
+        return (
+          <Box
+            key={index}
+            onClick={() => closeDropdown && closeDropdown()}
+          >
+            {item.title}
+          </Box>
+        );
+      }}
+      renderButton={(type: OverflowListButtonType, props: any) => {
         if (type === 'dropdown') {
           return (
             <Button
@@ -131,21 +122,33 @@ export const Scroll = () => {
       d="flex"
       scrollable
       items={items}
-      renderList={items =>
-        items.map((item: any, ind) => <Tab key={ind} title={item.title} />)
+      renderList={(items: OverflowListItemProps[]) =>
+        items.map((item, ind) => <Tab key={ind} title={item.title} />)
       }
-      renderButton={(type, props) => {
+      renderButton={(type: OverflowListButtonType, props: any) => {
         if (type === 'scroll-left') {
           return (
-            <Box d="flex" justifyContent="center" alignItems="center" px={2}>
-              <Icon as={BiChevronLeft} {...props} />
+            <Box
+              d="flex"
+              justifyContent="center"
+              alignItems="center"
+              px={2}
+              {...props}
+            >
+              <Icon as={BiChevronLeft} />
             </Box>
           );
         }
         if (type === 'scroll-right') {
           return (
-            <Box d="flex" justifyContent="center" alignItems="center" px={2}>
-              <Icon as={BiChevronRight} {...props} />
+            <Box
+              d="flex"
+              justifyContent="center"
+              alignItems="center"
+              px={2}
+              {...props}
+            >
+              <Icon as={BiChevronRight} />
             </Box>
           );
         }
@@ -161,33 +164,47 @@ export const ScrollVertical = () => {
     .map((_, ind) => ({ title: ` Tab ${ind + 1} ` }));
 
   return (
-    <OverflowList
-      d="flex"
-      flexDirection="column"
-      style={{ maxHeight: 380, width: 200 }}
-      scrollable
-      vertical
-      items={items}
-      renderList={items =>
-        items.map((item: any, ind) => <Tab key={ind} title={item.title} />)
-      }
-      renderButton={(type, props) => {
-        if (type === 'scroll-left') {
-          return (
-            <Box d="flex" justifyContent="center" alignItems="center" px={2}>
-              <Icon as={BiChevronUp} {...props} />
-            </Box>
-          );
+    <Box style={{ width: 200 }}>
+      <OverflowList
+        d="flex"
+        flexDirection="column"
+        style={{ maxHeight: 380 }}
+        scrollable
+        vertical
+        items={items}
+        renderList={(items: OverflowListItemProps[]) =>
+          items.map((item, ind) => <Tab key={ind} title={item.title} />)
         }
-        if (type === 'scroll-right') {
-          return (
-            <Box d="flex" justifyContent="center" alignItems="center" px={2}>
-              <Icon as={BiChevronDown} {...props} />
-            </Box>
-          );
-        }
-        return null;
-      }}
-    />
+        renderButton={(type: OverflowListButtonType, props: any) => {
+          if (type === 'scroll-left') {
+            return (
+              <Box
+                d="flex"
+                justifyContent="center"
+                alignItems="center"
+                px={2}
+                {...props}
+              >
+                <Icon as={BiChevronUp} />
+              </Box>
+            );
+          }
+          if (type === 'scroll-right') {
+            return (
+              <Box
+                d="flex"
+                justifyContent="center"
+                alignItems="center"
+                px={2}
+                {...props}
+              >
+                <Icon as={BiChevronDown} />
+              </Box>
+            );
+          }
+          return null;
+        }}
+      />
+    </Box>
   );
 };

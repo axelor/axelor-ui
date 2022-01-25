@@ -12,7 +12,7 @@ import { MenuDivider } from '../menu/menu-divider';
 import { Menubar } from './menubar';
 import { Button } from '../button';
 import { Icon } from '../icon';
-import { OverflowList } from '../overflow-list';
+import { OverflowList, OverflowListTypes } from '../overflow-list';
 import { Box } from '../box';
 
 export default {
@@ -146,7 +146,10 @@ export const Responsive = () => {
             </Menu>,
           ] as any
         }
-        renderButton={(type: any, props: any) => {
+        renderButton={(
+          type: OverflowListTypes.OverflowListButtonType,
+          props: any
+        ) => {
           if (type === 'dropdown') {
             return (
               <Button {...props}>

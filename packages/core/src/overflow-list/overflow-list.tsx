@@ -1,49 +1,14 @@
 import * as React from 'react';
 import { Box } from '../box';
-import OverflowDropdown, {
-  OverflowDropdownProps,
-  TOverflowListItem,
-} from './overflow-dropdown';
-import OverflowScrollList from './overflow-scroll-list';
-import cssStyles from './overflow-list.module.css';
 import { withStyled } from '../styled';
 import { useStyleNames } from '../system';
 
-export interface OverflowListProps<T>
-  extends Pick<
-    OverflowDropdownProps<TOverflowListItem>,
-    | 'items'
-    | 'renderOverflow'
-    | 'renderOverflowItem'
-    | 'dropdownMenuProps'
-    | 'onOverflowChange'
-  > {
-  scrollable?: boolean;
-  inverse?: boolean;
-  vertical?: boolean;
-  dropdownRef?: React.RefObject<
-    | {
-        compute(): void;
-      }
-    | undefined
-  >;
-  renderList?: (items: T[]) => React.ReactNode;
-  renderListItem?: (
-    item: T,
-    index: number,
-    props?: React.HTMLAttributes<HTMLElement>
-  ) => React.ReactChild;
-  renderButton?: (
-    type: 'scroll-left' | 'scroll-right' | 'dropdown',
-    props?: React.HTMLAttributes<HTMLElement>
-  ) => React.ReactChild | null;
-}
+import OverflowDropdown from './overflow-dropdown';
+import OverflowScrollList from './overflow-scroll-list';
+import cssStyles from './overflow-list.module.css';
+import { OverflowListProps, OverflowListItemProps } from './types';
 
-function RenderListItem({
-  item,
-}: {
-  item: TOverflowListItem | React.ReactChild;
-}) {
+function RenderListItem({ item }: { item: OverflowListItemProps }) {
   return (
     <Box
       p={2}
@@ -52,14 +17,12 @@ function RenderListItem({
       border
       className={cssStyles.defaultItem}
     >
-      {(item as TOverflowListItem).title}
+      {item.title}
     </Box>
   );
 }
 
-export const OverflowList = withStyled(Box)<
-  OverflowListProps<TOverflowListItem | React.ReactChild>
->((props, ref) => {
+export const OverflowList = withStyled(Box)<OverflowListProps>((props, ref) => {
   const {
     as,
     dropdownRef,
@@ -77,7 +40,7 @@ export const OverflowList = withStyled(Box)<
     ...rest
   } = props;
   const Component: any = scrollable ? OverflowScrollList : OverflowDropdown;
-  let children = renderList && renderList(items);
+  let children: any = renderList && renderList(items);
 
   if (!children) {
     children = items.map((item, index) =>

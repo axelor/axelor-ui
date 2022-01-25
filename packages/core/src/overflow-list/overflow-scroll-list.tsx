@@ -4,20 +4,10 @@ import { ReactComponent as BiChevronRight } from 'bootstrap-icons/icons/chevron-
 
 import { Box } from '../box';
 import { Icon } from '../icon';
-import cssStyles from './overflow-list.module.css';
-import styled, { withStyled } from '../styled';
 import { IconProps } from '../icon/icon';
-
-export interface OverflowScrollListProps {
-  className?: string;
-  inverse?: boolean;
-  vertical?: boolean;
-  children?: React.ReactNode;
-  renderButton?: (
-    type: 'scroll-left' | 'scroll-right',
-    props: React.HTMLAttributes<HTMLElement>
-  ) => React.ReactNode;
-}
+import { OverflowScrollListProps } from './types';
+import styled, { withStyled } from '../styled';
+import cssStyles from './overflow-list.module.css';
 
 const Icons: Record<string, IconProps['as']> = {
   'chevron-right': BiChevronRight,

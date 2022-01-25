@@ -1,5 +1,5 @@
 import React from 'react';
-import { OverflowList } from '../overflow-list';
+import { OverflowList, OverflowListTypes } from '../overflow-list';
 
 export interface TabsProps {
   children: React.ReactElement[];
@@ -57,15 +57,20 @@ export function Tabs({
       ref={setOverflowListRef}
       d="flex"
       scrollable
-      items={React.Children.map(children, (element, index) =>
-        React.cloneElement(element, {
-          active: index === activeTab,
-          index,
-          className: tabClassName,
-          onClick: selectTab,
-        })
-      )}
-      renderButton={(type, props) => {
+      items={
+        React.Children.map(children, (element, index) =>
+          React.cloneElement(element, {
+            active: index === activeTab,
+            index,
+            className: tabClassName,
+            onClick: selectTab,
+          })
+        ) as any
+      }
+      renderButton={(
+        type: OverflowListTypes.OverflowListButtonType,
+        props: any
+      ) => {
         if (type === 'scroll-left' && scrollLeft) {
           return React.cloneElement(scrollLeft, props);
         }

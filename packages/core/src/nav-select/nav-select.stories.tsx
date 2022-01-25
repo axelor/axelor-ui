@@ -17,7 +17,7 @@ const items = [
 export const Basic = () => {
   const [value, setValue] = React.useState<any>(null);
   return (
-    <Box style={{ marginLeft: 400 }}>
+    <Box style={{ marginLeft: 400, minWidth: 100 }}>
       <NavSelect items={items} value={value} onChange={setValue} />
     </Box>
   );
@@ -26,9 +26,8 @@ export const Basic = () => {
 export const Disabled = () => {
   const [value, setValue] = React.useState<any>(items[0]);
   return (
-    <Box style={{ marginLeft: 400 }}>
+    <Box style={{ marginLeft: 400, minWidth: 100 }}>
       <NavSelect disabled items={items} value={value} onChange={setValue} />
     </Box>
   );
 };
-

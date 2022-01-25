@@ -3,7 +3,7 @@ import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-d
 
 import { Box } from '../box/box';
 import { Icon } from '../icon';
-import { OverflowList } from '../overflow-list';
+import { OverflowList, OverflowListTypes } from '../overflow-list';
 import { MenuItem } from '../menu/menu-item';
 import { MenuProps } from '../menu/menu';
 import { styleNames } from '../styles';
@@ -85,7 +85,10 @@ export function NavSelect({
               onOverflowChange: setOffset,
             }
           : {})}
-        renderListItem={(_item, index) => {
+        renderListItem={(
+          _item: OverflowListTypes.OverflowListItemProps,
+          index: number
+        ) => {
           const item = _item as TNavSelectItem;
           const selectedInListItem =
             selectedHidden &&
@@ -106,7 +109,10 @@ export function NavSelect({
             </NavSelectItem>
           );
         }}
-        renderOverflow={(items, closeDropdown) => {
+        renderOverflow={(
+          items: OverflowListTypes.OverflowListItemProps[],
+          closeDropdown?: () => void
+        ) => {
           return (items as TNavSelectItem[]).map((item, index) => {
             return (
               <MenuItem
@@ -127,7 +133,10 @@ export function NavSelect({
             );
           });
         }}
-        renderButton={(type, props: any) => {
+        renderButton={(
+          type: OverflowListTypes.OverflowListButtonType,
+          props: any
+        ) => {
           if (type === 'dropdown') {
             const selectedInDropdown = offset < items.length && selectedHidden;
             return (

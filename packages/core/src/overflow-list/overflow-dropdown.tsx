@@ -1,60 +1,30 @@
 import * as React from 'react';
+import isPropValid from '@emotion/is-prop-valid';
 import { ReactComponent as BiThreeDots } from 'bootstrap-icons/icons/three-dots.svg';
 
 import { Fade } from '../fade';
 import { Box } from '../box';
 import { Icon } from '../icon';
-import { Menu, MenuProps } from '../menu/menu';
+import { Menu } from '../menu/menu';
 import { MenuItem } from '../menu/menu-item';
-import cssStyles from './overflow-list.module.css';
-import styled, { withStyled } from '../styled';
 import { styleNames } from '../styles';
-import isPropValid from '@emotion/is-prop-valid';
+import { OverflowListItemProps, OverflowDropdownProps } from './types';
+import * as TYPES from './types';
+import styled, { withStyled } from '../styled';
+import cssStyles from './overflow-list.module.css';
 
-type OverflowState = {
-  measure: boolean;
-  offset: number;
-  listOffset: number;
-  compute: number;
-};
+const RESIZE_DELAY = 16;
 
-type Mode = 'shrink' | 'grow';
-type Action = Mode | 'measure' | 'compute';
-
-const MODE: Record<string, Mode> = {
+const MODE: Record<string, TYPES.Mode> = {
   SHRINK: 'shrink',
   GROW: 'grow',
 };
 
-const ACTIONS: Record<string, Action> = {
+const ACTIONS: Record<string, TYPES.Action> = {
   ...MODE,
   MEASURE: 'measure',
   COMPUTE: 'compute',
 };
-
-const RESIZE_DELAY = 16;
-
-export type TOverflowListItem = { title: string; icon?: string };
-
-export interface OverflowDropdownProps<T> {
-  className?: string;
-  inverse?: boolean;
-  vertical?: boolean;
-  items: T[];
-  children: React.ReactElement;
-  dropdownMenuProps?: Partial<MenuProps>;
-  renderOverflow?: (items: T[], closeDropdown?: () => void) => React.ReactNode;
-  renderOverflowItem?: (
-    item: T,
-    index: number,
-    closeDropdown?: () => void
-  ) => React.ReactNode;
-  renderButton?: (
-    type: 'dropdown',
-    props: React.HTMLAttributes<HTMLElement>
-  ) => React.ReactNode;
-  onOverflowChange?: (offset: number) => void;
-}
 
 const DropdownButton = withStyled(Box)((props, ref) => {
   return (
@@ -76,11 +46,11 @@ function DropdownMenuItem({
   onClick,
 }: {
   onClick: () => void;
-  item: TOverflowListItem | React.ReactChild;
+  item: OverflowListItemProps;
 }) {
   return (
     <MenuItem as="button" className={cssStyles.defaultItem} onClick={onClick}>
-      {React.isValidElement(item) ? item : (item as TOverflowListItem).title}
+      {React.isValidElement(item) ? item : item.title}
     </MenuItem>
   );
 }
@@ -88,14 +58,12 @@ function DropdownMenuItem({
 const DropdownList = styled('div', {
   shouldForwardProp: prop =>
     prop === 'onOverflowChange' ? false : isPropValid(prop),
-})<OverflowDropdownProps<TOverflowListItem | React.ReactChild>>(
-  ({ vertical }) => [
-    cssStyles.dropdownList,
-    {
-      [cssStyles.vertical]: vertical,
-    },
-  ]
-);
+})<OverflowDropdownProps>(({ vertical }) => [
+  cssStyles.dropdownList,
+  {
+    [cssStyles.vertical]: vertical,
+  },
+]);
 
 export const OverflowDropdown = withStyled(DropdownList)((props, ref) => {
   const {
@@ -113,14 +81,14 @@ export const OverflowDropdown = withStyled(DropdownList)((props, ref) => {
   const listContainer = React.useRef<HTMLDivElement | null>(null);
   const dropdownRef = React.useRef<HTMLElement | null>(null);
 
-  const mode = React.useRef<Mode>(MODE.SHRINK);
+  const mode = React.useRef<TYPES.Mode>(MODE.SHRINK);
   const maxOffset = items.length;
 
   const [popover, setPopover] = React.useState<Record<'target', any> | null>(
     null
   );
   const [{ measure, compute, offset, listOffset }, dispatch] = React.useReducer(
-    (state: OverflowState, action: Action) => {
+    (state: TYPES.OverflowState, action: TYPES.Action) => {
       switch (action) {
         case ACTIONS.GROW:
         case ACTIONS.SHRINK:
@@ -285,7 +253,7 @@ export const OverflowDropdown = withStyled(DropdownList)((props, ref) => {
     if (offset >= items.length) return null;
 
     const props = {
-      // ref: dropdownRef,
+      className: cssStyles.dropdownIcon,
       onClick: (e: React.SyntheticEvent) =>
         popover ? closeDropdown() : openDropdown(e),
     };

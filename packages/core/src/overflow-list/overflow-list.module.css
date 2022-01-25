@@ -43,6 +43,9 @@
   cursor: pointer;
   position: relative;
 }
+.dropdownIcon > * {
+  pointer-events: none;
+}
 
 .hidden {
   visibility: hidden;
