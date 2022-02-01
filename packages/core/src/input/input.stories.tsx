@@ -3,6 +3,7 @@ import { Meta } from '@storybook/react';
 
 import { Box } from '../box';
 import { Input, InputProps } from './input';
+import { withStyled } from '../styled';
 
 export default {
   component: Input,
@@ -44,7 +45,7 @@ export const Readonly = () => {
   );
 };
 
-function Range({ value: valueProp, ...rest }: InputProps) {
+const Range = withStyled(Input)(({ value: valueProp, ...rest }) => {
   const [value, setValue] = useState(valueProp);
 
   const handleChange = (event: any) => {
@@ -61,9 +62,9 @@ function Range({ value: valueProp, ...rest }: InputProps) {
       {...rest}
     />
   );
-}
+});
 
-function Checkbox(props: InputProps) {
+const Checkbox = withStyled(Input)(props => {
   const [checked, setChecked] = useState(false);
 
   const handleChange = (event: any) => {
@@ -80,7 +81,7 @@ function Checkbox(props: InputProps) {
       />
     </Box>
   );
-}
+});
 
 function FormControl({ label, children }: any) {
   return (
