@@ -7,25 +7,19 @@ type PropsOf<
   C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>
 > = JSX.LibraryManagedAttributes<C, React.ComponentProps<C>>;
 
-type Merge<P, O> = keyof O extends never
-  ? P
-  : keyof P extends never
-  ? O
-  : keyof O & keyof P extends never
-  ? P & O
-  : P extends O
-  ? P & O
-  : Omit<P, keyof O & keyof P> & O;
+type Merge<P, O> = Omit<P, keyof O> & O;
 
 export type StyledComponentProps<
   C extends React.ElementType,
-  P extends {}
-> = Merge<PropsOf<C>, P & { as?: C | React.ElementType }>;
+  P extends {},
+  A extends React.ElementType = React.ElementType
+> = Merge<PropsOf<C>, P> & { as?: A };
 
 export interface StyledComponent<C extends React.ElementType, P extends {}>
   extends React.FC<StyledComponentProps<C, P>> {
+  (props: StyledComponentProps<C, P>): JSX.Element | null;
   <As extends React.ElementType = C>(
-    props: StyledComponentProps<As, P>
+    props: StyledComponentProps<As, P, As>
   ): JSX.Element | null;
 }
 
