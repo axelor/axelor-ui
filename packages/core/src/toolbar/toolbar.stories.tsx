@@ -13,6 +13,7 @@ import { ButtonGroup } from '../button-group';
 import { Button } from '../button';
 import { OverflowList, OverflowListTypes } from '../overflow-list';
 import { withStyled } from '../styled';
+import { IconProps } from '../icon/icon';
 
 export default {
   component: OverflowList,
@@ -21,7 +22,7 @@ export default {
 
 type TToolbarItem = {
   title: string;
-  icon?: string;
+  icon?: IconProps['as'];
   renderer?: React.ReactNode;
 };
 
@@ -51,7 +52,6 @@ const ToolbarItem = withStyled(Button)<TToolbarItem>(
     <Button
       {...rest}
       ref={ref}
-      key={icon}
       variant="light"
       d="flex"
       alignItems="center"
@@ -71,7 +71,6 @@ interface TOverflowToolbarItem extends TToolbarItem {
 function OverflowToolbarItem({ title, icon, onClick }: TOverflowToolbarItem) {
   return (
     <Box
-      key={icon}
       d="flex"
       alignItems="center"
       style={{ minWidth: 100, cursor: 'pointer' }}

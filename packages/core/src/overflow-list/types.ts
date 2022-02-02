@@ -1,3 +1,4 @@
+import { IconProps } from '../icon/icon';
 import { MenuProps } from '../menu/menu';
 
 export type OverflowState = {
@@ -16,7 +17,7 @@ export type OverflowListButtonType =
 
 export interface OverflowListItemProps {
   title: string;
-  icon?: string;
+  icon?: IconProps['as'];
   [propertyName: string]: any;
 }
 
