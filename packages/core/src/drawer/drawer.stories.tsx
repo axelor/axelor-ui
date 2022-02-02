@@ -96,7 +96,13 @@ export const Basic = () => {
   );
 };
 
-function DrawerDemo({ placement, clickAway }: any) {
+function DrawerDemo({
+  placement,
+  clickAway,
+}: {
+  placement: 'start' | 'top' | 'end' | 'bottom';
+  clickAway?: boolean;
+}) {
   const [show, setShow] = React.useState<boolean>(false);
 
   const showDrawer = () => {
@@ -164,9 +170,10 @@ export const Positions = () => {
         Close on click away
       </InputLabel>
       <br />
-      {['start', 'top', 'end', 'bottom'].map(placement => (
-        <DrawerDemo {...{ key: placement, placement, clickAway }} />
-      ))}
+      <DrawerDemo placement={'start'} clickAway={clickAway} />
+      <DrawerDemo placement={'top'} clickAway={clickAway} />
+      <DrawerDemo placement={'end'} clickAway={clickAway} />
+      <DrawerDemo placement={'bottom'} clickAway={clickAway} />
     </Box>
   );
 };

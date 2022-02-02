@@ -3,9 +3,10 @@ import * as React from 'react';
 
 import { Box } from '../box';
 import { Button } from '../button';
-import { Menu } from './menu';
+import { Menu, MenuProps } from './menu';
 import { MenuHeader } from './menu-header';
 import { MenuItem } from './menu-item';
+import styled from '../styled';
 
 export default {
   component: Menu,
@@ -35,15 +36,9 @@ export const Basic = () => {
         Menu
       </Button>
       <Menu navigation target={target} show={show} onHide={hideMenu}>
-        <MenuItem href="#option1" onClick={hideMenu}>
-          Option 1
-        </MenuItem>
-        <MenuItem href="#option2" onClick={hideMenu}>
-          Option 2
-        </MenuItem>
-        <MenuItem href="#option3" onClick={hideMenu}>
-          Option 3
-        </MenuItem>
+        <MenuItem onClick={hideMenu}>Option 1</MenuItem>
+        <MenuItem onClick={hideMenu}>Option 2</MenuItem>
+        <MenuItem onClick={hideMenu}>Option 3</MenuItem>
       </Menu>
     </Box>
   );
@@ -73,39 +68,28 @@ export const Header = () => {
       </Button>
       <Menu navigation target={target} show={show} onHide={hideMenu}>
         <MenuHeader>Options</MenuHeader>
-        <MenuItem href="#option1" onClick={hideMenu}>
-          Option 1
-        </MenuItem>
-        <MenuItem href="#option2" onClick={hideMenu}>
-          Option 2
-        </MenuItem>
-        <MenuItem href="#option3" onClick={hideMenu}>
-          Option 3
-        </MenuItem>
+        <MenuItem onClick={hideMenu}>Option 1</MenuItem>
+        <MenuItem onClick={hideMenu}>Option 2</MenuItem>
+        <MenuItem onClick={hideMenu}>Option 3</MenuItem>
       </Menu>
     </Box>
   );
 };
 
-const MyButton = ({ children, onClick }: any) => {
-  return (
-    <Button
-      m={2}
-      variant="primary"
-      textTransform="capitalize"
-      onClick={onClick}
-    >
-      {children}
-    </Button>
-  );
-};
+const MyButton = styled(Button)(
+  ({ m = 2, variant = 'primary', textTransform = 'capitalize' }) => ({
+    m,
+    variant,
+    textTransform,
+  })
+);
 
 export const Positions = () => {
   const [open, setOpen] = useState(false);
   const [targetEl, setTargetEl] = useState<HTMLButtonElement | null>(null);
-  const [menuProps, setMenuProps] = useState<any>({});
+  const [menuProps, setMenuProps] = useState<Partial<MenuProps>>({});
   const refs = useRef<{
-    timer?: any;
+    timer?: number;
     clicked: Boolean;
   }>({
     clicked: false,
@@ -117,11 +101,11 @@ export const Positions = () => {
     setTargetEl(e.currentTarget);
     setMenuProps({
       target: e.currentTarget,
-      placement,
+      placement: placement as MenuProps['placement'],
     });
     clearTimeout(refs.current.timer);
     refs.current.clicked = true;
-    refs.current.timer = setTimeout(() => {
+    refs.current.timer = window.setTimeout(() => {
       refs.current.clicked = false;
     }, 10);
   };
@@ -142,15 +126,9 @@ export const Positions = () => {
         show={open}
         onHide={hide}
       >
-        <MenuItem href="#option1" onClick={hide}>
-          Option 1
-        </MenuItem>
-        <MenuItem href="#option2" onClick={hide}>
-          Option 2
-        </MenuItem>
-        <MenuItem href="#option3" onClick={hide}>
-          Option 3
-        </MenuItem>
+        <MenuItem onClick={hide}>Option 1</MenuItem>
+        <MenuItem onClick={hide}>Option 2</MenuItem>
+        <MenuItem onClick={hide}>Option 3</MenuItem>
       </Menu>
       <Box d="flex" justifyContent="center">
         <MyButton onClick={handleClick}>top-start</MyButton>

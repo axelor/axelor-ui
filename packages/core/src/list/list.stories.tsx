@@ -14,6 +14,7 @@ import { Box } from '../box';
 import { Icon } from '../icon';
 import { List, ListItem } from './list';
 import { IconProps } from '../icon/icon';
+import { withStyled } from '../styled';
 
 export default {
   component: List,
@@ -163,7 +164,7 @@ function ListItemIcon({ icon }: { icon: IconProps['as'] }) {
   );
 }
 
-function NestedList({ children, ...props }: any) {
+const NestedList = withStyled(List)(({ children, ...props }) => {
   const [activeMenuItem, setActiveMenuItem] = useState<string | null>(null);
 
   function open(item: string) {
@@ -188,7 +189,7 @@ function NestedList({ children, ...props }: any) {
       })}
     </List>
   );
-}
+});
 
 function NestedListItem({
   children,

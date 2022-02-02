@@ -55,7 +55,7 @@ export const Menu = withStyled(MenuContent)(
     },
     ref
   ) => {
-    const [buttonRef, setButtonRef] = useState<any>(null);
+    const [buttonRef, setButtonRef] = useState<HTMLButtonElement | null>(null);
     return (
       <>
         {text && (

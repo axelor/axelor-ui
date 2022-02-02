@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from '../box';
-import { NavSelect } from '../nav-select';
+import { TNavSelectItem, NavSelect } from './nav-select';
 
 export default {
   component: NavSelect,
@@ -15,7 +15,7 @@ const items = [
 ];
 
 export const Basic = () => {
-  const [value, setValue] = React.useState<any>(null);
+  const [value, setValue] = React.useState<TNavSelectItem | null>(null);
   return (
     <Box style={{ marginLeft: 400, minWidth: 100 }}>
       <NavSelect items={items} value={value} onChange={setValue} />
@@ -24,7 +24,7 @@ export const Basic = () => {
 };
 
 export const Disabled = () => {
-  const [value, setValue] = React.useState<any>(items[0]);
+  const [value, setValue] = React.useState<TNavSelectItem>(items[0]);
   return (
     <Box style={{ marginLeft: 400, minWidth: 100 }}>
       <NavSelect disabled items={items} value={value} onChange={setValue} />

@@ -15,16 +15,18 @@ export const FocusTrap = React.forwardRef<HTMLElement, FocusTrapProps>(
     const handleRef = useRefs(ref, children?.ref, childrenRef);
 
     React.useEffect(() => {
-      const children: any = childrenRef.current;
+      const children: HTMLElement | null = childrenRef.current;
       if (children && enabled) {
-        const trap: any = focusTrap.createFocusTrap(children, {
+        const trap = focusTrap.createFocusTrap(children, {
           returnFocusOnDeactivate: true,
           allowOutsideClick: true,
           fallbackFocus: children,
           escapeDeactivates: false,
         });
         trap.activate();
-        return () => trap.deactivate();
+        return () => {
+          trap.deactivate();
+        };
       }
     }, [enabled]);
 

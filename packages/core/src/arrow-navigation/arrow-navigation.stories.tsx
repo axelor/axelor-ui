@@ -3,22 +3,20 @@ import { useState, useCallback } from 'react';
 import { Box } from '../box';
 import { Button } from '../button';
 import { ArrowNavigation } from './arrow-navigation';
+import styled from '../styled';
 
 export default {
   component: ArrowNavigation,
   title: 'Core/ArrowNavigation',
 };
 
-function CustomButton(props: any) {
-  return (
-    <Button
-      m={1}
-      variant="primary"
-      {...props}
-      style={{ width: 75, ...props.style }}
-    />
-  );
-}
+const CustomButton = styled(Button)(
+  ({ m = 1, variant = 'primary', style }) => ({
+    m,
+    variant,
+    style: { width: 75, ...style },
+  })
+);
 
 export const Basic = function () {
   const [box, setBox] = useState<HTMLElement | null>(null);
