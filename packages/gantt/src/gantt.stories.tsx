@@ -1,11 +1,12 @@
 import React from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
-
 import { Box } from '@axelor-ui/core';
+import { styleNames } from '@axelor-ui/core/styles';
+
 import { Gantt } from './gantt';
 import { GANTT_TYPES } from './utils';
-import { styleNames } from '@axelor-ui/core/styles';
+import * as TYPES from './types';
 
 import response from './data';
 
@@ -22,7 +23,9 @@ const connectSetTypes: any = {
 };
 
 export const Basic = () => {
-  const [records, setRecords] = React.useState(response.data);
+  const [records, setRecords] = React.useState<TYPES.GanttRecord[]>(
+    response.data
+  );
   const [view, setView] = React.useState(GANTT_TYPES.MONTH);
   const handleRecordUpdate = React.useCallback((record, changes) => {
     setRecords(records => {
@@ -35,11 +38,13 @@ export const Basic = () => {
       setRecords(records => {
         const set = connectSetTypes[`${source}_${target}`];
         const index = records.findIndex(r => r.id === finishId);
-        const oldSet = records[index][set] || [];
+        const oldSet: TYPES.Record[] = (records[index] as any)[set] || [];
         if (!oldSet.find(obj => obj.id === startId)) {
           records[index] = {
             ...records[index],
-            [set]: (records[index][set] || []).concat([{ id: startId }]),
+            [set]: ((records[index] as any)[set] || []).concat([
+              { id: startId },
+            ]),
           };
           return [...records];
         }
@@ -56,12 +61,12 @@ export const Basic = () => {
         setRecords(records => {
           const set = connectSetTypes[`${source}_${target}`];
           const index = records.findIndex(r => r.id === finishId);
-          const oldSet = records[index][set] || [];
+          const oldSet: TYPES.Record[] = (records[index] as any)[set] || [];
           if (oldSet.find(obj => obj.id === startId)) {
             records[index] = {
               ...records[index],
-              [set]: (records[index][set] || []).filter(
-                x => `${x.id}` !== `${startId}`
+              [set]: ((records[index] as any)[set] || []).filter(
+                (x: TYPES.Record) => `${x.id}` !== `${startId}`
               ),
             };
             return [...records];

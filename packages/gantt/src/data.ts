@@ -1,4 +1,4 @@
-function sortByName(r1, r2) {
+function sortByName(r1: any, r2: any) {
   if (r1.name < r2.name) return -1;
   if (r1.name > r2.name) return 1;
   return 0;

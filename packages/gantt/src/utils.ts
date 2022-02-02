@@ -60,8 +60,7 @@ function getMomentList(
 
     const hours = moment.duration(end.diff(start)).asHours();
     const highlight =
-      format === 'ddd DD' &&
-      ['Sat', 'Sun'].includes(current.format('ddd'));
+      format === 'ddd DD' && ['Sat', 'Sun'].includes(current.format('ddd'));
 
     const title =
       typeof format === 'function'
@@ -123,7 +122,7 @@ export function getGraphConfig(
   };
 }
 
-function getBendingPoints(coordinates) {
+function getBendingPoints(coordinates: any) {
   const { sx, sy, ex, ey, sheight, sourceStart, targetEnd } = coordinates;
   const points = [];
   const offset = 20;
