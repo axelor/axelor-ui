@@ -118,6 +118,23 @@ const createStyled: CreateStyled =
     return Styled as unknown as StyledComponent<any, any>;
   };
 
+/**
+ * Create a `forwardRef` wrapper for the given styled component.
+ *
+ * The returned function accepts a `forwardRef` render function with
+ * the signature `(props, ref) => JSX.Element | null`.
+ *
+ * Example:
+ *
+ * ```jsx
+ * const FancyButton = withStyled(Button)((props, ref) => {
+ *   return <Button ref={ref} {...props}/>;
+ * });
+ * ```
+ *
+ * @param _ the styled component to wrap
+ * @returns function accepting `forwardRef` render function
+ */
 export const withStyled =
   <C extends StyledComponent<any, any>>(_: C) =>
   <P extends {}>(
