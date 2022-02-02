@@ -144,7 +144,7 @@ export const ColumnEditor = () => (
         title: 'Todo',
         records: getRecords(3),
         renderer: ({ RecordList, column }) => (
-          <Box p={2} bg="white" border rounded me={2}>
+          <Box p={2} bg='light' border rounded me={2}>
             <Box as="h5" p={2}>
               {column.title}
             </Box>
@@ -249,7 +249,7 @@ const Record = ({ record, column, onEdit, onDelete }: any) => {
   };
 
   return (
-    <Box p={2} mt={2} shadow="sm" rounded bg="white">
+    <Box p={2} mt={2} shadow="sm" rounded style={{ backgroundColor: 'white' }}>
       <Box pb={1} pt={1} d="flex" justifyContent="space-between">
         <Box as="p">{record.title}</Box>
         <Box>

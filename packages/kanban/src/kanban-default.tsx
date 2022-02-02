@@ -24,7 +24,7 @@ export const DefaultColumn: ColumnRenderer = ({
 
 export const DefaultRecord: RecordRenderer = ({ record }) => {
   return (
-    <Box p={2} mt={2} bg="white" shadow="sm" rounded>
+    <Box p={2} mt={2} shadow="sm" rounded className={styles.record}>
       <Box as="p" pb={1} pt={1}>
         {record.title}
       </Box>
