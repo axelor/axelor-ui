@@ -15,7 +15,7 @@ export interface GridColumnProps {
     column: TYPES.GridColumn,
     columnIndex: number
   ) => void;
-  children?: any;
+  children?: React.ReactNode;
 }
 
 export function GridColumn(props: GridColumnProps) {

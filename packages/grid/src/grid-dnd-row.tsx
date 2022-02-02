@@ -2,7 +2,7 @@
  * @title Row Reorder
  */
 import React from 'react';
-import { useDrag, useDrop } from 'react-dnd';
+import { ConnectDragSource, DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
 import { Icon } from '@axelor-ui/core';
 import { XYCoord } from 'dnd-core';
 import { ReactComponent as BiList } from 'bootstrap-icons/icons/list.svg';
@@ -13,7 +13,7 @@ const ItemTypes = {
   CARD: 'grid_row',
 };
 
-const GridDNDRowContext = React.createContext(React.createRef());
+const GridDNDRowContext = React.createContext<ConnectDragSource | null>(null);
 
 let currentMove: any[] | null = null;
 
@@ -80,7 +80,7 @@ export function GridDNDRow(props: GridRowProps) {
       collect: monitor => ({
         isDragging: monitor.isDragging(),
       }),
-      end: (item: GridRow, monitor: any) => {
+      end: (item: GridRow, monitor: DragSourceMonitor) => {
         if (monitor.didDrop() && currentMove) {
           onMove && onMove(currentMove[0], currentMove[1], currentMove[2]);
         }
@@ -106,7 +106,11 @@ export function GridDNDRow(props: GridRowProps) {
   );
 }
 
-export function GridDNDColumn({ className, style, onClick }: any) {
+export function GridDNDColumn({
+  className,
+  style,
+  onClick,
+}: React.HTMLAttributes<HTMLDivElement>) {
   const dragRef = React.useContext(GridDNDRowContext);
   return (
     <div

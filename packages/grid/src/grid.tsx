@@ -868,14 +868,14 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       });
     };
 
-    const handleScroll = e => {
+    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
       const container = containerRef.current;
       const header = container && container.querySelector(`.${styles.header}`);
       if (header && stickyHeader) {
         if (!refs.current.stickOffset) {
           refs.current.stickOffset = header.offsetTop + header.offsetHeight;
         }
-        const isStick = e.target.scrollTop > refs.current.stickOffset;
+        const isStick = e.currentTarget.scrollTop > refs.current.stickOffset;
         if (isStick) {
           header.classList.add(styles.shadow);
         } else {
