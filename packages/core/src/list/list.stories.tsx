@@ -164,7 +164,7 @@ function ListItemIcon({ icon }: { icon: IconProps['as'] }) {
   );
 }
 
-const NestedList = withStyled(List)(({ children, ...props }) => {
+const NestedList = withStyled(List)(({ children, ...props }, ref) => {
   const [activeMenuItem, setActiveMenuItem] = useState<string | null>(null);
 
   function open(item: string) {
@@ -176,7 +176,7 @@ const NestedList = withStyled(List)(({ children, ...props }) => {
   }
 
   return (
-    <List style={{ paddingLeft: 16 }} {...props}>
+    <List ref={ref} style={{ paddingLeft: 16 }} {...props}>
       {React.Children.map(children, item => {
         if (item && (item as ReactElement).type === NestedListItem) {
           return React.cloneElement(item as ReactElement, {
