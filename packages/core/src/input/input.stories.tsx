@@ -45,7 +45,7 @@ export const Readonly = () => {
   );
 };
 
-const Range = withStyled(Input)(({ value: valueProp, ...rest }) => {
+const Range = withStyled(Input)(({ value: valueProp, ...rest }, ref) => {
   const [value, setValue] = useState(valueProp);
 
   const handleChange = (event: any) => {
@@ -57,6 +57,7 @@ const Range = withStyled(Input)(({ value: valueProp, ...rest }) => {
       type="range"
       min="0"
       max="100"
+      ref={ref}
       value={value}
       onChange={handleChange}
       {...rest}
@@ -64,7 +65,7 @@ const Range = withStyled(Input)(({ value: valueProp, ...rest }) => {
   );
 });
 
-const Checkbox = withStyled(Input)(props => {
+const Checkbox = withStyled(Input)((props, ref) => {
   const [checked, setChecked] = useState(false);
 
   const handleChange = (event: any) => {
@@ -74,6 +75,7 @@ const Checkbox = withStyled(Input)(props => {
   return (
     <Box>
       <Input
+        ref={ref}
         type="checkbox"
         checked={checked}
         onChange={handleChange}
