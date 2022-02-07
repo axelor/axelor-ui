@@ -14,22 +14,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "baseUrl": ".",
-    "paths": {
-      "@axelor-ui/core": ["./packages/core/src"],
-      "@axelor-ui/core/hooks": ["./packages/core/src/hooks"],
-      "@axelor-ui/core/styles": ["./packages/core/src/styles"],
-      "@axelor-ui/grid": ["./packages/grid/src"]
-    }
+    "jsx": "react-jsx"
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-  ],
-  "exclude": [
-    "node_modules",
-    "**/lib",
-    "**/dist"
-  ]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "**/lib", "**/dist"]
 }

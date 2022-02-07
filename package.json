@@ -11,6 +11,16 @@
   "scripts": {
     "preinstall": "node scripts/check-yarn.js",
     "format": "prettier -w '**/*.{ts,tsx,js,jsx,json,css,scss}'",
-    "storybook": "yarn workspace stories run storybook"
+    "storybook": "yarn workspace stories run storybook",
+    "build": "yarn workspaces run build",
+    "clean": "yarn workspaces run clean"
+  },
+  "devDependencies": {
+    "commander": "^9.0.0",
+    "fast-glob": "^3.2.11",
+    "fs-extra": "^10.0.0",
+    "prettier": "^2.5.1",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.5.5"
   }
 }
