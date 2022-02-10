@@ -3,7 +3,16 @@
   "version": "1.0.0",
   "author": "Axelor",
   "license": "AGPL-3.0-only",
-  "scripts": {},
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "node ../../scripts/build --out-dir dist .",
+    "clean": "rimraf dist"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -11,9 +20,10 @@
     ]
   },
   "dependencies": {
-    "@axelor-ui/core": "*",
+    "cpy-cli": "^3.1.1",
     "faker": "^5.5.3",
-    "react-beautiful-dnd": "^13.1.0"
+    "react-beautiful-dnd": "^13.1.0",
+    "rimraf": "^3.0.2"
   },
   "devDependencies": {
     "@types/faker": "^5.5.8",
@@ -27,5 +37,8 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "typescript": "^4.4.4"
+  },
+  "peerDependencies": {
+    "@axelor-ui/core": "*"
   }
 }
