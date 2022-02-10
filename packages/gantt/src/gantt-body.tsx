@@ -1,5 +1,5 @@
 import React from 'react';
-import { styleNames } from '@axelor-ui/core/styles';
+import { styleNames } from '@axelor-ui/core';
 import { useDrop } from 'react-dnd';
 
 import * as TYPES from './types';

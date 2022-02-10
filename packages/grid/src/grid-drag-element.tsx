@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { styleNames } from '@axelor-ui/core/styles';
+import { styleNames } from '@axelor-ui/core';
 import * as TYPES from './types';
 import classes from './grid.module.css';
 

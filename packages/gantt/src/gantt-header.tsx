@@ -1,6 +1,6 @@
 import React from 'react';
 import * as TYPES from './types';
-import { styleNames } from '@axelor-ui/core/styles';
+import { styleNames } from '@axelor-ui/core';
 import classes from './gantt.module.css';
 
 export const RenderList = React.memo(function RenderList({

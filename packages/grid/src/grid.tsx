@@ -1,7 +1,7 @@
 import React from 'react';
 import produce from 'immer';
-import { useRefs } from '@axelor-ui/core/hooks';
-import { styleNames } from '@axelor-ui/core/styles';
+import { useRefs } from '@axelor-ui/core';
+import { styleNames } from '@axelor-ui/core';
 
 import { GridGroup } from './grid-group';
 import { GridHeader } from './grid-header';

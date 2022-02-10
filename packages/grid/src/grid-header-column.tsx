@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Divider, Input, Icon, Menu, MenuItem } from '@axelor-ui/core';
-import { styleNames } from '@axelor-ui/core/styles';
+import { styleNames } from '@axelor-ui/core';
 import { ReactComponent as BiSortUpAlt } from 'bootstrap-icons/icons/sort-up-alt.svg';
 import { ReactComponent as BiSortDownAlt } from 'bootstrap-icons/icons/sort-down-alt.svg';
 import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-down-fill.svg';

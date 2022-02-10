@@ -5,7 +5,7 @@ import React from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { Box, FocusTrap, Input } from '@axelor-ui/core';
-import { styleNames } from '@axelor-ui/core/styles';
+import { styleNames } from '@axelor-ui/core';
 import { Grid } from '../grid';
 import { GridState } from '../types';
 

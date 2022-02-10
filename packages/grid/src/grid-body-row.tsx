@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input } from '@axelor-ui/core';
-import { styleNames } from '@axelor-ui/core/styles';
+import { styleNames } from '@axelor-ui/core';
 
 import { GridColumn } from './grid-column';
 import { isRowCheck } from './utils';

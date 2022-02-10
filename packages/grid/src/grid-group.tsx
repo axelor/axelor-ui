@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@axelor-ui/core';
-import { styleNames } from '@axelor-ui/core/styles';
+import { styleNames } from '@axelor-ui/core';
 import { ReactComponent as BiArrowUp } from 'bootstrap-icons/icons/arrow-up.svg';
 import { ReactComponent as BiArrowDown } from 'bootstrap-icons/icons/arrow-down.svg';
 import { ReactComponent as BiX } from 'bootstrap-icons/icons/x.svg';
