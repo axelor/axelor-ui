@@ -51,7 +51,7 @@ export const ArrowNavigation = React.forwardRef(
           e.preventDefault();
         }
 
-        function perform(activeElement: HTMLElement) {
+        const perform = (activeElement: HTMLElement) => {
           let element: any = null;
 
           if (e.key === prevKey) {
@@ -69,7 +69,7 @@ export const ArrowNavigation = React.forwardRef(
           } else if (element) {
             (element as HTMLElement).focus();
           }
-        }
+        };
 
         perform(activeElement);
       } else if (elements) {
