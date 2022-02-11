@@ -64,9 +64,38 @@ async function doCopy(dir, out) {
   );
 }
 
+async function doPackage(dir, out) {
+  const pkgPath = path.join(dir, 'package.json');
+  const newPath = path.join(out, 'package.json');
+  const pkgData = await fse.readJSON(pkgPath, {
+    encoding: 'utf8',
+  });
+
+  const { main, files, scripts, devDependencies, ...othData } = pkgData;
+  const newData = {
+    ...othData,
+  };
+
+  await fse.ensureDir(out);
+  await fse.writeJSON(newPath, newData, {
+    encoding: 'utf8',
+    spaces: 2,
+  });
+
+  // copy additional files
+  ['README.md', 'LICENSE.md', 'CHANGELOG.md', 'LICENSE'].forEach(name => {
+    const srcFile = path.join(dir, name);
+    const newFile = path.join(out, name);
+    if (fse.existsSync(srcFile)) {
+      fse.copyFile(srcFile, newFile);
+    }
+  });
+}
+
 async function action(dir, { outDir = 'dist' } = {}) {
   await doBuild(dir, outDir);
   await doCopy(dir, outDir);
+  await doPackage(dir, outDir);
 }
 
 program
