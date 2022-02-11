@@ -6,6 +6,7 @@
     "yarn": ">=1.22"
   },
   "workspaces": [
+    "apps/*",
     "packages/*"
   ],
   "scripts": {
