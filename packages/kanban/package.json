@@ -3,16 +3,11 @@
   "version": "1.0.0",
   "author": "Axelor",
   "license": "AGPL-3.0-only",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.ts",
   "scripts": {
     "build": "node ../../scripts/build --out-dir dist .",
     "clean": "rimraf dist"
   },
-  "files": [
-    "dist",
-    "README.md"
-  ],
   "eslintConfig": {
     "extends": [
       "react-app",
