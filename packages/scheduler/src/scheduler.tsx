@@ -24,6 +24,7 @@ const views: View[] = ['month', 'week', 'day'];
 export interface SchedulerProps {
   events?: SchedulerEvent[] | undefined;
   view?: View;
+  selectable?: boolean | 'ignoreEvents';
   style?: React.CSSProperties;
   components?: Component;
   eventStyler?(event: Event): { className?: string; style?: object };
@@ -38,6 +39,7 @@ export interface SchedulerProps {
 function Scheduler({
   events,
   view,
+  selectable,
   style,
   components,
   eventStyler,
@@ -70,7 +72,7 @@ function Scheduler({
 
   const handleEventSelect = useCallback(
     (event: any, e: React.SyntheticEvent<HTMLElement>) => {
-      onEventSelect && onEventSelect(event as Event, e);
+      onEventSelect && onEventSelect({ event } as Event, e);
     },
     [onEventSelect]
   );
@@ -116,6 +118,7 @@ function Scheduler({
         localizer,
         events,
         components,
+        selectable,
         style,
         eventPropGetter: handleEventStyler,
         onSelectSlot: handleEventCreate,

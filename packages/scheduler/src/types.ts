@@ -12,8 +12,13 @@ export interface SchedulerEvent {
   allDay?: boolean;
 }
 
+type ElementConstructor = React.JSXElementConstructor<any>;
 export interface Component {
-  event: React.JSXElementConstructor<any>;
+  event?: ElementConstructor;
+  toolbar?: ElementConstructor;
+  week?: {
+    header?: ElementConstructor;
+  };
 }
 
 export interface Event {
