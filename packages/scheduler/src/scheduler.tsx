@@ -28,7 +28,7 @@ export interface SchedulerProps {
   components?: Component;
   eventStyler?(event: Event): { className?: string; style?: object };
   onEventCreate?(event: Event): void;
-  onEventSelect?(event: Event): void;
+  onEventSelect?(event: Event, e?: React.SyntheticEvent<HTMLElement>): void;
   onEventDrop?(event: Event): void;
   onEventResize?(event: Event): void;
   onViewChange?(view: View): void;
@@ -70,7 +70,7 @@ function Scheduler({
 
   const handleEventSelect = useCallback(
     (event: any, e: React.SyntheticEvent<HTMLElement>) => {
-      onEventSelect && onEventSelect(event as Event);
+      onEventSelect && onEventSelect(event as Event, e);
     },
     [onEventSelect]
   );
