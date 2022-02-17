@@ -67,7 +67,7 @@ function SchedulerContainer(props: SchedulerProps) {
 
     setEvents(events =>
       events.map(existingEvent =>
-        existingEvent.id == event.id
+        existingEvent.id === event.id
           ? ({ ...existingEvent, start, end, allDay } as SchedulerEvent)
           : existingEvent
       )
@@ -81,7 +81,7 @@ function SchedulerContainer(props: SchedulerProps) {
   }) => {
     setEvents(events =>
       events.map(existingEvent =>
-        existingEvent.id == event.id
+        existingEvent.id === event.id
           ? ({ ...existingEvent, start, end } as SchedulerEvent)
           : existingEvent
       )
