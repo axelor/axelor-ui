@@ -26,6 +26,7 @@ export interface SchedulerProps {
   view?: View;
   style?: React.CSSProperties;
   components?: Component;
+  eventStyler?(event: Event): { className?: string; style?: object };
   onEventCreate?(event: Event): void;
   onEventSelect?(event: Event): void;
   onEventDrop?(event: Event): void;
@@ -39,6 +40,7 @@ function Scheduler({
   view,
   style,
   components,
+  eventStyler,
   onEventCreate,
   onEventSelect,
   onEventDrop,
@@ -46,6 +48,19 @@ function Scheduler({
   onViewChange,
   onNavigationChange,
 }: SchedulerProps) {
+  const handleEventStyler = useCallback(
+    (event: any, start: any, end: any) => {
+      return eventStyler
+        ? eventStyler({
+            event,
+            start,
+            end,
+          } as Event)
+        : {};
+    },
+    [eventStyler]
+  );
+
   const handleEventCreate = useCallback(
     ({ start, end }: any) => {
       onEventCreate && onEventCreate({ start, end } as Event);
@@ -102,6 +117,7 @@ function Scheduler({
         events,
         components,
         style,
+        eventPropGetter: handleEventStyler,
         onSelectSlot: handleEventCreate,
         onSelectEvent: handleEventSelect,
         onEventDrop: handleEventDrop,

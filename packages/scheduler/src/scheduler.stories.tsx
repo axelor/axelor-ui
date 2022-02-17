@@ -113,3 +113,9 @@ export const Component = () => (
     }}
   />
 );
+
+export const EventStyler = () => (
+  <SchedulerContainer
+    eventStyler={() => ({ style: { backgroundColor: 'green' } })}
+  />
+);
