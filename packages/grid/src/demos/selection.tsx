@@ -1,23 +1,21 @@
 /**
  * @title Selection
  */
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DndProvider } from 'react-dnd';
-import React from 'react';
 import { Box } from '@axelor-ui/core';
 import { Grid } from '../grid';
-import { GridState } from '../types';
-
+import { GridProvider } from '../grid-provider';
 import { columns, records } from './demo-data';
+import useGridState from './useGridState';
 
-export default function ({ singleSelection }: { singleSelection: boolean }) {
-  const [state, setState] = React.useState<GridState>({
-    columns: [],
-    rows: [],
-  });
+export default function Selection({
+  singleSelection,
+}: {
+  singleSelection: boolean;
+}) {
+  const [state, setState] = useGridState();
 
   return (
-    <DndProvider backend={HTML5Backend}>
+    <GridProvider>
       <Box>
         <Grid
           allowSelection
@@ -30,6 +28,6 @@ export default function ({ singleSelection }: { singleSelection: boolean }) {
           setState={setState}
         />
       </Box>
-    </DndProvider>
+    </GridProvider>
   );
 }

@@ -1,14 +1,11 @@
 /**
  * @title Aggregation
  */
-import React from 'react';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DndProvider } from 'react-dnd';
 import { Box } from '@axelor-ui/core';
 import { Grid } from '../grid';
-import { GridState } from '../types';
-
+import { GridProvider } from '../grid-provider';
 import { records } from './demo-data';
+import useGridState from './useGridState';
 
 const columns = [
   { name: 'name', title: 'Name', type: 'String' },
@@ -27,15 +24,13 @@ const columns = [
   },
 ];
 
-export default function () {
-  const [state, setState] = React.useState<GridState>({
-    columns: [],
-    rows: [],
+export default function Aggregation() {
+  const [state, setState] = useGridState({
     groupBy: [{ name: 'category' }],
   });
 
   return (
-    <DndProvider backend={HTML5Backend}>
+    <GridProvider>
       <Box>
         <Grid
           allowGrouping
@@ -48,6 +43,6 @@ export default function () {
           setState={setState}
         />
       </Box>
-    </DndProvider>
+    </GridProvider>
   );
 }

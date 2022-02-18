@@ -1,16 +1,13 @@
 /**
  * @title Sorting
  */
-
-import React from 'react';
 import { Box } from '@axelor-ui/core';
 import { Grid } from '../grid';
-import { GridState } from '../types';
-
 import { columns, records } from './demo-data';
+import useGridState from './useGridState';
 
-export default function () {
-  const [state, setState] = React.useState<GridState>({
+export default function Sorting() {
+  const [state, setState] = useGridState({
     columns: [],
     rows: [],
   });
@@ -27,5 +24,4 @@ export default function () {
       />
     </Box>
   );
-  // return null;
 }

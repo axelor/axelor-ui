@@ -1,21 +1,16 @@
 /**
  * @title Row Reorder
  */
-import React from 'react';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DndProvider } from 'react-dnd';
 import { Grid } from '../grid';
-import { GridState } from '../types';
+import { GridProvider } from '../grid-provider';
 import { columns, records } from '../demos/demo-data';
+import useGridState from './useGridState';
 
-export default function () {
-  const [state, setState] = React.useState<GridState>({
-    columns: [],
-    rows: [],
-  });
+export default function Reorder() {
+  const [state, setState] = useGridState();
 
   return (
-    <DndProvider backend={HTML5Backend}>
+    <GridProvider>
       <Grid
         allowSelection
         allowCheckboxSelection
@@ -26,6 +21,6 @@ export default function () {
         state={state}
         setState={setState}
       />
-    </DndProvider>
+    </GridProvider>
   );
 }

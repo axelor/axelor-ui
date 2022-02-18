@@ -2,14 +2,11 @@
  * @title Editable
  */
 import React from 'react';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DndProvider } from 'react-dnd';
-import { Box, FocusTrap, Input } from '@axelor-ui/core';
-import { styleNames } from '@axelor-ui/core';
+import { Box, FocusTrap, Input, styleNames } from '@axelor-ui/core';
 import { Grid } from '../grid';
-import { GridState } from '../types';
-
+import { GridProvider } from '../grid-provider';
 import { columns, records } from './demo-data';
+import useGridState from './useGridState';
 
 const FormHandlers = React.createContext(React.createRef<any>());
 
@@ -76,7 +73,7 @@ function Form({
         )
       );
     },
-    [onSave, handleCancel, index]
+    [onSave, index]
   );
 
   React.useEffect(() => {
@@ -156,12 +153,9 @@ function FormField({ children, style, className, ...rest }: any) {
   return <div {...{ style, className }}>{render()}</div>;
 }
 
-export default function () {
+export default function Editable() {
   const [$records, setRecords] = React.useState(records);
-  const [state, setState] = React.useState<GridState>({
-    columns: [],
-    rows: [],
-  });
+  const [state, setState] = useGridState();
   const boxRef = React.useRef<any>();
   const handlers = React.useRef({
     save: (e: boolean) => {},
@@ -202,7 +196,7 @@ export default function () {
   }, []);
 
   return (
-    <DndProvider backend={HTML5Backend}>
+    <GridProvider>
       <FormHandlers.Provider value={handlers}>
         <Box ref={boxRef} style={{ display: 'flex', maxHeight: 500 }}>
           <Grid
@@ -229,6 +223,6 @@ export default function () {
           />
         </Box>
       </FormHandlers.Provider>
-    </DndProvider>
+    </GridProvider>
   );
 }

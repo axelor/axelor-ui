@@ -12,7 +12,7 @@ import Searching from './demos/searching';
 import Selection from './demos/selection';
 import Sorting from './demos/sorting';
 
-export default {
+const stories = {
   component: Grid,
   title: 'Advance/Grid',
 };
@@ -35,3 +35,5 @@ export {
   Searching,
   Editable,
 };
+
+export default stories;

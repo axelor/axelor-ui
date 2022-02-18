@@ -1,12 +1,10 @@
 /**
  * @title Custom Renderer
  */
-import React from 'react';
 import { Box } from '@axelor-ui/core';
 import { Grid } from '../grid';
-import { GridState } from '../types';
-
 import { columns, records } from './demo-data';
+import useGridState from './useGridState';
 
 function CustomRowRenderer({ className, children }: any) {
   return (
@@ -45,26 +43,20 @@ function CustomHeaderRenderer() {
   return null;
 }
 
-export default function () {
-  const [box, setBox] = React.useState<HTMLElement | null>(null);
-  const [state, setState] = React.useState<GridState>({
-    columns: [],
-    rows: [],
-  });
+export default function Renderer() {
+  const [state, setState] = useGridState();
 
   return (
-    <Box ref={setBox}>
-      <Box>
-        <Grid
-          records={records}
-          columns={columns}
-          state={state}
-          setState={setState}
-          headerRowRenderer={CustomHeaderRenderer}
-          rowRenderer={CustomRowRenderer}
-          cellRenderer={CustomCellRenderer}
-        />
-      </Box>
+    <Box>
+      <Grid
+        records={records}
+        columns={columns}
+        state={state}
+        setState={setState}
+        headerRowRenderer={CustomHeaderRenderer}
+        rowRenderer={CustomRowRenderer}
+        cellRenderer={CustomCellRenderer}
+      />
     </Box>
   );
 }

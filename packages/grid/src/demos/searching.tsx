@@ -2,14 +2,13 @@
  * @title Searching
  */
 import React from 'react';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DndProvider } from 'react-dnd';
 import { Box, Input } from '@axelor-ui/core';
 import { Grid } from '../grid';
+import { GridProvider } from '../grid-provider';
+import { GridColumn } from '../types';
 import { isRowCheck } from '../utils';
-import { GridState, GridColumn } from '../types';
-
 import { columns, records as records_data } from './demo-data';
+import useGridState from './useGridState';
 
 const SearchContext = React.createContext({});
 
@@ -32,12 +31,9 @@ function SearchColumn({ column }: { column: GridColumn }) {
   ) : null;
 }
 
-export default function () {
+export default function Searching() {
   const [records, setRecords] = React.useState([...records_data]);
-  const [state, setState] = React.useState<GridState>({
-    columns: [],
-    rows: [],
-  });
+  const [state, setState] = useGridState();
 
   const onSearch = React.useCallback(
     (column: GridColumn, value: string) => {
@@ -58,7 +54,7 @@ export default function () {
   );
 
   return (
-    <DndProvider backend={HTML5Backend}>
+    <GridProvider>
       <Box>
         <SearchContext.Provider
           value={React.useMemo(() => ({ onSearch }), [onSearch])}
@@ -77,6 +73,6 @@ export default function () {
           />
         </SearchContext.Provider>
       </Box>
-    </DndProvider>
+    </GridProvider>
   );
 }

@@ -1,23 +1,20 @@
 /**
  * @title Resizing
  */
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DndProvider } from 'react-dnd';
-import React from 'react';
 import { Box } from '@axelor-ui/core';
 import { Grid } from '../grid';
-import { GridState } from '../types';
-
+import { GridProvider } from '../grid-provider';
 import { columns, records } from './demo-data';
+import useGridState from './useGridState';
 
-export default function () {
-  const [state, setState] = React.useState<GridState>({
+export default function Resizing() {
+  const [state, setState] = useGridState({
     columns: [],
     rows: [],
   });
 
   return (
-    <DndProvider backend={HTML5Backend}>
+    <GridProvider>
       <Box>
         <Grid
           allowColumnResize
@@ -27,6 +24,6 @@ export default function () {
           setState={setState}
         />
       </Box>
-    </DndProvider>
+    </GridProvider>
   );
 }
