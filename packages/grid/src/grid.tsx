@@ -1,5 +1,4 @@
 import React from 'react';
-import produce from 'immer';
 import { useRefs } from '@axelor-ui/core';
 import { styleNames } from '@axelor-ui/core';
 
@@ -107,12 +106,6 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     const handleRef = useRefs(containerRef, ref);
     const totalRows = state.rows.length;
 
-    const setMutableState = React.useCallback(
-      (state: TYPES.GridState | TYPES.GridStateHandler) =>
-        setState(produce(state as any)),
-      [setState]
-    );
-
     const getContainerWidth = React.useCallback(() => {
       const container = containerRef.current;
       if (container) {
@@ -124,7 +117,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     // auto size columns
     const sizingColumns = React.useCallback(() => {
-      setMutableState(state => {
+      setState(state => {
         const columns = [...state.columns];
         if (!columns.length) return;
         if (
@@ -174,12 +167,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           });
         }
       });
-    }, [
-      allowCheckboxSelection,
-      allowRowReorder,
-      getContainerWidth,
-      setMutableState,
-    ]);
+    }, [allowCheckboxSelection, allowRowReorder, getContainerWidth, setState]);
 
     // handle column sorting
     const handleSort = React.useCallback(
@@ -187,7 +175,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         const newSort = { name, order: sortOrder || 'asc' };
         const { shiftKey } = event;
 
-        setMutableState(data => {
+        setState(data => {
           // multiple column sort with shift key press
           !data.orderBy && (data.orderBy = []);
           const sortIndex = data.orderBy.findIndex(x => x.name === name);
@@ -208,13 +196,13 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           }
         });
       },
-      [setMutableState]
+      [setState]
     );
 
     // handle rows check/uncheck all
     const handleCheckAll = React.useCallback(
       function onCheckAll(checked: boolean) {
-        setMutableState(data => {
+        setState(data => {
           data.selectedRows = checked
             ? data.rows.reduce(
                 (selected, row, i) =>
@@ -226,14 +214,14 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             : null;
         });
       },
-      [setMutableState]
+      [setState]
     );
 
     const handleRowStateChange = React.useCallback(
       function handleRowStateChange(row, state?: 'open' | 'close') {
         if (isDefined(row)) {
           const { key } = row;
-          return setMutableState(draft => {
+          return setState(draft => {
             const row = draft.rows.find($row => $row.key === key);
             row &&
               (row.state = state || (row.state === 'open' ? 'close' : 'open'));
@@ -253,7 +241,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         // toggle group row
         if (row.type === 'group-row') {
           const { key } = row;
-          return setMutableState(draft => {
+          return setState(draft => {
             const row = draft.rows.find($row => $row.key === key);
             row && (row.state = row.state === 'open' ? 'close' : 'open');
           });
@@ -267,7 +255,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
               return;
             }
           }
-          return setMutableState(draft => {
+          return setState(draft => {
             draft.selectedCell = null;
             draft.selectedRows = [rowIndex];
             draft.editRow = [rowIndex, cellIndex];
@@ -280,7 +268,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           const withShift = isMultiple && e.shiftKey;
           const withControl = e.ctrlKey || isSelectBox;
 
-          setMutableState(draft => {
+          setState(draft => {
             if (draft.editRow) return;
 
             // handle shift (except combined with ctrl) selection
@@ -374,13 +362,21 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           // isSelectBox && focus();
         }
       },
-      [editable, onRecordEdit, onRowClick, setMutableState]
+      [
+        allowSelection,
+        allowCellSelection,
+        selectionType,
+        editable,
+        onRecordEdit,
+        onRowClick,
+        setState,
+      ]
     );
 
     const handleRowMove = React.useCallback(
       (dragRow, hoverRow, isStartRow) => {
         onRowReorder && onRowReorder(dragRow, hoverRow);
-        return setMutableState(draft => {
+        return setState(draft => {
           const { rows } = draft;
           const oldRows = [...rows];
 
@@ -398,7 +394,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           draft.selectedRows = selectedRows;
         });
       },
-      [onRowReorder, setMutableState]
+      [onRowReorder, setState]
     );
 
     const handleColumnResizeStart = React.useCallback(
@@ -466,7 +462,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           dataTransfer.width
         );
         // set column width in state
-        setMutableState(draft => {
+        setState(draft => {
           const col = draft.columns.find(c => c.name === column.name);
           if (col) {
             col.width = width;
@@ -483,12 +479,12 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         container.removeChild(refs.current.style);
         refs.current.event = {};
       },
-      [setMutableState]
+      [setState, sizingColumns]
     );
 
     const handleColumnHide = React.useCallback(
       (e, column) => {
-        setMutableState(draft => {
+        setState(draft => {
           const columnState = draft.columns.find(
             col => col.name === column.name
           ) as TYPES.GridColumn;
@@ -496,12 +492,12 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         });
         sizingColumns();
       },
-      [setMutableState]
+      [setState, sizingColumns]
     );
 
     const handleColumnShow = React.useCallback(
       (e, column) => {
-        setMutableState(draft => {
+        setState(draft => {
           const columnState = draft.columns.find(
             col => col.name === column.name
           ) as TYPES.GridColumn;
@@ -509,7 +505,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         });
         sizingColumns();
       },
-      [setMutableState]
+      [setState, sizingColumns]
     );
 
     const handleGroupColumnDrop = React.useCallback(
@@ -517,7 +513,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         const isColumnReorder = dest.column && target.column;
 
         if (isColumnReorder) {
-          return setMutableState(draft => {
+          return setState(draft => {
             const { columns } = draft;
             const dragIndex = columns.findIndex(
               c => c.name === dest.column.name
@@ -531,7 +527,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           });
         }
 
-        setMutableState(data => {
+        setState(data => {
           !data.groupBy && (data.groupBy = []);
 
           const isGroupExist = data.groupBy.find(
@@ -564,12 +560,12 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           data.selectedCell = null;
         });
       },
-      [setMutableState]
+      [setState]
     );
 
     const handleGroupColumnAdd = React.useCallback(
       (e, group) => {
-        setMutableState(data => {
+        setState(data => {
           if (!data.groupBy) {
             data.groupBy = [];
           }
@@ -581,12 +577,12 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           data.selectedCell = null;
         });
       },
-      [setMutableState]
+      [setState]
     );
 
     const handleGroupColumnRemove = React.useCallback(
       (e, group) => {
-        setMutableState(data => {
+        setState(data => {
           const groupBy = data.groupBy || [];
           const index = groupBy.findIndex(g => g.name === group.name);
           if (index > -1) {
@@ -595,12 +591,12 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           data.selectedCell = null;
         });
       },
-      [setMutableState]
+      [setState]
     );
 
     const handleRecordComplete = React.useCallback(
       (row, rowIndex, columnIndex, discarded = false, reset = true) => {
-        setMutableState(draft => {
+        setState(draft => {
           if (draft.editRow && reset) {
             let [rowIndex, cellIndex] = draft.editRow;
             if (discarded && !row.id) {
@@ -611,7 +607,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           draft.editRow = null;
         });
       },
-      [setMutableState]
+      [setState]
     );
 
     const handleRecordSave = React.useCallback(
@@ -624,7 +620,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         if (result) {
           if (isLast && onRecordAdd) {
             onRecordAdd();
-            setMutableState(draft => {
+            setState(draft => {
               if (draft.editRow) {
                 const [rowIndex] = draft.editRow;
                 draft.editRow = [rowIndex + 1, 1];
@@ -644,7 +640,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         }
         return result;
       },
-      [totalRows, handleRecordComplete, onRecordAdd, onRecordSave]
+      [setState, totalRows, handleRecordComplete, onRecordAdd, onRecordSave]
     );
 
     const handleRecordDiscard = React.useCallback(
@@ -707,7 +703,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           return handleRowClick(event, rows[row], row, col);
         } else if (rows[row] && rows[row].type === ROW_TYPE.ROW) {
           if (props.editRowRenderer) {
-            return setMutableState(data => {
+            return setState(data => {
               data.editRow = [row, col];
             });
           }
@@ -830,7 +826,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         [row, col] = [0, 0];
       }
 
-      setMutableState(data => {
+      setState(data => {
         const checkAndAssign = (
           key: 'selectedCell' | 'selectedRows' | 'selectedCols',
           value: any
@@ -975,7 +971,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           rows: newRows,
         };
       });
-    }, [records, columns, sortType, $orderBy, state.groupBy]);
+    }, [setState, records, columns, sortType, $orderBy, state.groupBy]);
 
     React.useEffect(() => {
       if (!containerRef.current) return;
@@ -992,17 +988,13 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     React.useEffect(() => {
       // exclude hide columns
-      setMutableState(draft => {
-        draft.columns = columns
-          .filter(
-            column => !(state.groupBy || []).find(g => g.name === column.name)
-          )
-          .map(column =>
-            column.width ? { ...column, computed: true } : column
-          );
+      setState(draft => {
+        draft.columns = columns.filter(
+          column => !(state.groupBy || []).find(g => g.name === column.name)
+        );
       });
       sizingColumns();
-    }, [columns, state.groupBy, sizingColumns]);
+    }, [setState, columns, state.groupBy, sizingColumns]);
 
     React.useEffect(() => {
       if (state.selectedCell) {

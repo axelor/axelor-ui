@@ -73,7 +73,7 @@ export function GridDNDRow(props: GridRowProps) {
     [index, data]
   );
 
-  const [{}, drag, preview] = useDrag(
+  const [, drag, preview] = useDrag(
     () => ({
       type: ItemTypes.CARD,
       item: data,

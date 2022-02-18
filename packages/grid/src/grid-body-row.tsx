@@ -31,7 +31,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
       onCellClick && onCellClick(e, cell, cellIndex, data, rowIndex);
       onClick && onClick(e, data, rowIndex, cellIndex);
     },
-    [data, rowIndex]
+    [data, rowIndex, onCellClick, onClick]
   );
 
   function renderColumn(column: TYPES.GridColumn) {
