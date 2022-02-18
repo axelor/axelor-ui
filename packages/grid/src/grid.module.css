@@ -156,6 +156,9 @@
 .row .column {
   padding: 4px;
   border: 1px solid #eee;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .body .row .column {
   border-top: none;
