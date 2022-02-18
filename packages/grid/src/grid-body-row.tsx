@@ -44,7 +44,9 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         />
       );
     }
-    return data.record[column.name];
+    return column.formatter
+      ? column.formatter(data.record, column)
+      : data.record[column.name];
   }
 
   const RowComponent = renderer || 'div';
