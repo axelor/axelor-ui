@@ -12,7 +12,7 @@ export type KanbanProps = {
   readonly?: boolean;
   onCardMove?({ column, record, source, index }: CardEvent): void;
   onColumnMove?({ column, index }: ColumnEvent): void;
-  ColumnProps?: KanbanColumnProps;
+  ColumnProps?: Pick<KanbanColumnProps, 'className' | 'style'>;
 };
 
 function Kanban({
