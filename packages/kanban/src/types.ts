@@ -7,6 +7,7 @@ export type Column = {
   title: string;
   records?: Record[];
   readonly?: boolean;
+  disableDrag?: boolean;
   renderer?: ColumnRenderer;
 };
 

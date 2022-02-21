@@ -63,13 +63,13 @@ export function KanbanColumn({
   readonly,
   ...props
 }: KanbanColumnProps) {
-  const { renderer: Component = DefaultColumn } = column;
+  const { renderer: Component = DefaultColumn, id, disableDrag } = column;
 
   return (
     <Draggable
-      draggableId={String(column.id)}
+      draggableId={String(id)}
       index={index}
-      isDragDisabled={readonly || column.readonly}
+      isDragDisabled={readonly || column.readonly || disableDrag}
     >
       {({ innerRef, draggableProps, dragHandleProps }) => (
         <Box ref={innerRef} {...draggableProps} {...dragHandleProps}>
