@@ -1,16 +1,18 @@
 import { useCallback } from 'react';
-import { Box } from '@axelor-ui/core';
+import { Box, styleNames } from '@axelor-ui/core';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import KanbanColumn from './kanban-column';
 import styles from './kanban.module.css';
+import KanbanColumn, { KanbanColumnProps } from './kanban-column';
 import { CardEvent, Column, ColumnEvent } from './types';
 
 export type KanbanProps = {
   columns?: Column[];
+  className?: string;
   readonly?: boolean;
   onCardMove?({ column, record, source, index }: CardEvent): void;
   onColumnMove?({ column, index }: ColumnEvent): void;
+  ColumnProps?: KanbanColumnProps;
 };
 
 function Kanban({
@@ -18,7 +20,8 @@ function Kanban({
   onColumnMove,
   onCardMove,
   readonly,
-  ...props
+  className,
+  ColumnProps,
 }: KanbanProps) {
   const getColumn = useCallback(
     columnId => columns?.find(c => String(c.id) === String(columnId)),
@@ -70,14 +73,18 @@ function Kanban({
         isDropDisabled={readonly}
       >
         {({ innerRef, droppableProps, placeholder }) => (
-          <Box ref={innerRef} {...droppableProps} className={styles.board}>
+          <Box
+            ref={innerRef}
+            {...droppableProps}
+            className={styleNames(styles.board, className)}
+          >
             {columns?.map((column, index) => (
               <KanbanColumn
                 column={column}
                 key={column.id}
                 index={index}
                 readonly={readonly}
-                {...props}
+                {...ColumnProps}
               />
             ))}
             {placeholder}
