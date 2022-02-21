@@ -1,7 +1,8 @@
 .board {
-  height: 100%;
-  width: fit-content;
+  height: inherit;
+  width: 100%;
   display: inline-flex;
+  background-color: inherit;
 }
 
 .column {
