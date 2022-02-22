@@ -111,23 +111,20 @@ function Scheduler({
   return (
     <DragAndDropCalendar
       popup
-      selectable
-      {...{
-        view: view as View,
-        views: views as CalendarView[],
-        localizer,
-        events,
-        components,
-        selectable,
-        style,
-        eventPropGetter: handleEventStyler,
-        onSelectSlot: handleEventCreate,
-        onSelectEvent: handleEventSelect,
-        onEventDrop: handleEventDrop,
-        onEventResize: handleEventResize,
-        onNavigate: handleNavigateChange,
-        onView: handleViewChange,
-      }}
+      view={view}
+      views={views}
+      localizer={localizer}
+      events={events}
+      components={components}
+      selectable={selectable}
+      style={style}
+      eventPropGetter={handleEventStyler}
+      onSelectSlot={handleEventCreate}
+      onSelectEvent={handleEventSelect}
+      onEventDrop={handleEventDrop}
+      onEventResize={handleEventResize}
+      onNavigate={handleNavigateChange}
+      onView={handleViewChange}
     />
   );
 }
