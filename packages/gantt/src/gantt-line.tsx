@@ -234,7 +234,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
         source: dragItem.type === 'CONNECT_START' ? 'start' : 'finish',
         target: 'start',
       };
-      onConnect && onConnect(coords);
+      !dragItem.connect && onConnect && onConnect(coords);
     },
     canDrop: (item, monitor) => {
       const dragItem: TYPES.GanttDragItem = monitor.getItem();
@@ -256,6 +256,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
         source: dragItem.type === 'CONNECT_START' ? 'start' : 'finish',
         target: 'start',
       };
+      dragItem.connect = true;
       onConnect && onConnect(coords);
     },
     canDrop: (item, monitor) => {
@@ -278,6 +279,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
         source: dragItem.type === 'CONNECT_START' ? 'start' : 'finish',
         target: 'finish',
       };
+      dragItem.connect = true;
       onConnect && onConnect(coords);
     },
     canDrop: (item, monitor) => {

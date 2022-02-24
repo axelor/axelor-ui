@@ -59,6 +59,7 @@ export type GanttDragItem = {
   refs?: any;
   lineRef?: React.RefObject<HTMLDivElement>;
   setVirtualLineTarget?: (offset: GanttVirtualLinePoint) => void;
+  connect?: boolean;
 };
 
 export interface ConnectProps {
