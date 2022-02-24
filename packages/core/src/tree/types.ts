@@ -27,7 +27,7 @@ export interface TreeProps {
   onLoad?: (data: TreeNode, sortColumn?: TreeSortColumn) => any;
   nodeRenderer?: TreeNodeProps['renderer'];
   editNodeRenderer?: TreeNodeProps['editRenderer'];
-  onNodeMove?: (data: TreeNode, parent: TreeNode) => void;
+  onNodeMove?: (data: TreeNode, parent: TreeNode) => TreeNode;
   onNodeEdit?: (record: any, recordIndex?: number) => void;
   onNodeSave?: (record: any, recordIndex?: number) => any;
   onNodeDiscard?: (record: any, recordIndex?: number) => void;

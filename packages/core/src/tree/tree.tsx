@@ -63,7 +63,7 @@ export function Tree(props: TYPES.TreeProps) {
 
         setLoading(true);
         try {
-          const children = await onLoad(record.data, sortColumn);
+          const children = await onLoad(record, sortColumn);
           setData(data => {
             data.splice(
               index + 1,
@@ -110,29 +110,34 @@ export function Tree(props: TYPES.TreeProps) {
         selectRow(index);
       }
     },
-    [handleToggle]
+    [handleToggle, selectRow]
   );
 
   const handleDrop = useCallback(
     async function handleDrop({ data: dragItem }, { data: hoverItem }) {
-      const hoverParent =
-        hoverItem.level === dragItem.level ? { id: hoverItem.id } : hoverItem;
-      let updatedNode = { ...dragItem };
-      if (hoverParent.id !== dragItem.parent && onNodeMove) {
-        updatedNode = await onNodeMove(dragItem, hoverParent);
-      }
-      setData(data => {
-        const dragIndex = data.indexOf(dragItem);
-        data.splice(dragIndex, 1);
+      setLoading(true);
+      try {
+        const hoverParent =
+          hoverItem.level === dragItem.level ? { id: hoverItem.id } : hoverItem;
+        let updatedNode = { ...dragItem };
+        if (hoverParent.id !== dragItem.parent && onNodeMove) {
+          updatedNode = await onNodeMove(dragItem, hoverParent);
+        }
+        setData(data => {
+          const dragIndex = data.indexOf(dragItem);
+          data.splice(dragIndex, 1);
 
-        const hoverIndex = data.indexOf(hoverItem);
-        data.splice(hoverIndex + 1, 0, {
-          ...updatedNode,
-          parent: hoverParent.id,
+          const hoverIndex = data.indexOf(hoverItem);
+          data.splice(hoverIndex + 1, 0, {
+            ...updatedNode,
+            parent: hoverParent.id,
+          });
+
+          return [...data];
         });
-
-        return [...data];
-      });
+      } finally {
+        setLoading(false);
+      }
     },
     [onNodeMove]
   );
