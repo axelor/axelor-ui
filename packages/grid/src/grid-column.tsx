@@ -7,6 +7,7 @@ export interface GridColumnProps {
   data: TYPES.GridColumn;
   index: number;
   value?: any;
+  type?: 'header' | 'footer' | 'body';
   selected?: boolean;
   focus?: boolean;
   renderer?: TYPES.Renderer;

@@ -66,6 +66,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
             key={column.name}
             data={column}
             index={index}
+            type="body"
             value={data.record[column.name]}
             focus={editCell === index}
             selected={selectedCell === index}

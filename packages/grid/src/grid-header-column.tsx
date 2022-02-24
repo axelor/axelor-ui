@@ -316,7 +316,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
   }
 
   return (
-    <GridColumn index={index} data={data}>
+    <GridColumn type="header" index={index} data={data}>
       {renderColumn(data, index)}
     </GridColumn>
   );

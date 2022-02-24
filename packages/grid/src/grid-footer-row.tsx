@@ -31,6 +31,7 @@ export const GridFooterRow = React.memo(function GridFooterRow(
           selected={selectedCell === index}
           index={index}
           data={column}
+          type="footer"
         >
           {column.aggregate
             ? `${capitalizeWord(column.aggregate)} : ${
