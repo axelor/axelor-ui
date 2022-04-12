@@ -1,7 +1,7 @@
 const webpackFinal = require('./webpack.final');
 
 module.exports = {
-  stories: ['../../**/*.stories.tsx'],
+  stories: ['../../../packages/**/*.stories.tsx'],
   addons: [
     '@storybook/preset-scss',
     '@storybook/addon-a11y',

@@ -38,7 +38,7 @@ module.exports = function webpackFinal(config) {
   config.resolve = config.resolve || {};
   config.resolve.alias = {
     ...config.resolve.alias,
-    '@axelor-ui/core': path.resolve(__dirname, '../../core/src'),
+    '@axelor-ui/core': path.resolve(__dirname, '../../../packages/core/src'),
   };
 
   return config;
