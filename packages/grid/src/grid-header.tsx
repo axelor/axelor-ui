@@ -5,6 +5,7 @@ import {
   ResizeHandler,
 } from './grid-header-column';
 import { DropHandler } from './grid-drag-element';
+import { GridSearchRow } from './grid-search-row';
 import * as TYPES from './types';
 import styles from './grid.module.css';
 import { isRowCheck } from './utils';
@@ -14,7 +15,10 @@ export interface GridHeaderProps
       TYPES.GridState,
       'selectedCols' | 'columns' | 'orderBy' | 'groupBy'
     >,
-    Pick<TYPES.GridProps, 'selectionType'> {
+    Pick<
+      TYPES.GridProps,
+      'selectionType' | 'searchRowRenderer' | 'searchColumnRenderer'
+    > {
   className?: string;
   hiddenColumns?: TYPES.GridColumn[];
   rowRenderer?: TYPES.Renderer;
@@ -49,6 +53,8 @@ export const GridHeader = React.memo(function GridHeader(
     checkType,
     selectionType,
     groupBy,
+    searchRowRenderer,
+    searchColumnRenderer,
     rowRenderer,
     onCheckAll,
     onColumnDrop,
@@ -97,6 +103,16 @@ export const GridHeader = React.memo(function GridHeader(
           );
         })}
       </RowRenderer>
+
+      {searchRowRenderer && searchColumnRenderer && (
+        <GridSearchRow
+          {...{
+            columns,
+            searchRowRenderer,
+            searchColumnRenderer,
+          }}
+        />
+      )}
     </div>
   );
 });

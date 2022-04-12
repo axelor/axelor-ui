@@ -1,5 +1,4 @@
 import React from 'react';
-import { GridSearchRow } from './grid-search-row';
 import { GridGroupRow } from './grid-group-row';
 import { GridBodyRow } from './grid-body-row';
 import { GridFooterRow } from './grid-footer-row';
@@ -20,8 +19,6 @@ export interface GridBodyProps
       | 'rowGroupHeaderRenderer'
       | 'rowGroupFooterRenderer'
       | 'rowRenderer'
-      | 'searchRowRenderer'
-      | 'searchColumnRenderer'
       | 'editRowRenderer'
       | 'editRowColumnRenderer'
       | 'onRecordSave'
@@ -47,8 +44,7 @@ export function GridBody(props: GridBodyProps) {
     rowGroupFooterRenderer,
     editRowRenderer,
     editRowColumnRenderer,
-    searchRowRenderer,
-    searchColumnRenderer,
+    noRecordsText,
     onRecordSave,
     onRecordDiscard,
     onCellClick,
@@ -68,16 +64,6 @@ export function GridBody(props: GridBodyProps) {
 
   return (
     <div className={styles.body}>
-      {searchRowRenderer && searchColumnRenderer && (
-        <GridSearchRow
-          {...{
-            columns,
-            searchRowRenderer,
-            searchColumnRenderer,
-          }}
-        />
-      )}
-
       {renderRows.map(({ row, visible }, index) => {
         if (!visible) {
           return null;
