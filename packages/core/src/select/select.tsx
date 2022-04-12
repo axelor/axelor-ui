@@ -1,19 +1,18 @@
 import React from 'react';
-import ReactSelect, {
-  components,
-  ControlProps,
-  IndicatorsContainerProps,
-} from 'react-select';
+import ReactSelect, { components, ControlProps, IndicatorsContainerProps } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
-
 import { Box } from '../box';
+
 import selectStyles from './select.module.css';
 
 export type SelectOption = unknown;
 
 export interface SelectProps {
   className?: string;
+  classNamePrefix?: string;
+  placeholder?: string;
   autoFocus?: boolean;
+  loading?: boolean;
   isMulti?: boolean;
   isClearable?: boolean;
   isCreatable?: boolean;
@@ -53,35 +52,31 @@ const ControlContainer = (props: ControlProps<SelectOption, true>) => {
   );
 };
 
-const IndicatorsContainer = (
-  props: IndicatorsContainerProps<SelectOption, true>
-) => {
+const IndicatorsContainer = (props: IndicatorsContainerProps<SelectOption, true>) => {
   function handleMouseDown(e: React.SyntheticEvent) {
     e.preventDefault();
   }
   return (
     <Box d="flex" className={selectStyles.indicators}>
-      <Box
-        d="flex"
-        className={selectStyles.indicatorActions}
-        onMouseDown={handleMouseDown}
-      >
+      <Box d="flex" className={selectStyles.indicatorActions} onMouseDown={handleMouseDown}>
         {(props.selectProps.components as any)?.actions}
       </Box>
-      <components.IndicatorsContainer {...props} />
     </Box>
   );
 };
 
 export function Select({
   className,
+  classNamePrefix,
   autoFocus,
+  placeholder,
   isMulti,
   isClearable = true,
   isDisabled = false,
   isRtl = false,
   isCreatable = false,
   isSearchable = true,
+  loading: _loading,
   value,
   onChange,
   onFocus,
@@ -96,13 +91,12 @@ export function Select({
   createOptionPosition = 'last',
   onCreate,
 }: SelectProps) {
-  const isAsync = Boolean(fetchOptions);
   const [$options, setOptions] = React.useState(options);
-  const [inputText, setInputText] = React.useState(false);
+  const [inputText, setInputText] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const timer = React.useRef<any>(null);
 
-  const setTimer = React.useCallback(callback => {
+  const setTimer = React.useCallback((callback: any) => {
     timer.current = setTimeout(callback, 500);
   }, []);
 
@@ -111,26 +105,22 @@ export function Select({
   }, []);
 
   const getOptionLabel = React.useCallback(
-    option => {
+    (option: any) => {
       if (option.__isNew__) {
         return option.label;
       }
-      return typeof optionLabel === 'function'
-        ? optionLabel(option)
-        : option[optionLabel];
+      return typeof optionLabel === 'function' ? optionLabel(option) : option[optionLabel];
     },
-    [optionLabel]
+    [optionLabel],
   );
   const getOptionValue = React.useCallback(
-    option =>
-      typeof optionValue === 'function'
-        ? optionValue(option)
-        : option[optionValue],
-    [optionValue]
+    (option: any) =>
+      typeof optionValue === 'function' ? optionValue(option) : option[optionValue],
+    [optionValue],
   );
 
   const loadOptions = React.useCallback(
-    searchString => {
+    (searchString: string) => {
       if (fetchOptions) {
         setLoading(true);
         clearTimer();
@@ -144,7 +134,7 @@ export function Select({
         });
       }
     },
-    [fetchOptions, clearTimer]
+    [fetchOptions, setTimer, clearTimer],
   );
 
   const handleFocus = React.useCallback(
@@ -152,10 +142,10 @@ export function Select({
       onFocus && onFocus(e);
       loadOptions('');
     },
-    [loadOptions, onFocus]
+    [loadOptions, onFocus],
   );
 
-  const handleInputChange = React.useCallback(value => {
+  const handleInputChange = React.useCallback((value: any) => {
     setInputText(value);
   }, []);
 
@@ -172,19 +162,23 @@ export function Select({
   }, [clearTimer]);
 
   const SelectComponent = (isCreatable ? CreatableSelect : ReactSelect) as any;
+  const isLoading = loading || _loading;
 
   return (
     <SelectComponent
       className={className}
-      classNamePrefix="ax-select"
+      classNamePrefix={classNamePrefix}
+      menuPortalTarget={document.body}
+      openMenuOnClick
       {...{
-        options: $options,
+        options: isLoading ? [] : $options,
+        placeholder,
         isMulti,
         isDisabled,
         isRtl,
         isClearable,
         isSearchable,
-        isLoading: loading,
+        isLoading,
         autoFocus,
         value,
         onChange,
@@ -195,9 +189,7 @@ export function Select({
         getOptionLabel,
         getOptionValue,
         allowCreateWhileLoading: false,
-        components: actions
-          ? { Control: ControlContainer, IndicatorsContainer, actions }
-          : {},
+        components: actions ? { Control: ControlContainer, IndicatorsContainer, actions } : {},
         ...(isCreatable
           ? {
               formatCreateLabel: createOption,
