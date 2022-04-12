@@ -168,7 +168,7 @@ export const OverflowDropdown = withStyled(DropdownList)((props, ref) => {
 
   React.useEffect(() => {
     if (container.current) {
-      let timer: NodeJS.Timeout;
+      let timer: any;
       let init = false;
       let _size = 0;
 
