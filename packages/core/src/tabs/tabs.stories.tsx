@@ -54,7 +54,7 @@ function TabPanel({
   return index === value ? children : null;
 }
 
-const tabs = new Array(20)
+const tabs = new Array(5)
   .fill(0)
   .map((_, ind) => ({ title: ` Tab ${ind + 1} ` }));
 

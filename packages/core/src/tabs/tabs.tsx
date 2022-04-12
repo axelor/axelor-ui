@@ -9,6 +9,8 @@ export interface TabsProps {
   scrollRight?: React.ReactElement;
 }
 
+const RESIZE_DELAY = 50;
+
 export function Tabs({
   children,
   value,
@@ -51,6 +53,47 @@ export function Tabs({
       }
     }
   }, [overflowListRef, tabClassName, activeTab]);
+
+  React.useEffect(() => {
+    if (!overflowListRef) return;
+    let timer: any;
+
+    const clear = () => clearTimeout(timer);
+    const resizer = (args: any) =>
+      window.requestAnimationFrame(() => {
+        clear();
+        timer = setTimeout(() => {
+          const buttonWidth = 32;
+          const [scrollLeft, tabs, scrollRight] = overflowListRef.children;
+          const tabsWidth = Array.from(tabs.children).reduce(
+            (total, tab) =>
+              total + (tab ? (tab as HTMLElement).offsetWidth : 0) || 0,
+            0
+          );
+          const show =
+            tabsWidth + buttonWidth * 2 >= overflowListRef.offsetWidth;
+
+          (scrollLeft as HTMLElement).style.setProperty(
+            'display',
+            show ? 'flex' : 'none',
+            'important'
+          );
+          (scrollRight as HTMLElement).style.setProperty(
+            'display',
+            show ? 'flex' : 'none',
+            'important'
+          );
+        }, RESIZE_DELAY);
+      });
+
+    const resizeObserver = new ResizeObserver(resizer);
+    resizeObserver.observe(overflowListRef);
+
+    return () => {
+      clear();
+      resizeObserver.disconnect();
+    };
+  }, [overflowListRef, children.length]);
 
   return (
     <OverflowList
