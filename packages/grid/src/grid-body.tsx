@@ -15,6 +15,7 @@ export interface GridBodyProps
     Pick<
       TYPES.GridProps,
       | 'selectionType'
+      | 'noRecordsText'
       | 'cellRenderer'
       | 'rowGroupHeaderRenderer'
       | 'rowGroupFooterRenderer'
@@ -119,6 +120,7 @@ export function GridBody(props: GridBodyProps) {
           />
         );
       })}
+      {noRecordsText && <div>{noRecordsText}</div>}
     </div>
   );
 }

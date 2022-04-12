@@ -234,3 +234,18 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.container.no-records {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.container.no-records .body {
+  flex: 1;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 1px solid #eee;
+  border-top: none;
+}

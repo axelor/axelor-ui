@@ -1032,7 +1032,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     return (
       <div
         ref={handleRef}
-        className={classNames(styles.container, className)}
+        className={classNames(styles.container, className, {
+          [styles['no-records']]: records.length === 0,
+        })}
         {...(allowCellSelection
           ? { tabIndex: 0, onKeyDown: handleNavigation }
           : {})}
@@ -1062,6 +1064,12 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           rowRenderer={headerRowRenderer}
           checkType={checkType}
           selectionType={selectionType}
+          {...(allowSearch
+            ? {
+                searchRowRenderer,
+                searchColumnRenderer,
+              }
+            : {})}
           {...(!isEditMode
             ? {
                 ...(allowColumnResize
@@ -1102,6 +1110,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           selectedRows={state.selectedRows}
           selectedCell={state.selectedCell}
           selectionType={selectionType}
+          noRecordsText={records.length === 0 ? props.noRecordsText : ''}
           {...{
             cellRenderer,
             rowRenderer,
@@ -1115,12 +1124,6 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
                 editRowRenderer,
                 onRecordSave: handleRecordSave,
                 onRecordDiscard: handleRecordDiscard,
-              }
-            : {})}
-          {...(allowSearch
-            ? {
-                searchRowRenderer,
-                searchColumnRenderer,
               }
             : {})}
           {...(allowRowReorder
