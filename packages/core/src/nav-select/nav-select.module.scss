@@ -1,3 +1,7 @@
+@use "sass:math";
+
+$height: 38px;
+
 .root {
   overflow: hidden;
 }
@@ -28,17 +32,17 @@
   background: #e2e2e2;
   display: inline;
   position: relative;
-  line-height: 32px;
-  padding: 0 16px 0 32px;
+  line-height: $height;
+  padding: 0 math.div($height, 2) 0 $height;
   white-space: nowrap;
 }
 .listItem a:after {
   content: '';
-  width: 32px;
-  height: 32px;
+  width: $height;
+  height: $height;
   transform: scale(0.72) rotate(45deg);
   position: absolute;
-  right: -16px;
+  right: - math.div($height, 2);
   z-index: 1;
   background: #e2e2e2;
   box-shadow: 2px -2px 0 1px rgb(255 255 255);
@@ -58,7 +62,7 @@
 }
 .listItem.dropdown {
   padding: 0;
-  height: 32px;
+  height: $height;
 }
 .listItem.dropdown a {
   padding: 0 10px 0 25px;

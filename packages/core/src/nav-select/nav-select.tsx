@@ -8,7 +8,7 @@ import { MenuItem } from '../menu/menu-item';
 import { MenuProps } from '../menu/menu';
 import { useClassNames } from '../styles';
 import { withStyled } from '../styled';
-import cssStyles from './nav-select.module.css';
+import cssStyles from './nav-select.module.scss';
 
 export interface TNavSelectItem {
   title: string;
