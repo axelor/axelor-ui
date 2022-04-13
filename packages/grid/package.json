@@ -15,20 +15,19 @@
     ]
   },
   "dependencies": {
-    "immer": "^9.0.5",
-    "react-dnd": "^14.0.3",
-    "react-dnd-html5-backend": "^14.0.1"
+    "immer": "^9.0.12",
+    "react-dnd": "^14.0.4",
+    "react-dnd-html5-backend": "^14.1.0"
   },
   "devDependencies": {
-    "@types/react": "^17.0.9",
-    "@types/react-dom": "^17.0.6",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-config-react-app": "^6.0.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "prettier": "^2.3.1",
+    "@types/react": "^17.0.44",
+    "@types/react-dom": "^17.0.15",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-react-app": "^7.0.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "typescript": "^4.3.2"
+    "typescript": "^4.6.3"
   },
   "peerDependencies": {
     "@axelor-ui/core": "*"
