@@ -7,6 +7,7 @@ import { Input } from '../input';
 import { InputLabel } from '../input-label';
 import { ClickAwayListener } from '../click-away-listener';
 import { Drawer } from './drawer';
+import { ThemeProvider } from '../styles';
 
 export default {
   component: Drawer,
@@ -216,5 +217,13 @@ export const Shadow = () => {
         </ClickAwayListener>
       </Drawer>
     </div>
+  );
+};
+
+export const RTL = () => {
+  return (
+    <ThemeProvider dir="rtl">
+      <Shadow />
+    </ThemeProvider>
   );
 };

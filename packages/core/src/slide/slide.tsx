@@ -1,5 +1,6 @@
 import { isValidElement, cloneElement } from 'react';
 import { Transition } from 'react-transition-group';
+import { useTheme } from '../styles';
 import { TransitionProps } from '../transitions/types';
 import {
   getTransition,
@@ -26,9 +27,22 @@ const ownerWindow = (node: HTMLElement) => {
   return (node.ownerDocument || document).defaultView || window;
 };
 
-const getTranslateValue = (node: HTMLElement, direction: Direction) => {
+const getDirection = (direction: Direction, dir?: string) => {
+  if (dir === 'rtl') {
+    if (direction === 'start') return 'end';
+    if (direction === 'end') return 'start';
+  }
+  return direction;
+};
+
+const getTranslateValue = (
+  node: HTMLElement,
+  directionGiven: Direction,
+  dir?: string
+) => {
   const view = ownerWindow(node);
   const rect = node.getBoundingClientRect();
+  const direction = getDirection(directionGiven, dir);
 
   const computedStyle = view.getComputedStyle(node);
   const transform =
@@ -76,8 +90,9 @@ export function Slide({
   onExited,
   ...props
 }: SlideProps) {
+  const { dir } = useTheme();
   const handleEnter = (node: HTMLElement, isAppearing: boolean) => {
-    node.style.transform = getTranslateValue(node, direction);
+    node.style.transform = getTranslateValue(node, direction, dir);
 
     reflow(node);
 
@@ -106,7 +121,7 @@ export function Slide({
   };
 
   const handleExit = (node: HTMLElement) => {
-    node.style.transform = getTranslateValue(node, direction);
+    node.style.transform = getTranslateValue(node, direction, dir);
     if (onExit) {
       onExit(node);
     }

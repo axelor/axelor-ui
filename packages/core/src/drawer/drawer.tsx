@@ -2,6 +2,7 @@ import { Fade } from '../fade';
 import { Portal } from '../portal';
 import { Slide } from '../slide';
 import styled, { withStyled } from '../styled';
+import { useTheme } from '../styles';
 import styles from './drawer.module.css';
 
 export type DrawerPlacement = 'start' | 'end' | 'top' | 'bottom';
@@ -31,6 +32,7 @@ const DrawerContent = styled.div<DrawerProps>(props => [styles.content]);
 
 export const Drawer = withStyled(DrawerContent)(
   ({ placement = 'start', backdrop, open, onClose, ...props }, ref) => {
+    const { dir } = useTheme();
     return (
       <Portal>
         {backdrop && (
@@ -43,7 +45,7 @@ export const Drawer = withStyled(DrawerContent)(
           direction={mapDrawerPlacement(placement)}
           unmountOnExit
         >
-          <DrawerRoot placement={placement}>
+          <DrawerRoot dir={dir} placement={placement}>
             <DrawerContent ref={ref} {...props} />
           </DrawerRoot>
         </Slide>
