@@ -1,5 +1,5 @@
 import React, { CSSProperties, useMemo } from 'react';
-import { StyleName, useClassNames } from '../styles';
+import { useClassNames } from '../styles';
 import { ComputeResult } from './types';
 import { isReponsive } from './utils';
 import {
@@ -147,14 +147,6 @@ export const useStyleProps = <T extends CSSStyleProps>(props: T) => {
     style: computedStyle,
     ...rest,
   };
-};
-
-export const useStyleNames = (
-  factory: () => StyleName,
-  deps: React.DependencyList
-) => {
-  const classNames = useClassNames();
-  return useMemo(() => classNames(factory()), [...deps, factory, classNames]);
 };
 
 /**

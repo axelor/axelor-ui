@@ -32,7 +32,7 @@ export { Slide } from './slide';
 export { Stack } from './stack';
 export { useClassNames } from './styles';
 export { Switch } from './switch';
-export { useStyleNames, useStyleProps } from './system';
+export { useStyleProps } from './system';
 export {
   Table,
   TableBody,

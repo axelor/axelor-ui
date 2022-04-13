@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Box } from '../box';
 import { withStyled } from '../styled';
-import { useStyleNames } from '../system';
+import { useClassNames } from '../styles';
 
 import OverflowDropdown from './overflow-dropdown';
 import OverflowScrollList from './overflow-scroll-list';
@@ -53,14 +53,14 @@ export const OverflowList = withStyled(Box)<OverflowListProps>((props, ref) => {
       )
     );
   }
-  const classes = useStyleNames(
-    () => [
+  const classNames = useClassNames();
+  const classes = classNames(
+    [
       cssStyles.container,
       {
         [cssStyles.vertical]: vertical,
       },
-    ],
-    [vertical]
+    ]
   );
 
   return (

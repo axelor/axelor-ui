@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import styled, { withStyled } from '../styled';
-import { useStyleNames } from '../system';
+import { useClassNames } from '../styles';
 import styles from './circular-progress.module.css';
 
 const SIZE = 40;
@@ -28,27 +28,25 @@ export const CircularProgress = withStyled(CircularProgressRoot)(
     },
     ref
   ) => {
-    const rootClass = useStyleNames(
-      () => [
+    const classNames = useClassNames();
+    const rootClass = classNames(
+      [
         styles.root,
         {
           [styles['root-determinate']]: !indeterminate,
         },
       ],
-      [className, indeterminate]
     );
 
-    const svgClass = useStyleNames(
-      () => ({ [styles['svg-indeterminate']]: indeterminate }),
-      [indeterminate]
+    const svgClass = classNames(
+      { [styles['svg-indeterminate']]: indeterminate }
     );
 
-    const circleClass = useStyleNames(
-      () => ({
+    const circleClass = classNames(
+      {
         [styles['indeterminate']]: indeterminate,
         [styles['determinate']]: !indeterminate,
-      }),
-      [indeterminate]
+      }
     );
 
     const radius = (SIZE - thickness) / 2;

@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useState } from 'react';
 import { Collapse } from '../collapse';
 import styled, { withStyled } from '../styled';
-import { useStyleNames } from '../system';
+import { useClassNames } from '../styles';
 
 export interface AccordionHeaderProps {
   collapsed?: boolean;
@@ -13,7 +13,8 @@ const AccordionHeaderButton = styled.button<AccordionHeaderProps>(
 
 export const AccordionHeader = withStyled(AccordionHeaderButton)(
   (props, ref) => {
-    const className = useStyleNames(() => ['accordion-header'], []);
+    const classNames = useClassNames();
+    const className = classNames('accordion-header');
     return (
       <h2 className={className}>
         <AccordionHeaderButton ref={ref} type="button" {...props} />
@@ -41,7 +42,8 @@ const AccordionCollapse = styled(Collapse)<AccordionBodyProps>(() => [
 
 export const AccordionBody = withStyled(AccordionCollapse)(
   ({ children, ...rest }, ref) => {
-    const className = useStyleNames(() => ['accordion-body'], []);
+    const classNames = useClassNames();
+    const className = classNames('accordion-body');
     return (
       <AccordionCollapse ref={ref} {...rest}>
         <div className={className}>{children}</div>
@@ -71,17 +73,14 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
     const [active, setActive] = useState<EventKey[] | EventKey | undefined>(
       activeProp || (alwaysOpen ? [] : undefined)
     );
-
-    const classes = useStyleNames(
-      () => [
-        'accordion',
-        {
-          'accordion-flush': flush,
-        },
-        className,
-      ],
-      [flush, className]
-    );
+    const classNames = useClassNames();
+    const classes = classNames([
+      'accordion',
+      {
+        'accordion-flush': flush,
+      },
+      className,
+    ]);
 
     const handleHeaderOnClick = useCallback(
       (
