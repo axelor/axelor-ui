@@ -1,4 +1,4 @@
-import { Config, Responsive } from "../types";
+import { Config, Responsive } from '../types';
 
 export type TDisplay =
   | 'none'
@@ -22,10 +22,8 @@ export interface DisplayPrintProps {
 }
 
 const display = (name: string) => (value: any, breakpoint?: string) => {
-  return breakpoint
-    ? `${name}-${breakpoint}-${value}`
-    : `${name}-${value}`;
-}
+  return breakpoint ? `${name}-${breakpoint}-${value}` : `${name}-${value}`;
+};
 
 export const DisplayConfig: Config<DisplayProps & DisplayPrintProps> = {
   d: display('d'),

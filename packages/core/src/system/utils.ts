@@ -1,4 +1,4 @@
-import { Breakpoints } from "./types";
+import { Breakpoints } from './types';
 
 export const isNumber = (value: any) => typeof value === 'number';
 
@@ -11,7 +11,7 @@ export const isUnitSize = (value: any) =>
   isString(value) && parseFloat(value).toString() != value;
 
 export const isReponsive = (value: any) =>
-  typeof value === "object" && Breakpoints.some(bp => bp in value);
+  typeof value === 'object' && Breakpoints.some(bp => bp in value);
 
 export const toPixel = (value: any): any => {
   if (isUnitSize(value)) return value;

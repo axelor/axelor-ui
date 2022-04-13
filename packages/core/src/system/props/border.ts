@@ -26,11 +26,11 @@ const rounded = () => (value: any) => {
   if (value === true) return `rounded`;
   if (value === false) return `rounded-0`;
   return `rounded-${value}`;
-}
+};
 
 const roundedSide = (name: string) => (value: any) => {
   if (value) return name;
-}
+};
 
 export const BorderConfig: Config<BorderProps> = {
   border: border('border'),

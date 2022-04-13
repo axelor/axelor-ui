@@ -5,7 +5,7 @@ import './App.css';
 import { Button } from '@axelor-ui/core';
 
 function App() {
-  const [count, setCount ] = useState(0);
+  const [count, setCount] = useState(0);
   return (
     <div className="App">
       <header className="App-header">
@@ -21,7 +21,9 @@ function App() {
         >
           Learn React
         </a>
-        <Button variant='primary' onClick={e => setCount(count + 1)}>Count: {count}</Button>
+        <Button variant="primary" onClick={e => setCount(count + 1)}>
+          Count: {count}
+        </Button>
       </header>
     </div>
   );

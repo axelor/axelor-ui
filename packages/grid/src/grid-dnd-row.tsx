@@ -2,7 +2,12 @@
  * @title Row Reorder
  */
 import React from 'react';
-import { ConnectDragSource, DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
+import {
+  ConnectDragSource,
+  DragSourceMonitor,
+  useDrag,
+  useDrop,
+} from 'react-dnd';
 import { Icon } from '@axelor-ui/core';
 import { XYCoord } from 'dnd-core';
 import { ReactComponent as BiList } from 'bootstrap-icons/icons/list.svg';

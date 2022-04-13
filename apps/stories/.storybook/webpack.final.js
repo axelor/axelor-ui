@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('path');
 
 const cssRegex = /\.css$/;
 const scssRegex = /\.s[ca]ss$/;
@@ -27,12 +27,12 @@ module.exports = function webpackFinal(config) {
   configureStyle('scss', scssRegex, config);
 
   const fileLoaderRule = config.module.rules.find(
-    (rule) => !Array.isArray(rule.test) && rule.test.test(".svg"),
+    rule => !Array.isArray(rule.test) && rule.test.test('.svg')
   );
   fileLoaderRule.exclude = /\.svg$/;
   config.module.rules.push({
     test: /\.svg$/,
-    use: ["@svgr/webpack", "url-loader"],
+    use: ['@svgr/webpack', 'url-loader'],
   });
 
   config.resolve = config.resolve || {};

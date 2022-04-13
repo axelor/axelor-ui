@@ -1,4 +1,4 @@
-import { Config } from "../types";
+import { Config } from '../types';
 
 export interface InteractiveProps {
   userSelect?: 'all' | 'auto' | 'none';

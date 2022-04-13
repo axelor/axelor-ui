@@ -16,4 +16,3 @@ export const TableCell = styled.td<TableCellProps>(
   ],
   ({ as = 'td' }) => ({ as })
 );
-

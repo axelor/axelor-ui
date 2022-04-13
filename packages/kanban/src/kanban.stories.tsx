@@ -144,7 +144,7 @@ export const ColumnEditor = () => (
         title: 'Todo',
         records: getRecords(3),
         renderer: ({ RecordList, column }) => (
-          <Box p={2} bg='light' border rounded me={2}>
+          <Box p={2} bg="light" border rounded me={2}>
             <Box as="h5" p={2}>
               {column.title}
             </Box>

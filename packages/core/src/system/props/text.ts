@@ -18,10 +18,8 @@ export interface TextProps {
 }
 
 const textStyle = (name: string) => (value: any, breakpoint?: string) => {
-  return breakpoint
-    ? `${name}-${breakpoint}-${value}`
-    : `${name}-${value}`;
-}
+  return breakpoint ? `${name}-${breakpoint}-${value}` : `${name}-${value}`;
+};
 
 export const TextConfig: Config<TextProps> = {
   color: textStyle('text'),

@@ -1,4 +1,4 @@
-import { Config } from "../types";
+import { Config } from '../types';
 
 export type TVerticalAlignment =
   | 'baseline'
@@ -29,10 +29,8 @@ export interface SizeProps {
 }
 
 const size = (cls: string) => (value: any, breakpoint?: string) => {
-  return breakpoint
-    ? `${cls}-${breakpoint}-${value}`
-    : `${cls}-${value}`;
-}
+  return breakpoint ? `${cls}-${breakpoint}-${value}` : `${cls}-${value}`;
+};
 
 export const SizeConfig: Config<SizeProps> = {
   verticalAlign: size('align'),

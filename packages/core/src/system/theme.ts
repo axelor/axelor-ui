@@ -9,4 +9,10 @@ export type TVariant =
   | 'dark';
 
 export type TBackground = TVariant | 'body' | 'transparent';
-export type TForeground = TVariant | 'white' | 'black-50' | 'white-50' | 'body' | 'muted';
+export type TForeground =
+  | TVariant
+  | 'white'
+  | 'black-50'
+  | 'white-50'
+  | 'body'
+  | 'muted';

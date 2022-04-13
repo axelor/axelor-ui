@@ -54,14 +54,12 @@ export const OverflowList = withStyled(Box)<OverflowListProps>((props, ref) => {
     );
   }
   const classNames = useClassNames();
-  const classes = classNames(
-    [
-      cssStyles.container,
-      {
-        [cssStyles.vertical]: vertical,
-      },
-    ]
-  );
+  const classes = classNames([
+    cssStyles.container,
+    {
+      [cssStyles.vertical]: vertical,
+    },
+  ]);
 
   return (
     <Box ref={ref} className={classes}>

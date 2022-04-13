@@ -1,7 +1,9 @@
 import type { Config, Responsive } from '../types';
 
 export type SpaceValue = 0 | 1 | 2 | 3 | 4 | 5;
-export type SpaceType<T> = Responsive<T | [T, T, T, T] | [T, T, T] | [T, T] | [T]>;
+export type SpaceType<T> = Responsive<
+  T | [T, T, T, T] | [T, T, T] | [T, T] | [T]
+>;
 
 export type MarginValue = SpaceValue | 'auto';
 export type PaddingValue = SpaceValue;
@@ -91,7 +93,7 @@ const space = (cls: string) => (value: any, breakpoint?: string) => {
     classes: [className],
     styles: {},
   };
-}
+};
 
 const spaces = (cls: string) => (value: any, breakpoints?: string) => {
   const values = Array.isArray(value) ? value : [value];
@@ -99,7 +101,7 @@ const spaces = (cls: string) => (value: any, breakpoints?: string) => {
   return names
     .map(x => cls + x)
     .map((x, i) => space(x)(values[i], breakpoints));
-}
+};
 
 export const SpaceConfig: Config<SpaceProps> = {
   m: spaces('m'),

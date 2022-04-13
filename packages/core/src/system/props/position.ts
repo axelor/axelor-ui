@@ -1,4 +1,4 @@
-import { Config } from "../types";
+import { Config } from '../types';
 
 export type TPosition = 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
 
@@ -31,7 +31,7 @@ export const PositionConfig: Config<PositionProps> = {
         [`translate-middle`]: middle === true,
         [`translate-x`]: middle === 'x',
         [`translate-y`]: middle === 'y',
-      }
-    }
+      },
+    };
   },
 };

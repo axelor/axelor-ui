@@ -60,10 +60,7 @@ export const Dropdown = ({ inverse = false, vertical = false }) => {
         closeDropdown?: () => void
       ) => {
         return (
-          <Box
-            key={index}
-            onClick={() => closeDropdown && closeDropdown()}
-          >
+          <Box key={index} onClick={() => closeDropdown && closeDropdown()}>
             {item.title}
           </Box>
         );
