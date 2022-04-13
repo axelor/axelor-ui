@@ -1,4 +1,3 @@
-import faker from 'faker';
 import { useState, useCallback } from 'react';
 import { Box, Input, Button, Icon, Menu, MenuItem } from '@axelor-ui/core';
 import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-down-fill.svg';
@@ -16,9 +15,10 @@ const getId = (() => {
   return () => id++;
 })();
 
-function getTitle() {
-  return faker.lorem.words();
-}
+const getTitle = (() => {
+  let id = 0;
+  return () => `Title ${id++}`;
+})();
 
 function getRecords(count: number) {
   return Array.from({ length: count }, () => ({
