@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Box, styleNames } from '@axelor-ui/core';
+import { Box, useClassNames } from '@axelor-ui/core';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import styles from './kanban.module.css';
@@ -63,7 +63,7 @@ function Kanban({
     },
     [columns, onCardMove, onColumnMove, getColumn]
   );
-
+  const classNames = useClassNames();
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable
@@ -76,7 +76,7 @@ function Kanban({
           <Box
             ref={innerRef}
             {...droppableProps}
-            className={styleNames(styles.board, className)}
+            className={classNames(styles.board, className)}
           >
             {columns?.map((column, index) => (
               <KanbanColumn

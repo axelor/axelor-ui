@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 
 import { TreeColumn } from './tree-column';
 import { TreeNode } from './tree-node';
-import { styleNames } from '../styles';
+import { useClassNames } from '../styles';
 import * as TYPES from './types';
 import styles from './tree.module.css';
 
@@ -215,9 +215,11 @@ export function Tree(props: TYPES.TreeProps) {
     editNode && onNodeEdit && onNodeEdit(editNode);
   }, [editNode, onNodeEdit]);
 
+  const classNames = useClassNames();
+
   return (
     <div
-      className={styleNames(styles.tree, {
+      className={classNames(styles.tree, {
         [styles.loading]: loading,
       })}
       {...(editNode

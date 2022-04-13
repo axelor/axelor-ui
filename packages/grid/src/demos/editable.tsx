@@ -2,7 +2,7 @@
  * @title Editable
  */
 import React from 'react';
-import { Box, FocusTrap, Input, styleNames } from '@axelor-ui/core';
+import { Box, FocusTrap, Input, useClassNames } from '@axelor-ui/core';
 import { Grid } from '../grid';
 import { GridProvider } from '../grid-provider';
 import { columns, records } from './demo-data';
@@ -108,7 +108,7 @@ function FormField({ children, style, className, ...rest }: any) {
   const { name = '', type = '', options } = data || {};
   const [value, setValue] = React.useState(_value === undefined ? '' : _value);
   const initRef = React.useRef(false);
-
+  const classNames = useClassNames();
   function handleKeyDown(e: any) {
     if (e.defaultPrevented) return;
     if (e.keyCode === 27 && onCancel) {
@@ -129,7 +129,7 @@ function FormField({ children, style, className, ...rest }: any) {
     };
     if (options) {
       return (
-        <select className={styleNames('form-control')} {...props}>
+        <select className={classNames('form-control')} {...props}>
           <option value="">Select</option>
           {options.map((option: string) => (
             <option key={option} value={option}>

@@ -6,7 +6,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { Tree } from '../tree';
 import { Input } from '../../input';
-import { styleNames } from '../../styles';
+import { useClassNames } from '../../styles';
 
 const columns = [
   { name: 'title', title: 'Title', type: 'String' },
@@ -39,7 +39,6 @@ const records = [
     ],
   },
 ];
-
 
 const FormHandlers = React.createContext(React.createRef<any>());
 
@@ -75,7 +74,7 @@ function FormField({
     };
     if (options) {
       return (
-        <select className={styleNames('form-control')} {...props}>
+        <select className={classNames('form-control')} {...props}>
           <option value="">Select</option>
           {options.map((option: string) => (
             <option key={option} value={option}>

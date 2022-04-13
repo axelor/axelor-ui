@@ -1,5 +1,5 @@
 import React from 'react';
-import { styleNames } from '@axelor-ui/core';
+import { useClassNames } from '@axelor-ui/core';
 import { useDrop } from 'react-dnd';
 
 import * as TYPES from './types';
@@ -22,12 +22,13 @@ const GanttRows = React.memo(function GanttRows({
   activeRowIndex: number;
   items: TYPES.GanttHeaderItem[];
 }) {
+  const classNames = useClassNames();
   return (
     <>
       {new Array(totalRecords).fill(0).map((_, i) => (
         <div
           key={i}
-          className={styleNames(classes.ganttRow, {
+          className={classNames(classes.ganttRow, {
             [classes.active]: activeRowIndex === i,
           })}
         >

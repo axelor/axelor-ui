@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@axelor-ui/core';
-import { styleNames } from '@axelor-ui/core';
+import { useClassNames } from '@axelor-ui/core';
 import { ReactComponent as BiArrowUp } from 'bootstrap-icons/icons/arrow-up.svg';
 import { ReactComponent as BiArrowDown } from 'bootstrap-icons/icons/arrow-down.svg';
 import { ReactComponent as BiX } from 'bootstrap-icons/icons/x.svg';
@@ -74,7 +74,7 @@ export const GridGroup = React.memo(function GridGroup(props: GridGroupProps) {
     onGroupTagClick,
     onGroupTagDrop,
   } = props;
-
+  const classNames = useClassNames();
   return groupBy && groupBy.length ? (
     <div className={styles.groupTagContainer}>
       {groupBy.map(group => {
@@ -101,7 +101,7 @@ export const GridGroup = React.memo(function GridGroup(props: GridGroupProps) {
   ) : (
     <GridDragWidget
       canDrag={false}
-      className={styleNames(styles.groupTagContainer, styles.groupDumpTag)}
+      className={classNames(styles.groupTagContainer, styles.groupDumpTag)}
       onDrop={onGroupTagDrop}
     >
       <div className={styles.groupDumpText}>{groupingText}</div>

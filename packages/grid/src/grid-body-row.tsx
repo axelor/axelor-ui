@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input } from '@axelor-ui/core';
-import { styleNames } from '@axelor-ui/core';
+import { useClassNames } from '@axelor-ui/core';
 
 import { GridColumn } from './grid-column';
 import { isRowCheck } from './utils';
@@ -51,12 +51,13 @@ export const GridBodyRow = React.memo(function GridBodyRow(
 
   const RowComponent = renderer || 'div';
   const rendererProps = renderer ? props : {};
+  const classNames = useClassNames();
 
   return (
     <>
       <RowComponent
         {...rendererProps}
-        className={styleNames(styles.row, className, {
+        className={classNames(styles.row, className, {
           [styles.selected]: selected,
         })}
         onDoubleClick={e => onDoubleClick && onDoubleClick(e, data, rowIndex)}

@@ -6,7 +6,7 @@ import { Box } from '../box';
 import { Fade } from '../fade';
 import { Portal } from '../portal';
 
-import { styleNames } from '../styles';
+import { useClassNames } from '../styles';
 import { TBackground, TForeground } from '../system';
 
 import styles from './popper.module.css';
@@ -118,10 +118,12 @@ const PopperWrapper = ({
     };
   }, [target, wrapperEl, open]);
 
+  const classNames = useClassNames();
+
   return (
     <div
       ref={setWrapperEl}
-      className={styleNames(styles.popper, { [styles.shadow]: shadow })}
+      className={classNames(styles.popper, { [styles.shadow]: shadow })}
       {...props}
       style={{ position: 'fixed' }}
     >

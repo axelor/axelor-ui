@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Divider, Input, Icon, Menu, MenuItem } from '@axelor-ui/core';
-import { styleNames } from '@axelor-ui/core';
+import { useClassNames } from '@axelor-ui/core';
 import { ReactComponent as BiSortUpAlt } from 'bootstrap-icons/icons/sort-up-alt.svg';
 import { ReactComponent as BiSortDownAlt } from 'bootstrap-icons/icons/sort-down-alt.svg';
 import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-down-fill.svg';
@@ -65,7 +65,7 @@ function GridHeaderCheckbox({
 }: Pick<GridHeaderColumnProps, 'checkType' | 'onCheckAll'>) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const canCheck = Boolean(onCheckAll);
-
+  const classNames = useClassNames();
   React.useEffect(() => {
     const input = inputRef.current;
     if (checkType && input) {
@@ -82,7 +82,7 @@ function GridHeaderCheckbox({
   }, [canCheck, checkType]);
 
   return (
-    <span className={styleNames(styles.headerColumnTitle, styles.center)}>
+    <span className={classNames(styles.headerColumnTitle, styles.center)}>
       <Input
         ref={inputRef}
         type="checkbox"
@@ -127,6 +127,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
   } = props;
   const showDropdown = () => setDropdownOpen(true);
   const hideDropdown = () => setDropdownOpen(false);
+  const classNames = useClassNames();
 
   function handleDropdownClick(e: React.SyntheticEvent) {
     e.preventDefault();
@@ -189,7 +190,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
           <span
             ref={setDropdownEl}
             onClick={handleDropdownClick}
-            className={styleNames(styles.headerColumnDropdown, {
+            className={classNames(styles.headerColumnDropdown, {
               [styles.show]: dropdownOpen,
               [styles.hasResize]: Boolean(onResize),
             })}

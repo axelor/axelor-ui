@@ -1,5 +1,5 @@
 import React from 'react';
-import { styleNames } from '@axelor-ui/core';
+import { useClassNames } from '@axelor-ui/core';
 import * as TYPES from './types';
 import styles from './grid.module.css';
 
@@ -40,12 +40,14 @@ export function GridColumn(props: GridColumnProps) {
     }
   }, [selected]);
 
+  const classNames = useClassNames();
+
   return (
     <ColumnComponent
       {...(renderer ? {} : { ref: columnRef })}
       {...rendererProps}
       onClick={e => onClick && onClick(e, data, index)}
-      className={styleNames(styles.column, {
+      className={classNames(styles.column, {
         [styles.center]: ['row-checked'].includes(data.type || ''),
         [styles.selected]: selected,
       })}

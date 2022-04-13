@@ -3,7 +3,7 @@ import moment from 'moment';
 import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import { Icon } from '@axelor-ui/core';
-import { styleNames } from '@axelor-ui/core';
+import { useClassNames } from '@axelor-ui/core';
 import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-down-fill.svg';
 
 import { CONFIG, getDateFromOffset } from './utils';
@@ -328,11 +328,13 @@ export const GanttLine = React.memo(function GanttLine(props: {
     }
   }, [x, y, data]);
 
+  const classNames = useClassNames();
+
   return (
     <>
       <div
         ref={dragLineRef}
-        className={styleNames(classes.ganttLine, {
+        className={classNames(classes.ganttLine, {
           [classes.connect]: dropProps.isOver,
         })}
         style={{
@@ -362,7 +364,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
         </div>
         <div
           ref={leftConnectRef}
-          className={styleNames(classes.ganttConnector, classes.left, {
+          className={classNames(classes.ganttConnector, classes.left, {
             [classes.show]:
               leftConnectProps.isOver ||
               dropProps.isOver ||
@@ -373,16 +375,16 @@ export const GanttLine = React.memo(function GanttLine(props: {
           <div className={classes.ganttConnectorLink} />
         </div>
 
-        <div className={styleNames(classes.ganttLineDragArea, classes.left)} />
+        <div className={classNames(classes.ganttLineDragArea, classes.left)} />
 
         <div
           ref={leftResizeDrag}
-          className={styleNames(classes.ganttLineDrag, classes.left)}
+          className={classNames(classes.ganttLineDrag, classes.left)}
         />
 
         <div
           ref={rightConnectRef}
-          className={styleNames(classes.ganttConnector, classes.right, {
+          className={classNames(classes.ganttConnector, classes.right, {
             [classes.show]:
               rightConnectProps.isOver ||
               dropProps.isOver ||
@@ -393,11 +395,11 @@ export const GanttLine = React.memo(function GanttLine(props: {
           <div className={classes.ganttConnectorLink} />
         </div>
 
-        <div className={styleNames(classes.ganttLineDragArea, classes.right)} />
+        <div className={classNames(classes.ganttLineDragArea, classes.right)} />
 
         <div
           ref={rightResizeDrag}
-          className={styleNames(classes.ganttLineDrag, classes.right)}
+          className={classNames(classes.ganttLineDrag, classes.right)}
         />
 
         <div className={classes.ganttLineTitle}>

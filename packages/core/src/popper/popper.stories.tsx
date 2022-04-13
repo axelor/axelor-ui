@@ -7,7 +7,7 @@ import { ClickAwayListener } from '../click-away-listener';
 import { Grow } from '../grow';
 import { Input } from '../input';
 import { InputLabel } from '../input-label';
-import { styleNames } from '../styles';
+import { useClassNames } from '../styles';
 import { Popper } from './popper';
 import { usePopperTrigger } from './use-popper-trigger';
 
@@ -37,7 +37,7 @@ export const Basic = () => {
 export const Dropdown = () => {
   const [open, setOpen] = useState(false);
   const [targetEl, setTargetEl] = useState<HTMLButtonElement | null>(null);
-
+  const classNames = useClassNames();
   const toggle = () => setOpen(v => !v);
 
   return (
@@ -47,22 +47,22 @@ export const Dropdown = () => {
       </Button>
       <Popper open={open} target={targetEl} offset={[0, 4]} arrow>
         <ul
-          className={styleNames(
+          className={classNames(
             'dropdown-menu show border-0 rounded-0 position-static bg-transparent'
           )}
         >
           <li>
-            <a href="#" className={styleNames('dropdown-item')}>
+            <a href="#" className={classNames('dropdown-item')}>
               Item 1
             </a>
           </li>
           <li>
-            <a href="#" className={styleNames('dropdown-item')}>
+            <a href="#" className={classNames('dropdown-item')}>
               Item 2
             </a>
           </li>
           <li>
-            <a href="#" className={styleNames('dropdown-item')}>
+            <a href="#" className={classNames('dropdown-item')}>
               Item 3
             </a>
           </li>

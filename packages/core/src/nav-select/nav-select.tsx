@@ -6,7 +6,7 @@ import { Icon } from '../icon';
 import { OverflowList, OverflowListTypes } from '../overflow-list';
 import { MenuItem } from '../menu/menu-item';
 import { MenuProps } from '../menu/menu';
-import { styleNames } from '../styles';
+import { useClassNames } from '../styles';
 import { withStyled } from '../styled';
 import cssStyles from './nav-select.module.css';
 
@@ -33,11 +33,12 @@ interface NavSelectItemProps {
 
 const NavSelectItem = withStyled(Box)<NavSelectItemProps>((props, ref) => {
   const { active, className, children, ...rest } = props;
+  const classNames = useClassNames();
   return (
     <Box
       ref={ref}
       {...rest}
-      className={styleNames(className, {
+      className={classNames(className, {
         [cssStyles.active]: Boolean(active),
       })}
     >
@@ -73,6 +74,8 @@ export function NavSelect({
     }
   }, [selectedHidden]);
 
+  const classNames = useClassNames();
+
   return (
     <Box className={cssStyles.root}>
       <OverflowList
@@ -98,7 +101,7 @@ export function NavSelect({
             <NavSelectItem
               key={index}
               active={selectedInListItem || item.value === selected?.value}
-              className={styleNames(cssStyles.listItem, {
+              className={classNames(cssStyles.listItem, {
                 [cssStyles.last]: index === items.length - 1,
               })}
               onClick={() => handleItemClick(item)}
@@ -120,7 +123,7 @@ export function NavSelect({
                 as="button"
                 d="flex"
                 justifyContent="center"
-                className={styleNames(cssStyles.overflowListItem, {
+                className={classNames(cssStyles.overflowListItem, {
                   [cssStyles.active]: item.value === selected?.value,
                 })}
                 onClick={() => {
@@ -143,7 +146,7 @@ export function NavSelect({
               <NavSelectItem
                 {...props}
                 active={Boolean(selectedInDropdown)}
-                className={styleNames(
+                className={classNames(
                   props.className,
                   cssStyles.listItem,
                   cssStyles.dropdown

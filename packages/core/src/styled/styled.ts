@@ -1,6 +1,6 @@
 import isPropValid from '@emotion/is-prop-valid';
 import { createElement, forwardRef, useMemo } from 'react';
-import { StyleName, styleNames } from '../styles';
+import { StyleName, useClassNames } from '../styles';
 import { StyleProps, useStyleProps } from '../system';
 
 type PropsOf<
@@ -63,6 +63,7 @@ const createStyled: CreateStyled =
   (component, { displayName, shouldForwardProp } = {}) =>
   (...styles) => {
     function useStyles(props: any) {
+      const classNames = useClassNames();
       return useMemo(() => {
         const classes = [];
         const computed = { ...props };
@@ -75,12 +76,11 @@ const createStyled: CreateStyled =
             Object.assign(computed, res);
           }
         }
-
         return {
           ...computed,
-          className: styleNames(computed.className, classes),
+          className: classNames(computed.className, classes),
         };
-      }, [props]);
+      }, [props, classNames]);
     }
 
     function useElement(inProps: any, ref: any) {

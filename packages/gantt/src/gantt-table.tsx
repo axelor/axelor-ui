@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from '@axelor-ui/core';
-import { styleNames } from '@axelor-ui/core';
+import { useClassNames } from '@axelor-ui/core';
 import * as TYPES from './types';
 import classes from './gantt.module.css';
 
@@ -31,9 +31,10 @@ const GanttTableBodyRow = React.memo(function GanttTableBodyRow({
   data: TYPES.GanttRecord;
   items: TYPES.GanttProps['items'];
 }) {
+  const classNames = useClassNames();
   return (
     <div
-      className={styleNames(classes.tableBodyRow, {
+      className={classNames(classes.tableBodyRow, {
         [classes.active]: active,
       })}
       onClick={e => onClick(index)}

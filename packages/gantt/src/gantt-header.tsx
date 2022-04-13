@@ -1,6 +1,6 @@
 import React from 'react';
 import * as TYPES from './types';
-import { styleNames } from '@axelor-ui/core';
+import { useClassNames } from '@axelor-ui/core';
 import classes from './gantt.module.css';
 
 export const RenderList = React.memo(function RenderList({
@@ -12,11 +12,12 @@ export const RenderList = React.memo(function RenderList({
   itemClassName?: string;
   itemRenderer?: (item: TYPES.GanttHeaderItem) => any;
 }) {
+  const classNames = useClassNames();
   return (
     <>
       {items.map((item, i: number) => (
         <div
-          className={styleNames(classes.block, itemClassName, {
+          className={classNames(classes.block, itemClassName, {
             [classes.highlight]: item.highlight,
           })}
           key={i}

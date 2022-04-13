@@ -1,5 +1,5 @@
 import React, { CSSProperties, useMemo } from 'react';
-import { StyleName, styleNames } from '../styles';
+import { StyleName, useClassNames } from '../styles';
 import { ComputeResult } from './types';
 import { isReponsive } from './utils';
 import {
@@ -130,10 +130,11 @@ export const useStyleProps = <T extends CSSStyleProps>(props: T) => {
   );
 
   const { className, style, ...rest } = otherProps;
+  const classNames = useClassNames();
 
   const computedClassName = useMemo(
-    (): string => styleNames(className, classes),
-    [className, classes]
+    (): string => classNames(className, classes),
+    [className, classes, classNames]
   );
 
   const computedStyle = useMemo(
@@ -151,7 +152,10 @@ export const useStyleProps = <T extends CSSStyleProps>(props: T) => {
 export const useStyleNames = (
   factory: () => StyleName,
   deps: React.DependencyList
-) => useMemo(() => styleNames(factory()), deps);
+) => {
+  const classNames = useClassNames();
+  return useMemo(() => classNames(factory()), [...deps, factory, classNames]);
+};
 
 /**
  * @deprecated

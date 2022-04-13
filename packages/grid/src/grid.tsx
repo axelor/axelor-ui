@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRefs } from '@axelor-ui/core';
-import { styleNames } from '@axelor-ui/core';
+import { useClassNames } from '@axelor-ui/core';
 
 import { GridGroup } from './grid-group';
 import { GridHeader } from './grid-header';
@@ -1028,11 +1028,11 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       }
       return 'indeterminate';
     }, [state.rows, state.selectedRows]);
-
+    const classNames = useClassNames();
     return (
       <div
         ref={handleRef}
-        className={styleNames(styles.container, className)}
+        className={classNames(styles.container, className)}
         {...(allowCellSelection
           ? { tabIndex: 0, onKeyDown: handleNavigation }
           : {})}
@@ -1052,7 +1052,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           </div>
         )}
         <GridHeader
-          className={styleNames(styles.header, {
+          className={classNames(styles.header, {
             [styles.sticky]: stickyHeader,
           })}
           groupBy={state.groupBy}
@@ -1134,7 +1134,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         />
         {hasAggregation && (
           <GridFooter
-            className={styleNames(styles.footer, {
+            className={classNames(styles.footer, {
               [styles.sticky]: stickyFooter,
             })}
             rowRenderer={footerRowRenderer}

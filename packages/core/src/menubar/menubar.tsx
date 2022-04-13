@@ -12,7 +12,7 @@ import { Box } from '../box';
 import { Menu as AxMenu } from '../menu/menu';
 import { ArrowNavigation } from '../arrow-navigation';
 import { MenuItem as AxMenuItem } from '../menu/menu-item';
-import { styleNames } from '../styles';
+import { useClassNames } from '../styles';
 import { tryFocus } from './utils';
 import { isElementDisabled, isElementHidden } from '../arrow-navigation/utils';
 import { withStyled } from '../styled';
@@ -158,6 +158,8 @@ function Menu({
     }
   }, [showProp]);
 
+  const classNames = useClassNames();
+
   return (
     <AxMenu
       placement="bottom-start"
@@ -167,7 +169,7 @@ function Menu({
       onMouseLeave={handleMouseLeave}
       tabIndex={1}
       ref={menuRef}
-      className={styleNames(className, styles.menu)}
+      className={classNames(className, styles.menu)}
       show={showProp}
       {...rest}
     >
@@ -233,7 +235,7 @@ function Menu({
         const common = {
           ...props,
           as: 'button',
-          className: styleNames(styles.item, {
+          className: classNames(styles.item, {
             [styles.active]: isActiveItem,
             [styles.submenu]: submenu,
           }),

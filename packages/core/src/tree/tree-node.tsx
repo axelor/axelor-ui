@@ -4,7 +4,7 @@ import { ReactComponent as BiChevronDown } from 'bootstrap-icons/icons/chevron-d
 import { ReactComponent as BiChevronRight } from 'bootstrap-icons/icons/chevron-right.svg';
 
 import styles from './tree.module.css';
-import { styleNames } from '../styles';
+import { useClassNames } from '../styles';
 import { Icon } from '../icon';
 import * as TYPES from './types';
 
@@ -45,6 +45,7 @@ const TreeNodeContent = React.forwardRef<
 
 function Parent(props: TYPES.TreeChildProps) {
   const { className, columns, data, index, onDrop, onToggle, onClick } = props;
+  const classNames = useClassNames();
   const [{ hovered }, dropRef] = useDrop({
     accept: NODE_TYPE,
     hover() {
@@ -68,7 +69,7 @@ function Parent(props: TYPES.TreeChildProps) {
   return (
     <div
       ref={dropRef}
-      className={styleNames(className, {
+      className={classNames(className, {
         [styles.hover]: hovered,
       })}
       onClick={onClick}
@@ -125,6 +126,7 @@ export const TreeNode = React.memo(function TreeNode({
 }: TYPES.TreeNodeProps) {
   const NodeComponent = hasChildren(data) ? Parent : Leaf;
   const RendererComponent = edit && editRenderer ? editRenderer : Renderer;
+  const classNames = useClassNames();
   return (
     <RendererComponent
       {...(Renderer === React.Fragment
@@ -137,7 +139,7 @@ export const TreeNode = React.memo(function TreeNode({
       <NodeComponent
         data={data}
         index={index}
-        className={styleNames(styles.node, {
+        className={classNames(styles.node, {
           [styles.selected]: data.selected,
         })}
         columns={columns}

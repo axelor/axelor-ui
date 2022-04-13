@@ -2,7 +2,7 @@ import React from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { Box } from '@axelor-ui/core';
-import { styleNames } from '@axelor-ui/core';
+import { useClassNames } from '@axelor-ui/core';
 
 import { Gantt } from './gantt';
 import { GANTT_TYPES } from './utils';
@@ -77,6 +77,8 @@ export const Basic = () => {
     []
   );
 
+  const classNames = useClassNames();
+
   return (
     <DndProvider backend={HTML5Backend}>
       <Box>
@@ -84,7 +86,7 @@ export const Basic = () => {
           <select
             value={view}
             onChange={e => setView(e.target.value as any)}
-            className={styleNames('form-control')}
+            className={classNames('form-control')}
           >
             <option value={GANTT_TYPES.DAY}>Day</option>
             <option value={GANTT_TYPES.WEEK}>Week</option>

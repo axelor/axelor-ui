@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { styleNames } from '@axelor-ui/core';
+import { useClassNames } from '@axelor-ui/core';
 import * as TYPES from './types';
 import classes from './grid.module.css';
 
@@ -75,10 +75,12 @@ const GridDragElementComponent = React.memo(function GridDragElementComponent(
 
   drag(drop(ref));
 
+  const classNames = useClassNames();
+
   return (
     <div
       ref={ref}
-      className={styleNames(className, classes.dragElement, {
+      className={classNames(className, classes.dragElement, {
         [classes['drag-over-current']]: isOver || isOverCurrent,
         [classes.dragging]: isDragging,
       })}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { styleNames } from '@axelor-ui/core';
+import { useClassNames } from '@axelor-ui/core';
 import { GridColumn } from './grid-column';
 import { capitalizeWord } from './utils';
 import * as TYPES from './types';
@@ -18,10 +18,11 @@ export const GridFooterRow = React.memo(function GridFooterRow(
   } = props;
   const RowRenderer = renderer || 'div';
   const rendererProps = renderer ? props : {};
+  const classNames = useClassNames();
   return (
     <RowRenderer
       {...rendererProps}
-      className={styleNames(styles.row, className, {
+      className={classNames(styles.row, className, {
         [styles.selected]: selected,
       })}
     >

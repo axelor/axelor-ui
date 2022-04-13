@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@axelor-ui/core';
-import { styleNames } from '@axelor-ui/core';
+import { useClassNames } from '@axelor-ui/core';
 import { ReactComponent as BiCaretRightFill } from 'bootstrap-icons/icons/caret-right-fill.svg';
 import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-down-fill.svg';
 
@@ -15,10 +15,11 @@ export const GridGroupRow = React.memo(function GridGroupRow(
   const { level, value } = record;
   const RowRenderer = renderer || 'div';
   const rendererProps = renderer ? props : {};
+  const classNames = useClassNames();
   return (
     <RowRenderer
       {...rendererProps}
-      className={styleNames(styles.row, styles.groupRow, className, {
+      className={classNames(styles.row, styles.groupRow, className, {
         [styles.selected]: selected,
       })}
     >

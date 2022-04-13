@@ -1,6 +1,6 @@
 import { forwardRef, useRef } from 'react';
 import { Transition } from 'react-transition-group';
-import { styleNames } from '../styles';
+import { useClassNames } from '../styles';
 import { TransitionProps } from '../transitions/types';
 import {
   getTransition,
@@ -107,6 +107,8 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
       }
     };
 
+    const classNames = useClassNames();
+
     return (
       <Transition
         in={props.in}
@@ -120,7 +122,7 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
         {...props}
       >
         {state => {
-          const cls = styleNames([
+          const cls = classNames([
             className,
             styles.collapse,
             {

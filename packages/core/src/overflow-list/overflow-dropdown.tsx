@@ -7,7 +7,7 @@ import { Box } from '../box';
 import { Icon } from '../icon';
 import { Menu } from '../menu/menu';
 import { MenuItem } from '../menu/menu-item';
-import { styleNames } from '../styles';
+import { useClassNames } from '../styles';
 import { OverflowListItemProps, OverflowDropdownProps } from './types';
 import * as TYPES from './types';
 import styled, { withStyled } from '../styled';
@@ -277,10 +277,12 @@ export const OverflowDropdown = withStyled(DropdownList)((props, ref) => {
     );
   }
 
+  const classNames = useClassNames();
+
   return (
     <div
       ref={container}
-      className={styleNames(cssStyles.dropdownListContainer, {
+      className={classNames(cssStyles.dropdownListContainer, {
         [cssStyles.inverse]: inverse,
       })}
     >
