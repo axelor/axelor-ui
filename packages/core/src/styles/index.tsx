@@ -1,3 +1,5 @@
+import { cloneElement, createContext } from 'react';
+import { useContext } from 'react';
 import { useCallback } from 'react';
 import stylesLtr from './styles.module.scss';
 import stylesRtl from './styles.rtl.module.scss';
@@ -39,9 +41,41 @@ export function styleNames(...args: StyleName[]) {
     .join(' ');
 }
 
+export interface ThemeContextValue {
+  dir?: string;
+}
+
+export interface ThemeProviderProps {
+  dir?: string;
+  children: React.ReactElement;
+}
+
+const ThemeContext = createContext<ThemeContextValue>({});
+
+export function ThemeProvider({ dir, children }: ThemeProviderProps) {
+  const curr = useContext(ThemeContext);
+  return (
+    <ThemeContext.Provider value={{ dir: dir || curr.dir }}>
+      {dir
+        ? cloneElement(children, {
+            dir: children.props.dir || dir,
+          })
+        : children}
+    </ThemeContext.Provider>
+  );
+}
+
+export function useTheme() {
+  return useContext(ThemeContext);
+}
+
 export function useStyles() {
-  const dir = document.dir;
-  return STYLES[dir] || STYLES.ltr;
+  const theme = useTheme();
+  const dir = theme.dir;
+  if (dir && dir in STYLES) {
+    return STYLES[dir];
+  }
+  return STYLES.ltr;
 }
 
 export function useClassNames() {

@@ -30,7 +30,7 @@ export { Portal } from './portal';
 export { Select } from './select';
 export { Slide } from './slide';
 export { Stack } from './stack';
-export { useClassNames } from './styles';
+export { ThemeProvider, useTheme, useStyles, useClassNames } from './styles';
 export { Switch } from './switch';
 export { useStyleProps } from './system';
 export {
