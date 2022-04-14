@@ -1,5 +1,9 @@
 import React from 'react';
-import ReactSelect, { components, ControlProps, IndicatorsContainerProps } from 'react-select';
+import ReactSelect, {
+  components,
+  ControlProps,
+  IndicatorsContainerProps,
+} from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { Box } from '../box';
 
@@ -52,13 +56,19 @@ const ControlContainer = (props: ControlProps<SelectOption, true>) => {
   );
 };
 
-const IndicatorsContainer = (props: IndicatorsContainerProps<SelectOption, true>) => {
+const IndicatorsContainer = (
+  props: IndicatorsContainerProps<SelectOption, true>
+) => {
   function handleMouseDown(e: React.SyntheticEvent) {
     e.preventDefault();
   }
   return (
     <Box d="flex" className={selectStyles.indicators}>
-      <Box d="flex" className={selectStyles.indicatorActions} onMouseDown={handleMouseDown}>
+      <Box
+        d="flex"
+        className={selectStyles.indicatorActions}
+        onMouseDown={handleMouseDown}
+      >
         {(props.selectProps.components as any)?.actions}
       </Box>
     </Box>
@@ -96,8 +106,8 @@ export function Select({
   const [loading, setLoading] = React.useState(false);
   const timer = React.useRef<any>(null);
 
-  const setTimer = React.useCallback((callback: any) => {
-    timer.current = setTimeout(callback, 500);
+  const setTimer = React.useCallback((callback: any, interval = 500) => {
+    timer.current = setTimeout(callback, interval);
   }, []);
 
   const clearTimer = React.useCallback(() => {
@@ -109,14 +119,18 @@ export function Select({
       if (option.__isNew__) {
         return option.label;
       }
-      return typeof optionLabel === 'function' ? optionLabel(option) : option[optionLabel];
+      return typeof optionLabel === 'function'
+        ? optionLabel(option)
+        : option[optionLabel];
     },
-    [optionLabel],
+    [optionLabel]
   );
   const getOptionValue = React.useCallback(
     (option: any) =>
-      typeof optionValue === 'function' ? optionValue(option) : option[optionValue],
-    [optionValue],
+      typeof optionValue === 'function'
+        ? optionValue(option)
+        : option[optionValue],
+    [optionValue]
   );
 
   const loadOptions = React.useCallback(
@@ -124,17 +138,20 @@ export function Select({
       if (fetchOptions) {
         setLoading(true);
         clearTimer();
-        setTimer(async () => {
-          try {
-            const list = await fetchOptions(searchString);
-            setOptions(list as SelectOption[]);
-          } finally {
-            setLoading(false);
-          }
-        });
+        setTimer(
+          async () => {
+            try {
+              const list = await fetchOptions(searchString);
+              setOptions(list as SelectOption[]);
+            } finally {
+              setLoading(false);
+            }
+          },
+          searchString ? 500 : 0
+        );
       }
     },
-    [fetchOptions, setTimer, clearTimer],
+    [fetchOptions, setTimer, clearTimer]
   );
 
   const handleFocus = React.useCallback(
@@ -142,7 +159,7 @@ export function Select({
       onFocus && onFocus(e);
       loadOptions('');
     },
-    [loadOptions, onFocus],
+    [loadOptions, onFocus]
   );
 
   const handleInputChange = React.useCallback((value: any) => {
@@ -189,7 +206,9 @@ export function Select({
         getOptionLabel,
         getOptionValue,
         allowCreateWhileLoading: false,
-        components: actions ? { Control: ControlContainer, IndicatorsContainer, actions } : {},
+        components: actions
+          ? { Control: ControlContainer, IndicatorsContainer, actions }
+          : {},
         ...(isCreatable
           ? {
               formatCreateLabel: createOption,
