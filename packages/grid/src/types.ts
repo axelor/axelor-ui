@@ -12,6 +12,7 @@ export interface GridColumn {
   formatter?: (data: any, column: GridColumn) => any;
   renderer?: (props: any) => any;
   $changed?: boolean;
+  $css?: string;
 }
 
 export interface GridSortColumn {

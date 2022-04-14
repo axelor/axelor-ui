@@ -47,7 +47,7 @@ export function GridColumn(props: GridColumnProps) {
       {...(renderer ? {} : { ref: columnRef })}
       {...rendererProps}
       onClick={e => onClick && onClick(e, data, index)}
-      className={classNames(styles.column, {
+      className={classNames(styles.column, data.$css, {
         [styles.center]: ['row-checked'].includes(data.type || ''),
         [styles.selected]: selected,
       })}
