@@ -14,9 +14,9 @@ export interface TextFieldIcon {
 }
 
 interface TextFieldProps extends InputProps {
-  label?: string;
+  label?: string | JSX.Element;
   icons?: Array<TextFieldIcon>;
-  description?: string;
+  description?: string | JSX.Element;
 }
 
 export const TextField = withStyled(Input)<TextFieldProps>(

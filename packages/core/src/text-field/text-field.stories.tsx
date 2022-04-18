@@ -6,6 +6,8 @@ import { TextField } from './text-field';
 
 import { ReactComponent as BiCalendar } from 'bootstrap-icons/icons/calendar.svg';
 import { ReactComponent as BiAlarm } from 'bootstrap-icons/icons/alarm.svg';
+import { ReactComponent as BiTranslate } from 'bootstrap-icons/icons/translate.svg';
+
 import { ThemeProvider } from '../styles';
 
 export default {
@@ -25,7 +27,12 @@ export const Basic = () => {
   return (
     <Box display="flex" flexDirection="column" gap="1rem">
       <TextField
-        label="Field Label"
+        label={
+          <Box display="flex" alignItems="center">
+            <Box pe={2}>Field Label</Box>
+            <BiTranslate />
+          </Box>
+        }
         value={value}
         onChange={(e: any) => setValue(e.target.value)}
         icons={[
