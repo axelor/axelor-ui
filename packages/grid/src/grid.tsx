@@ -1041,7 +1041,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           : {})}
         onScroll={handleScroll}
       >
-        {allowGrouping && (
+        {allowGrouping && (state.groupBy || []).length > 0 && (
           <div className={styles.groupArea}>
             <GridGroup
               columns={columns}
