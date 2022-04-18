@@ -1,1 +1,1 @@
-export { Icon } from './icon';
+export { Icon, type IconProps, type SvgIcon } from './icon';
