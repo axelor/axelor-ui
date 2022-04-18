@@ -3,11 +3,11 @@ import { createElement, forwardRef, useMemo } from 'react';
 import { StyleName, useClassNames } from '../styles';
 import { StyleProps, useStyleProps } from '../system';
 
-type PropsOf<
+export type PropsOf<
   C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>
 > = JSX.LibraryManagedAttributes<C, React.ComponentProps<C>>;
 
-type Merge<P, O> = O extends Array<any>
+export type Merge<P, O> = O extends Array<any>
   ? P
   : keyof O extends never
   ? P
