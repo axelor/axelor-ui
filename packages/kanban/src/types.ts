@@ -26,6 +26,7 @@ export type Record = {
 export type RecordRenderer = React.JSXElementConstructor<{
   column: Column;
   record: Record;
+  isDragging?: boolean;
 }>;
 
 export type CardEvent = {

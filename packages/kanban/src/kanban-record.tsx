@@ -25,9 +25,9 @@ export function KanbanRecord({
       draggableId={String(record.id)}
       isDragDisabled={readonly || column.readonly}
     >
-      {({ innerRef, draggableProps, dragHandleProps }) => (
+      {({ innerRef, draggableProps, dragHandleProps }, { isDragging }) => (
         <Box ref={innerRef} {...draggableProps} {...dragHandleProps}>
-          <Component record={record} column={column} />
+          <Component record={record} column={column} isDragging={isDragging} />
         </Box>
       )}
     </Draggable>
