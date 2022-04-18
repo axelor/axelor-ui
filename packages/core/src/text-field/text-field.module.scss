@@ -45,13 +45,13 @@
 @for $i from 1 through 6 {
   :not(.rtl) > .icons-#{$i} {
     input {
-      padding-right: (1rem * $i) + (0.75rem * 2);
+      padding-right: ((1rem + (0.25rem * 2)) * $i) + (0.5rem * 2);
     }
   }
 
   .rtl > .icons-#{$i} {
     input {
-      padding-left: (1rem * $i) + (0.75rem * 2);
+      padding-left: ((1rem + (0.25rem * 2)) * $i) + (0.5rem * 2);
     }
   }
 }
