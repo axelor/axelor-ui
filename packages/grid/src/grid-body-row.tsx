@@ -29,7 +29,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
   const handleCellClick = React.useCallback(
     function handleCellClick(e, cell, cellIndex) {
       onCellClick && onCellClick(e, cell, cellIndex, data, rowIndex);
-      onClick && onClick(e, data, rowIndex, cellIndex);
+      onClick && onClick(e, data, rowIndex, cellIndex, cell);
     },
     [data, rowIndex, onCellClick, onClick]
   );

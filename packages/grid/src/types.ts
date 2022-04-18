@@ -135,6 +135,7 @@ export interface GridRowProps {
     e: SyntheticEvent,
     row: GridRow,
     rowIndex: number,
-    columnIndex?: number
+    columnIndex?: number,
+    column?: GridColumn,
   ) => void;
 }

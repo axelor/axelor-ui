@@ -233,9 +233,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     // handle group row toggle, row selection
     const handleRowClick = React.useCallback(
-      async (e, row, rowIndex, cellIndex = null) => {
+      async (e, row, rowIndex, cellIndex = null, cell = {}) => {
         const isSelectBox =
           e.key === 'Enter' ||
+          cell?.type === 'row-checked' ||
           ['checkbox', 'radio'].includes(e.target && e.target.type);
 
         // toggle group row
