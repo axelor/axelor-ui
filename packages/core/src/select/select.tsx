@@ -1,4 +1,5 @@
 import React from 'react';
+import { Icon, type SvgIcon } from '../icon';
 import ReactSelect, {
   components,
   ControlProps,
@@ -7,9 +8,15 @@ import ReactSelect, {
 import CreatableSelect from 'react-select/creatable';
 import { Box } from '../box';
 
-import selectStyles from './select.module.css';
+import selectStyles from './select.module.scss';
 
 export type SelectOption = unknown;
+
+export interface SelectIcon {
+  id: string;
+  icon: SvgIcon;
+  onClick?: React.MouseEventHandler<SVGSVGElement>;
+}
 
 export interface SelectProps {
   className?: string;
@@ -29,10 +36,11 @@ export interface SelectProps {
   onBlur?: (e: React.SyntheticEvent) => void;
   onKeyDown?: (e: React.SyntheticEvent) => void;
   options?: SelectOption[];
+  addOnOptions?: SelectOption[];
   fetchOptions?: (searchInput: string) => Promise<unknown>;
   optionLabel?: string | ((option: SelectOption) => string);
   optionValue?: string | ((option: SelectOption) => string);
-  actions?: React.ReactNode;
+  icons?: Array<SelectIcon>;
   createOption?: (inputString: string) => React.ReactNode;
   createOptionPosition?: 'first' | 'last';
   onCreate?: (value: SelectOption) => void;
@@ -56,22 +64,19 @@ const ControlContainer = (props: ControlProps<SelectOption, true>) => {
   );
 };
 
-const IndicatorsContainer = (
-  props: IndicatorsContainerProps<SelectOption, true>
-) => {
+const IndicatorsContainer = (props: IndicatorsContainerProps<SelectOption, true>) => {
   function handleMouseDown(e: React.SyntheticEvent) {
     e.preventDefault();
   }
+  const icons: SelectIcon[] = (props.selectProps.components as any)?.icons || [];
   return (
-    <Box d="flex" className={selectStyles.indicators}>
-      <Box
-        d="flex"
-        className={selectStyles.indicatorActions}
-        onMouseDown={handleMouseDown}
-      >
-        {(props.selectProps.components as any)?.actions}
+    icons.length > 0 && (
+      <Box d="flex" className={selectStyles.icons} onMouseDown={handleMouseDown}>
+        {icons.map(icon => (
+          <Icon key={icon.id} as={icon.icon} onClick={icon.onClick} />
+        ))}
       </Box>
-    </Box>
+    )
   );
 };
 
@@ -92,18 +97,20 @@ export function Select({
   onFocus,
   onBlur,
   onKeyDown,
-  options,
+  options: _options,
+  addOnOptions,
   fetchOptions,
-  actions,
+  icons,
   optionLabel = 'label',
   optionValue = 'value',
   createOption,
   createOptionPosition = 'last',
   onCreate,
 }: SelectProps) {
-  const [$options, setOptions] = React.useState(options);
+  const [options, setOptions] = React.useState(_options);
   const [inputText, setInputText] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
+  const [isMenuOpen, setMenuOpen] = React.useState(false);
+  const mounted = React.useRef(false);
   const timer = React.useRef<any>(null);
 
   const setTimer = React.useCallback((callback: any, interval = 500) => {
@@ -119,39 +126,30 @@ export function Select({
       if (option.__isNew__) {
         return option.label;
       }
-      return typeof optionLabel === 'function'
-        ? optionLabel(option)
-        : option[optionLabel];
+      return typeof optionLabel === 'function' ? optionLabel(option) : option[optionLabel];
     },
-    [optionLabel]
+    [optionLabel],
   );
   const getOptionValue = React.useCallback(
     (option: any) =>
-      typeof optionValue === 'function'
-        ? optionValue(option)
-        : option[optionValue],
-    [optionValue]
+      typeof optionValue === 'function' ? optionValue(option) : option[optionValue],
+    [optionValue],
   );
 
   const loadOptions = React.useCallback(
     (searchString: string) => {
       if (fetchOptions) {
-        setLoading(true);
         clearTimer();
-        setTimer(
-          async () => {
-            try {
-              const list = await fetchOptions(searchString);
-              setOptions(list as SelectOption[]);
-            } finally {
-              setLoading(false);
-            }
-          },
-          searchString ? 500 : 0
-        );
+        setTimer(async () => {
+          try {
+            const list = await fetchOptions(searchString);
+            setOptions(list as SelectOption[]);
+          } finally {
+          }
+        }, 500);
       }
     },
-    [fetchOptions, setTimer, clearTimer]
+    [fetchOptions, setTimer, clearTimer],
   );
 
   const handleFocus = React.useCallback(
@@ -159,46 +157,61 @@ export function Select({
       onFocus && onFocus(e);
       loadOptions('');
     },
-    [loadOptions, onFocus]
+    [loadOptions, onFocus],
   );
 
   const handleInputChange = React.useCallback((value: any) => {
     setInputText(value);
   }, []);
 
-  React.useEffect(() => {
-    setOptions(options);
-  }, [options]);
+  const handleMenuOpen = () => setMenuOpen(true);
+  const handleMenuClose = () => setMenuOpen(false);
 
   React.useEffect(() => {
-    inputText && loadOptions(inputText);
+    setOptions(_options);
+  }, [_options]);
+
+  React.useEffect(() => {
+    mounted.current && loadOptions(inputText);
   }, [inputText, loadOptions]);
 
   React.useEffect(() => {
-    return () => clearTimer();
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+      clearTimer();
+    };
   }, [clearTimer]);
 
   const SelectComponent = (isCreatable ? CreatableSelect : ReactSelect) as any;
-  const isLoading = loading || _loading;
+  const hasOption = inputText
+    ? (options || []).some(opt =>
+        (getOptionLabel(opt) || '').toLowerCase().includes(inputText.toLowerCase()),
+      )
+    : (options || []).length > 0;
+
+  const $options = React.useMemo(() => {
+    return [...(options || []), ...(addOnOptions || [])];
+  }, [options, addOnOptions]);
 
   return (
     <SelectComponent
       className={className}
       classNamePrefix={classNamePrefix}
       menuPortalTarget={document.body}
-      openMenuOnClick
+      menuIsOpen={hasOption && isMenuOpen}
       {...{
-        options: isLoading ? [] : $options,
+        options: $options,
         placeholder,
         isMulti,
         isDisabled,
         isRtl,
         isClearable,
         isSearchable,
-        isLoading,
         autoFocus,
         value,
         onChange,
+        inputValue: inputText,
         onInputChange: handleInputChange,
         onFocus: handleFocus,
         onBlur,
@@ -206,9 +219,12 @@ export function Select({
         getOptionLabel,
         getOptionValue,
         allowCreateWhileLoading: false,
-        components: actions
-          ? { Control: ControlContainer, IndicatorsContainer, actions }
-          : {},
+        closeMenuOnScroll: true,
+        openMenuOnClick: true,
+        onMenuOpen: handleMenuOpen,
+        onMenuClose: handleMenuClose,
+        noOptionsMessage: () => '',
+        components: { Control: ControlContainer, IndicatorsContainer, icons },
         ...(isCreatable
           ? {
               formatCreateLabel: createOption,
