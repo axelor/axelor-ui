@@ -64,7 +64,7 @@ export const TextField = withStyled(Input)<TextFieldProps>(
             invalid={invalid}
             {...inputProps}
           />
-          {icons.length && (
+          {icons.length > 0 && (
             <div className={styles.icons}>
               {icons.map(icon => (
                 <Icon key={icon.id} as={icon.icon} onClick={icon.onClick} />
