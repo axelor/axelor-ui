@@ -57,7 +57,7 @@ export interface GridProps {
   sortType?: 'live' | 'state';
   resizeType?: 'live' | 'highlight';
   selectionType?: 'single' | 'multiple';
-  editable?: boolean;
+  editable?: boolean;  
   allowGrouping?: boolean;
   allowSearch?: boolean;
   allowSorting?: boolean;
@@ -68,6 +68,7 @@ export interface GridProps {
   allowColumnCustomize?: boolean;
   allowColumnHide?: boolean;
   allowRowReorder?: boolean;
+  allowGroupArea?: boolean;
   stickyHeader?: boolean;
   stickyFooter?: boolean;
   addNewText?: string;

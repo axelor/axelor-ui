@@ -68,6 +68,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       allowSorting,
       allowSearch,
       allowGrouping,
+      allowGroupArea,
       allowColumnResize,
       allowCheckboxSelection,
       allowCellSelection,
@@ -994,9 +995,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     React.useEffect(() => {
       // exclude hide columns
       setState(draft => {
-        draft.columns = columns.filter(
-          column => !(state.groupBy || []).find(g => g.name === column.name)
-        );
+        draft.columns = [...columns];
       });
       sizingColumns();
     }, [setState, columns, state.groupBy, sizingColumns]);
@@ -1045,7 +1044,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           : {})}
         onScroll={handleScroll}
       >
-        {allowGrouping && (state.groupBy || []).length > 0 && (
+        {allowGroupArea && allowGrouping && (state.groupBy || []).length > 0 && (
           <div className={styles.groupArea}>
             <GridGroup
               columns={columns}
