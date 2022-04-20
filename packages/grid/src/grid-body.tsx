@@ -2,7 +2,7 @@ import React from 'react';
 import { GridGroupRow } from './grid-group-row';
 import { GridBodyRow } from './grid-body-row';
 import { GridFooterRow } from './grid-footer-row';
-import { GridDNDRow } from './grid-dnd-row';
+import { GridDNDContainer, GridDNDRow } from './grid-dnd-row';
 import { isRowVisible } from './utils';
 import * as TYPES from './types';
 import styles from './grid.module.css';
@@ -63,8 +63,23 @@ export function GridBody(props: GridBodyProps) {
     [rows]
   );
 
-  return (
-    <div className={styles.body}>
+  function render(children: React.ReactNode) {
+    if (onRowMove) {
+      return (
+        <GridDNDContainer
+          className={styles.body}
+          rows={rows}
+          onRowMove={onRowMove}
+        >
+          {children}
+        </GridDNDContainer>
+      );
+    }
+    return <div className={styles.body}>{children}</div>;
+  }
+
+  return render(
+    <>
       {renderRows.map(({ row, visible }, index) => {
         if (!visible) {
           return null;
@@ -121,6 +136,6 @@ export function GridBody(props: GridBodyProps) {
         );
       })}
       {noRecordsText && <div>{noRecordsText}</div>}
-    </div>
+    </>
   );
 }

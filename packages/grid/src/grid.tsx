@@ -375,7 +375,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleRowMove = React.useCallback(
-      (dragRow, hoverRow, isStartRow) => {
+      (dragRow, hoverRow) => {
         onRowReorder && onRowReorder(dragRow, hoverRow);
         return setState(draft => {
           const { rows } = draft;
@@ -385,7 +385,11 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           const [dragColumn] = rows.splice(dragIndex, 1);
 
           const hoverIndex = rows.findIndex(row => row.key === hoverRow.key);
-          rows.splice(hoverIndex + (isStartRow ? 0 : 1), 0, dragColumn);
+          rows.splice(
+            hoverIndex + (dragIndex < hoverIndex ? 1 : 0),
+            0,
+            dragColumn
+          );
 
           const { selectedCell, selectedRows } = restoreGridSelection(
             draft,
