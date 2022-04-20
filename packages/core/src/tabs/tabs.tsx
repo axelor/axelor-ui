@@ -1,5 +1,12 @@
 import React from 'react';
+import { ReactComponent as BiChevronLeft } from 'bootstrap-icons/icons/chevron-left.svg';
+import { ReactComponent as BiChevronRight } from 'bootstrap-icons/icons/chevron-right.svg';
+
+import { Box } from '../box';
+import { Icon } from '../icon';
 import { OverflowList, OverflowListTypes } from '../overflow-list';
+import { useClassNames } from '../styles';
+import styles from './tabs.module.scss';
 
 export interface TabsProps {
   children: React.ReactElement[];
@@ -11,6 +18,18 @@ export interface TabsProps {
 
 const RESIZE_DELAY = 50;
 
+function ScrollButton(props: any) {
+  return (
+    <Box
+      d="flex"
+      justifyContent="center"
+      alignItems="center"
+      px={2}
+      {...props}
+    />
+  );
+}
+
 export function Tabs({
   children,
   value,
@@ -21,6 +40,7 @@ export function Tabs({
   const [overflowListRef, setOverflowListRef] =
     React.useState<HTMLElement | null>(null);
   const [activeTab, setActiveTab] = React.useState(value);
+  const [scroll, setScroll] = React.useState(false);
 
   const tabClassName = 'tab';
 
@@ -63,7 +83,6 @@ export function Tabs({
       window.requestAnimationFrame(() => {
         clear();
         timer = setTimeout(() => {
-          const buttonWidth = 32;
           const [scrollLeft, tabs, scrollRight] = overflowListRef.children;
           const tabsWidth = Array.from(tabs.children).reduce(
             (total, tab) =>
@@ -71,18 +90,12 @@ export function Tabs({
             0
           );
           const show =
-            tabsWidth + buttonWidth * 2 >= overflowListRef.offsetWidth;
+            tabsWidth +
+              (((scrollLeft as HTMLElement).offsetWidth || 0) +
+                ((scrollRight as HTMLElement).offsetWidth || 0)) >=
+            overflowListRef.offsetWidth;
 
-          (scrollLeft as HTMLElement).style.setProperty(
-            'display',
-            show ? 'flex' : 'none',
-            'important'
-          );
-          (scrollRight as HTMLElement).style.setProperty(
-            'display',
-            show ? 'flex' : 'none',
-            'important'
-          );
+          setScroll(show);
         }, RESIZE_DELAY);
       });
 
@@ -95,6 +108,7 @@ export function Tabs({
     };
   }, [overflowListRef, children.length]);
 
+  const classNames = useClassNames();
   return (
     <OverflowList
       ref={setOverflowListRef}
@@ -114,11 +128,36 @@ export function Tabs({
         type: OverflowListTypes.OverflowListButtonType,
         props: any
       ) => {
-        if (type === 'scroll-left' && scrollLeft) {
-          return React.cloneElement(scrollLeft, props);
+        const buttonProps = {
+          className: classNames(props.className, {
+            [styles.hide]: !scroll,
+          }),
+        };
+        if (type === 'scroll-left') {
+          if (scrollLeft) {
+            return React.cloneElement(scrollLeft, {
+              ...props,
+              ...buttonProps,
+            });
+          }
+          return (
+            <ScrollButton {...buttonProps}>
+              <Icon as={BiChevronLeft} />
+            </ScrollButton>
+          );
         }
-        if (type === 'scroll-right' && scrollRight) {
-          return React.cloneElement(scrollRight, props);
+        if (type === 'scroll-right') {
+          if (scrollRight) {
+            return React.cloneElement(scrollRight, {
+              ...props,
+              ...buttonProps,
+            });
+          }
+          return (
+            <ScrollButton {...buttonProps}>
+              <Icon as={BiChevronRight} />
+            </ScrollButton>
+          );
         }
         return null;
       }}
