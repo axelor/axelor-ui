@@ -42,8 +42,9 @@ function restoreGridSelection(
   let { selectedRows, selectedCell, rows } = state;
 
   function getRowNewIndex(oldIndex: number) {
-    const key = oldRows[oldIndex].key;
-    return rows.findIndex(row => row.key === key);
+    const key = oldRows[oldIndex]?.key;
+    const ind = rows.findIndex(row => row.key === key);
+    return ind === -1 ? oldIndex : ind;
   }
 
   if (selectedRows) {
@@ -235,9 +236,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     // handle group row toggle, row selection
     const handleRowClick = React.useCallback(
       async (e, row, rowIndex, cellIndex = null, cell = {}) => {
-        const isSelectBox =
-          e.key === 'Enter' ||
-          cell?.type === 'row-checked';
+        const isSelectBox = e.key === 'Enter' || cell?.type === 'row-checked';
 
         // toggle group row
         if (row.type === 'group-row') {
