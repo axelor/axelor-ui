@@ -1,11 +1,8 @@
 import { Box } from '../box';
-import { Badge } from '../badge';
+import { Badge as BadgeComponent } from '../badge';
 import { Button } from '../button';
 
-export default {
-  component: Badge,
-  title: 'Components/Badge',
-};
+const Badge = (props: any) => <BadgeComponent bg="secondary" {...props} />;
 
 export const Basic = () => {
   return (
@@ -149,3 +146,10 @@ export const Variant = () => {
     </Box>
   );
 };
+
+const stories = {
+  component: Badge,
+  title: 'Components/Badge',
+};
+
+export default stories;
