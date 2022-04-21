@@ -237,8 +237,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       async (e, row, rowIndex, cellIndex = null, cell = {}) => {
         const isSelectBox =
           e.key === 'Enter' ||
-          cell?.type === 'row-checked' ||
-          ['checkbox', 'radio'].includes(e.target && e.target.type);
+          cell?.type === 'row-checked';
 
         // toggle group row
         if (row.type === 'group-row') {
