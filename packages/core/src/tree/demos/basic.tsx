@@ -4,11 +4,13 @@
 import React from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
+import { ReactComponent as BiRemoveIcon } from 'bootstrap-icons/icons/x.svg';
 import { Tree } from '../tree';
 
 const columns = [
   { name: 'title', title: 'Title', type: 'String' },
   { name: 'progress', title: 'Progress' },
+  { name: 'removeBtn', title: '', width: 50 },
 ];
 
 const records = [
@@ -38,7 +40,22 @@ const records = [
   },
 ];
 
-export default () => {
+function TextRenderer(props: any) {
+  const {
+    data: { data },
+    column,
+  } = props;
+  if (column.name === 'removeBtn') {
+    return (
+      <span>
+        <BiRemoveIcon />
+      </span>
+    );
+  }
+  return (data && data[column.name]) || '--';
+}
+
+export default function Basic() {
   const onLoad = React.useCallback(async record => {
     return new Promise(resolve => {
       const project = records.find(p => p.id === record.id);
@@ -60,7 +77,8 @@ export default () => {
         records={records}
         onLoad={onLoad}
         onNodeMove={onNodeMove}
+        textRenderer={TextRenderer}
       />
     </DndProvider>
   );
-};
+}

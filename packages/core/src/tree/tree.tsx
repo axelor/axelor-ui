@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-import { TreeColumn } from './tree-column';
+import { TreeHeaderColumn } from './tree-column';
 import { TreeNode } from './tree-node';
 import { useClassNames } from '../styles';
 import * as TYPES from './types';
@@ -26,6 +26,7 @@ export function Tree(props: TYPES.TreeProps) {
     columns,
     records,
     nodeRenderer,
+    textRenderer,
     editNodeRenderer,
   } = props;
   const [data, setData] = useState<TYPES.TreeNode[]>([]);
@@ -233,7 +234,7 @@ export function Tree(props: TYPES.TreeProps) {
         {columns.map(column => {
           const hasSort = sortColumn && sortColumn.name === column.name;
           return (
-            <TreeColumn
+            <TreeHeaderColumn
               key={column.name}
               data={column}
               {...(hasSort ? { sort: sortColumn?.order } : {})}
@@ -257,6 +258,7 @@ export function Tree(props: TYPES.TreeProps) {
                 edit={editNode === row}
                 data={row}
                 renderer={nodeRenderer}
+                textRenderer={textRenderer}
                 editRenderer={editNodeRenderer}
                 onToggle={handleToggle}
                 onSelect={handleSelect}

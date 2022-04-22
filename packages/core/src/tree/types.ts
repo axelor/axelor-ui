@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface TreeNode {
   id?: any;
   data: Record<string, any>;
@@ -13,6 +15,7 @@ export interface TreeNode {
 export interface TreeColumn {
   name: string;
   title: string;
+  width?: number | string;
 }
 
 export interface TreeSortColumn {
@@ -25,6 +28,7 @@ export interface TreeProps {
   columns: TreeColumn[];
   sortable?: boolean;
   onLoad?: (data: TreeNode, sortColumn?: TreeSortColumn) => any;
+  textRenderer?: TreeNodeProps['renderer'];
   nodeRenderer?: TreeNodeProps['renderer'];
   editNodeRenderer?: TreeNodeProps['editRenderer'];
   onNodeMove?: (data: TreeNode, parent: TreeNode) => TreeNode;
@@ -50,19 +54,28 @@ export interface TreeNodeProps {
   onSave?: TreeProps['onNodeSave'];
   onCancel?: TreeProps['onNodeDiscard'];
   renderer?: React.JSXElementConstructor<any>;
+  textRenderer?: React.JSXElementConstructor<any>;
   editRenderer?: React.JSXElementConstructor<any>;
 }
 
 export interface TreeColumnProps {
   data: TreeColumn;
+  children: React.ReactNode;
+  className?: string;
+  onClick?: (e: React.SyntheticEvent, column: TreeColumn) => void;
+}
+
+export interface TreeHeaderColumnProps {
+  data: TreeColumn;
   sort?: 'asc' | 'desc';
-  onSort?: (column: TreeColumn) => void;
+  onSort?: TreeColumnProps['onClick'];
 }
 
 export interface TreeChildProps extends TreeNodeProps {
   className?: string;
   onClick?: (e: React.SyntheticEvent) => void;
+  onDoubleClick?: (e: React.SyntheticEvent) => void;
 }
 
 export interface TreeChildContentProps
-  extends Pick<TreeChildProps, 'data' | 'columns'> {}
+  extends Pick<TreeChildProps, 'data' | 'columns' | 'textRenderer'> {}

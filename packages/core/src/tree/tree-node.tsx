@@ -3,6 +3,7 @@ import { useDrag, useDrop } from 'react-dnd';
 import { ReactComponent as BiChevronDown } from 'bootstrap-icons/icons/chevron-down.svg';
 import { ReactComponent as BiChevronRight } from 'bootstrap-icons/icons/chevron-right.svg';
 
+import { TreeColumn } from './tree-column';
 import styles from './tree.module.css';
 import { useClassNames } from '../styles';
 import { Icon } from '../icon';
@@ -15,12 +16,19 @@ const TreeNodeContent = React.forwardRef<
   HTMLDivElement,
   TYPES.TreeChildContentProps
 >((props, ref) => {
-  const { columns, data } = props;
+  const { columns, data, textRenderer } = props;
+  function render(column: TYPES.TreeColumn) {
+    if (textRenderer) {
+      const Renderer = textRenderer;
+      return <Renderer column={column} data={data} />;
+    }
+    return (data as any).data[column.name];
+  }
   return (
     <div className={styles.nodeContent} ref={ref}>
       {columns.map((column, ind) => {
         return (
-          <div key={column.name} className={styles.column}>
+          <TreeColumn data={column} key={column.name}>
             {ind === 0 && (
               <span
                 className="indent"
@@ -35,8 +43,8 @@ const TreeNodeContent = React.forwardRef<
                 )}
               </span>
             )}
-            {(data as any).data[column.name]}
-          </div>
+            <span className={styles.nodeText}>{render(column)}</span>
+          </TreeColumn>
         );
       })}
     </div>
@@ -80,7 +88,16 @@ function Parent(props: TYPES.TreeChildProps) {
 }
 
 function Leaf(props: TYPES.TreeChildProps) {
-  const { className, columns, data, index, onEdit, onClick } = props;
+  const {
+    className,
+    columns,
+    data,
+    textRenderer,
+    index,
+    onEdit,
+    onDoubleClick,
+    onClick,
+  } = props;
   const [, dragRef, dragPreviewRef] = useDrag({
     type: NODE_TYPE,
     item: { data, index, type: NODE_TYPE },
@@ -92,6 +109,7 @@ function Leaf(props: TYPES.TreeChildProps) {
       e.stopPropagation();
       onEdit(data, index);
     }
+    onDoubleClick && onDoubleClick(e);
   }
 
   return (
@@ -103,6 +121,7 @@ function Leaf(props: TYPES.TreeChildProps) {
     >
       <TreeNodeContent
         {...(index === 0 ? { ref: dragPreviewRef } : {})}
+        textRenderer={textRenderer}
         data={data}
         columns={columns}
       />
@@ -122,6 +141,7 @@ export const TreeNode = React.memo(function TreeNode({
   onSave,
   onCancel,
   editRenderer,
+  textRenderer,
   renderer: Renderer = React.Fragment,
 }: TYPES.TreeNodeProps) {
   const NodeComponent = hasChildren(data) ? Parent : Leaf;
@@ -143,9 +163,10 @@ export const TreeNode = React.memo(function TreeNode({
           [styles.selected]: data.selected,
         })}
         columns={columns}
-        onClick={(e: React.SyntheticEvent) =>
-          onSelect && onSelect(e, data, index)
-        }
+        textRenderer={textRenderer}
+        onClick={(e: React.SyntheticEvent) => {
+          onSelect && onSelect(e, data, index);
+        }}
         {...(editRenderer ? { onEdit } : {})}
         onDrop={onDrop}
         onToggle={onToggle}
