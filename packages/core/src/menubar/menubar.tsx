@@ -313,7 +313,7 @@ function MenuItem({
       selected.current = 'item';
       onMouseEnter(event);
     },
-    []
+    [onMouseEnter]
   );
 
   return (
@@ -384,13 +384,13 @@ export const Menubar = withStyled(Box)((props, ref) => {
     const current = getCurrentIndex();
     const menu: any = menus[(current + 1) % menus.length];
     showMenu(menu.props.text);
-  }, [getCurrentIndex]);
+  }, [menus, showMenu, getCurrentIndex]);
 
   const showPrevious = useCallback(() => {
     const current = getCurrentIndex();
     const menu: any = menus[current === 0 ? menus.length - 1 : current - 1];
     showMenu(menu.props.text);
-  }, [getCurrentIndex]);
+  }, [menus, showMenu, getCurrentIndex]);
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLElement>) => {
