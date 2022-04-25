@@ -64,14 +64,23 @@ const ControlContainer = (props: ControlProps<SelectOption, true>) => {
   );
 };
 
-const IndicatorsContainer = (props: IndicatorsContainerProps<SelectOption, true>) => {
+const IndicatorsContainer = (
+  props: IndicatorsContainerProps<SelectOption, true>
+) => {
   function handleMouseDown(e: React.SyntheticEvent) {
+    const { onMenuClose } = props.selectProps || {};
+    onMenuClose && onMenuClose();
     e.preventDefault();
   }
-  const icons: SelectIcon[] = (props.selectProps.components as any)?.icons || [];
+  const icons: SelectIcon[] =
+    (props.selectProps.components as any)?.icons || [];
   return (
     icons.length > 0 && (
-      <Box d="flex" className={selectStyles.icons} onMouseDown={handleMouseDown}>
+      <Box
+        d="flex"
+        className={selectStyles.icons}
+        onMouseDown={handleMouseDown}
+      >
         {icons.map(icon => (
           <Icon key={icon.id} as={icon.icon} onClick={icon.onClick} />
         ))}
@@ -126,14 +135,18 @@ export function Select({
       if (option.__isNew__) {
         return option.label;
       }
-      return typeof optionLabel === 'function' ? optionLabel(option) : option[optionLabel];
+      return typeof optionLabel === 'function'
+        ? optionLabel(option)
+        : option[optionLabel];
     },
-    [optionLabel],
+    [optionLabel]
   );
   const getOptionValue = React.useCallback(
     (option: any) =>
-      typeof optionValue === 'function' ? optionValue(option) : option[optionValue],
-    [optionValue],
+      typeof optionValue === 'function'
+        ? optionValue(option)
+        : option[optionValue],
+    [optionValue]
   );
 
   const loadOptions = React.useCallback(
@@ -149,7 +162,7 @@ export function Select({
         }, 500);
       }
     },
-    [fetchOptions, setTimer, clearTimer],
+    [fetchOptions, setTimer, clearTimer]
   );
 
   const handleFocus = React.useCallback(
@@ -157,7 +170,7 @@ export function Select({
       onFocus && onFocus(e);
       loadOptions('');
     },
-    [loadOptions, onFocus],
+    [loadOptions, onFocus]
   );
 
   const handleInputChange = React.useCallback((value: any) => {
@@ -186,7 +199,9 @@ export function Select({
   const SelectComponent = (isCreatable ? CreatableSelect : ReactSelect) as any;
   const hasOption = inputText
     ? (options || []).some(opt =>
-        (getOptionLabel(opt) || '').toLowerCase().includes(inputText.toLowerCase()),
+        (getOptionLabel(opt) || '')
+          .toLowerCase()
+          .includes(inputText.toLowerCase())
       )
     : (options || []).length > 0;
 
@@ -200,6 +215,7 @@ export function Select({
       classNamePrefix={classNamePrefix}
       menuPortalTarget={document.body}
       menuIsOpen={hasOption && isMenuOpen}
+      menuPlacement="auto"
       {...{
         options: $options,
         placeholder,
