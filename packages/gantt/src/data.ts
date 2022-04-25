@@ -1,8 +1,3 @@
-function sortByName(r1: any, r2: any) {
-  if (r1.name < r2.name) return -1;
-  if (r1.name > r2.name) return 1;
-  return 0;
-}
 
 const response = {
   status: 0,
@@ -404,15 +399,20 @@ const schema = {
   },
 };
 
-export default {
+const DATA = {
   ...response,
   items: schema.data.view.items.map(item => {
     const field = schema.data.fields.find(f => f.name === item.name);
     const attrs: any = {};
     if (field?.type === 'MANY_TO_ONE' && field.targetName) {
-      attrs.formatter = (value: any) => value && value[field.targetName];
+      attrs.formatter = (data: any, field: any) => {
+        const value = data[field.name];
+        return value && value[field.targetName];
+      };
     }
     return { ...item, ...field, ...attrs };
   }),
   data: modifyData,
 };
+
+export default DATA;
