@@ -57,7 +57,7 @@ export interface GridProps {
   sortType?: 'live' | 'state';
   resizeType?: 'live' | 'highlight';
   selectionType?: 'single' | 'multiple';
-  editable?: boolean;  
+  editable?: boolean;
   allowGrouping?: boolean;
   allowSearch?: boolean;
   allowSorting?: boolean;
@@ -100,7 +100,12 @@ export interface GridProps {
   ) => void;
   onRowReorder?: (dragRow: GridRow, hoverRow: GridRow) => void;
   onRecordAdd?: () => void;
-  onRecordEdit?: (record: any, recordIndex?: number) => void;
+  onRecordEdit?: (
+    row: any,
+    rowIndex?: number,
+    cell?: any,
+    cellIndex?: number
+  ) => void;
   onRecordSave?: (
     record: any,
     recordIndex?: number,
@@ -137,6 +142,6 @@ export interface GridRowProps {
     row: GridRow,
     rowIndex: number,
     columnIndex?: number,
-    column?: GridColumn,
+    column?: GridColumn
   ) => void;
 }
