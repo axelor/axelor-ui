@@ -9,6 +9,7 @@ import React, {
 import { ReactComponent as BiCaretRightFill } from 'bootstrap-icons/icons/caret-right-fill.svg';
 
 import { Box } from '../box';
+import { Button } from '../button';
 import { Menu as AxMenu } from '../menu/menu';
 import { ArrowNavigation } from '../arrow-navigation';
 import { MenuItem as AxMenuItem } from '../menu/menu-item';
@@ -40,12 +41,16 @@ function Menu({
   onMouseLeave,
   onKeyDown,
   onHide,
+  text,
+  onShow,
   ...rest
 }: any) {
   const [active, setActive] = useState<any>(getDefaultActive());
 
   const [show, setShow] = useState<boolean>(false);
   const menuRef = useRef<HTMLElement>(null);
+  const [buttonRef, setButtonRef] = useState<HTMLButtonElement | null>(null);
+
   const { hideMenu: hideParentMenu } = useMenubar();
 
   const focusMenu = () => {
@@ -161,103 +166,117 @@ function Menu({
   const classNames = useClassNames();
 
   return (
-    <AxMenu
-      placement="bottom-start"
-      disablePortal
-      onHide={onHide}
-      onKeyDown={handleKeyDown}
-      onMouseLeave={handleMouseLeave}
-      tabIndex={1}
-      ref={menuRef}
-      className={classNames(className, styles.menu)}
-      show={showProp}
-      {...rest}
-    >
-      {React.Children.map(children, child => {
-        const { type, props } = child;
+    <>
+      {text && (
+        <Button
+          ref={setButtonRef}
+          onClick={onShow}
+          {...(show ? { variant: 'light' } : {})}
+        >
+          {text}
+        </Button>
+      )}
+      <AxMenu
+        placement="bottom-start"
+        disablePortal
+        onHide={onHide}
+        onKeyDown={handleKeyDown}
+        onMouseLeave={handleMouseLeave}
+        tabIndex={1}
+        ref={menuRef}
+        className={classNames(className, styles.menu)}
+        show={showProp}
+        target={buttonRef}
+        {...rest}
+      >
+        {React.Children.map(children, child => {
+          const { type, props } = child;
 
-        if (type !== AxMenuItem) return child;
+          if (type !== AxMenuItem) return child;
 
-        const { text, onClick } = props;
-        const isActiveItem = active.text === text;
+          const { text, onClick } = props;
+          const isActiveItem = active.text === text;
 
-        const submenu = isSubmenu(child);
+          const submenu = isSubmenu(child);
 
-        const handleMouseEnter = (event: React.MouseEvent<HTMLElement>) => {
-          setActive({ text, submenu });
-
-          if (submenu) {
-            setShow(true);
-          }
-        };
-
-        const handleMouseLeave = (event: React.MouseEvent<HTMLElement>) => {
-          if (isActiveItem && submenu) {
-            setShow(false);
-          }
-        };
-
-        const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-          if (submenu) {
+          const handleMouseEnter = (event: React.MouseEvent<HTMLElement>) => {
             setActive({ text, submenu });
-            setShow(true);
-          } else {
-            hideParentMenu();
-          }
-          onClick && onClick(event);
-        };
 
-        const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-          const { key } = event;
-          switch (key) {
-            case 'Escape':
-            case 'ArrowLeft': {
-              if (isActiveItem && show) {
-                event.stopPropagation();
-                setShow(false);
-                focusMenu();
+            if (submenu) {
+              setShow(true);
+            }
+          };
+
+          const handleMouseLeave = (event: React.MouseEvent<HTMLElement>) => {
+            if (isActiveItem && submenu) {
+              setShow(false);
+            }
+          };
+
+          const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+            if (submenu) {
+              setActive({ text, submenu });
+              setShow(true);
+            } else {
+              hideParentMenu();
+            }
+            onClick && onClick(event);
+          };
+
+          const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+            const { key } = event;
+            switch (key) {
+              case 'Escape':
+              case 'ArrowLeft': {
+                if (isActiveItem && show) {
+                  event.stopPropagation();
+                  setShow(false);
+                  focusMenu();
+                }
+                break;
               }
-              break;
             }
-          }
-        };
+          };
 
-        const handleMenuKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-          const { key } = event;
-          switch (key) {
-            case 'ArrowRight': {
-              onKeyDown && onKeyDown(event); // next/prev menu control
-              break;
+          const handleMenuKeyDown = (
+            event: React.KeyboardEvent<HTMLElement>
+          ) => {
+            const { key } = event;
+            switch (key) {
+              case 'ArrowRight': {
+                onKeyDown && onKeyDown(event); // next/prev menu control
+                break;
+              }
             }
-          }
-        };
+          };
 
-        const common = {
-          ...props,
-          as: 'button',
-          className: classNames(styles.item, {
-            [styles.active]: isActiveItem,
-            [styles.submenu]: submenu,
-          }),
-          onClick: handleClick,
-          onMouseEnter: handleMouseEnter,
-          onMouseLeave: handleMouseLeave,
-        };
+          const common = {
+            ...props,
+            as: 'button',
+            className: classNames(styles.item, {
+              [styles.active]: isActiveItem,
+              [styles.submenu]: submenu,
+            }),
+            onClick: handleClick,
+            onMouseEnter: handleMouseEnter,
+            onMouseLeave: handleMouseLeave,
+          };
 
-        return submenu ? (
-          <MenuItem
-            {...common}
-            onKeyDown={handleKeyDown}
-            MenuProps={{
-              show: show && isActiveItem,
-              onKeyDown: handleMenuKeyDown,
-            }}
-          />
-        ) : (
-          <AxMenuItem {...common} data-text={text} />
-        );
-      })}
-    </AxMenu>
+          return submenu ? (
+            <MenuItem
+              {...common}
+              onKeyDown={handleKeyDown}
+              MenuProps={{
+                show: show && isActiveItem,
+                onKeyDown: handleMenuKeyDown,
+              }}
+            />
+          ) : (
+            <AxMenuItem {...common} data-text={text} />
+          );
+        })}
+      </AxMenu>
+    </>
   );
 }
 
