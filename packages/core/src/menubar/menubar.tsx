@@ -7,13 +7,14 @@ import React, {
   useState,
 } from 'react';
 import { ReactComponent as BiCaretRightFill } from 'bootstrap-icons/icons/caret-right-fill.svg';
+import { ReactComponent as BiCaretLeftFill } from 'bootstrap-icons/icons/caret-left-fill.svg';
 
 import { Box } from '../box';
 import { Button } from '../button';
 import { Menu as AxMenu } from '../menu/menu';
 import { ArrowNavigation } from '../arrow-navigation';
 import { MenuItem as AxMenuItem } from '../menu/menu-item';
-import { useClassNames } from '../styles';
+import { useClassNames, useTheme } from '../styles';
 import { tryFocus } from './utils';
 import { isElementDisabled, isElementHidden } from '../arrow-navigation/utils';
 import { withStyled } from '../styled';
@@ -51,7 +52,7 @@ function Menu({
   const menuRef = useRef<HTMLElement>(null);
   const [buttonRef, setButtonRef] = useState<HTMLButtonElement | null>(null);
 
-  const { hideMenu: hideParentMenu } = useMenubar();
+  const { hideMenu: hideParentMenu, rtl } = useMenubar();
 
   const focusMenu = () => {
     tryFocus(menuRef.current);
@@ -137,7 +138,15 @@ function Menu({
         break;
       }
       case 'ArrowRight': {
-        if (active.submenu) {
+        if (active.submenu && !rtl) {
+          setShow(true);
+        } else {
+          onKeyDown && onKeyDown(event);
+        }
+        break;
+      }
+      case 'ArrowLeft': {
+        if (active.submenu && rtl) {
           setShow(true);
         } else {
           onKeyDown && onKeyDown(event);
@@ -177,7 +186,7 @@ function Menu({
         </Button>
       )}
       <AxMenu
-        placement="bottom-start"
+        placement={rtl ? 'bottom-end' : 'bottom-start'}
         disablePortal
         onHide={onHide}
         onKeyDown={handleKeyDown}
@@ -225,14 +234,25 @@ function Menu({
 
           const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
             const { key } = event;
+            const isSubmenuOpen = isActiveItem && show;
+
+            const closeSubmenu = () => {
+              event.stopPropagation();
+              setShow(false);
+              focusMenu();
+            };
+
             switch (key) {
-              case 'Escape':
+              case 'Escape': {
+                isSubmenuOpen && closeSubmenu();
+                break;
+              }
               case 'ArrowLeft': {
-                if (isActiveItem && show) {
-                  event.stopPropagation();
-                  setShow(false);
-                  focusMenu();
-                }
+                isSubmenuOpen && !rtl && closeSubmenu();
+                break;
+              }
+              case 'ArrowRight': {
+                isSubmenuOpen && rtl && closeSubmenu();
                 break;
               }
             }
@@ -243,8 +263,16 @@ function Menu({
           ) => {
             const { key } = event;
             switch (key) {
+              case 'ArrowLeft': {
+                if (rtl) {
+                  onKeyDown && onKeyDown(event); // next/prev menu control
+                }
+                break;
+              }
               case 'ArrowRight': {
-                onKeyDown && onKeyDown(event); // next/prev menu control
+                if (!rtl) {
+                  onKeyDown && onKeyDown(event); // next/prev menu control
+                }
                 break;
               }
             }
@@ -252,6 +280,7 @@ function Menu({
 
           const common = {
             ...props,
+            rtl,
             as: 'button',
             className: classNames(styles.item, {
               [styles.active]: isActiveItem,
@@ -281,6 +310,7 @@ function Menu({
 }
 
 function MenuItem({
+  rtl,
   text,
   children,
   onMouseLeave,
@@ -329,12 +359,12 @@ function MenuItem({
         {...rest}
         text={text}
         ref={setTarget}
-        endIcon={BiCaretRightFill}
+        endIcon={rtl ? BiCaretLeftFill : BiCaretRightFill}
         onMouseEnter={handleItemMouseEnter}
       />
       <Menu
         target={target}
-        placement="end-top"
+        placement={rtl ? 'start-top' : 'end-top'}
         onMouseEnter={handleMouseEnter}
         {...MenuProps}
       >
@@ -348,6 +378,9 @@ export const Menubar = withStyled(Box)((props, ref) => {
   const [active, setActive] = useState<string | undefined>(undefined);
   const [show, setShow] = useState<boolean>(false);
   const { children } = props;
+
+  const { dir } = useTheme();
+  const rtl = dir === 'rtl';
 
   const [beforeElements, menus, afterElements] = useMemo(() => {
     const all = React.Children.toArray(children).flat();
@@ -397,11 +430,13 @@ export const Menubar = withStyled(Box)((props, ref) => {
       const { key } = event;
       switch (key) {
         case 'ArrowRight': {
-          showNext();
+          const action = rtl ? showPrevious : showNext;
+          action();
           break;
         }
         case 'ArrowLeft': {
-          showPrevious();
+          const action = rtl ? showNext : showPrevious;
+          action();
           break;
         }
         case 'Escape': {
@@ -418,10 +453,10 @@ export const Menubar = withStyled(Box)((props, ref) => {
         }
       }
     },
-    [showNext, showPrevious, hideMenu]
+    [rtl, showNext, showPrevious, hideMenu]
   );
 
-  const value = useMemo(() => ({ hideMenu }), [hideMenu]);
+  const value = useMemo(() => ({ rtl, hideMenu }), [rtl, hideMenu]);
 
   return (
     <MenubarContext.Provider value={value}>
