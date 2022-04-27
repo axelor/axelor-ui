@@ -2,10 +2,31 @@ import React from 'react';
 import { Box } from '../box';
 import { TNavSelectItem, NavSelect } from './nav-select';
 
-export default {
+const StoriesConfig = {
   component: NavSelect,
   title: 'Components/NavSelect',
+  decorators: [
+    (
+      Story: React.JSXElementConstructor<any>,
+      { globals: { direction } }: any
+    ) => {
+      return (
+        <Box
+          style={{
+            ...(direction === 'rtl'
+              ? { marginRight: 400 }
+              : { marginLeft: 400 }),
+            minWidth: 100,
+          }}
+        >
+          <Story />
+        </Box>
+      );
+    },
+  ],
 };
+
+export default StoriesConfig;
 
 const items = [
   { title: 'Draft', value: 'draft' },
@@ -16,18 +37,10 @@ const items = [
 
 export const Basic = () => {
   const [value, setValue] = React.useState<TNavSelectItem | null>(null);
-  return (
-    <Box style={{ marginLeft: 400, minWidth: 100 }}>
-      <NavSelect items={items} value={value} onChange={setValue} />
-    </Box>
-  );
+  return <NavSelect items={items} value={value} onChange={setValue} />;
 };
 
 export const Disabled = () => {
   const [value, setValue] = React.useState<TNavSelectItem>(items[0]);
-  return (
-    <Box style={{ marginLeft: 400, minWidth: 100 }}>
-      <NavSelect disabled items={items} value={value} onChange={setValue} />
-    </Box>
-  );
+  return <NavSelect disabled items={items} value={value} onChange={setValue} />;
 };

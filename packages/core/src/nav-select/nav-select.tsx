@@ -6,7 +6,7 @@ import { Icon } from '../icon';
 import { OverflowList, OverflowListTypes } from '../overflow-list';
 import { MenuItem } from '../menu/menu-item';
 import { MenuProps } from '../menu/menu';
-import { useClassNames } from '../styles';
+import { useClassNames, useTheme } from '../styles';
 import { withStyled } from '../styled';
 import cssStyles from './nav-select.module.scss';
 
@@ -34,8 +34,10 @@ interface NavSelectItemProps {
 const NavSelectItem = withStyled(Box)<NavSelectItemProps>((props, ref) => {
   const { active, className, children, ...rest } = props;
   const classNames = useClassNames();
+  const { dir } = useTheme();
   return (
     <Box
+      dir={dir}
       ref={ref}
       {...rest}
       className={classNames(className, {
