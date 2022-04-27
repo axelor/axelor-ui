@@ -1,4 +1,5 @@
 import styled, { withStyled } from '../styled';
+import { useTheme } from '../styles';
 import styles from './linear-progress.module.css';
 
 export interface LinearProgressProps {
@@ -39,9 +40,11 @@ export const LinearProgress = withStyled(Outer)(
     },
     ref
   ) => {
+    const { dir } = useTheme();
     return (
       <Outer {...props} ref={ref}>
         <Inner
+          dir={dir}
           indeterminate={indeterminate}
           animated={animated}
           striped={striped}
