@@ -1,4 +1,4 @@
-@use "sass:math";
+@use 'sass:math';
 
 $height: 38px;
 
@@ -36,17 +36,29 @@ $height: 38px;
   padding: 0 math.div($height, 2) 0 $height;
   white-space: nowrap;
 }
+
+[dir='rtl'].listItem a {
+  padding: 0 $height 0 math.div($height, 2);
+}
+
 .listItem a:after {
   content: '';
   width: $height;
   height: $height;
   transform: scale(0.72) rotate(45deg);
   position: absolute;
-  right: - math.div($height, 2);
+  right: -1 * math.div($height, 2);
   z-index: 1;
   background: #e2e2e2;
   box-shadow: 2px -2px 0 1px rgb(255 255 255);
 }
+
+[dir='rtl'].listItem a:after {
+  transform: scale(0.72) rotate(225deg);
+  left: -1 * math.div($height, 2);
+  right: unset;
+}
+
 .listItem.last a:after {
   display: none;
 }
@@ -60,16 +72,28 @@ $height: 38px;
 .listItem.dropdown a:after {
   display: none;
 }
+
 .listItem.dropdown {
   padding: 0;
   height: $height;
 }
+
 .listItem.dropdown a {
   padding: 0 10px 0 25px;
 }
+
+[dir='rtl'].listItem.dropdown a {
+  padding: 0 25px 0 10px;
+}
+
 .listItem.drodown svg {
   font-size: 0.85em;
 }
+
 .listItem.dropdown.active svg {
   margin-left: 5px;
+}
+
+[dir='rtl'].listItem.dropdown.active svg {
+  margin-right: 5px;
 }
