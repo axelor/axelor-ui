@@ -14,6 +14,7 @@ import { Button } from '../button';
 import { OverflowList, OverflowListTypes } from '../overflow-list';
 import { withStyled } from '../styled';
 import { IconProps } from '../icon/icon';
+import { useTheme } from '../styles';
 
 export default {
   component: OverflowList,
@@ -69,6 +70,8 @@ interface TOverflowToolbarItem extends TToolbarItem {
 }
 
 function OverflowToolbarItem({ title, icon, onClick }: TOverflowToolbarItem) {
+  const { dir } = useTheme();
+  const rtl = dir === 'rtl';
   return (
     <Box
       d="flex"
@@ -77,13 +80,13 @@ function OverflowToolbarItem({ title, icon, onClick }: TOverflowToolbarItem) {
       title={title}
       onClick={onClick}
     >
+      {rtl && title}
       {icon && (
         <Box d="inline-block" me={2}>
-          {' '}
           <Icon as={icon} />
         </Box>
       )}
-      {title}
+      {!rtl && title}
     </Box>
   );
 }
