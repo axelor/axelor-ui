@@ -141,7 +141,7 @@ export function Tabs({
             });
           }
           return (
-            <ScrollButton {...buttonProps}>
+            <ScrollButton  {...props} {...buttonProps}>
               <Icon as={BiChevronLeft} />
             </ScrollButton>
           );
@@ -154,7 +154,7 @@ export function Tabs({
             });
           }
           return (
-            <ScrollButton {...buttonProps}>
+            <ScrollButton  {...props} {...buttonProps}>
               <Icon as={BiChevronRight} />
             </ScrollButton>
           );
