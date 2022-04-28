@@ -2,10 +2,11 @@ import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { ReactComponent as BiChevronDown } from 'bootstrap-icons/icons/chevron-down.svg';
 import { ReactComponent as BiChevronRight } from 'bootstrap-icons/icons/chevron-right.svg';
+import { ReactComponent as BiChevronLeft } from 'bootstrap-icons/icons/chevron-left.svg';
 
 import { TreeColumn } from './tree-column';
 import styles from './tree.module.css';
-import { useClassNames } from '../styles';
+import { useClassNames, useTheme } from '../styles';
 import { Icon } from '../icon';
 import * as TYPES from './types';
 
@@ -17,6 +18,9 @@ const TreeNodeContent = React.forwardRef<
   TYPES.TreeChildContentProps
 >((props, ref) => {
   const { columns, data, textRenderer } = props;
+  const { dir } = useTheme();
+  const rtl = dir === 'rtl';
+
   function render(column: TYPES.TreeColumn) {
     if (textRenderer) {
       const Renderer = textRenderer;
@@ -37,7 +41,13 @@ const TreeNodeContent = React.forwardRef<
                 {hasChildren(data) && (
                   <Icon
                     size={1}
-                    as={data.expanded ? BiChevronDown : BiChevronRight}
+                    as={
+                      data.expanded
+                        ? BiChevronDown
+                        : rtl
+                        ? BiChevronLeft
+                        : BiChevronRight
+                    }
                     className={styles.icon}
                   />
                 )}
