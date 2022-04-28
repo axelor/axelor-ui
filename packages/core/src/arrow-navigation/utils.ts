@@ -32,7 +32,11 @@ export function getNextElement(list: HTMLElement | null, item: HTMLElement) {
   return list?.firstChild;
 }
 
-export function navigate(elements: HTMLElement[][], key: string) {
+export function navigate(
+  elements: HTMLElement[][],
+  key: string,
+  rtl?: boolean
+) {
   if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
     return null;
   }
@@ -66,6 +70,9 @@ export function navigate(elements: HTMLElement[][], key: string) {
   const isEnd = () => col === elements[row].length - 1;
   const hasCol = () => col >= 0;
 
+  const leftKey = rtl ? 'ArrowRight' : 'ArrowLeft';
+  const rightKey = rtl ? 'ArrowLeft' : 'ArrowRight';
+
   function perform(key: string): HTMLElement {
     switch (key) {
       case 'ArrowUp':
@@ -74,14 +81,14 @@ export function navigate(elements: HTMLElement[][], key: string) {
       case 'ArrowDown':
         nextRow();
         break;
-      case 'ArrowLeft':
+      case leftKey:
         if (hasCol()) {
           isStart() ? moveEnd() : movePrev();
         } else {
           prevRow();
         }
         break;
-      case 'ArrowRight':
+      case rightKey:
         if (hasCol()) {
           isEnd() ? moveStart() : moveNext();
         } else {
