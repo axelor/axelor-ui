@@ -109,10 +109,12 @@ export const DropdownVerticalInverse = () => {
   );
 };
 
-export const Scroll = () => {
+export const Scroll = (arg: any, { globals: { direction } }: any) => {
   const items = new Array(20)
     .fill(0)
     .map((_, ind) => ({ title: ` Tab ${ind + 1} ` }));
+
+  const rtl = direction === 'rtl';
 
   return (
     <OverflowList
@@ -132,7 +134,7 @@ export const Scroll = () => {
               px={2}
               {...props}
             >
-              <Icon as={BiChevronLeft} />
+              <Icon as={rtl ? BiChevronRight : BiChevronLeft} />
             </Box>
           );
         }
@@ -145,7 +147,7 @@ export const Scroll = () => {
               px={2}
               {...props}
             >
-              <Icon as={BiChevronRight} />
+              <Icon as={rtl ? BiChevronLeft : BiChevronRight} />
             </Box>
           );
         }
