@@ -2,7 +2,7 @@
  * @title Editable
  */
 import React from 'react';
-import { Box, FocusTrap, Input, useClassNames } from '@axelor-ui/core';
+import { Box, Button, FocusTrap, Input, useClassNames } from '@axelor-ui/core';
 import { Grid } from '../grid';
 import { GridProvider } from '../grid-provider';
 import { columns, records } from './demo-data';
@@ -209,6 +209,7 @@ export default function Editable() {
             allowCellSelection
             sortType="state"
             groupingText={'Drag columns here...'}
+            addNewText={<Button variant="link">Add new line...</Button>}
             selectionType="multiple"
             records={$records}
             columns={columns}

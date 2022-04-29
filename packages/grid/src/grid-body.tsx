@@ -16,12 +16,14 @@ export interface GridBodyProps
       TYPES.GridProps,
       | 'selectionType'
       | 'noRecordsText'
+      | 'addNewText'
       | 'cellRenderer'
       | 'rowGroupHeaderRenderer'
       | 'rowGroupFooterRenderer'
       | 'rowRenderer'
       | 'editRowRenderer'
       | 'editRowColumnRenderer'
+      | 'onRecordAdd'
       | 'onRecordSave'
       | 'onRecordDiscard'
       | 'onRowDoubleClick'
@@ -45,7 +47,9 @@ export function GridBody(props: GridBodyProps) {
     rowGroupFooterRenderer,
     editRowRenderer,
     editRowColumnRenderer,
+    addNewText,
     noRecordsText,
+    onRecordAdd,
     onRecordSave,
     onRecordDiscard,
     onCellClick,
@@ -135,6 +139,11 @@ export function GridBody(props: GridBodyProps) {
           />
         );
       })}
+      {!noRecordsText && addNewText && (
+        <div className={styles.addNewText} onClick={onRecordAdd}>
+          {addNewText}
+        </div>
+      )}
       {noRecordsText && <div>{noRecordsText}</div>}
     </>
   );
