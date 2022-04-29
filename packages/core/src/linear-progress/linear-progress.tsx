@@ -10,13 +10,14 @@ export interface LinearProgressProps {
   value?: number;
 }
 
-const Inner = styled.div<LinearProgressProps>(
-  ({ indeterminate, striped, animated }) => [
+const Inner = styled.div<LinearProgressProps & { dir: string }>(
+  ({ indeterminate, striped, animated, dir }) => [
     'progress-bar',
     {
       'progress-bar-striped': striped,
       [styles.animated]: animated,
       [styles.indeterminate]: indeterminate,
+      [styles[dir]]: dir,
     },
   ]
 );
@@ -40,7 +41,7 @@ export const LinearProgress = withStyled(Outer)(
     },
     ref
   ) => {
-    const { dir } = useTheme();
+    const { dir = '' } = useTheme();
     return (
       <Outer {...props} ref={ref}>
         <Inner

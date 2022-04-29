@@ -3,7 +3,7 @@
   animation: 1.5s linear infinite progress-indeterminate;
 }
 
-[dir='rtl'].indeterminate {
+.rtl.indeterminate {
   animation: 1.5s linear infinite progress-indeterminate-rtl;
 }
 
