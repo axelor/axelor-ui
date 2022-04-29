@@ -34,14 +34,14 @@ interface NavSelectItemProps {
 const NavSelectItem = withStyled(Box)<NavSelectItemProps>((props, ref) => {
   const { active, className, children, ...rest } = props;
   const classNames = useClassNames();
-  const { dir } = useTheme();
+  const { dir = '' } = useTheme();
   return (
     <Box
-      dir={dir}
       ref={ref}
       {...rest}
       className={classNames(className, {
         [cssStyles.active]: Boolean(active),
+        [cssStyles[dir]]: dir,
       })}
     >
       <a>{children}</a>
