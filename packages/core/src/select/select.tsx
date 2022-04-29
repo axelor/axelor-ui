@@ -46,6 +46,7 @@ export interface SelectProps {
   createOption?: (inputString: string) => React.ReactNode;
   createOptionPosition?: 'first' | 'last';
   onCreate?: (value: SelectOption) => void;
+  components?: any;
 }
 
 const ControlContainer = (props: ControlProps<SelectOption, true>) => {
@@ -126,6 +127,7 @@ export function Select({
   createOption,
   createOptionPosition = 'last',
   onCreate,
+  components,
 }: SelectProps) {
   const [options, setOptions] = React.useState(_options);
   const [inputText, setInputText] = React.useState('');
@@ -193,6 +195,11 @@ export function Select({
 
   const handleMenuOpen = () => setMenuOpen(true);
   const handleMenuClose = () => setMenuOpen(false);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!(isMenuOpen && e.key === 'Enter')) {
+      onKeyDown && onKeyDown(e);
+    }
+  };
 
   React.useEffect(() => {
     setOptions(_options);
@@ -245,7 +252,7 @@ export function Select({
         onInputChange: handleInputChange,
         onFocus: handleFocus,
         onBlur,
-        onKeyDown,
+        onKeyDown: handleKeyDown,
         getOptionLabel,
         getOptionValue,
         allowCreateWhileLoading: false,
@@ -259,6 +266,7 @@ export function Select({
           IndicatorsContainer,
           MenuList,
           icons,
+          ...components,
         },
         ...(isCreatable
           ? {
