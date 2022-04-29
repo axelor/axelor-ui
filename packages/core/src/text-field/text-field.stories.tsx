@@ -8,8 +8,6 @@ import { ReactComponent as BiCalendar } from 'bootstrap-icons/icons/calendar.svg
 import { ReactComponent as BiAlarm } from 'bootstrap-icons/icons/alarm.svg';
 import { ReactComponent as BiTranslate } from 'bootstrap-icons/icons/translate.svg';
 
-import { ThemeProvider } from '../styles';
-
 export default {
   component: TextField,
   title: 'Components/TextField',
@@ -81,15 +79,5 @@ export const Basic = () => {
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
       />
     </Box>
-  );
-};
-
-export const RTL = () => {
-  return (
-    <ThemeProvider dir="rtl">
-      <div>
-        <Basic />
-      </div>
-    </ThemeProvider>
   );
 };

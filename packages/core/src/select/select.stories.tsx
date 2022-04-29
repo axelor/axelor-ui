@@ -2,7 +2,6 @@ import React from 'react';
 import { ReactComponent as BiPencil } from 'bootstrap-icons/icons/pencil.svg';
 import { ReactComponent as BiPlusSquare } from 'bootstrap-icons/icons/plus-square.svg';
 import { ReactComponent as BiFileEarmark } from 'bootstrap-icons/icons/file-earmark-text.svg';
-import { ThemeProvider } from '../styles';
 
 import { Input } from '../input';
 import { Box } from '../box';
@@ -228,16 +227,6 @@ export const Actions = () => {
         />
       </FormControl>
     </Box>
-  );
-};
-
-export const RTL = () => {
-  return (
-    <ThemeProvider dir="rtl">
-      <div>
-        <Actions />
-      </div>
-    </ThemeProvider>
   );
 };
 
