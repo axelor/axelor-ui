@@ -23,6 +23,7 @@ export type NavigationAction = 'NEXT' | 'PREV' | 'TODAY';
 const views: View[] = ['month', 'week', 'day'];
 
 export interface SchedulerProps {
+  date?: Date;
   events?: SchedulerEvent[] | undefined;
   view?: View;
   selectable?: boolean | 'ignoreEvents';
@@ -38,6 +39,7 @@ export interface SchedulerProps {
 }
 
 function Scheduler({
+  date,
   events,
   view,
   selectable,
@@ -116,6 +118,7 @@ function Scheduler({
     <DragAndDropCalendar
       popup
       rtl={rtl}
+      date={date}
       view={view}
       views={views}
       localizer={localizer}
