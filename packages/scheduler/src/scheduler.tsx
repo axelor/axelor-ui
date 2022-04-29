@@ -6,6 +6,7 @@ import {
   View as CalendarView,
   NavigateAction as CalendarNavigateAction,
 } from 'react-big-calendar';
+import { useTheme } from '@axelor-ui/core';
 import moment from 'moment';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 
@@ -52,6 +53,9 @@ function Scheduler({
   onViewChange,
   onNavigationChange,
 }: SchedulerProps) {
+  const { dir } = useTheme();
+  const rtl = dir === 'rtl';
+
   const handleEventStyler = useCallback(
     (event: any, start: any, end: any) => {
       return eventStyler
@@ -114,6 +118,7 @@ function Scheduler({
     <DragAndDropCalendar
       popup
       date={date}
+      rtl={rtl}
       view={view}
       views={views}
       localizer={localizer}
