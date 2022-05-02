@@ -7,6 +7,7 @@
 }
 
 .resizingColumns {
+  cursor: pointer;
 }
 .focusElement {
   cursor: pointer;
@@ -43,6 +44,12 @@
 .header.sticky.shadow {
   box-shadow: -3px -1px 9px rgb(0 0 0 / 40%);
 }
+.container.no-columns .header {
+  width: 100%;
+}
+.container.no-columns .header .row {
+  min-height: 32px;
+}
 
 .footer {
   background: #fff;
@@ -60,8 +67,8 @@
   font-weight: 400;
 }
 
-.header:not(.sticky.shadow) .column {
-  border-bottom-width: 2px !important;
+.container:not(.no-columns) .header.options .column:last-child {
+  padding-right: 1.1rem !important;
 }
 
 .column.selected {
@@ -103,6 +110,11 @@
   display: none;
   align-items: center;
   justify-content: center;
+}
+.header .column:last-child .headerColumnDropdown {
+  border-right: 1px solid #eee;
+  width: 20px;
+  padding-right: 4px;
 }
 .headerColumnDropdown.hasResize {
   padding-left: 4px;
@@ -156,16 +168,22 @@
 
 .row .column {
   padding: 4px;
-  border: 1px solid #eee;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
-.body .row .column {
+.header .row, .body .row {
+  border: 1px solid #eee;
   border-top: none;
 }
-.row .column:not(:first-child) {
-  border-left: none;
+.header .row:first-child {
+  border-top: 1px solid #eee;
+}
+.header .column {
+  border-right: 1px solid #eee;
+}
+.header .column:last-child {
+  border-right: none;
 }
 
 .container .drag-over-current {
@@ -255,4 +273,12 @@
   border: 1px solid #eee;
   border-top: none;
   padding-left: 1.25rem;
+}
+.columnOptions {
+  padding: 0.25rem;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
 }
