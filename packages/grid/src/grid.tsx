@@ -1,7 +1,5 @@
 import React from 'react';
-import { useRefs } from '@axelor-ui/core';
-import { useClassNames } from '@axelor-ui/core';
-
+import { useRefs, useClassNames } from '@axelor-ui/core';
 import { GridGroup } from './grid-group';
 import { GridHeader } from './grid-header';
 import { GridBody } from './grid-body';
@@ -62,6 +60,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
   (props, ref) => {
     const containerRef = React.useRef<any>();
     const refs = React.useRef<any>({});
+
     const { className, state, setState, columns, records } = props;
     const { editable, sortType, selectionType = 'multiple' } = props;
     const {
@@ -71,6 +70,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       allowGrouping,
       allowGroupArea,
       allowColumnResize,
+      allowColumnOptions,
       allowCheckboxSelection,
       allowCellSelection,
       allowColumnCustomize,
@@ -147,7 +147,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           });
         }
 
-        const totalWidth = getContainerWidth();
+        const borderWidth = 1;
+        const totalWidth = getContainerWidth() - borderWidth * 2;
         if (totalWidth > 0) {
           const displayColumns = getColumns(columns);
           const computedColumns = displayColumns.filter(col => col.computed);
@@ -615,13 +616,13 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleRecordAdd = React.useCallback(async () => {
-      // check any current edit row 
+      // check any current edit row
       if (onRecordEdit) {
         const result = await onRecordEdit({});
         // if result is not, current edit record is invalidate
         if (result === null) return;
       }
-      // call event on record add 
+      // call event on record add
       onRecordAdd && onRecordAdd();
       setState(draft => {
         if (draft.editRow) {
@@ -1058,12 +1059,22 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       }
       return 'indeterminate';
     }, [state.rows, state.selectedRows]);
+    const noColumns = React.useMemo(() => {
+      return displayColumns.every(
+        col =>
+          (col as any).action ||
+          col.type === 'row-checked' ||
+          (col.width && col.width < 50)
+      );
+    }, [displayColumns]);
+
     const classNames = useClassNames();
     return (
       <div
         ref={handleRef}
         className={classNames(styles.container, className, {
           [styles['no-records']]: records.length === 0,
+          [styles['no-columns']]: noColumns,
         })}
         {...(allowCellSelection
           ? { tabIndex: 0, onKeyDown: handleNavigation }
@@ -1086,6 +1097,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         <GridHeader
           className={classNames(styles.header, {
             [styles.sticky]: stickyHeader,
+            [styles.options]: allowColumnOptions,
           })}
           groupBy={state.groupBy}
           orderBy={state.orderBy}
@@ -1094,6 +1106,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           rowRenderer={headerRowRenderer}
           checkType={checkType}
           selectionType={selectionType}
+          {...(allowColumnOptions ? { allColumns: state.columns } : {})}
           {...(allowSearch
             ? {
                 searchRowRenderer,

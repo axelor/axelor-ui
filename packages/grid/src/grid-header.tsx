@@ -6,6 +6,7 @@ import {
 } from './grid-header-column';
 import { DropHandler } from './grid-drag-element';
 import { GridSearchRow } from './grid-search-row';
+import { GridHeaderMenu } from './grid-header-menu';
 import * as TYPES from './types';
 import styles from './grid.module.css';
 import { isRowCheck } from './utils';
@@ -20,6 +21,7 @@ export interface GridHeaderProps
       'selectionType' | 'searchRowRenderer' | 'searchColumnRenderer'
     > {
   className?: string;
+  allColumns?: TYPES.GridColumn[];
   hiddenColumns?: TYPES.GridColumn[];
   rowRenderer?: TYPES.Renderer;
   checkType?: GridHeaderColumnProps['checkType'];
@@ -48,6 +50,7 @@ export const GridHeader = React.memo(function GridHeader(
   const {
     className,
     columns = [],
+    allColumns = [],
     hiddenColumns,
     orderBy,
     checkType,
@@ -111,6 +114,14 @@ export const GridHeader = React.memo(function GridHeader(
             searchRowRenderer,
             searchColumnRenderer,
           }}
+        />
+      )}
+
+      {allColumns && onColumnShow && onColumnHide && (
+        <GridHeaderMenu
+          columns={allColumns}
+          onColumnShow={onColumnShow}
+          onColumnHide={onColumnHide}
         />
       )}
     </div>

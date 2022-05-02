@@ -46,6 +46,7 @@ export default function Basic() {
           allowCheckboxSelection
           allowCellSelection
           allowColumnHide
+          allowColumnOptions
           sortType="state"
           groupingText={'Drag columns here...'}
           selectionType="multiple"

@@ -170,7 +170,8 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
     }
 
     const hasDropdown =
-      onSort || onHide || onShow || onGroup || onUngroup || onCustomize;
+      !(data as any).action &&
+      (onSort || onHide || onShow || onGroup || onUngroup || onCustomize);
 
     return (
       <>
