@@ -270,9 +270,8 @@
 }
 .addNewText {
   cursor: pointer;
-  border: 1px solid #eee;
-  border-top: none;
   padding-left: 1.25rem;
+  width: 100%;
 }
 .columnOptions {
   padding: 0.25rem;
