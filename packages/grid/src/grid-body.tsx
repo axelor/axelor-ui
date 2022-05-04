@@ -139,12 +139,12 @@ export function GridBody(props: GridBodyProps) {
           />
         );
       })}
-      {!noRecordsText && addNewText && (
+      {addNewText && (
         <div className={styles.addNewText} onClick={onRecordAdd}>
           {addNewText}
         </div>
       )}
-      {noRecordsText && <div>{noRecordsText}</div>}
+      {noRecordsText && !addNewText && <div>{noRecordsText}</div>}
     </>
   );
 }
