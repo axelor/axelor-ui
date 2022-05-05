@@ -71,13 +71,25 @@
 .ganttEdgeLines:hover .ganttEdgeLine {
   box-shadow: 0 0px 8px orange;
 }
+
 .ganttEdgeIconStart {
   position: absolute;
   right: -0.25em;
 }
+
+.rtl .ganttEdgeIconStart {
+  right: unset;
+  left: -0.25rem;
+}
+
 .ganttEdgeIconEnd {
   position: absolute;
   left: -0.25em;
+}
+
+.rtl .ganttEdgeIconEnd {
+  left: unset;
+  right: -0.25em;
 }
 
 /* gantt line styles */
@@ -260,6 +272,9 @@
   font-size: 0.95rem;
   padding-left: 10px;
 }
+.rtl .tableHeaderCell {
+  padding-right: 10px;
+}
 .tableBodyRow {
   display: flex;
   height: 36px;
@@ -273,6 +288,9 @@
   align-items: center;
   padding-left: 10px;
   pointer-events: none;
+}
+.rtl .tableBodyRowCell {
+  padding-right: 10px;
 }
 
 .highlight {
