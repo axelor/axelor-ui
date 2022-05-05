@@ -58,7 +58,7 @@ const GridGroupTag = ({
 
 export interface GridGroupProps
   extends Pick<TYPES.GridState, 'columns' | 'groupBy' | 'orderBy'> {
-  groupingText?: string;
+  groupingText?: TYPES.GridProps['groupingText'];
   onGroupTagClick?: (e: React.SyntheticEvent, group: TYPES.GridGroup) => void;
   onGroupTagRemove?: (e: React.SyntheticEvent, group: TYPES.GridGroup) => void;
   onGroupTagDrop?: (dest: any, target: any) => void;
