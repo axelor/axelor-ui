@@ -615,9 +615,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       [setState]
     );
 
-    const handleRecordAdd = React.useCallback(async () => {
+    const handleRecordAdd = React.useCallback(async (checkEdit = true) => {
       // check any current edit row
-      if (onRecordEdit) {
+      if (checkEdit && onRecordEdit) {
         const result = await onRecordEdit({});
         // if result is not, current edit record is invalidate
         if (result === null) return;
@@ -641,18 +641,21 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         // is last record save, then add new record
         const isLast = !saveFromEdit && rowIndex === totalRows - 1;
         let result = row;
+        let saved = false;
         if (dirty && onRecordSave) {
           result = await onRecordSave(row, rowIndex);
           // if record is null, current edit record is invalidate
           if (result && result.record === null) {
             result = null;
+          } else if (result && result.record) {
+            saved = true;
           }
         }
         // record is validated
         if (result) {
           if (isLast && onRecordAdd) {
             // add new record
-            handleRecordAdd();
+            handleRecordAdd(!saved);
           } else {
             // complete record edit state
             handleRecordComplete(
