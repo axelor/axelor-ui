@@ -1075,6 +1075,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         className={classNames(styles.container, className, {
           [styles['no-records']]: records.length === 0,
           [styles['no-columns']]: noColumns,
+          [styles['has-add-new']]: Boolean(props.addNewText),
         })}
         {...(allowCellSelection
           ? { tabIndex: 0, onKeyDown: handleNavigation }

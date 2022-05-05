@@ -72,9 +72,9 @@ export interface GridProps {
   allowGroupArea?: boolean;
   stickyHeader?: boolean;
   stickyFooter?: boolean;
-  addNewText?: string;
-  noRecordsText?: string;
-  groupingText?: string;
+  addNewText?: string | React.ReactNode;
+  noRecordsText?: string | React.ReactNode;
+  groupingText?: string | React.ReactNode;
   cellRenderer?: Renderer;
   rowRenderer?: Renderer;
   editRowRenderer?: Renderer;

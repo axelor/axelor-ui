@@ -263,10 +263,12 @@
   flex: 1;
   justify-content: center;
   display: flex;
-  align-items: center;
   width: 100%;
   border: 1px solid #eee;
   border-top: none;
+}
+.container.no-records:not(.has-add-new) .body {
+  align-items: center;
 }
 .addNewText {
   cursor: pointer;
