@@ -10,6 +10,7 @@ import styles from './text-field.module.scss';
 export interface TextFieldIcon {
   id: string;
   icon: SvgIcon;
+  className?: string;
   onClick?: React.MouseEventHandler<SVGSVGElement>;
 }
 
@@ -67,7 +68,12 @@ export const TextField = withStyled(Input)<TextFieldProps>(
           {icons.length > 0 && (
             <div className={styles.icons}>
               {icons.map(icon => (
-                <Icon key={icon.id} as={icon.icon} onClick={icon.onClick} />
+                <Icon
+                  key={icon.id}
+                  className={icon.className}
+                  as={icon.icon}
+                  onClick={icon.onClick}
+                />
               ))}
             </div>
           )}
