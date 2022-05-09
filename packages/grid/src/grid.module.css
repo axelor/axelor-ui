@@ -102,41 +102,6 @@
   margin: 0;
 }
 
-.headerColumnDropdown {
-  width: 16px;
-  border-left: 1px solid #eee;
-  height: 100%;
-  font-size: 12px;
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
-.header .column:last-child .headerColumnDropdown {
-  border-right: 1px solid #eee;
-  width: 20px;
-  padding-right: 4px;
-}
-.headerColumnDropdown.hasResize {
-  padding-left: 4px;
-}
-
-.headerColumnDropdownList > div {
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-}
-
-.headerColumnDropdownList span {
-  margin: 0.15rem 0;
-}
-
-.header .column:hover .headerColumnDropdown {
-  display: flex;
-}
-.headerColumnDropdown.show {
-  display: flex;
-}
-
 .columnResizer {
   width: 5px;
   height: 100%;
@@ -186,20 +151,12 @@
   border-right: none;
 }
 
-.container .drag-over-current {
-  background: #e0e0e0;
-}
-
-.groupArea {
-  background: #eee;
-  display: flex;
-  flex-wrap: wrap;
-  position: sticky;
-  left: 0;
+.drag-over-current {
+  background: #eee !important;
 }
 
 .groupTagContainer {
-  padding: 8px;
+  padding: 0.25rem;
   display: flex;
   flex: 1;
   width: 100%;
@@ -208,8 +165,6 @@
 
 .groupTagWrapper {
   display: inline-flex !important;
-  margin: 0 5px;
-  height: 2em;
   align-items: center;
 }
 
@@ -218,9 +173,9 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  color: #616161;
+  /* color: #616161; */
   cursor: pointer;
-  padding-left: 5px;
+  margin: 0.25rem;
 }
 
 .groupTag svg {
@@ -235,11 +190,12 @@
 .groupTagTitle {
   user-select: none;
   cursor: inherit;
+  padding-left: 0.25rem;
+  height: 100%;
 }
 
 .groupTagRemove {
-  margin: 0 5px;
-  color: #616161;
+  /* color: #616161; */
 }
 
 .groupDumpTag {
@@ -282,4 +238,13 @@
   right: 0;
   top: 0;
   z-index: 1;
+}
+.columnOptionsMenu {
+  max-width: 200px;
+  max-height: 420px;
+  overflow-y: auto;
+}
+.dragColumnArea {
+  min-height: 20px;
+  width: 100%;
 }

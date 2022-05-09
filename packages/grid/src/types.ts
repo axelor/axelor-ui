@@ -69,12 +69,10 @@ export interface GridProps {
   allowColumnCustomize?: boolean;
   allowColumnHide?: boolean;
   allowRowReorder?: boolean;
-  allowGroupArea?: boolean;
   stickyHeader?: boolean;
   stickyFooter?: boolean;
   addNewText?: string | React.ReactNode;
   noRecordsText?: string | React.ReactNode;
-  groupingText?: string | React.ReactNode;
   cellRenderer?: Renderer;
   rowRenderer?: Renderer;
   editRowRenderer?: Renderer;
@@ -85,7 +83,7 @@ export interface GridProps {
   searchColumnRenderer?: Renderer;
   rowGroupHeaderRenderer?: Renderer;
   rowGroupFooterRenderer?: Renderer;
-  onColumnCustomize?: (e: React.SyntheticEvent, column: GridColumn) => void;
+  onColumnCustomize?: (e: React.SyntheticEvent, column?: GridColumn) => void;
   onRowClick?: (e: React.SyntheticEvent, row: any, rowIndex: number) => void;
   onRowDoubleClick?: (
     e: React.SyntheticEvent,
