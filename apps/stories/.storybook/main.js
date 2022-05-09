@@ -6,6 +6,7 @@ module.exports = {
     '@storybook/preset-scss',
     '@storybook/addon-a11y',
     '@storybook/addon-toolbars',
+    './addons/rtl-switch/register',
   ],
   core: {
     builder: 'webpack5',
