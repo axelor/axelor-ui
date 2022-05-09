@@ -1,26 +1,94 @@
 import React from 'react';
-import { Box, Input, Menu, MenuItem, Icon } from '@axelor-ui/core';
+import { Box, Input, Menu, MenuItem, Icon, Divider } from '@axelor-ui/core';
 import { ReactComponent as BiThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg';
+import { ReactComponent as BiX } from 'bootstrap-icons/icons/x.svg';
 
-import { GridHeaderColumnProps } from './grid-header-column';
+import GridDragElement, { DropHandler } from './grid-drag-element';
 import * as TYPES from './types';
 import styles from './grid.module.css';
 
-export interface GridHeaderMenuProps {
+export interface GridHeaderMenuProps extends Pick<TYPES.GridState, 'groupBy'> {
   columns?: TYPES.GridColumn[];
-  onColumnShow?: GridHeaderColumnProps['onShow'];
-  onColumnHide?: GridHeaderColumnProps['onHide'];
+  onColumnShow?: (e: React.SyntheticEvent, column: TYPES.GridColumn) => void;
+  onColumnHide?: (e: React.SyntheticEvent, column: TYPES.GridColumn) => void;
+  onColumnCustomize?: (
+    e: React.SyntheticEvent,
+    column?: TYPES.GridColumn
+  ) => void;
+  onColumnDrop?: DropHandler;
+  onColumnGroupAdd?: (e: React.SyntheticEvent, group: TYPES.GridGroup) => void;
+  onColumnGroupRemove?: (
+    e: React.SyntheticEvent,
+    group: TYPES.GridGroup
+  ) => void;
 }
+
+const GridGroupTag = ({
+  name,
+  title,
+  onDrop,
+  onRemove,
+}: {
+  name: string;
+  title?: string;
+  onDrop?: GridHeaderMenuProps['onColumnDrop'];
+  onRemove?: GridHeaderMenuProps['onColumnGroupRemove'];
+}) => {
+  const data = React.useMemo(
+    () => ({ name, title, $group: true }),
+    [name, title]
+  );
+  return (
+    <GridDragElement
+      className={styles.groupTagWrapper}
+      column={data}
+      onDrop={onDrop}
+    >
+      <div className={styles.groupTag}>
+        <label className={styles.groupTagTitle}>{data.title}</label>
+        <span
+          onClick={e => {
+            e.preventDefault();
+            e.stopPropagation();
+            onRemove && onRemove(e, data);
+          }}
+          className={styles.groupTagRemove}
+        >
+          <Icon size={2} as={BiX} />
+        </span>
+      </div>
+    </GridDragElement>
+  );
+};
+
+const CustomMenuItem = ({ onEnter, onClick, ...props }: any) => {
+  return (
+    <MenuItem
+      {...props}
+      onClick={onClick}
+      onKeyDown={e => {
+        e.preventDefault();
+        if (e.key === 'Enter') {
+          onClick && onClick(e);
+        }
+      }}
+    />
+  );
+};
 
 export const GridHeaderMenu = React.memo(function GridHeaderMenu({
   columns = [],
+  groupBy,
+  onColumnCustomize,
   onColumnShow,
   onColumnHide,
+  onColumnDrop,
+  onColumnGroupRemove,
 }: GridHeaderMenuProps) {
   const [showColumnOptions, setColumnOptions] = React.useState(false);
   const [columnOptionsTarget, setColumnOptionsTarget] =
     React.useState<HTMLElement | null>(null);
-    
+
   return (
     <>
       <Box
@@ -31,9 +99,11 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
         <Icon as={BiThreeDotsVertical} />
       </Box>
       <Menu
+        className={styles.columnOptionsMenu}
         navigation
         target={columnOptionsTarget}
         show={showColumnOptions}
+        disablePortal
         onHide={() => setColumnOptions(false)}
       >
         {columns
@@ -44,24 +114,72 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
               visible && onColumnHide && onColumnHide(e, column);
               !visible && onColumnShow && onColumnShow(e, column);
             }
-            return (
-              <MenuItem
-                key={column.name}
-                onClick={toggle}
-                onKeyDown={e => {
-                  e.preventDefault();
-                  if (e.key === 'Enter') {
-                    toggle(e);
-                  }
-                }}
-              >
-                <Input type="checkbox" checked={visible} onChange={() => {}} />
+            function render() {
+              return (
                 <Box as="span" ms={2}>
                   {column.title}
                 </Box>
-              </MenuItem>
+              );
+            }
+            return (
+              <CustomMenuItem key={column.name} onClick={toggle}>
+                <Input type="checkbox" checked={visible} onChange={() => {}} />
+                {onColumnDrop ? (
+                  <GridDragElement
+                    className={styles.dragColumn}
+                    column={column}
+                    onDrop={onColumnDrop}
+                  >
+                    {render()}
+                  </GridDragElement>
+                ) : (
+                  render()
+                )}
+              </CustomMenuItem>
             );
           })}
+        {onColumnDrop && (
+          <>
+            <Divider aria-disabled="true" />
+            <GridDragElement
+              canDrag={false}
+              canDrop={true}
+              onDrop={onColumnDrop}
+              className={styles.dragColumnArea}
+              aria-disabled="true"
+            >
+              <Box className={styles.groupTagContainer}>
+                {(groupBy || []).map(group => {
+                  const column = columns.find(x => x.name === group.name);
+                  return (
+                    <GridGroupTag
+                      key={group.name}
+                      title={column && column.title}
+                      name={group.name}
+                      onDrop={onColumnDrop}
+                      onRemove={onColumnGroupRemove}
+                    />
+                  );
+                })}
+              </Box>
+            </GridDragElement>
+          </>
+        )}
+        {onColumnCustomize && (
+          <>
+            <Divider aria-disabled="true" />
+            <CustomMenuItem
+              onClick={(e: React.SyntheticEvent) => {
+                onColumnCustomize(e);
+                setColumnOptions(false);
+              }}
+            >
+              <Box as="span" ms={2}>
+                Customize...
+              </Box>
+            </CustomMenuItem>
+          </>
+        )}
       </Menu>
     </>
   );

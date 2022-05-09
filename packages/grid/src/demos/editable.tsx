@@ -208,7 +208,6 @@ export default function Editable() {
             allowCheckboxSelection
             allowCellSelection
             sortType="state"
-            groupingText={'Drag columns here...'}
             addNewText={<Button variant="link">Add new line...</Button>}
             selectionType="multiple"
             records={$records}
