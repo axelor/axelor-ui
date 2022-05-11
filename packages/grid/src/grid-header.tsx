@@ -37,7 +37,6 @@ export interface GridHeaderProps
   onColumnHide?: GridHeaderMenuProps['onColumnHide'];
   onColumnCustomize?:  GridHeaderMenuProps['onColumnCustomize'];
   onColumnDrop?: GridHeaderMenuProps['onColumnDrop'];
-  onColumnGroupAdd?: GridHeaderMenuProps['onColumnGroupAdd'];
   onColumnGroupRemove?: GridHeaderMenuProps['onColumnGroupRemove'];
 }
 
@@ -61,7 +60,6 @@ export const GridHeader = React.memo(function GridHeader(
     onColumnCustomize,
     onColumnShow,
     onColumnHide,
-    onColumnGroupAdd,
     onColumnGroupRemove,
     onColumnResizeStart,
     onColumnResize,

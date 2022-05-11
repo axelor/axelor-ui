@@ -1,8 +1,10 @@
 import React from 'react';
 import { useClassNames } from '@axelor-ui/core';
+import * as TYPES from './types';
+
 import { GridColumn } from './grid-column';
 import { capitalizeWord } from './utils';
-import * as TYPES from './types';
+import { useTranslation } from './translate';
 import styles from './grid.module.css';
 
 export const GridFooterRow = React.memo(function GridFooterRow(
@@ -16,6 +18,7 @@ export const GridFooterRow = React.memo(function GridFooterRow(
     renderer,
     data,
   } = props;
+  const t = useTranslation();
   const RowRenderer = renderer || 'div';
   const rendererProps = renderer ? props : {};
   const classNames = useClassNames();
@@ -35,7 +38,7 @@ export const GridFooterRow = React.memo(function GridFooterRow(
           type="footer"
         >
           {column.aggregate
-            ? `${capitalizeWord(column.aggregate)} : ${
+            ? `${t(capitalizeWord(column.aggregate))} : ${
                 data.aggregate[column.name]
               }`
             : null}

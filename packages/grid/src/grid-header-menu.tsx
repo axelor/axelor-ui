@@ -6,6 +6,7 @@ import { ReactComponent as BiX } from 'bootstrap-icons/icons/x.svg';
 import GridDragElement, { DropHandler } from './grid-drag-element';
 import * as TYPES from './types';
 import styles from './grid.module.css';
+import { useTranslation } from './translate';
 
 export interface GridHeaderMenuProps extends Pick<TYPES.GridState, 'groupBy'> {
   columns?: TYPES.GridColumn[];
@@ -16,7 +17,6 @@ export interface GridHeaderMenuProps extends Pick<TYPES.GridState, 'groupBy'> {
     column?: TYPES.GridColumn
   ) => void;
   onColumnDrop?: DropHandler;
-  onColumnGroupAdd?: (e: React.SyntheticEvent, group: TYPES.GridGroup) => void;
   onColumnGroupRemove?: (
     e: React.SyntheticEvent,
     group: TYPES.GridGroup
@@ -65,6 +65,8 @@ const CustomMenuItem = ({ onEnter, onClick, ...props }: any) => {
   return (
     <MenuItem
       {...props}
+      className={styles.headerMenuItem}
+      p={0}
       onClick={onClick}
       onKeyDown={e => {
         e.preventDefault();
@@ -88,7 +90,7 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
   const [showColumnOptions, setColumnOptions] = React.useState(false);
   const [columnOptionsTarget, setColumnOptionsTarget] =
     React.useState<HTMLElement | null>(null);
-
+  const t = useTranslation();
   return (
     <>
       <Box
@@ -116,14 +118,20 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
             }
             function render() {
               return (
-                <Box as="span" ms={2}>
-                  {column.title}
+                <Box py={1} px={3}>
+                  <Input
+                    type="checkbox"
+                    checked={visible}
+                    onChange={() => {}}
+                  />
+                  <Box as="span" ms={2}>
+                    {column.title}
+                  </Box>
                 </Box>
               );
             }
             return (
               <CustomMenuItem key={column.name} onClick={toggle}>
-                <Input type="checkbox" checked={visible} onChange={() => {}} />
                 {onColumnDrop ? (
                   <GridDragElement
                     className={styles.dragColumn}
@@ -149,6 +157,9 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
               aria-disabled="true"
             >
               <Box className={styles.groupTagContainer}>
+                {(groupBy || []).length === 0 && (
+                  <Box className={styles.groupPlaceholder}>{t('Groups')}</Box>
+                )}
                 {(groupBy || []).map(group => {
                   const column = columns.find(x => x.name === group.name);
                   return (
@@ -175,7 +186,7 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
               }}
             >
               <Box as="span" ms={2}>
-                Customize...
+                {t('Customize...')}
               </Box>
             </CustomMenuItem>
           </>
