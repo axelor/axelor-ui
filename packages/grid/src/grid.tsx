@@ -14,6 +14,7 @@ import {
 import * as TYPES from './types';
 import styles from './grid.module.css';
 import { GridFooter } from './grid-footer';
+import { TranslateProvider } from './translate';
 
 function debounce(func: () => void, timeout: number = 300) {
   let timer: any;
@@ -30,6 +31,7 @@ const isDefined = (val: any) => val !== undefined;
 const isNull = (value: any) => !isDefined(value) || value === null;
 const getColumns = (columns: TYPES.GridColumn[]) =>
   columns.filter(column => column.visible !== false);
+const _translate = (str: string) => str;
 
 function restoreGridSelection(
   state: TYPES.GridState,
@@ -76,6 +78,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       allowRowReorder,
       stickyHeader = true,
       stickyFooter = true,
+      translate = _translate,
     } = props;
 
     const {
@@ -568,24 +571,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           } else if (!isDestExist) {
             data.groupBy.push(group);
           }
-          
-          data.selectedCell = null;
-        });
-      },
-      [setState]
-    );
 
-    const handleGroupColumnAdd = React.useCallback(
-      (e, group) => {
-        setState(data => {
-          if (!data.groupBy) {
-            data.groupBy = [];
-          }
-          const groupBy = data.groupBy || [];
-          const index = groupBy.findIndex(g => g.name === group.name);
-          if (index === -1) {
-            groupBy.push(group);
-          }
           data.selectedCell = null;
         });
       },
@@ -1038,7 +1024,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         draft.columns = [...columns];
       });
       sizingColumns();
-    }, [setState, columns, state.groupBy, sizingColumns]);
+    }, [setState, columns, sizingColumns]);
 
     React.useEffect(() => {
       if (state.selectedCell) {
@@ -1079,113 +1065,114 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     const classNames = useClassNames();
     return (
-      <div
-        ref={handleRef}
-        className={classNames(styles.container, className, {
-          [styles['no-records']]: records.length === 0,
-          [styles['no-columns']]: noColumns,
-          [styles['has-add-new']]: Boolean(props.addNewText),
-        })}
-        {...(allowCellSelection
-          ? { tabIndex: 0, onKeyDown: handleNavigation }
-          : {})}
-        onScroll={handleScroll}
-      >
-        <GridHeader
-          className={classNames(styles.header, {
-            [styles.sticky]: stickyHeader,
-            [styles.options]: allowColumnOptions,
+      <TranslateProvider t={translate}>
+        <div
+          ref={handleRef}
+          className={classNames(styles.container, className, {
+            [styles['no-records']]: records.length === 0,
+            [styles['no-columns']]: noColumns,
+            [styles['has-add-new']]: Boolean(props.addNewText),
           })}
-          groupBy={state.groupBy}
-          orderBy={state.orderBy}
-          columns={displayColumns}
-          rowRenderer={headerRowRenderer}
-          checkType={checkType}
-          selectionType={selectionType}
-          {...(allowColumnOptions ? { allColumns: state.columns } : {})}
-          {...(allowSearch
-            ? {
-                searchRowRenderer,
-                searchColumnRenderer,
-              }
+          {...(allowCellSelection
+            ? { tabIndex: 0, onKeyDown: handleNavigation }
             : {})}
-          {...(!isEditMode
-            ? {
-                ...(allowColumnResize
-                  ? {
-                      onColumnResizeStart: handleColumnResizeStart,
-                      onColumnResize: handleColumnResize,
-                      onColumnResizeEnd: handleColumnResizeEnd,
-                    }
-                  : {}),
-                ...(allowSorting
-                  ? {
-                      onColumnClick: handleSort,
-                    }
-                  : {}),
-                ...(allowGrouping
-                  ? {
-                      onColumnDrop: handleGroupColumnDrop,
-                      onColumnGroupAdd: handleGroupColumnAdd,
-                      onColumnGroupRemove: handleGroupColumnRemove,
-                    }
-                  : {}),
-                ...(allowColumnCustomize ? { onColumnCustomize } : {}),
-                ...(allowColumnHide
-                  ? {
-                      onColumnShow: handleColumnShow,
-                      onColumnHide: handleColumnHide,
-                    }
-                  : {}),
-                onCheckAll: handleCheckAll,
-              }
-            : {})}
-        />
-        <GridBody
-          columns={displayColumns}
-          rows={state.rows}
-          editRow={state.editRow}
-          selectedRows={state.selectedRows}
-          selectedCell={state.selectedCell}
-          selectionType={selectionType}
-          noRecordsText={records.length === 0 ? props.noRecordsText : ''}
-          addNewText={props.addNewText}
-          {...{
-            cellRenderer,
-            rowRenderer,
-            editRowRenderer,
-            editRowColumnRenderer,
-            rowGroupFooterRenderer,
-            rowGroupHeaderRenderer,
-          }}
-          {...(editable
-            ? {
-                editRowRenderer,
-                onRecordAdd: handleRecordAdd,
-                onRecordSave: handleRecordSave,
-                onRecordDiscard: handleRecordDiscard,
-              }
-            : {})}
-          {...(allowRowReorder
-            ? {
-                onRowMove: handleRowMove,
-              }
-            : {})}
-          onCellClick={onCellClick}
-          onRowClick={handleRowClick}
-          onRowDoubleClick={onRowDoubleClick}
-        />
-        {hasAggregation && (
-          <GridFooter
-            className={classNames(styles.footer, {
-              [styles.sticky]: stickyFooter,
+          onScroll={handleScroll}
+        >
+          <GridHeader
+            className={classNames(styles.header, {
+              [styles.sticky]: stickyHeader,
+              [styles.options]: allowColumnOptions,
             })}
-            rowRenderer={footerRowRenderer}
-            records={records}
+            groupBy={state.groupBy}
+            orderBy={state.orderBy}
             columns={displayColumns}
+            rowRenderer={headerRowRenderer}
+            checkType={checkType}
+            selectionType={selectionType}
+            {...(allowColumnOptions ? { allColumns: state.columns } : {})}
+            {...(allowSearch
+              ? {
+                  searchRowRenderer,
+                  searchColumnRenderer,
+                }
+              : {})}
+            {...(!isEditMode
+              ? {
+                  ...(allowColumnResize
+                    ? {
+                        onColumnResizeStart: handleColumnResizeStart,
+                        onColumnResize: handleColumnResize,
+                        onColumnResizeEnd: handleColumnResizeEnd,
+                      }
+                    : {}),
+                  ...(allowSorting
+                    ? {
+                        onColumnClick: handleSort,
+                      }
+                    : {}),
+                  ...(allowGrouping
+                    ? {
+                        onColumnDrop: handleGroupColumnDrop,
+                        onColumnGroupRemove: handleGroupColumnRemove,
+                      }
+                    : {}),
+                  ...(allowColumnCustomize ? { onColumnCustomize } : {}),
+                  ...(allowColumnHide
+                    ? {
+                        onColumnShow: handleColumnShow,
+                        onColumnHide: handleColumnHide,
+                      }
+                    : {}),
+                  onCheckAll: handleCheckAll,
+                }
+              : {})}
           />
-        )}
-      </div>
+          <GridBody
+            columns={displayColumns}
+            rows={state.rows}
+            editRow={state.editRow}
+            selectedRows={state.selectedRows}
+            selectedCell={state.selectedCell}
+            selectionType={selectionType}
+            noRecordsText={records.length === 0 ? props.noRecordsText : ''}
+            addNewText={props.addNewText}
+            {...{
+              cellRenderer,
+              rowRenderer,
+              editRowRenderer,
+              editRowColumnRenderer,
+              rowGroupFooterRenderer,
+              rowGroupHeaderRenderer,
+            }}
+            {...(editable
+              ? {
+                  editRowRenderer,
+                  onRecordAdd: handleRecordAdd,
+                  onRecordSave: handleRecordSave,
+                  onRecordDiscard: handleRecordDiscard,
+                }
+              : {})}
+            {...(allowRowReorder
+              ? {
+                  onRowMove: handleRowMove,
+                }
+              : {})}
+            onCellClick={onCellClick}
+            onRowClick={handleRowClick}
+            onRowDoubleClick={onRowDoubleClick}
+          />
+          {hasAggregation && (
+            <GridFooter
+              className={classNames(styles.footer, {
+                [styles.sticky]: stickyFooter,
+              })}
+              rowRenderer={footerRowRenderer}
+              records={records}
+              columns={displayColumns}
+            />
+          )}
+        </div>
+      </TranslateProvider>
     );
   }
 );

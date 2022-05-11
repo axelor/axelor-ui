@@ -117,6 +117,7 @@ export interface GridProps {
     recordIndex?: number,
     columnIndex?: number
   ) => void;
+  translate?: (key: string) => null | string;
 }
 
 export interface GridRowProps {

@@ -64,6 +64,7 @@ const GridDragElementComponent = React.memo(function GridDragElementComponent(
       collect: monitor => {
         const item: any = monitor.getItem();
         const canOver =
+          (item && column && !item.$group && !(column as DropObject).$group) ||
           (!item?.$group && !column) ||
           (item?.$group && (column as DropObject)?.$group);
         return {
