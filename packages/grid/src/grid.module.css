@@ -68,8 +68,11 @@
   font-weight: 400;
 }
 
-.container:not(.no-columns) .header.options .column:last-child {
+.container:not(.no-columns):not(.rtl) .header.options .column:last-child {
   padding-right: 1.1rem !important;
+}
+.container.rtl:not(.no-columns) .header.options .column:last-child {
+  padding-left: 1.5rem !important;
 }
 
 .column.selected {
@@ -127,8 +130,12 @@
 }
 
 .groupRowIcon {
-  font-size: 16px;
+  font-size: 1rem;
   margin-right: 4px;
+}
+.rtl .groupRowIcon {
+  margin-right: 0;
+  margin-left: 4px;
 }
 
 .groupRowContent {
@@ -154,7 +161,11 @@
 .header .column {
   border-right: 1px solid #eee;
 }
-.header .column:last-child {
+.container:not(.rtl) .header .column:last-child {
+  border-right: none;
+}
+
+.container.rtl .header .column:first-child {
   border-right: none;
 }
 
@@ -190,20 +201,14 @@
   font-size: 0.65rem;
 }
 
-.groupTagIcon {
-  margin-right: 2px;
-  font-size: 14px;
-}
-
 .groupTagTitle {
   user-select: none;
   cursor: inherit;
   padding: 0.125rem 0 0.125rem 0.25rem;
   height: 100%;
 }
-
-.groupTagRemove {
-  /* color: #616161; */
+.rtl .groupTagTitle {
+  padding: 0.125rem 0.25rem 0.125rem 0;
 }
 
 .groupDumpTag {
@@ -239,6 +244,10 @@
   padding-left: 1.25rem;
   width: 100%;
 }
+.rtl .addNewText {
+  padding-left: 0;
+  padding-right: 1.25rem;
+}
 .columnOptions {
   padding: 0.25rem;
   cursor: pointer;
@@ -247,6 +256,10 @@
   top: 0;
   z-index: 1;
 }
+.rtl .columnOptions {
+  right: unset;
+  left: 0;
+} 
 .columnOptionsMenu {
   max-width: 200px;
   max-height: 420px;
@@ -259,4 +272,8 @@
 .groupPlaceholder {
   opacity: 0.5;
   padding-left: 1.3rem;
+}
+.rtl .groupPlaceholder {
+  padding-left: 0;
+  padding-right: 1.3rem;
 }

@@ -10,6 +10,7 @@ import {
   getRows,
   isRowVisible,
   isRowCheck,
+  useRTL,
 } from './utils';
 import * as TYPES from './types';
 import styles from './grid.module.css';
@@ -32,6 +33,8 @@ const isNull = (value: any) => !isDefined(value) || value === null;
 const getColumns = (columns: TYPES.GridColumn[]) =>
   columns.filter(column => column.visible !== false);
 const _translate = (str: string) => str;
+
+const getCssSelector = (str: string) => (str || '').replace(/\+/g, () => '\\+');
 
 function restoreGridSelection(
   state: TYPES.GridState,
@@ -80,6 +83,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       stickyFooter = true,
       translate = _translate,
     } = props;
+    const isRTL = useRTL();
 
     const {
       onRowClick,
@@ -419,7 +423,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           y: clientY,
           current: width,
         };
-        const body = container.querySelector(`.${styles.body}`);
+        const body = container.querySelector(getCssSelector(`.${styles.body}`));
         body &&
           (body.style.minWidth = `${body.getBoundingClientRect().width}px`);
 
@@ -429,33 +433,33 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       []
     );
 
-    const handleColumnResize = React.useCallback(function handleColumnResize(
-      e,
-      column,
-      index
-    ) {
-      const dataTransfer = Object.assign({}, refs.current.event);
-      const clientX = e.clientX || (dataTransfer || {}).clientX || 0;
-      if (!dataTransfer || clientX <= 0) return;
+    const handleColumnResize = React.useCallback(
+      function handleColumnResize(e, column, index) {
+        const dataTransfer = Object.assign({}, refs.current.event);
+        const clientX = e.clientX || (dataTransfer || {}).clientX || 0;
+        if (!dataTransfer || clientX <= 0) return;
 
-      e.preventDefault();
-      e.stopPropagation();
+        e.preventDefault();
+        e.stopPropagation();
 
-      const diff = dataTransfer.x - clientX;
-      const moved = diff;
-      const width = Math.max(
-        GRID_CONFIG.COLUMN_MIN_WIDTH,
-        dataTransfer.current - moved
-      );
-      refs.current.style.innerHTML = `
-          .${styles.resizingColumns} .${styles.column}:nth-child(${index + 1}) {
+        const diff = dataTransfer.x - clientX;
+        const moved = isRTL ? -diff : diff;
+        const width = Math.max(
+          GRID_CONFIG.COLUMN_MIN_WIDTH,
+          dataTransfer.current - moved
+        );
+        refs.current.style.innerHTML = `
+          .${styles.resizingColumns} .${getCssSelector(
+          styles.column
+        )}:nth-child(${index + 1}) {
             width: ${width}px !important;
             min-width: ${width}px !important;
           }
         `;
-      refs.current.event.width = width;
-    },
-    []);
+        refs.current.event.width = width;
+      },
+      [isRTL]
+    );
 
     const handleColumnResizeEnd = React.useCallback(
       function handleColumnResizeEnd(e, column) {
@@ -478,7 +482,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         sizingColumns();
 
         // clear styles/dataTransfer
-        const body = container.querySelector(`.${styles.body}`);
+        const body = container.querySelector(getCssSelector(`.${styles.body}`));
         body.style.minWidth = null;
 
         container.classList.remove(styles.resizingColumns);
@@ -684,7 +688,15 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleNavigation = (event: React.KeyboardEvent<HTMLDivElement>) => {
-      const { key, ctrlKey, shiftKey } = event;
+      const { ctrlKey, shiftKey } = event;
+      const key = (() => {
+        const { key } = event;
+        if (isRTL) {
+          if (key === 'ArrowRight') return 'ArrowLeft';
+          if (key === 'ArrowLeft') return 'ArrowRight';
+        }
+        return key;
+      })();
       if (
         state.editRow ||
         event.isPropagationStopped() ||
@@ -898,7 +910,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
       const container = containerRef.current;
-      const header = container && container.querySelector(`.${styles.header}`);
+      const header =
+        container &&
+        container.querySelector(getCssSelector(`.${styles.header}`));
       if (header && stickyHeader) {
         if (!refs.current.stickOffset) {
           refs.current.stickOffset = header.offsetTop + header.offsetHeight;
@@ -917,14 +931,17 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         if (isNull(row) || isNull(col)) return;
         const container = containerRef.current;
         const rowNode =
-          container && container.querySelector(`.${styles.body} .row-${row}`);
+          container &&
+          container.querySelector(
+            getCssSelector(`.${styles.body} .row-${row}`)
+          );
         const getCellNode = () => {
           if (!rowNode) return;
           let selector = `.${styles.column}:nth-child(${col + 1})`;
           if (rowNode.classList.contains(styles.groupRow)) {
             selector = `.${styles.groupRowContent}`;
           }
-          return rowNode.querySelector(selector);
+          return rowNode.querySelector(getCssSelector(selector));
         };
         const selectedCell = refs.current.selectedCell || { row };
         const isUpwards = stickyHeader && selectedCell.row > row;
@@ -947,12 +964,18 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           const offsetTop =
             cellNode.offsetTop -
             (isUpwards
-              ? (container.querySelector(`.${styles.header}`) || {})
-                  .clientHeight
+              ? (
+                  container.querySelector(
+                    getCssSelector(`.${styles.header}`)
+                  ) || {}
+                ).clientHeight
               : isDownwards
               ? -(
-                  (container.querySelector(`.${styles.footer}`) || {})
-                    .clientHeight || 0
+                  (
+                    container.querySelector(
+                      getCssSelector(`.${styles.footer}`)
+                    ) || {}
+                  ).clientHeight || 0
                 )
               : 0);
           const cellYTotalOffset =
@@ -1072,6 +1095,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             [styles['no-records']]: records.length === 0,
             [styles['no-columns']]: noColumns,
             [styles['has-add-new']]: Boolean(props.addNewText),
+            [styles['rtl']]: isRTL,
           })}
           {...(allowCellSelection
             ? { tabIndex: 0, onKeyDown: handleNavigation }

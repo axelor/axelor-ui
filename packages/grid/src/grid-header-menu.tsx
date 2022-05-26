@@ -52,7 +52,6 @@ const GridGroupTag = ({
             e.stopPropagation();
             onRemove && onRemove(e, data);
           }}
-          className={styles.groupTagRemove}
         >
           <Icon size={2} as={BiX} />
         </span>
