@@ -1,4 +1,4 @@
-import { ThemeProvider } from '../../../packages/core/src/styles';
+import { WithThemeProvider } from './decorators';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -22,15 +22,4 @@ export const parameters = {
   },
 };
 
-const withThemeProvider = (Story, context) => {
-  const dir = context.globals.direction;
-  return (
-    <ThemeProvider dir={dir}>
-      <div>
-        <Story {...context} />
-      </div>
-    </ThemeProvider>
-  );
-};
-
-export const decorators = [withThemeProvider];
+export const decorators = [WithThemeProvider];
