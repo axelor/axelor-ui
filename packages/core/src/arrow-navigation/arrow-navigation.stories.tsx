@@ -5,7 +5,7 @@ import { Button } from '../button';
 import { ArrowNavigation } from './arrow-navigation';
 import styled from '../styled';
 
-export default {
+const config = {
   component: ArrowNavigation,
   title: 'Core/ArrowNavigation',
 };
@@ -98,3 +98,5 @@ export const Vertical = function () {
     </ArrowNavigation>
   );
 };
+
+export default config;

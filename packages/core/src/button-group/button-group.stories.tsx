@@ -1,7 +1,7 @@
 import { Button } from '../button';
 import { ButtonGroup } from '../button-group';
 
-export default {
+const config = {
   component: ButtonGroup,
   title: 'Components/ButtonGroup',
 };
@@ -25,3 +25,5 @@ export const Vertical = () => {
     </ButtonGroup>
   );
 };
+
+export default config;

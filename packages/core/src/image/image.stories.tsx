@@ -1,6 +1,6 @@
 import { Image } from './image';
 
-export default {
+const config = {
   component: Image,
   title: 'Components/Image',
 };
@@ -36,3 +36,5 @@ export const Sources = () => {
 export const Thumbnail = () => {
   return <Image src="https://picsum.photos/200/200" alt="Demo" thumbnail />;
 };
+
+export default config;

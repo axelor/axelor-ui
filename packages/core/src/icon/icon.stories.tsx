@@ -6,7 +6,7 @@ import { ReactComponent as BiAlarm } from 'bootstrap-icons/icons/alarm.svg';
 import { Box } from '../box';
 import { Icon } from './icon';
 
-export default {
+const config = {
   component: Icon,
   title: 'Components/Icon',
 };
@@ -28,3 +28,5 @@ export const Svg = () => {
     </Box>
   );
 };
+
+export default config;

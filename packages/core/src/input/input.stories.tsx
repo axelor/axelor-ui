@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { Meta } from '@storybook/react';
 
 import { Box } from '../box';
-import { Input, InputProps } from './input';
+import { Input } from './input';
 import { withStyled } from '../styled';
 
-export default {
+const config = {
   component: Input,
   title: 'Components/Input',
   decorators: [
@@ -227,3 +227,5 @@ export const Types = () => {
     </Box>
   );
 };
+
+export default config;

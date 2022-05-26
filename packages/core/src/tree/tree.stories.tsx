@@ -4,9 +4,11 @@ import Basic from './demos/basic';
 import Editable from './demos/editable';
 import Sortable from './demos/sortable';
 
-export default {
+const config = {
   component: Tree,
   title: 'Components/Tree',
 };
 
 export { Basic, Sortable, Editable };
+
+export default config;

@@ -9,7 +9,7 @@ import {
   TableRow,
 } from '../table';
 
-export default {
+const config = {
   component: Table,
   title: 'Components/Table',
 };
@@ -381,3 +381,5 @@ export const Striped = () => {
     </Box>
   );
 };
+
+export default config;

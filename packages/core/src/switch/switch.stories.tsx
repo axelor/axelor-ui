@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Box } from '../box';
 import { Switch } from './switch';
 
-export default {
+const config = {
   component: Switch,
   title: 'Components/Switch',
 };
@@ -60,3 +60,5 @@ export const Sizes = () => {
     </Box>
   );
 };
+
+export default config;

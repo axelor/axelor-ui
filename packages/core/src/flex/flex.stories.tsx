@@ -1,6 +1,6 @@
 import { Box } from '../box/box';
 
-export default {
+const config = {
   component: Box,
   title: 'Layout/Flex',
 };
@@ -290,3 +290,5 @@ export const AlignSelf = () => {
     </Container>
   );
 };
+
+export default config;

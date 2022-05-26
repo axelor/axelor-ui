@@ -6,7 +6,7 @@ import { Icon } from '../icon';
 import { Box } from '../box';
 import { Tabs } from '../tabs';
 
-export default {
+const config = {
   component: Tabs,
   title: 'Components/Tabs',
 };
@@ -110,3 +110,5 @@ export const ScrollButtons = () => {
     </Box>
   );
 };
+
+export default config;

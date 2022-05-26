@@ -15,7 +15,7 @@ import { Icon } from '../icon';
 import { OverflowList, OverflowListTypes } from '../overflow-list';
 import { Box } from '../box';
 
-export default {
+const config = {
   component: Menubar,
   title: 'Components/Menubar',
 };
@@ -172,3 +172,5 @@ export const Responsive = () => {
     </Box>
   );
 };
+
+export default config;

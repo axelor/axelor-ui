@@ -1,7 +1,7 @@
 import { Box } from '../box';
 import styled from '../styled';
 
-export default {
+const config = {
   component: Box,
   title: 'Layout/Grid',
 };
@@ -131,3 +131,5 @@ export const Areas = () => {
     </Container>
   );
 };
+
+export default config;

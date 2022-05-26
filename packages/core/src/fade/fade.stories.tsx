@@ -4,7 +4,7 @@ import { Box } from '../box';
 import { Button } from '../button';
 import { Fade } from './fade';
 
-export default {
+const config = {
   component: Fade,
   title: 'Animation/Fade',
 };
@@ -31,3 +31,5 @@ export const Basic = function () {
     </Box>
   );
 };
+
+export default config;

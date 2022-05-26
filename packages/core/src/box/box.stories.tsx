@@ -1,6 +1,6 @@
 import { Box } from './box';
 
-export default {
+const config = {
   component: Box,
   title: 'Layout/Box',
 };
@@ -403,3 +403,5 @@ export const Overflow = () => {
     </Box>
   );
 };
+
+export default config;

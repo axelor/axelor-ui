@@ -8,7 +8,7 @@ import { ReactComponent as BiCalendar } from 'bootstrap-icons/icons/calendar.svg
 import { ReactComponent as BiAlarm } from 'bootstrap-icons/icons/alarm.svg';
 import { ReactComponent as BiTranslate } from 'bootstrap-icons/icons/translate.svg';
 
-export default {
+const config = {
   component: TextField,
   title: 'Components/TextField',
   decorators: [
@@ -81,3 +81,5 @@ export const Basic = () => {
     </Box>
   );
 };
+
+export default config;

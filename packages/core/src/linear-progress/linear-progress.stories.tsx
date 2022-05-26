@@ -1,7 +1,7 @@
 import { Box } from '../box';
 import { LinearProgress } from './linear-progress';
 
-export default {
+const config = {
   component: LinearProgress,
   title: 'Components/LinearProgress',
 };
@@ -45,3 +45,5 @@ export const Thickness = () => {
     </Box>
   );
 };
+
+export default config;

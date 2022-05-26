@@ -2,7 +2,7 @@ import { Box } from '../box';
 import { Input } from '../input';
 import { InputFeedback } from './input-feedback';
 
-export default {
+const config = {
   component: InputFeedback,
   title: 'Components/InputFeedback',
 };
@@ -70,3 +70,5 @@ export const Invalid = () => {
     </Box>
   );
 };
+
+export default config;

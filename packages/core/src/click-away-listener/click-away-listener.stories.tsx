@@ -5,7 +5,7 @@ import { Button } from '../button';
 import { Popper } from '../popper';
 import { ClickAwayListener } from './click-away-listener';
 
-export default {
+const config = {
   component: ClickAwayListener,
   title: 'Core/ClickAwayListener',
 };
@@ -38,3 +38,5 @@ export const Basic = () => {
     </div>
   );
 };
+
+export default config;
