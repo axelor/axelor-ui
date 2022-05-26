@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { addons, types } from '@storybook/addons';
 import { useGlobals } from '@storybook/api';
-import { Icons, IconButton } from '@storybook/components';
+import { Icons, IconButton, Separator } from '@storybook/components';
 
 import { ADDON_ID, DIRECTION, PARAM_KEY } from './constants';
 
@@ -17,14 +17,17 @@ function RTLSwitch() {
   }, [rtl]);
 
   return (
-    <IconButton
-      key={ADDON_ID}
-      title="Set RTL document direction"
-      onClick={toggleRTL}
-      active={rtl}
-    >
-      <Icons icon="redirect" />
-    </IconButton>
+    <>
+      <Separator />
+      <IconButton
+        key={ADDON_ID}
+        title="Set RTL document direction"
+        onClick={toggleRTL}
+        active={rtl}
+      >
+        <Icons icon="redirect" />
+      </IconButton>
+    </>
   );
 }
 
