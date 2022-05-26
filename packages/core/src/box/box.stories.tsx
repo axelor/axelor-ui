@@ -5,11 +5,11 @@ const config = {
   title: 'Layout/Box',
 };
 
-export const Basic = () => {
+export const Basic = ({ t }: any) => {
   return (
     <Box style={{ width: 400 }}>
       <Box p={4} border>
-        Welcome to Box
+        {t('Welcome')}
       </Box>
     </Box>
   );
