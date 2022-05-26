@@ -1,4 +1,4 @@
-import { WithThemeProvider } from './decorators';
+import { WithThemeProvider, WithTranslationProvider } from './decorators';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -22,4 +22,19 @@ export const parameters = {
   },
 };
 
-export const decorators = [WithThemeProvider];
+export const globalTypes = {
+  locale: {
+    name: 'Locale',
+    description: 'Internationalization locale',
+    defaultValue: 'en_US',
+    toolbar: {
+      icon: 'globe',
+      items: [
+        { value: 'en_US', title: 'English', right: 'United States' },
+        { value: 'ar_MA', title: 'Arabic', right: 'Morroco' },
+      ],
+    },
+  },
+};
+
+export const decorators = [WithThemeProvider, WithTranslationProvider];
