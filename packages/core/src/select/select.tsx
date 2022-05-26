@@ -266,6 +266,7 @@ export function Select({
           IndicatorsContainer,
           MenuList,
           icons,
+          MenuList,
           ...components,
         },
         ...(isCreatable
