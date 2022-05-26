@@ -265,6 +265,7 @@ export function Select({
           Control: ControlContainer,
           IndicatorsContainer,
           icons,
+          MenuList,
           ...components,
           MenuList,
         },
