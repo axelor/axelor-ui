@@ -57,5 +57,6 @@
   ".overflow-visible": ".overflow-visible",
   ".overflow-scroll": ".overflow-scroll",
   "on an element with set width and height dimensions. By design, this content will vertically scroll.": "on an element with set width and height dimensions. By design, this content will vertically scroll.",
-  "on an element with set width and height dimensions.": "on an element with set width and height dimensions."
+  "on an element with set width and height dimensions.": "on an element with set width and height dimensions.",
+  "Item": "Item"
 }

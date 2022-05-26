@@ -57,5 +57,6 @@
   ".overflow-visible": ".overflow-visible",
   ".overflow-scroll": ".overflow-scroll",
   "on an element with set width and height dimensions. By design, this content will vertically scroll.": "على عنصر مع ضبط أبعاد العرض والارتفاع. حسب التصميم ، سيتم تمرير هذا المحتوى عموديًا.",
-  "on an element with set width and height dimensions.": "على عنصر مع ضبط أبعاد العرض والارتفاع."
+  "on an element with set width and height dimensions.": "على عنصر مع ضبط أبعاد العرض والارتفاع.",
+  "Item": "بند"
 }
