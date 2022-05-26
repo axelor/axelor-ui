@@ -119,6 +119,7 @@ function Scheduler({
       popup
       rtl={rtl}
       date={date}
+      rtl={rtl}
       view={view}
       views={views}
       localizer={localizer}
