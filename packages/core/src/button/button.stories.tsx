@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Button } from './button';
 
-export default {
+const config = {
   component: Button,
   title: 'Components/Button',
 };
@@ -54,3 +54,5 @@ export const Variants = () => {
     </div>
   );
 };
+
+export default config;

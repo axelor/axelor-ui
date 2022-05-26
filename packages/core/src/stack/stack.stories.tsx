@@ -1,7 +1,7 @@
 import { Box } from '../box';
 import { Stack } from './stack';
 
-export default {
+const config = {
   component: Box,
   title: 'Layout/Stack',
 };
@@ -37,3 +37,5 @@ export const Horizontal = () => {
     </Stack>
   );
 };
+
+export default config;

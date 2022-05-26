@@ -4,7 +4,7 @@ import { Box } from '../box';
 import { Button } from '../button';
 import { Grow } from './grow';
 
-export default {
+const config = {
   component: Grow,
   title: 'Animation/Grow',
 };
@@ -32,3 +32,5 @@ export const Basic = function () {
     </Box>
   );
 };
+
+export default config;

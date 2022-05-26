@@ -16,7 +16,7 @@ import { withStyled } from '../styled';
 import { IconProps } from '../icon/icon';
 import { useTheme } from '../styles';
 
-export default {
+const config = {
   component: OverflowList,
   title: 'Components/Toolbar',
 };
@@ -139,3 +139,5 @@ export const Multiple = () => {
     </Box>
   );
 };
+
+export default config;

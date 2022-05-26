@@ -4,7 +4,7 @@ import { Box } from '../box';
 import { Button } from '../button';
 import { Portal } from './portal';
 
-export default {
+const config = {
   component: Portal,
   title: 'Core/Portal',
 };
@@ -43,3 +43,5 @@ export const Basic = () => {
     </Box>
   );
 };
+
+export default config;

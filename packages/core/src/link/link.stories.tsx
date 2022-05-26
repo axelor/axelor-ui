@@ -1,7 +1,7 @@
 import { Box } from '../box';
 import { Link } from './link';
 
-export default {
+const config = {
   component: Link,
   title: 'Components/Link',
 };
@@ -56,3 +56,5 @@ export const Underlined = () => {
     </Box>
   );
 };
+
+export default config;

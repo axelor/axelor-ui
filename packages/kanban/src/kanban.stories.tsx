@@ -5,7 +5,7 @@ import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-d
 import Kanban, { KanbanProps } from './kanban';
 import { CardEvent, Column, ColumnEvent } from './types';
 
-export default {
+const config = {
   component: Kanban,
   title: 'Advance/Kanban',
 };
@@ -323,3 +323,5 @@ export const RecordRenderer = () => (
     ]}
   />
 );
+
+export default config;

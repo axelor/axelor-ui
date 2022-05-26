@@ -11,7 +11,7 @@ import { useClassNames } from '../styles';
 import { Popper } from './popper';
 import { usePopperTrigger } from './use-popper-trigger';
 
-export default {
+const config = {
   component: Popper,
   title: 'Core/Popper',
 };
@@ -217,3 +217,5 @@ export const Transition = () => {
     </div>
   );
 };
+
+export default config;

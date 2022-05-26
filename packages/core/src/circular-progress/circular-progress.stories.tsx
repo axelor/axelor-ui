@@ -2,7 +2,7 @@ import { Box } from '../box';
 import { Button } from '../button';
 import { CircularProgress } from './circular-progress';
 
-export default {
+const config = {
   component: CircularProgress,
   title: 'Components/CircularProgress',
 };
@@ -59,3 +59,5 @@ export const Thickness = () => {
     </Box>
   );
 };
+
+export default config;

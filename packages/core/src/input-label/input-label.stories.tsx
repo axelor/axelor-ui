@@ -2,7 +2,7 @@ import { Box } from '../box';
 import { Input } from '../input';
 import { InputLabel } from './input-label';
 
-export default {
+const config = {
   component: InputLabel,
   title: 'Components/InputLabel',
 };
@@ -42,3 +42,5 @@ export const Required = () => {
     </Box>
   );
 };
+
+export default config;

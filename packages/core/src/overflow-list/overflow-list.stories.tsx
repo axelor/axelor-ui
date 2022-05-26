@@ -12,7 +12,7 @@ import { Icon } from '../icon';
 import { OverflowList } from './overflow-list';
 import { OverflowListItemProps, OverflowListButtonType } from './types';
 
-export default {
+const config = {
   component: OverflowList,
   title: 'Core/OverflowList',
 };
@@ -207,3 +207,5 @@ export const ScrollVertical = () => {
     </Box>
   );
 };
+
+export default config;

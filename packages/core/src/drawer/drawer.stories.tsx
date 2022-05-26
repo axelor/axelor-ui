@@ -7,7 +7,7 @@ import { InputLabel } from '../input-label';
 import { ClickAwayListener } from '../click-away-listener';
 import { Drawer } from './drawer';
 
-export default {
+const config = {
   component: Drawer,
   title: 'Components/Drawer',
 };
@@ -217,3 +217,5 @@ export const Shadow = () => {
     </div>
   );
 };
+
+export default config;

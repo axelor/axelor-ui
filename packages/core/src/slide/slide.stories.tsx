@@ -7,7 +7,7 @@ import { InputLabel } from '../input-label';
 
 import { Slide } from './slide';
 
-export default {
+const config = {
   component: Slide,
   title: 'Animation/Slide',
 };
@@ -78,3 +78,5 @@ export const Basic = function () {
     </Box>
   );
 };
+
+export default config;

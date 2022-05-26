@@ -4,7 +4,7 @@ import { Box } from '../box';
 import { Button } from '../button';
 import { Collapse } from './collapse';
 
-export default {
+const config = {
   component: Collapse,
   title: 'Animation/Collapse',
 };
@@ -54,3 +54,5 @@ export const Horizontal = function () {
     </Box>
   );
 };
+
+export default config;
