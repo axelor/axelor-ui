@@ -5,7 +5,7 @@ import { ReactComponent as BiChevronRight } from 'bootstrap-icons/icons/chevron-
 import { Box } from '../box';
 import { Icon } from '../icon';
 import { OverflowList, OverflowListTypes } from '../overflow-list';
-import { useClassNames } from '../styles';
+import { useClassNames, useTheme } from '../styles';
 import styles from './tabs.module.scss';
 
 export interface TabsProps {
@@ -41,6 +41,7 @@ export function Tabs({
     React.useState<HTMLElement | null>(null);
   const [activeTab, setActiveTab] = React.useState(value);
   const [scroll, setScroll] = React.useState(false);
+  const isRTL = useTheme().dir === 'rtl';
 
   const tabClassName = 'tab';
 
@@ -141,8 +142,8 @@ export function Tabs({
             });
           }
           return (
-            <ScrollButton  {...props} {...buttonProps}>
-              <Icon as={BiChevronLeft} />
+            <ScrollButton {...props} {...buttonProps}>
+              <Icon as={isRTL ? BiChevronRight : BiChevronLeft} />
             </ScrollButton>
           );
         }
@@ -154,8 +155,8 @@ export function Tabs({
             });
           }
           return (
-            <ScrollButton  {...props} {...buttonProps}>
-              <Icon as={BiChevronRight} />
+            <ScrollButton {...props} {...buttonProps}>
+              <Icon as={isRTL ? BiChevronLeft : BiChevronRight} />
             </ScrollButton>
           );
         }
