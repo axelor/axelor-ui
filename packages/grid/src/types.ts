@@ -144,4 +144,5 @@ export interface GridRowProps {
     columnIndex?: number,
     column?: GridColumn
   ) => void;
+  onUpdate?: (rowIndex: number, values: any) => void;
 }
