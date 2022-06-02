@@ -31,6 +31,7 @@ export interface GridBodyProps
     > {
   onRowMove?: TYPES.GridRowProps['onMove'];
   onRowClick?: TYPES.GridRowProps['onClick'];
+  onRecordUpdate?: TYPES.GridRowProps['onUpdate'];
 }
 
 export function GridBody(props: GridBodyProps) {
@@ -52,6 +53,7 @@ export function GridBody(props: GridBodyProps) {
     onRecordAdd,
     onRecordSave,
     onRecordDiscard,
+    onRecordUpdate,
     onCellClick,
     onRowMove,
     onRowClick,
@@ -104,6 +106,7 @@ export function GridBody(props: GridBodyProps) {
           onClick: onRowClick,
           onDoubleClick: onRowDoubleClick,
           onMove: onRowMove,
+          onUpdate: onRecordUpdate,
         };
 
         if (editRow) {

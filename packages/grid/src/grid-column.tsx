@@ -11,6 +11,7 @@ export interface GridColumnProps {
   selected?: boolean;
   focus?: boolean;
   renderer?: TYPES.Renderer;
+  onUpdate?: TYPES.GridRowProps['onUpdate'];
   onClick?: (
     e: React.SyntheticEvent,
     column: TYPES.GridColumn,

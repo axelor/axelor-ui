@@ -636,6 +636,23 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       [onRecordAdd, onRecordEdit, setState]
     );
 
+    const handleRecordUpdate = React.useCallback(
+      function handleRecordUpdate(rowIndex, values) {
+        setState(draft => {
+          const row = draft.rows[rowIndex];
+          if (row && row.record && row.record.id) {
+            if (rowIndex > -1) {
+              draft.rows[rowIndex].record = {
+                ...draft.rows[rowIndex].record,
+                ...values,
+              };
+            }
+          }
+        });
+      },
+      [setState]
+    );
+
     const handleRecordSave = React.useCallback(
       async (row, rowIndex, columnIndex, dirty, saveFromEdit) => {
         // is last record save, then add new record
@@ -1184,6 +1201,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             onCellClick={onCellClick}
             onRowClick={handleRowClick}
             onRowDoubleClick={onRowDoubleClick}
+            onRecordUpdate={handleRecordUpdate}
           />
           {hasAggregation && (
             <GridFooter

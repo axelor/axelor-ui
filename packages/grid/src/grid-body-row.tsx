@@ -24,7 +24,15 @@ export const GridBodyRow = React.memo(function GridBodyRow(
     onCellClick,
     onDoubleClick,
     onClick,
+    onUpdate,
   } = props;
+
+  const handleUpdate = React.useCallback(
+    (values: any) => {
+      onUpdate && onUpdate(rowIndex, values);
+    },
+    [onUpdate, rowIndex]
+  );
 
   const handleCellClick = React.useCallback(
     function handleCellClick(e, cell, cellIndex) {
@@ -73,6 +81,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
             selected={selectedCell === index}
             renderer={cellRenderer || column.renderer}
             onClick={handleCellClick}
+            onUpdate={handleUpdate}
           >
             {renderColumn(column)}
           </GridColumn>
