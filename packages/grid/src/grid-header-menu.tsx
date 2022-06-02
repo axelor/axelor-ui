@@ -7,6 +7,7 @@ import GridDragElement, { DropHandler } from './grid-drag-element';
 import * as TYPES from './types';
 import styles from './grid.module.css';
 import { useTranslation } from './translate';
+import { useRTL } from './utils';
 
 export interface GridHeaderMenuProps extends Pick<TYPES.GridState, 'groupBy'> {
   columns?: TYPES.GridColumn[];
@@ -90,6 +91,8 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
   const [columnOptionsTarget, setColumnOptionsTarget] =
     React.useState<HTMLElement | null>(null);
   const t = useTranslation();
+  const rtl = useRTL();
+
   return (
     <>
       <Box
@@ -102,9 +105,9 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
       <Menu
         className={styles.columnOptionsMenu}
         navigation
+        placement={`bottom-${rtl ? 'start' : 'end'}`}
         target={columnOptionsTarget}
         show={showColumnOptions}
-        disablePortal
         onHide={() => setColumnOptions(false)}
       >
         {columns
@@ -117,13 +120,13 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
             }
             function render() {
               return (
-                <Box py={1} px={3}>
+                <Box py={1} d="flex" px={3}>
                   <Input
                     type="checkbox"
                     checked={visible}
                     onChange={() => {}}
                   />
-                  <Box as="span" ms={2}>
+                  <Box className={styles.columnOptionMenuTitle} as="span" ms={2}>
                     {column.title}
                   </Box>
                 </Box>
