@@ -265,6 +265,13 @@
   max-height: 420px;
   overflow-y: auto;
 }
+.columnOptionMenuTitle {
+  width: 120px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .dragColumnArea {
   min-height: 20px;
   width: 100%;
