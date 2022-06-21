@@ -4,11 +4,13 @@ import ReactSelect, {
   components,
   ControlProps,
   IndicatorsContainerProps,
+  MenuListProps,
 } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { Box } from '../box';
 
 import selectStyles from './select.module.scss';
+import { useTheme } from '../styles';
 
 export type SelectOption = unknown;
 
@@ -65,6 +67,15 @@ const ControlContainer = (props: ControlProps<SelectOption, true>) => {
   );
 };
 
+const MenuList = ({ innerProps, ...rest }: MenuListProps) => {
+  return (
+    <components.MenuList
+      {...rest}
+      innerProps={{ ...innerProps, ...(rest.isRtl ? { dir: 'rtl' } : {}) }}
+    />
+  );
+};
+
 const IndicatorsContainer = (
   props: IndicatorsContainerProps<SelectOption, true>
 ) => {
@@ -98,7 +109,7 @@ export function Select({
   isMulti,
   isClearable = true,
   isDisabled = false,
-  isRtl = false,
+  isRtl,
   isCreatable = false,
   isSearchable = true,
   loading: _loading,
@@ -123,6 +134,9 @@ export function Select({
   const [isMenuOpen, setMenuOpen] = React.useState(false);
   const mounted = React.useRef(false);
   const timer = React.useRef<any>(null);
+
+  const { dir } = useTheme();
+  const rtl = typeof isRtl !== 'undefined' ? isRtl : dir === 'rtl';
 
   const setTimer = React.useCallback((callback: any, interval = 500) => {
     timer.current = setTimeout(callback, interval);
@@ -228,7 +242,7 @@ export function Select({
         placeholder,
         isMulti,
         isDisabled,
-        isRtl,
+        isRtl: rtl,
         isClearable,
         isSearchable,
         autoFocus,
@@ -252,6 +266,7 @@ export function Select({
           IndicatorsContainer,
           icons,
           ...components,
+          MenuList,
         },
         ...(isCreatable
           ? {
