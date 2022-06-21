@@ -11,6 +11,7 @@ const GridDNDRowContext = React.createContext<any>(null);
 
 export interface GridDNDBodyProps extends Pick<TYPES.GridState, 'rows'> {
   children: React.ReactNode;
+  style?: any;
   className?: string;
   onRowMove?: TYPES.GridRowProps['onMove'];
 }
@@ -32,7 +33,7 @@ function getStyle(style: any) {
 }
 
 export function GridDNDContainer(props: GridDNDBodyProps) {
-  const { className, children, rows, onRowMove } = props;
+  const { className, style, children, rows, onRowMove } = props;
 
   function handleDragEnd(result: any) {
     const { source, destination } = result;
@@ -59,6 +60,7 @@ export function GridDNDContainer(props: GridDNDBodyProps) {
         {provided => (
           <div
             className={className}
+            style={style}
             {...provided.droppableProps}
             ref={provided.innerRef}
           >

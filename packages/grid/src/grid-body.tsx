@@ -1,4 +1,5 @@
 import React from 'react';
+import { Box } from '@axelor-ui/core';
 import { GridGroupRow } from './grid-group-row';
 import { GridBodyRow } from './grid-body-row';
 import { GridFooterRow } from './grid-footer-row';
@@ -68,20 +69,24 @@ export function GridBody(props: GridBodyProps) {
       })),
     [rows]
   );
+  const getTotalWidth = () =>
+    columns.reduce((total, c) => total + (c.width || 0), 0);
+
+  const showNoRecords = noRecordsText && !addNewText;
 
   function render(children: React.ReactNode) {
+    const props = {
+      ...(showNoRecords ? { style: { width: getTotalWidth() + 2 } } : {}),
+      className: styles.body,
+    };
     if (onRowMove) {
       return (
-        <GridDNDContainer
-          className={styles.body}
-          rows={rows}
-          onRowMove={onRowMove}
-        >
+        <GridDNDContainer {...props} rows={rows} onRowMove={onRowMove}>
           {children}
         </GridDNDContainer>
       );
     }
-    return <div className={styles.body}>{children}</div>;
+    return <div {...props}>{children}</div>;
   }
 
   return render(
@@ -147,7 +152,7 @@ export function GridBody(props: GridBodyProps) {
           {addNewText}
         </div>
       )}
-      {noRecordsText && !addNewText && <div>{noRecordsText}</div>}
+      {showNoRecords && <div>{noRecordsText}</div>}
     </>
   );
 }
