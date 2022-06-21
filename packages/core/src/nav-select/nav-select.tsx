@@ -154,7 +154,7 @@ export function NavSelect({
                   cssStyles.dropdown
                 )}
               >
-                {selectedInDropdown && selectedHidden && selectedHidden.title}
+                {selectedInDropdown && selectedHidden ? selectedHidden.title : null}
                 <Icon as={BiCaretDownFill} />
               </NavSelectItem>
             );
