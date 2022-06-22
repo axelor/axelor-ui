@@ -85,20 +85,60 @@ export const Gradient = ({ t }: any) => {
   );
 };
 
-export const Shadow = ({ t }: any) => {
+export const BoxShadow = ({ t }: any) => {
   return (
-    <Box style={{ width: 400 }}>
-      <Box shadow={false} p={3} mb={5} bgColor="light" rounded={2}>
+    <Box style={{ width: 400 }} bgColor="light" p={4}>
+      <Box shadow={false} p={3} mb={5} bgColor="body" rounded={2}>
         {t('No Shadow')}
-      </Box>
-      <Box shadow="sm" p={3} mb={5} bgColor="body" rounded={2}>
-        {t('Small Shadow')}
       </Box>
       <Box shadow p={3} mb={5} bgColor="body" rounded={2}>
         {t('Regular Shadow')}
       </Box>
+      <Box shadow="sm" p={3} mb={5} bgColor="body" rounded={2}>
+        {t('Small Shadow')}
+      </Box>
+      <Box shadow="md" p={3} mb={5} bgColor="body" rounded={2}>
+        {t('Medium Shadow')}
+      </Box>
       <Box shadow="lg" p={3} mb={5} bgColor="body" rounded={2}>
+        {t('Large Shadow')}
+      </Box>
+      <Box shadow="xl" p={3} mb={5} bgColor="body" rounded={2}>
         {t('Larger Shadow')}
+      </Box>
+      <Box shadow="2xl" p={3} mb={5} bgColor="body" rounded={2}>
+        {t('2x Larger Shadow')}
+      </Box>
+      <Box shadow="inner" p={3} mb={5} bgColor="body" rounded={2}>
+        {t('Inner Shadow')}
+      </Box>
+    </Box>
+  );
+};
+
+export const DropShadow = ({ t }: any) => {
+  return (
+    <Box style={{ width: 400 }} bgColor="light" p={4}>
+      <Box dropShadow={false} p={3} mb={5} bgColor="body" rounded={2}>
+        {t('No Shadow')}
+      </Box>
+      <Box shadow p={3} mb={5} bgColor="body" rounded={2}>
+        {t('Regular Shadow')}
+      </Box>
+      <Box dropShadow="sm" p={3} mb={5} bgColor="body" rounded={2}>
+        {t('Small Shadow')}
+      </Box>
+      <Box dropShadow="md" p={3} mb={5} bgColor="body" rounded={2}>
+        {t('Medium Shadow')}
+      </Box>
+      <Box dropShadow="lg" p={3} mb={5} bgColor="body" rounded={2}>
+        {t('Large Shadow')}
+      </Box>
+      <Box dropShadow="xl" p={3} mb={5} bgColor="body" rounded={2}>
+        {t('Larger Shadow')}
+      </Box>
+      <Box dropShadow="2xl" p={3} mb={5} bgColor="body" rounded={2}>
+        {t('2x Larger Shadow')}
       </Box>
     </Box>
   );
