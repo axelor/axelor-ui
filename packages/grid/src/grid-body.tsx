@@ -1,5 +1,4 @@
 import React from 'react';
-import { Box } from '@axelor-ui/core';
 import { GridGroupRow } from './grid-group-row';
 import { GridBodyRow } from './grid-body-row';
 import { GridFooterRow } from './grid-footer-row';

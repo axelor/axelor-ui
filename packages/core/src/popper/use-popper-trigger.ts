@@ -49,7 +49,7 @@ export function usePopperTrigger({
   const onContentEnter = useCallback(() => {
     inside.current = true;
     showPopper();
-  }, [targetEl, showPopper]);
+  }, [showPopper]);
 
   const onContentLeave = useCallback(() => {
     inside.current = false;
@@ -105,7 +105,7 @@ export function usePopperTrigger({
         contentEl.removeEventListener('mouseleave', onContentLeave);
       };
     }
-  }, [trigger, contentEl, onContentEnter, onContentLeave]);
+  }, [trigger, interactive, contentEl, onContentEnter, onContentLeave]);
 
   return {
     open,

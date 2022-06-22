@@ -6,7 +6,7 @@ import { ReactComponent as BiClipboard } from 'bootstrap-icons/icons/clipboard.s
 import { ReactComponent as BiClipboardCheck } from 'bootstrap-icons/icons/clipboard-check.svg';
 import { ReactComponent as BiThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg';
 
-import { Menu } from '../menu/menu';
+import { Menu as AxMenu } from '../menu/menu';
 import { MenuItem } from '../menu/menu-item';
 import { MenuDivider } from '../menu/menu-divider';
 import { Menubar } from './menubar';
@@ -19,6 +19,8 @@ const config = {
   component: Menubar,
   title: 'Components/Menubar',
 };
+
+const Menu: any = AxMenu;
 
 export const Basic = () => {
   return (

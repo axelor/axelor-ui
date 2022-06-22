@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, type SvgIcon } from '../icon';
+import { Icon, IconProps } from '../icon';
 import ReactSelect, {
   components,
   ControlProps,
@@ -16,7 +16,7 @@ export type SelectOption = unknown;
 
 export interface SelectIcon {
   id: string;
-  icon: SvgIcon;
+  icon: IconProps['as'];
   onClick?: React.MouseEventHandler<SVGSVGElement>;
 }
 
@@ -267,7 +267,6 @@ export function Select({
           icons,
           MenuList,
           ...components,
-          MenuList,
         },
         ...(isCreatable
           ? {

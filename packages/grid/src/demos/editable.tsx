@@ -77,9 +77,10 @@ function Form({
   );
 
   React.useEffect(() => {
-    handlers.current && (handlers.current.save = handleSave);
+    const _handlers = handlers;
+    _handlers.current && (_handlers.current.save = handleSave);
     return () => {
-      handlers.current && (handlers.current.save = null);
+      _handlers.current && (_handlers.current.save = null);
     };
   }, [handlers, handleSave]);
 

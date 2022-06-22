@@ -79,23 +79,28 @@ const PopperWrapper = ({
 
   const placement = PlacementMapping[popperPlacement];
   const [skidding = 0, distance = 0] = offset || [];
-  const arrowPadding = arrow ? 6 : 0; // match with .arrow css
 
-  const modifiers = [
-    { name: 'preventOverflow' },
-    { name: 'flip' },
-    {
-      name: 'offset',
-      enabled: Boolean(offset) || Boolean(arrow),
-      options: {
-        offset: [skidding, distance + arrowPadding],
+  const enabled = Boolean(offset) || Boolean(arrow);
+  const arrowEnabled = Boolean(arrow);
+
+  const modifiers = React.useMemo(() => {
+    const arrowPadding = arrowEnabled ? 6 : 0; // match with .arrow css
+    return [
+      { name: 'preventOverflow' },
+      { name: 'flip' },
+      {
+        name: 'offset',
+        enabled,
+        options: {
+          offset: [skidding, distance + arrowPadding],
+        },
       },
-    },
-    {
-      name: 'arrow',
-      enabled: Boolean(arrow),
-    },
-  ];
+      {
+        name: 'arrow',
+        enabled: arrowEnabled,
+      },
+    ];
+  }, [skidding, distance, enabled, arrowEnabled]);
 
   useEffect(() => {
     instance.current?.forceUpdate();
@@ -116,7 +121,7 @@ const PopperWrapper = ({
       instance.current?.destroy();
       instance.current = null;
     };
-  }, [target, wrapperEl, open]);
+  }, [target, wrapperEl, open, placement, strategy, modifiers]);
 
   const classNames = useClassNames();
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, type SvgIcon } from '../icon';
+import { Icon, IconProps } from '../icon';
 import { Input, type InputProps } from '../input';
 import { InputFeedback } from '../input-feedback';
 import { InputLabel } from '../input-label';
@@ -9,7 +9,7 @@ import styles from './text-field.module.scss';
 
 export interface TextFieldIcon {
   id: string;
-  icon: SvgIcon;
+  icon: IconProps['as'];
   className?: string;
   onClick?: React.MouseEventHandler<SVGSVGElement>;
 }

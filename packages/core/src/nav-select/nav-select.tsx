@@ -44,7 +44,7 @@ const NavSelectItem = withStyled(Box)<NavSelectItemProps>((props, ref) => {
         [cssStyles[dir]]: dir,
       })}
     >
-      <a>{children}</a>
+      <a {...{}}>{children}</a>
     </Box>
   );
 });
@@ -154,7 +154,9 @@ export function NavSelect({
                   cssStyles.dropdown
                 )}
               >
-                {selectedInDropdown && selectedHidden ? selectedHidden.title : null}
+                {selectedInDropdown && selectedHidden
+                  ? selectedHidden.title
+                  : null}
                 <Icon as={BiCaretDownFill} />
               </NavSelectItem>
             );

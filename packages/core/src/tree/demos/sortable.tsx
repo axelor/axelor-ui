@@ -40,7 +40,7 @@ const records = [
   },
 ];
 
-export default () => {
+export default function Sortable() {
   const onLoad = React.useCallback(async record => {
     return new Promise(resolve => {
       const project = records.find(p => p.id === record.id);
@@ -66,4 +66,4 @@ export default () => {
       />
     </DndProvider>
   );
-};
+}

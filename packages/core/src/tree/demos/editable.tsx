@@ -55,6 +55,7 @@ function FormField({
   const { name = '', type = '', options } = data || {};
   const [value, setValue] = React.useState(_value);
   const initRef = React.useRef(false);
+  const classNames = useClassNames();
 
   function handleKeyDown(e: any) {
     if (e.keyCode === 27) {
@@ -149,7 +150,7 @@ function Form({ node, index, columns, onSave, onCancel }: any) {
   );
 }
 
-export default () => {
+export default function Editable() {
   const onLoad = React.useCallback(async record => {
     return new Promise(resolve => {
       const project = records.find(p => p.id === record.id);
@@ -175,4 +176,4 @@ export default () => {
       />
     </DndProvider>
   );
-};
+}

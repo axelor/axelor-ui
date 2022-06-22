@@ -11,7 +11,7 @@ export const InteractiveConfig: Config<InteractiveProps> = {
   pointerEvents: value => `pe-${value}`,
   visible: value => ({
     classes: {
-      [`visible`]: value == true,
+      [`visible`]: value === true,
       [`invisible`]: value === false,
     },
   }),
