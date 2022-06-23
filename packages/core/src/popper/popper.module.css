@@ -35,7 +35,3 @@
 .popper[data-popper-placement^='right'] .arrow {
   left: -6px;
 }
-
-.popper.shadow {
-  filter: drop-shadow(0 0 1rem rgba(0, 0, 0, 0.2));
-}

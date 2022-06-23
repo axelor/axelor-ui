@@ -23,14 +23,14 @@ export const Basic = () => {
   const toggle = () => setOpen(v => !v);
 
   return (
-    <div>
+    <Box m={5} p={5}>
       <Button variant="primary" ref={setTargetEl} onClick={toggle}>
         Button
       </Button>
       <Popper open={open} target={targetEl} offset={[0, 4]}>
         <Box p={2}>The content of the Popper.</Box>
       </Popper>
-    </div>
+    </Box>
   );
 };
 
@@ -41,7 +41,7 @@ export const Dropdown = () => {
   const toggle = () => setOpen(v => !v);
 
   return (
-    <div>
+    <Box m={5} p={5}>
       <Button variant="primary" ref={setTargetEl} onClick={toggle}>
         Button
       </Button>
@@ -68,7 +68,7 @@ export const Dropdown = () => {
           </li>
         </ul>
       </Popper>
-    </div>
+    </Box>
   );
 };
 
@@ -104,18 +104,20 @@ export const Hook = () => {
   const [interactive, setInteractive] = useState(false);
 
   return (
-    <Box d="flex" alignItems="center">
-      <Example event="click" interactive={interactive} />
-      <Example event="hover" interactive={interactive} />
-      <Example event="focus" interactive={interactive} />
-      <InputLabel m={0} ms={2}>
-        <Input
-          type="checkbox"
-          checked={interactive}
-          onClick={() => setInteractive(checked => !checked)}
-        />{' '}
-        Interactive
-      </InputLabel>
+    <Box m={5} p={5}>
+      <Box d="flex" alignItems="center" ms={5}>
+        <Example event="click" interactive={interactive} />
+        <Example event="hover" interactive={interactive} />
+        <Example event="focus" interactive={interactive} />
+        <InputLabel m={0} ms={2}>
+          <Input
+            type="checkbox"
+            checked={interactive}
+            onClick={() => setInteractive(checked => !checked)}
+          />{' '}
+          Interactive
+        </InputLabel>
+      </Box>
     </Box>
   );
 };
@@ -146,7 +148,7 @@ export const Placement = () => {
   };
 
   return (
-    <Box style={{ width: 500 }} m="auto">
+    <Box style={{ width: 500 }} m="auto" pt={5}>
       <Popper
         target={targetEl}
         open={open}
@@ -201,7 +203,7 @@ export const Transition = () => {
   const toggle = () => setOpen(v => !v);
 
   return (
-    <div>
+    <Box m={5} p={5}>
       <Button variant="primary" ref={setTargetEl} onClick={toggle}>
         Button
       </Button>
@@ -214,7 +216,7 @@ export const Transition = () => {
       >
         <Box p={2}>The content of the Popper.</Box>
       </Popper>
-    </div>
+    </Box>
   );
 };
 

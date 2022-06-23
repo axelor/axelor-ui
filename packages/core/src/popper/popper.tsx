@@ -128,7 +128,7 @@ const PopperWrapper = ({
   return (
     <div
       ref={setWrapperEl}
-      className={classNames(styles.popper, { [styles.shadow]: shadow })}
+      className={classNames(styles.popper, { 'drop-shadow-md': shadow })}
       {...props}
       style={{ position: 'fixed' }}
     >
