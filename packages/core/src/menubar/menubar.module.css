@@ -15,3 +15,7 @@
 .menu:focus {
   outline: 0px solid transparent;
 }
+
+.btn:active {
+  border: 'none';
+}

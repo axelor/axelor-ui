@@ -180,7 +180,8 @@ function Menu({
         <Button
           ref={setButtonRef}
           onClick={onShow}
-          {...(show ? { variant: 'light' } : {})}
+          className={styles.btn}
+          {...(show || showProp ? { variant: 'light' } : {})}
         >
           {text}
         </Button>
