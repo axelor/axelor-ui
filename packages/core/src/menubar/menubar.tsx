@@ -19,7 +19,7 @@ import { tryFocus } from './utils';
 import { isElementDisabled, isElementHidden } from '../arrow-navigation/utils';
 import { withStyled } from '../styled';
 
-import styles from './menubar.module.css';
+import styles from './menubar.module.scss';
 
 const MenubarContext = React.createContext<any>({});
 
@@ -180,8 +180,9 @@ function Menu({
         <Button
           ref={setButtonRef}
           onClick={onShow}
-          className={styles.btn}
-          {...(show || showProp ? { variant: 'light' } : {})}
+          className={classNames(styles.btn, {
+            [styles['active-btn']]: show || showProp,
+          })}
         >
           {text}
         </Button>
@@ -285,7 +286,6 @@ function Menu({
             as: 'button',
             className: classNames(styles.item, {
               [styles.active]: isActiveItem,
-              [styles.submenu]: submenu,
             }),
             onClick: handleClick,
             onMouseEnter: handleMouseEnter,

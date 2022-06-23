@@ -1,3 +1,5 @@
+$bg-light: #f8f9fa;
+
 .active {
   color: #1e2125 !important;
   background-color: #e9ecef !important;
@@ -8,14 +10,19 @@
   background-color: unset;
 }
 
-.submenu + div {
-  filter: unset !important; /* Disable popper filter */
-}
-
 .menu:focus {
   outline: 0px solid transparent;
 }
 
+.btn.active-btn {
+  background-color: $bg-light;
+}
+
+.btn:hover {
+  background-color: $bg-light;
+  border-color: transparent;
+}
+
 .btn:active {
-  border: 'none';
+  border-color: transparent;
 }
