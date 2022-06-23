@@ -122,7 +122,7 @@ export const DropShadow = ({ t }: any) => {
       <Box dropShadow={false} p={3} mb={5} bgColor="body" rounded={2}>
         {t('No Shadow')}
       </Box>
-      <Box shadow p={3} mb={5} bgColor="body" rounded={2}>
+      <Box dropShadow p={3} mb={5} bgColor="body" rounded={2}>
         {t('Regular Shadow')}
       </Box>
       <Box dropShadow="sm" p={3} mb={5} bgColor="body" rounded={2}>
