@@ -45,10 +45,13 @@ export function Tabs({
 
   const tabClassName = 'tab';
 
-  function selectTab(e: React.SyntheticEvent, index: number) {
-    setActiveTab(index);
-    onTabChange && onTabChange(index);
-  }
+  const selectTab = React.useCallback(
+    function selectTab(e: React.SyntheticEvent, index: number) {
+      setActiveTab(index);
+      onTabChange && onTabChange(index);
+    },
+    [onTabChange]
+  );
 
   React.useEffect(() => {
     setActiveTab(value);
