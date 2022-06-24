@@ -1,4 +1,4 @@
-const webpackFinal = require('./webpack.final');
+const svgr = require('vite-plugin-svgr').default;
 
 module.exports = {
   stories: ['../../../packages/**/*.stories.tsx'],
@@ -6,14 +6,31 @@ module.exports = {
     '@storybook/preset-scss',
     '@storybook/addon-a11y',
     '@storybook/addon-toolbars',
-    './addons/rtl-switch/register',
-    './addons/locale/register',
+    './addons/rtl-switch/register.jsx',
+    './addons/locale/register.jsx',
   ],
   core: {
-    builder: 'webpack5',
+    builder: '@storybook/builder-vite',
+  },
+  features: {
+    storyStoreV7: true,
   },
   typescript: {
     reactDocgen: false,
   },
-  webpackFinal,
+  async viteFinal(config) {
+    return {
+      ...config,
+      plugins: [...config.plugins, svgr()],
+      resolve: {
+        ...config.resolve,
+        alias: [
+          {
+            find: /^~.+/,
+            replacement: value => value.replace(/^~/, ''),
+          },
+        ],
+      },
+    };
+  },
 };
