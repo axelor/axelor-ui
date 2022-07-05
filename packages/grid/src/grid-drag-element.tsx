@@ -8,11 +8,10 @@ const DND_TYPES = {
   ELEMENT: 'GROUP_DRAG_ELEMENT',
 };
 
-interface DropObject extends TYPES.GridColumn {
-  $group?: boolean;
-}
-
-export type DropHandler = (destination: DropObject, target: DropObject) => void;
+export type DropHandler = (
+  destination: TYPES.DropObject,
+  target: TYPES.DropObject
+) => void;
 
 export interface GridDragElementProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onDrop'> {
@@ -64,9 +63,9 @@ const GridDragElementComponent = React.memo(function GridDragElementComponent(
       collect: monitor => {
         const item: any = monitor.getItem();
         const canOver =
-          (item && column && !item.$group && !(column as DropObject).$group) ||
+          (item && column && !item.$group && !(column as TYPES.DropObject).$group) ||
           (!item?.$group && !column) ||
-          (item?.$group && (column as DropObject)?.$group);
+          (item?.$group && (column as TYPES.DropObject)?.$group);
         return {
           isOver: canOver && monitor.isOver(),
           isOverCurrent: canOver && monitor.isOver({ shallow: true }),

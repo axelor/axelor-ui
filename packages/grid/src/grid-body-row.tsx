@@ -35,7 +35,11 @@ export const GridBodyRow = React.memo(function GridBodyRow(
   );
 
   const handleCellClick = React.useCallback(
-    function handleCellClick(e, cell, cellIndex) {
+    function handleCellClick(
+      e: React.SyntheticEvent,
+      cell: TYPES.GridColumn,
+      cellIndex: number
+    ) {
       onCellClick && onCellClick(e, cell, cellIndex, data, rowIndex);
       onClick && onClick(e, data, rowIndex, cellIndex, cell);
     },

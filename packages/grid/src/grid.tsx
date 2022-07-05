@@ -179,7 +179,12 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     // handle column sorting
     const handleSort = React.useCallback(
-      (event, { name }, index?, sortOrder?: 'asc' | 'desc') => {
+      (
+        event: any,
+        { name }: TYPES.GridColumn,
+        index?: number,
+        sortOrder?: 'asc' | 'desc'
+      ) => {
         const newSort = { name, order: sortOrder || 'asc' };
         const { shiftKey } = event;
 
@@ -226,7 +231,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleRowStateChange = React.useCallback(
-      function handleRowStateChange(row, state?: 'open' | 'close') {
+      function handleRowStateChange(
+        row: TYPES.GridRow,
+        state?: 'open' | 'close'
+      ) {
         if (isDefined(row)) {
           const { key } = row;
           return setState(draft => {
@@ -241,7 +249,13 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     // handle group row toggle, row selection
     const handleRowClick = React.useCallback(
-      async (e, row, rowIndex, cellIndex = null, cell = {}) => {
+      async (
+        e: any,
+        row: TYPES.GridRow,
+        rowIndex: number,
+        cellIndex: number | null = null,
+        cell?: TYPES.GridColumn
+      ) => {
         const isSelectBox = e.key === 'Enter' || cell?.type === 'row-checked';
 
         // toggle group row
@@ -256,7 +270,12 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         onRowClick && onRowClick(e, row, rowIndex);
         if (!isSelectBox && editable) {
           if (onRecordEdit) {
-            const result = await onRecordEdit(row, rowIndex, cell, cellIndex);
+            const result = await onRecordEdit(
+              row,
+              rowIndex,
+              cell,
+              cellIndex || -1
+            );
             if (result === null) {
               return;
             }
@@ -380,7 +399,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleRowMove = React.useCallback(
-      (dragRow, hoverRow) => {
+      (dragRow: TYPES.GridRow, hoverRow: TYPES.GridRow) => {
         onRowReorder && onRowReorder(dragRow, hoverRow);
         return setState(draft => {
           const { rows } = draft;
@@ -408,8 +427,11 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleColumnResizeStart = React.useCallback(
-      function handleColumnResizeStart(e, column: TYPES.GridColumn) {
-        const ctx = e.target.cloneNode(true);
+      function handleColumnResizeStart(
+        e: React.DragEvent<HTMLElement>,
+        column: TYPES.GridColumn
+      ) {
+        const ctx = (e.target as HTMLElement).cloneNode(true) as HTMLElement;
         ctx.style.display = 'none';
         e.dataTransfer.setDragImage(ctx, 0, 0);
 
@@ -434,7 +456,11 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleColumnResize = React.useCallback(
-      function handleColumnResize(e, column, index) {
+      function handleColumnResize(
+        e: React.DragEvent<HTMLElement>,
+        column: TYPES.GridColumn,
+        index: number
+      ) {
         const dataTransfer = Object.assign({}, refs.current.event);
         const clientX = e.clientX || (dataTransfer || {}).clientX || 0;
         if (!dataTransfer || clientX <= 0) return;
@@ -462,7 +488,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleColumnResizeEnd = React.useCallback(
-      function handleColumnResizeEnd(e, column) {
+      function handleColumnResizeEnd(
+        e: React.DragEvent<HTMLElement>,
+        column: TYPES.GridColumn
+      ) {
         const dataTransfer = refs.current.event;
         if (!dataTransfer.width) return;
 
@@ -493,7 +522,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleColumnHide = React.useCallback(
-      (e, column) => {
+      (e: React.SyntheticEvent, column: TYPES.GridColumn) => {
         setState(draft => {
           const columnState = draft.columns.find(
             col => col.name === column.name
@@ -506,7 +535,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleColumnShow = React.useCallback(
-      (e, column) => {
+      (e: React.SyntheticEvent, column: TYPES.GridColumn) => {
         setState(draft => {
           const columnState = draft.columns.find(
             col => col.name === column.name
@@ -519,7 +548,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleGroupColumnDrop = React.useCallback(
-      function handleColumnDrop(dest, target) {
+      function handleColumnDrop(
+        dest: TYPES.DropObject,
+        target: TYPES.DropObject
+      ) {
         if (!dest?.name) return;
 
         const isColumnReorder =
@@ -583,7 +615,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleGroupColumnRemove = React.useCallback(
-      (e, group) => {
+      (e: React.SyntheticEvent, group: TYPES.GridGroup) => {
         setState(data => {
           const groupBy = data.groupBy || [];
           const index = groupBy.findIndex(g => g.name === group.name);
@@ -597,7 +629,13 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleRecordComplete = React.useCallback(
-      (row, rowIndex, columnIndex, discarded = false, reset = true) => {
+      (
+        row: any,
+        rowIndex: number,
+        columnIndex: number,
+        discarded = false,
+        reset = true
+      ) => {
         setState(draft => {
           if (draft.editRow && reset) {
             let [rowIndex, cellIndex] = draft.editRow;
@@ -637,7 +675,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleRecordUpdate = React.useCallback(
-      function handleRecordUpdate(rowIndex, values) {
+      function handleRecordUpdate(rowIndex: number, values: any) {
         setState(draft => {
           const row = draft.rows[rowIndex];
           if (row && row.record && row.record.id) {
@@ -654,13 +692,19 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleRecordSave = React.useCallback(
-      async (row, rowIndex, columnIndex, dirty, saveFromEdit) => {
+      async (
+        row: any,
+        rowIndex: number,
+        columnIndex: number,
+        dirty?: boolean,
+        saveFromEdit?: boolean
+      ) => {
         // is last record save, then add new record
         const isLast = !saveFromEdit && rowIndex === totalRows - 1;
-        let result = row;
+        let result: any = row;
         let saved = false;
         if (dirty && onRecordSave) {
-          result = await onRecordSave(row, rowIndex);
+          result = await onRecordSave(row, rowIndex, 0);
           // if record is null, current edit record is invalidate
           if (result && result.record === null) {
             result = null;
@@ -696,15 +740,15 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleRecordDiscard = React.useCallback(
-      (row, rowIndex, columnIndex) => {
+      (row: TYPES.GridRow, rowIndex: number, columnIndex: number) => {
         // reset record state
         handleRecordComplete(row, rowIndex, columnIndex, true);
-        onRecordDiscard && onRecordDiscard(row, rowIndex);
+        onRecordDiscard && onRecordDiscard(row, rowIndex, 0);
       },
       [handleRecordComplete, onRecordDiscard]
     );
 
-    const handleNavigation = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const handleNavigation = (event: React.KeyboardEvent<HTMLElement>) => {
       const { ctrlKey, shiftKey } = event;
       const key = (() => {
         const { key } = event;
@@ -833,7 +877,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             key === 'ArrowLeft' &&
             findRow().state === 'open'
           ) {
-            return handleRowStateChange(row, 'close');
+            return handleRowStateChange(rows[row], 'close');
           }
           if (isGroupCell || isFirstColumn) {
             return moveUp() && moveToEnd();
@@ -849,7 +893,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             key === 'ArrowRight' &&
             findRow().state === 'close'
           ) {
-            return handleRowStateChange(row, 'open');
+            return handleRowStateChange(rows[row], 'open');
           }
           if (isGroupCell || isLastColumn) {
             return moveDown() && moveToStart();
@@ -944,7 +988,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     };
 
     const scrollToCell = React.useCallback(
-      function scrollToCell([row, col]) {
+      function scrollToCell([row, col]: number[]) {
         if (isNull(row) || isNull(col)) return;
         const container = containerRef.current;
         const rowNode =

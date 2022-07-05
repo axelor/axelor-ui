@@ -107,15 +107,15 @@ export interface GridProps {
   ) => void;
   onRecordSave?: (
     record: any,
-    recordIndex?: number,
-    columnIndex?: number,
+    recordIndex: number,
+    columnIndex: number,
     dirty?: boolean,
     saveFromEdit?: boolean
   ) => any;
   onRecordDiscard?: (
     record: any,
-    recordIndex?: number,
-    columnIndex?: number
+    recordIndex: number,
+    columnIndex: number
   ) => void;
   translate?: (key: string) => null | string;
 }
@@ -145,4 +145,8 @@ export interface GridRowProps {
     column?: GridColumn
   ) => void;
   onUpdate?: (rowIndex: number, values: any) => void;
+}
+
+export interface DropObject extends GridColumn {
+  $group?: boolean;
 }

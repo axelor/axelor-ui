@@ -11,7 +11,7 @@ import * as TYPES from './types';
 import styles from './grid.module.css';
 
 export type ResizeHandler = (
-  e: React.SyntheticEvent,
+  e: React.DragEvent<HTMLElement>,
   column: TYPES.GridColumn,
   index: number
 ) => void;
@@ -112,13 +112,15 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
           <GridColumResizer
             className={styles.columnResizer}
             draggable={true}
-            onDragStart={(e: React.SyntheticEvent) =>
+            onDragStart={(e: React.DragEvent<HTMLElement>) =>
               onResizeStart(e, column, index)
             }
-            onDragEnd={(e: React.SyntheticEvent) =>
+            onDragEnd={(e: React.DragEvent<HTMLElement>) =>
               onResizeEnd(e, column, index)
             }
-            onDrag={(e: React.SyntheticEvent) => onResize(e, column, index)}
+            onDrag={(e: React.DragEvent<HTMLElement>) =>
+              onResize(e, column, index)
+            }
           />
         )}
       </>
