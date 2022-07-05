@@ -85,10 +85,35 @@ const Checkbox = withStyled(Input)((props, ref) => {
   );
 });
 
+export const Sizing = () => {
+  const [value, setValue] = useState('');
+  return (
+    <Box display="flex" flexDirection="column" g={2}>
+      <Input
+        value={value}
+        onChange={(e: any) => setValue(e.target.value)}
+        placeholder="large"
+        large
+      />
+      <Input
+        value={value}
+        onChange={(e: any) => setValue(e.target.value)}
+        placeholder="default"
+      />
+      <Input
+        value={value}
+        onChange={(e: any) => setValue(e.target.value)}
+        placeholder="small"
+        small
+      />
+    </Box>
+  );
+};
+
 function FormControl({ label, children }: any) {
   return (
-    <Box mb={2}>
-      <Box>{label}</Box>
+    <Box mb={3}>
+      <Box mb={2}>{label}</Box>
       <Box>{children}</Box>
     </Box>
   );
