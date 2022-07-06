@@ -1,0 +1,51 @@
+@import '~bootstrap/scss/root';
+
+.accordion {
+  --bs-accordion-color: #{color-contrast($accordion-bg)};
+  --bs-accordion-bg: #{$accordion-bg};
+  --bs-accordion-transition: #{$accordion-transition};
+  --bs-accordion-border-color: #{$accordion-border-color};
+  --bs-accordion-border-width: #{$accordion-border-width};
+  --bs-accordion-border-radius: #{$accordion-border-radius};
+  --bs-accordion-inner-border-radius: #{$accordion-inner-border-radius};
+  --bs-accordion-btn-padding-x: #{$accordion-button-padding-x};
+  --bs-accordion-btn-padding-y: #{$accordion-button-padding-y};
+  --bs-accordion-btn-color: #{$accordion-color};
+  --bs-accordion-btn-bg: #{$accordion-button-bg};
+  --bs-accordion-btn-icon: #{escape-svg($accordion-button-icon)};
+  --bs-accordion-btn-icon-width: #{$accordion-icon-width};
+  --bs-accordion-btn-icon-transform: #{$accordion-icon-transform};
+  --bs-accordion-btn-icon-transition: #{$accordion-icon-transition};
+  --bs-accordion-btn-active-icon: #{escape-svg($accordion-button-active-icon)};
+  --bs-accordion-btn-focus-border-color: #{$accordion-button-focus-border-color};
+  --bs-accordion-btn-focus-box-shadow: #{$accordion-button-focus-box-shadow};
+  --bs-accordion-body-padding-x: #{$accordion-body-padding-x};
+  --bs-accordion-body-padding-y: #{$accordion-body-padding-y};
+  --bs-accordion-active-color: #{$accordion-button-active-color};
+  --bs-accordion-active-bg: #{$accordion-button-active-bg};
+}
+
+@each $color, $value in $theme-colors {
+  .btn-#{$color} {
+    @include button-variant($value, $value);
+  }
+}
+
+@each $color, $value in $theme-colors {
+  .btn-outline-#{$color} {
+    @include button-outline-variant($value);
+  }
+}
+
+.table {
+  --bs-table-color: #{$table-color};
+  --bs-table-bg: #{$table-bg};
+  --bs-table-border-color: #{$table-border-color};
+  --bs-table-accent-bg: #{$table-accent-bg};
+  --bs-table-striped-color: #{$table-striped-color};
+  --bs-table-striped-bg: #{$table-striped-bg};
+  --bs-table-active-color: #{$table-active-color};
+  --bs-table-active-bg: #{$table-active-bg};
+  --bs-table-hover-color: #{$table-hover-color};
+  --bs-table-hover-bg: #{$table-hover-bg};
+}
