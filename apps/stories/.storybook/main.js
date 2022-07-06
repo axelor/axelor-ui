@@ -3,12 +3,11 @@ const svgr = require('vite-plugin-svgr').default;
 module.exports = {
   stories: ['../../../packages/**/*.stories.tsx'],
   addons: [
-    '@storybook/preset-scss',
-    '@storybook/addon-a11y',
     '@storybook/addon-toolbars',
     './addons/rtl-switch/register.jsx',
     './addons/locale/register.jsx',
   ],
+  "framework": "@storybook/react",
   core: {
     builder: '@storybook/builder-vite',
   },
