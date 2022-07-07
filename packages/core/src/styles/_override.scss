@@ -37,7 +37,8 @@
   }
 }
 
-.table {
+.table,
+.table-tree {
   --bs-table-color: #{$table-color};
   --bs-table-bg: #{$table-bg};
   --bs-table-border-color: #{$table-border-color};

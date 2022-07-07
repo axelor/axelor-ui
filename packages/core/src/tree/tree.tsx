@@ -220,7 +220,7 @@ export function Tree(props: TYPES.TreeProps) {
 
   return (
     <div
-      className={classNames(styles.tree, {
+      className={classNames('table-tree', styles.tree, {
         [styles.loading]: loading,
       })}
       {...(editNode
