@@ -5,7 +5,7 @@ import * as TYPES from './types';
 import { GridColumn } from './grid-column';
 import { capitalizeWord } from './utils';
 import { useTranslation } from './translate';
-import styles from './grid.module.css';
+import styles from './grid.module.scss';
 
 export const GridFooterRow = React.memo(function GridFooterRow(
   props: TYPES.GridRowProps

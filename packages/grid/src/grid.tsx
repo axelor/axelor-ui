@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRefs, useClassNames } from '@axelor-ui/core';
+import { Box, useRefs, useClassNames } from '@axelor-ui/core';
 import { GridHeader } from './grid-header';
 import { GridBody } from './grid-body';
 import { GridDNDColumn } from './grid-dnd-row';
@@ -13,7 +13,7 @@ import {
   useRTL,
 } from './utils';
 import * as TYPES from './types';
-import styles from './grid.module.css';
+import styles from './grid.module.scss';
 import { GridFooter } from './grid-footer';
 import { TranslateProvider } from './translate';
 
@@ -1138,24 +1138,26 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       }
       return 'indeterminate';
     }, [state.rows, state.selectedRows]);
+
     const noColumns = React.useMemo(() => {
       return displayColumns.every(
         col =>
           (col as any).action ||
           col.type === 'row-checked' ||
           (col.width && col.width < 50)
-      );
+      ) || displayColumns.length === 0;
     }, [displayColumns]);
 
     const classNames = useClassNames();
     return (
       <TranslateProvider t={translate}>
-        <div
+        <Box
           ref={handleRef}
-          className={classNames(styles.container, className, {
+          className={classNames('table-grid', styles.container, className, {
             [styles['no-records']]: records.length === 0,
             [styles['no-columns']]: noColumns,
             [styles['has-add-new']]: Boolean(props.addNewText),
+            [styles['has-footer']]: hasAggregation,
             [styles['rtl']]: isRTL,
           })}
           {...(allowCellSelection
@@ -1257,7 +1259,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
               columns={displayColumns}
             />
           )}
-        </div>
+        </Box>
       </TranslateProvider>
     );
   }

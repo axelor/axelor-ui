@@ -38,7 +38,9 @@
 }
 
 .table,
-.table-tree {
+.table-tree,
+.table-grid,
+.table-popover {
   --bs-table-color: #{$table-color};
   --bs-table-bg: #{$table-bg};
   --bs-table-border-color: #{$table-border-color};
@@ -47,6 +49,10 @@
   --bs-table-striped-bg: #{$table-striped-bg};
   --bs-table-active-color: #{$table-active-color};
   --bs-table-active-bg: #{$table-active-bg};
+  --bs-table-active-cell-color: #{$table-active-color};
+  --bs-table-active-cell-bg: #{rgba($black, 0.05)};
   --bs-table-hover-color: #{$table-hover-color};
   --bs-table-hover-bg: #{$table-hover-bg};
+  --bs-table-sm-cell-padding: #{$table-cell-padding-y-sm} #{$table-cell-padding-x-sm};
+  --bs-table-cell-padding: #{$table-cell-padding-y} #{$table-cell-padding-x};
 }

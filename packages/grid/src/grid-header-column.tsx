@@ -8,7 +8,7 @@ import { GridColumn, GridColumnProps } from './grid-column';
 import { GridColumResizer } from './grid-column-resizer';
 import { isRowCheck } from './utils';
 import * as TYPES from './types';
-import styles from './grid.module.css';
+import styles from './grid.module.scss';
 
 export type ResizeHandler = (
   e: React.DragEvent<HTMLElement>,

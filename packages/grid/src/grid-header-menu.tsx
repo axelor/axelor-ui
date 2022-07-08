@@ -1,11 +1,11 @@
 import React from 'react';
-import { Box, Input, Menu, MenuItem, Icon, Divider } from '@axelor-ui/core';
+import { Box, Input, Menu, MenuItem, Icon, Divider, useClassNames } from '@axelor-ui/core';
 import { ReactComponent as BiThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg';
 import { ReactComponent as BiX } from 'bootstrap-icons/icons/x.svg';
 
 import GridDragElement, { DropHandler } from './grid-drag-element';
 import * as TYPES from './types';
-import styles from './grid.module.css';
+import styles from './grid.module.scss';
 import { useTranslation } from './translate';
 import { useRTL } from './utils';
 
@@ -92,6 +92,7 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
     React.useState<HTMLElement | null>(null);
   const t = useTranslation();
   const rtl = useRTL();
+  const classNames = useClassNames();
 
   return (
     <>
@@ -103,7 +104,7 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
         <Icon as={BiThreeDotsVertical} />
       </Box>
       <Menu
-        className={styles.columnOptionsMenu}
+        className={classNames('table-popover', styles.columnOptionsMenu)}
         navigation
         placement={`bottom-${rtl ? 'start' : 'end'}`}
         target={columnOptionsTarget}

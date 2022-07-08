@@ -1,7 +1,7 @@
 import React from 'react';
 import { useClassNames } from '@axelor-ui/core';
 import * as TYPES from './types';
-import styles from './grid.module.css';
+import styles from './grid.module.scss';
 
 export interface GridColumnProps {
   data: TYPES.GridColumn;

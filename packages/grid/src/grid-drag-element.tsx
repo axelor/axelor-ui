@@ -2,7 +2,7 @@ import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useClassNames } from '@axelor-ui/core';
 import * as TYPES from './types';
-import classes from './grid.module.css';
+import classes from './grid.module.scss';
 
 const DND_TYPES = {
   ELEMENT: 'GROUP_DRAG_ELEMENT',

@@ -5,7 +5,7 @@ import { GridFooterRow } from './grid-footer-row';
 import { GridDNDContainer, GridDNDRow } from './grid-dnd-row';
 import { isRowVisible } from './utils';
 import * as TYPES from './types';
-import styles from './grid.module.css';
+import styles from './grid.module.scss';
 
 export interface GridBodyProps
   extends Pick<

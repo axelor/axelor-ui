@@ -7,7 +7,7 @@ import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-d
 
 import * as TYPES from './types';
 import { useRTL } from './utils';
-import styles from './grid.module.css';
+import styles from './grid.module.scss';
 
 export const GridGroupRow = React.memo(function GridGroupRow(
   props: TYPES.GridRowProps

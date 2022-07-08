@@ -7,7 +7,7 @@ import {
 import { GridSearchRow } from './grid-search-row';
 import { GridHeaderMenu, GridHeaderMenuProps } from './grid-header-menu';
 import * as TYPES from './types';
-import styles from './grid.module.css';
+import styles from './grid.module.scss';
 import { isRowCheck } from './utils';
 
 export interface GridHeaderProps
