@@ -34,7 +34,7 @@ export function Tree(props: TYPES.TreeProps) {
   const [editNode, setEditNode] = useState<TYPES.TreeNode | null>(null);
   const [sortColumn, setSortColumn] = useState<TYPES.TreeSortColumn>();
 
-  const selectRow = useCallback(index => {
+  const selectRow = useCallback((index: number) => {
     setData(data =>
       data.map((row, i) => {
         if (i === index) {
@@ -45,20 +45,23 @@ export function Tree(props: TYPES.TreeProps) {
     );
   }, []);
 
-  const handleSort = useCallback(column => {
-    setSortColumn(sortColumn => {
-      return {
-        name: column.name,
-        order:
-          sortColumn?.name === column.name && sortColumn?.order === 'asc'
-            ? 'desc'
-            : 'asc',
-      };
-    });
-  }, []);
+  const handleSort = useCallback(
+    (e: React.SyntheticEvent, column: TYPES.TreeColumn) => {
+      setSortColumn(sortColumn => {
+        return {
+          name: column.name,
+          order:
+            sortColumn?.name === column.name && sortColumn?.order === 'asc'
+              ? 'desc'
+              : 'asc',
+        };
+      });
+    },
+    []
+  );
 
   const handleToggle = useCallback(
-    async function handleToggle(record, index, isHover = false) {
+    async function handleToggle(record: any, index: number, isHover = false) {
       if (!record.loaded && onLoad) {
         record.loaded = true;
 
@@ -103,7 +106,7 @@ export function Tree(props: TYPES.TreeProps) {
   );
 
   const handleSelect = useCallback(
-    async function handleSelect(_, record, index) {
+    async function handleSelect(_: any, record: any, index: number) {
       setEditNode(null);
       if (record.children) {
         await handleToggle(record, index);
@@ -115,14 +118,20 @@ export function Tree(props: TYPES.TreeProps) {
   );
 
   const handleDrop = useCallback(
-    async function handleDrop({ data: dragItem }, { data: hoverItem }) {
+    async function handleDrop(
+      { data: dragItem }: { data: TYPES.TreeNode },
+      { data: hoverItem }: { data: TYPES.TreeNode }
+    ) {
       setLoading(true);
       try {
         const hoverParent =
           hoverItem.level === dragItem.level ? { id: hoverItem.id } : hoverItem;
         let updatedNode = { ...dragItem };
         if (hoverParent.id !== dragItem.parent && onNodeMove) {
-          updatedNode = await onNodeMove(dragItem, hoverParent);
+          updatedNode = await onNodeMove(
+            dragItem,
+            hoverParent as TYPES.TreeNode
+          );
         }
         setData(data => {
           const dragIndex = data.indexOf(dragItem);
@@ -143,12 +152,12 @@ export function Tree(props: TYPES.TreeProps) {
     [onNodeMove]
   );
 
-  const handleNodeEdit = useCallback(record => {
+  const handleNodeEdit = useCallback((record: any) => {
     setEditNode(record);
   }, []);
 
   const handleNodeSave = useCallback(
-    async (record, index) => {
+    async (record: any, index?: number) => {
       if (onNodeSave) {
         record.data = await onNodeSave(record.data);
       }
@@ -161,7 +170,7 @@ export function Tree(props: TYPES.TreeProps) {
   );
 
   const handleNodeCancel = useCallback(
-    record => {
+    (record: any) => {
       setEditNode(null);
       onNodeDiscard && onNodeDiscard(record);
     },

@@ -43,11 +43,11 @@ export interface TreeNodeProps {
   columns: TreeProps['columns'];
   edit?: boolean;
   onDrop?: (dragData: any, hoverData: any) => any;
-  onToggle?: (record: any, index?: number, hover?: boolean) => any;
+  onToggle?: (record: any, index: number, hover?: boolean) => any;
   onSelect?: (
     e: React.SyntheticEvent,
     data: TreeNode,
-    index?: number,
+    index: number,
     cellIndex?: number
   ) => any;
   onEdit?: TreeProps['onNodeEdit'];
