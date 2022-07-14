@@ -8,7 +8,7 @@ import { MenuItem } from '../menu/menu-item';
 import { MenuProps } from '../menu/menu';
 import { useClassNames, useTheme } from '../styles';
 import { withStyled } from '../styled';
-import cssStyles from './nav-select.module.scss';
+import classes from './nav-select.module.scss';
 
 export interface TNavSelectItem {
   title: string;
@@ -40,8 +40,8 @@ const NavSelectItem = withStyled(Box)<NavSelectItemProps>((props, ref) => {
       ref={ref}
       {...rest}
       className={classNames(className, {
-        [cssStyles.active]: Boolean(active),
-        [cssStyles[dir]]: dir,
+        [classes.active]: Boolean(active),
+        [classes[dir]]: dir,
       })}
     >
       <a {...{}}>{children}</a>
@@ -77,12 +77,17 @@ export function NavSelect({
   }, [selectedHidden]);
 
   const classNames = useClassNames();
+  const rtl = useTheme().dir === 'rtl';
 
   return (
-    <Box className={cssStyles.root}>
+    <Box
+      className={classNames('nav-select', classes.root, {
+        [classes.rtl]: rtl,
+      })}
+    >
       <OverflowList
         items={items}
-        className={cssStyles.list}
+        className={classes.list}
         dropdownRef={overflowDropdown}
         dropdownMenuProps={menuConfig}
         {...(selected
@@ -95,22 +100,16 @@ export function NavSelect({
           index: number
         ) => {
           const item = _item as TNavSelectItem;
-          const selectedInListItem =
-            selectedHidden &&
-            offset >= items.length - 1 &&
-            offset - 1 === index;
           return (
             <NavSelectItem
               key={index}
-              active={selectedInListItem || item.value === selected?.value}
-              className={classNames(cssStyles.listItem, {
-                [cssStyles.last]: index === items.length - 1,
+              active={item.value === selected?.value}
+              className={classNames(classes.listItem, {
+                [classes.last]: index === items.length - 1,
               })}
               onClick={() => handleItemClick(item)}
             >
-              {selectedInListItem && selectedHidden
-                ? selectedHidden.title
-                : item.title}
+              {item.title}
             </NavSelectItem>
           );
         }}
@@ -125,8 +124,8 @@ export function NavSelect({
                 as="button"
                 d="flex"
                 justifyContent="center"
-                className={classNames(cssStyles.overflowListItem, {
-                  [cssStyles.active]: item.value === selected?.value,
+                className={classNames(classes.overflowListItem, {
+                  [classes.active]: item.value === selected?.value,
                 })}
                 onClick={() => {
                   closeDropdown && closeDropdown();
@@ -148,15 +147,8 @@ export function NavSelect({
               <NavSelectItem
                 {...props}
                 active={Boolean(selectedInDropdown)}
-                className={classNames(
-                  props.className,
-                  cssStyles.listItem,
-                  cssStyles.dropdown
-                )}
+                className={classNames(props.className, classes.dropdown)}
               >
-                {selectedInDropdown && selectedHidden
-                  ? selectedHidden.title
-                  : null}
                 <Icon as={BiCaretDownFill} />
               </NavSelectItem>
             );

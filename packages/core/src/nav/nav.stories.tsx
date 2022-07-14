@@ -19,6 +19,7 @@ import {
   NavBar as NavBarComponent,
   NavTabs as NavTabsComponent,
 } from './index';
+import { TNavSelectItem, NavSelect as NavSelectComponent } from './nav-select';
 import { Switch } from '../switch';
 import { Icon } from '../icon';
 import { Box } from '../box';
@@ -260,6 +261,20 @@ export const NavTabs = () => {
         onReorder={handleTabReorder}
       />
     </Box>
+  );
+};
+
+const statuses: any[] = [
+  { title: 'Draft', value: 'draft' },
+  { title: 'Open', value: 'open' },
+  { title: 'Closed', value: 'closed' },
+  { title: 'Cancelled', value: 'cancelled' },
+];
+
+export const NavSelect = () => {
+  const [value, setValue] = React.useState<TNavSelectItem | null>(statuses[0]);
+  return (
+    <NavSelectComponent items={statuses} value={value} onChange={setValue} />
   );
 };
 

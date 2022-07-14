@@ -24,7 +24,6 @@ export { Link } from './link';
 export { List, ListItem } from './list';
 export { Menu, MenuDivider, MenuHeader, MenuItem } from './menu';
 export { Menubar } from './menubar';
-export { NavSelect } from './nav-select';
 export { OverflowList } from './overflow-list';
 export { Popper, usePopperTrigger } from './popper';
 export { Portal } from './portal';
@@ -45,4 +44,4 @@ export {
 } from './table';
 export { Tabs } from './tabs';
 export { Tree } from './tree';
-export { Nav, NavBar, NavTabs } from './nav';
+export { Nav, NavBar, NavTabs, NavSelect } from './nav';
