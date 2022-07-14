@@ -9,7 +9,7 @@ import { GanttBody } from './gantt-body';
 import { GanttEdge } from './gantt-edge';
 import { GanttTable } from './gantt-table';
 import { getGraphConfig, getHeader, getGraphEdges } from './utils';
-import classes from './gantt.module.css';
+import classes from './gantt.module.scss';
 
 function GanttView(props: {
   view: TYPES.GanttType;
@@ -118,11 +118,11 @@ export function Gantt({
       }
     }
   }
-
+  
   return (
     <Box
       d="flex"
-      className={classNames(classes.root, {
+      className={classNames('gantt', classes.root, {
         [classes.rtl]: rtl,
       })}
     >

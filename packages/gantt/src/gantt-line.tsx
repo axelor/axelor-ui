@@ -8,7 +8,7 @@ import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-d
 
 import { CONFIG, getDateFromOffset } from './utils';
 import * as TYPES from './types';
-import classes from './gantt.module.css';
+import classes from './gantt.module.scss';
 
 function disablePreview(preview: (e: any, options: any) => void) {
   preview(getEmptyImage(), { captureDraggingState: true });

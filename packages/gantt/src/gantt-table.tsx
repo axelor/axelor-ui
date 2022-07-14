@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@axelor-ui/core';
 import { useClassNames } from '@axelor-ui/core';
 import * as TYPES from './types';
-import classes from './gantt.module.css';
+import classes from './gantt.module.scss';
 
 const GanttTableHeader = React.memo(function GanttTableHeader({
   items,
@@ -58,8 +58,9 @@ export function GanttTable(props: {
   records: TYPES.GanttProps['records'];
 }) {
   const { items, records, activeRowIndex, setActiveRowIndex } = props;
+  const classNames = useClassNames();
   return (
-    <Box className={classes.table}>
+    <Box className={classNames('table-grid', classes.table)}>
       <GanttTableHeader items={items} />
       <div className={classes.tableBody}>
         {records.map((record, ind) => (

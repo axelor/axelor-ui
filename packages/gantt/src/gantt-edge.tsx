@@ -4,7 +4,7 @@ import { Icon, useClassNames, useTheme } from '@axelor-ui/core';
 import { ReactComponent as BiCaretRightFill } from 'bootstrap-icons/icons/caret-right-fill.svg';
 import { ReactComponent as BiCaretLeftFill } from 'bootstrap-icons/icons/caret-left-fill.svg';
 
-import classes from './gantt.module.css';
+import classes from './gantt.module.scss';
 import * as TYPES from './types';
 
 const Line = React.memo<{

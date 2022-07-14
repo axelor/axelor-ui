@@ -5,7 +5,7 @@ import { useDrop } from 'react-dnd';
 import * as TYPES from './types';
 import { CONFIG } from './utils';
 import { RenderList } from './gantt-header';
-import classes from './gantt.module.css';
+import classes from './gantt.module.scss';
 
 const { DND_TYPES } = CONFIG;
 

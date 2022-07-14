@@ -1,0 +1,323 @@
+@use 'sass:math';
+
+$spacing: 0.25rem;
+$border: 1px;
+
+.root {
+  flex: 1;
+  overflow: hidden;
+}
+
+.container {
+  overflow: auto;
+}
+
+.header {
+  display: flex;
+  font-size: 1rem;
+  & > * {
+    padding: $spacing 0;
+  }
+}
+
+.subHeader {
+  display: flex;
+  font-size: 0.9rem;
+  & > * {
+    padding: math.div($spacing, 2) 0;
+  }
+}
+
+.block {
+  border-top: $border solid var(--gantt-border-color);
+  border-right: $border solid var(--gantt-border-color);
+  display: flex;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gantt {
+  border: $border solid var(--gantt-border-color);
+  border-top: none;
+  border-left: none;
+  min-width: 100%;
+}
+
+/* gantt row styles */
+
+.ganttRows {
+  position: relative;
+}
+
+.ganttRow {
+  height: 2.25rem;
+  display: flex;
+  &.active,
+  &.active .highlight {
+    color: var(--gantt-row-active-color);
+    background-color: var(--gantt-row-active-bg);
+  }
+}
+
+.ganttCell {
+  height: 100%;
+}
+
+/* gantt edge styles */
+
+.ganttEdgeLines {
+  display: inline;
+  z-index: 1;
+  &:hover .ganttEdgeLine {
+    box-shadow: 0 0 $spacing * 2 var(--gantt-edge-color);
+  }
+}
+
+.ganttEdgeLine {
+  position: absolute;
+  padding: $border;
+  color: var(--gantt-edge-color);
+  background-color: var(--gantt-edge-color);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ganttEdgeIconStart {
+  position: absolute;
+  right: -$spacing;
+  .rtl & {
+    right: unset;
+    left: -$spacing;
+  }
+}
+
+.ganttEdgeIconEnd {
+  position: absolute;
+  left: -$spacing;
+  .rtl & {
+    left: unset;
+    right: -$spacing;
+  }
+}
+
+/* gantt line styles */
+
+.ganttLine {
+  border-radius: 2px;
+  background: var(--gantt-line-bg);
+  border: $border solid var(--gantt-line-bg);
+  display: flex;
+  color: var(--gantt-line-color);
+  align-items: center;
+  cursor: grab;
+  z-index: 2;
+  &.connect {
+    box-shadow: 0 0 $spacing * 2 var(--gantt-line-bg);
+  }
+}
+
+.ganttLineProgress {
+  background: var(--gantt-progress-color);
+}
+
+.ganttLineProgressContent {
+  position: absolute;
+}
+
+.ganttLineProgressLabel {
+  display: none;
+  position: absolute;
+  top: -1rem;
+  right: -0.625rem;
+  line-height: 1rem;
+  width: 1.25rem;
+  border-top: none;
+  border-radius: 2px;
+  box-sizing: border-box;
+  background: var(--gantt-line-color);
+  color: var(--gantt-progress-color);
+  text-align: center;
+  font-size: 0.65rem;
+}
+
+.ganttLineProgressIndicator {
+  position: absolute;
+  cursor: col-resize;
+  font-size: 0.75rem;
+  width: 0.625rem;
+  height: calc(100% + $spacing);
+}
+
+.ganttLine:hover .ganttLineProgressLabel {
+  display: inline-block;
+}
+
+.ganttLineTitle {
+  white-space: nowrap;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  font-size: 0.875rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  & span {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding: 0 $spacing;
+  }
+}
+
+.ganttLineDrag {
+  position: absolute;
+  height: 100%;
+  width: 1.25rem;
+  z-index: 1;
+  &.left {
+    cursor: w-resize;
+    left: -1.25rem;
+  }
+  &.right {
+    cursor: e-resize;
+    right: -1.25rem;
+  }
+}
+
+.ganttLineDragArea {
+  width: 1.875rem;
+  background: transparent;
+  height: 100%;
+  position: absolute;
+  &.left {
+    left: -1.875rem;
+  }
+  &.right {
+    right: -1.875rem;
+  }
+}
+
+.ganttConnector {
+  width: 0.8125rem;
+  display: inline-block;
+  cursor: pointer;
+  height: 0.8125rem;
+  top: 0.5rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  &.left {
+    left: -0.625rem;
+  }
+  &.right {
+    right: -0.625rem;
+  }
+
+  &:hover .ganttConnectorLink,
+  &.connect .ganttConnectorLink {
+    background-color: var(--gantt-edge-color);
+  }
+  &.show .ganttConnectorLink {
+    visibility: visible;
+  }
+}
+
+.ganttConnectorLink {
+  visibility: hidden;
+  height: inherit;
+  width: inherit;
+  border: $border solid var(--gantt-connector-border-color);
+  border-radius: 50%;
+  background: transparent;
+}
+
+.ganttLine:hover .ganttConnectorLink {
+  visibility: visible;
+  background-color: var(--gantt-connector-bg);
+}
+
+/* virtual line styles */
+
+.virtualLine {
+  position: absolute;
+  border: $border dashed var(--gantt-edge-color);
+  z-index: 1001;
+}
+
+.virtualLineIcon {
+  position: absolute;
+  right: -0.8125rem;
+  top: -0.5rem;
+  bottom: 0;
+  pointer-events: none;
+  color: var(--gantt-edge-color);
+  transform: rotate(270deg);
+}
+
+/* gantt table styles */
+.table {
+  overflow: hidden;
+  min-width: 400px;
+  border-right: $border solid var(--bs-table-border-color);
+  display: flex;
+  flex-direction: column;
+  padding-bottom: $spacing * 4; /* horizontal scrollbar */
+}
+
+.tableHeader {
+  min-height: 3.8rem;
+  border: $border solid var(--bs-table-border-color);
+  border-right: none;
+  display: flex;
+}
+
+.tableHeaderCell {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  color: var(--bs-table-color);
+  font-weight: bold;
+  font-size: 0.95rem;
+  padding-left: $spacing * 2.5;
+  .rtl & {
+    padding-right: $spacing * 2.5;
+  }
+}
+
+.tableBodyRow {
+  display: flex;
+  height: 2.25rem;
+  border-bottom: $border solid var(--bs-table-border-color);
+  border-left: $border solid var(--bs-table-border-color);
+  cursor: pointer;
+
+  &:hover,
+  &.active {
+    color: var(--gantt-row-active-color);
+    background-color: var(--gantt-row-active-bg);
+  }
+}
+
+.tableBodyRowCell {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-left: $spacing * 2.5;
+  pointer-events: none;
+  .rtl & {
+    padding-right: $spacing * 2.5;
+  }
+}
+
+.highlight {
+  background-color: var(--bs-table-active-bg);
+}

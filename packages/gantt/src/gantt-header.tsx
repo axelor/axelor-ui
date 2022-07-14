@@ -1,7 +1,7 @@
 import React from 'react';
 import * as TYPES from './types';
 import { useClassNames } from '@axelor-ui/core';
-import classes from './gantt.module.css';
+import classes from './gantt.module.scss';
 
 export const RenderList = React.memo(function RenderList({
   items,

@@ -76,3 +76,15 @@
   --bs-nav-tabs-bg: #{$gray-100};
   --bs-nav-tabs-hover-bg: #{$gray-200};
 }
+
+.gantt {
+  --gantt-border-color: #{$table-border-color};
+  --gantt-edge-color: #{$orange-500};
+  --gantt-line-bg: #8c9eff;
+  --gantt-progress-color: #536dfe;
+  --gantt-line-color: #fff;
+  --gantt-row-active-bg: #{$table-hover-bg};
+  --gantt-row-active-color: #{$table-hover-color};
+  --gantt-connector-bg: #{$gray-200};
+  --gantt-connector-border-color: #{$gray-300};
+}
