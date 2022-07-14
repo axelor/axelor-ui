@@ -9,13 +9,21 @@ import { ReactComponent as BiGrid } from 'bootstrap-icons/icons/grid-fill.svg';
 import { ReactComponent as BiMegaPhone } from 'bootstrap-icons/icons/megaphone.svg';
 import { ReactComponent as BiListCheck } from 'bootstrap-icons/icons/list-check.svg';
 import { ReactComponent as BiMenuIcon } from 'bootstrap-icons/icons/list.svg';
+import { ReactComponent as BiHeartFill } from 'bootstrap-icons/icons/heart-fill.svg';
+import { ReactComponent as BiShop } from 'bootstrap-icons/icons/shop.svg';
+import { ReactComponent as BiAlarm } from 'bootstrap-icons/icons/alarm.svg';
+import { ReactComponent as BiCalendarEvent } from 'bootstrap-icons/icons/calendar-event.svg';
 
 import {
   Nav,
   NavBar as NavBarComponent,
+  NavTabs as NavTabsComponent,
 } from './index';
+import { Switch } from '../switch';
 import { Icon } from '../icon';
 import { Box } from '../box';
+import { InputLabel } from '../input-label';
+
 const config = {
   component: Nav,
   title: 'Components/Nav',
@@ -185,6 +193,72 @@ export const Navbar = () => {
       >
         <NavBarComponent items={items} float={float} />
       </Box>
+    </Box>
+  );
+};
+
+export const NavTabs = () => {
+  const [tabs, setTabs] = React.useState<any>([
+    {
+      id: 'tab1',
+      title: 'Calendar',
+      icon: BiCalendarEvent,
+      iconColor: 'purple',
+    },
+    { id: 'tab2', title: 'Teams', icon: BiHeartFill, iconColor: 'orange' },
+    { id: 'tab3', title: 'Notifications', icon: BiAlarm, iconColor: 'red' },
+    {
+      id: 'tab4',
+      title: 'Purchase Orders',
+      icon: BiShop,
+      iconColor: 'green',
+    },
+    {
+      id: 'tab5',
+      title: 'Messaging',
+      icon: BiChat,
+      iconColor: 'violet',
+    },
+    { id: 'tab6', title: 'Teams', icon: BiPerson, iconColor: 'blue' },
+    { id: 'tab7', title: 'Invoicing', icon: BiGrid, iconColor: 'teal' },
+    {
+      id: 'tab8',
+      title: 'CRM',
+      icon: BiChatDots,
+      iconColor: 'royalblue',
+    },
+  ]);
+  const [active, setActive] = React.useState<any>('tab1');
+  const [draggable, setDraggable] = React.useState(false);
+
+  const handleTabReorder = React.useCallback(
+    (dragIndex?: number, hoverIndex?: number) => {
+      setTabs((items: any) => {
+        const [dragCard] = items.splice(dragIndex, 1);
+        items.splice(hoverIndex, 0, dragCard);
+        return [...items];
+      });
+    },
+    []
+  );
+
+  return (
+    <Box>
+      <Box d="flex" alignItems="center">
+        <InputLabel me={2}>Draggable</InputLabel>
+        <Switch
+          checked={draggable}
+          onChange={(e: any) => setDraggable(e.target.checked)}
+        />
+      </Box>
+      <NavTabsComponent
+        draggable={draggable}
+        items={tabs}
+        value={active}
+        onChange={id => setActive(id)}
+        onClose={console.log}
+        onReorder={handleTabReorder}
+      />
     </Box>
   );
 };

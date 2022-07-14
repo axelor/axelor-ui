@@ -60,6 +60,7 @@
   --bs-table-bg: #fbfbff;
 }
 
+.nav-custom-tabs,
 .nav-bar,
 .nav-popper {
   --bs-primary: #{$indigo};
@@ -67,4 +68,10 @@
   --bs-nav-link-hover-color: #{$navbar-light-hover-color};
   --bs-nav-link-active-color: #{$navbar-light-active-color};
   --bs-nav-link-transition: #{$nav-link-transition};
+}
+
+.nav-custom-tabs {
+  --bs-nav-tabs-border-color: #{$nav-tabs-border-color};
+  --bs-nav-tabs-bg: #{$gray-100};
+  --bs-nav-tabs-hover-bg: #{$gray-200};
 }
