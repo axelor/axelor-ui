@@ -59,3 +59,12 @@
 .table-grid {
   --bs-table-bg: #fbfbff;
 }
+
+.nav-bar,
+.nav-popper {
+  --bs-primary: #{$indigo};
+  --bs-nav-link-color: #{$navbar-light-color};
+  --bs-nav-link-hover-color: #{$navbar-light-hover-color};
+  --bs-nav-link-active-color: #{$navbar-light-active-color};
+  --bs-nav-link-transition: #{$nav-link-transition};
+}
