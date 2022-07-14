@@ -45,3 +45,4 @@ export {
 } from './table';
 export { Tabs } from './tabs';
 export { Tree } from './tree';
+export { Nav } from './nav';
