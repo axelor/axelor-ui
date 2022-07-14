@@ -10,6 +10,7 @@ import { useClassNames } from '../styles';
 import { TBackground, TForeground } from '../system';
 
 import styles from './popper.module.css';
+import { TransitionProps } from '../transitions/types';
 
 export type PopperPlacement =
   | 'top'
@@ -196,7 +197,7 @@ export const Popper = ({
             onEnter: handleEnter,
             onExited: handleExited,
             children: render(),
-          })
+          } as any)
         : render()}
     </PopperWrapper>
   );

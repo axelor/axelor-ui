@@ -1,4 +1,4 @@
-import { forwardRef, useRef } from 'react';
+import React, { forwardRef, useRef } from 'react';
 import { Transition } from 'react-transition-group';
 import { useClassNames } from '../styles';
 import { TransitionProps } from '../transitions/types';
@@ -135,7 +135,9 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
           return (
             <div className={cls} ref={ref}>
               <div ref={wrapperRef} className={styles.collapseWrapper}>
-                <div className={styles.collapseWrapperInner}>{children}</div>
+                <div className={styles.collapseWrapperInner}>
+                  {children as React.ReactNode}
+                </div>
               </div>
             </div>
           );
