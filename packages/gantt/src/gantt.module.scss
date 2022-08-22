@@ -313,9 +313,17 @@ $border: 1px;
   align-items: center;
   padding-left: $spacing * 2.5;
   pointer-events: none;
+  overflow: hidden;
   .rtl & {
     padding-right: $spacing * 2.5;
   }
+}
+
+.tableBodyRowCellContent {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .highlight {
