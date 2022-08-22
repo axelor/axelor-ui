@@ -36,7 +36,11 @@ const TreeNodeContent = React.forwardRef<
             {ind === 0 && (
               <span
                 className="indent"
-                style={{ paddingLeft: (data.level || 0) * 16 }}
+                style={{
+                  paddingLeft: `${
+                    (data.level || 0) + (hasChildren(data) ? 0 : 1)
+                  }rem`,
+                }}
               >
                 {hasChildren(data) && (
                   <Icon
@@ -62,7 +66,16 @@ const TreeNodeContent = React.forwardRef<
 });
 
 function Parent(props: TYPES.TreeChildProps) {
-  const { className, columns, data, index, onDrop, onToggle, onClick } = props;
+  const {
+    className,
+    columns,
+    data,
+    index,
+    textRenderer,
+    onDrop,
+    onToggle,
+    onClick,
+  } = props;
   const classNames = useClassNames();
   const [{ hovered }, dropRef] = useDrop({
     accept: NODE_TYPE,
@@ -92,7 +105,11 @@ function Parent(props: TYPES.TreeChildProps) {
       })}
       onClick={onClick}
     >
-      <TreeNodeContent data={data} columns={columns} />
+      <TreeNodeContent
+        data={data}
+        columns={columns}
+        textRenderer={textRenderer}
+      />
     </div>
   );
 }
