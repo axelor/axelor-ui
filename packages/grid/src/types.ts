@@ -64,6 +64,7 @@ export interface GridProps {
   allowSelection?: boolean;
   allowCheckboxSelection?: boolean;
   allowCellSelection?: boolean;
+  allowCellFocus?: boolean;
   allowColumnOptions?: boolean;
   allowColumnResize?: boolean;
   allowColumnCustomize?: boolean;

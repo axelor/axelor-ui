@@ -69,6 +69,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     const { editable, sortType, selectionType = 'multiple' } = props;
     const {
       allowSelection,
+      allowCellFocus = true,
       allowSorting,
       allowSearch,
       allowGrouping,
@@ -989,7 +990,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     const scrollToCell = React.useCallback(
       function scrollToCell([row, col]: number[]) {
-        if (isNull(row) || isNull(col)) return;
+        if (!allowCellFocus || isNull(row) || isNull(col)) return;
         const container = containerRef.current;
         const rowNode =
           container &&
@@ -1066,7 +1067,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         refs.current.selectedCell = { row, col };
         container && container.focus();
       },
-      [stickyHeader, stickyFooter]
+      [allowCellFocus, stickyHeader, stickyFooter]
     );
 
     const $orderBy = sortType === 'state' ? state.orderBy : null;
@@ -1140,12 +1141,14 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     }, [state.rows, state.selectedRows]);
 
     const noColumns = React.useMemo(() => {
-      return displayColumns.every(
-        col =>
-          (col as any).action ||
-          col.type === 'row-checked' ||
-          (col.width && col.width < 50)
-      ) || displayColumns.length === 0;
+      return (
+        displayColumns.every(
+          col =>
+            (col as any).action ||
+            col.type === 'row-checked' ||
+            (col.width && col.width < 50)
+        ) || displayColumns.length === 0
+      );
     }, [displayColumns]);
 
     const classNames = useClassNames();
