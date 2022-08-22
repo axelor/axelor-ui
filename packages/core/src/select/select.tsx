@@ -92,6 +92,7 @@ const IndicatorsContainer = (
         d="flex"
         className={selectStyles.icons}
         onMouseDown={handleMouseDown}
+        me={1}
       >
         {icons.map(icon => (
           <Icon key={icon.id} as={icon.icon} onClick={icon.onClick} />
