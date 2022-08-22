@@ -36,6 +36,7 @@
 
 .header {
   width: fit-content;
+  min-width: 100%;
   background-color: var(--bs-table-bg);
   &.sticky {
     position: sticky;
@@ -79,7 +80,7 @@
 }
 
 .container:not(.no-columns):not(.rtl) .header.options .column:last-child {
-  padding-right: 1.1rem !important;
+  padding-right: 1.5rem !important;
 }
 .container.rtl:not(.no-columns) .header.options .column:last-child {
   padding-left: 1.5rem !important;
@@ -118,6 +119,9 @@
   & input {
     margin: 0;
   }
+  &.resizable {
+    max-width: calc(100% - 0.5rem);
+  }
 }
 
 .headerMenuItem:active {
@@ -125,9 +129,14 @@
 }
 
 .columnResizer {
-  width: 0.25rem;
+  width: 0.5rem;
   height: 100%;
   cursor: col-resize;
+  display: flex;
+  justify-content: center;
+  & hr {
+    border-width: 2px !important;
+  }
 }
 
 .groupRow {
@@ -232,8 +241,6 @@
     justify-content: center;
     display: flex;
     width: 100%;
-    border: 1px solid var(--bs-table-border-color);
-    border-top: none;
   }
 }
 
@@ -261,6 +268,7 @@
   display: flex;
   align-items: center;
   height: 100%;
+  max-height: 2rem;
   .rtl & {
     right: unset;
     left: 0;
@@ -279,6 +287,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: var(--bs-table-color);
 }
 
 .dragColumnArea {

@@ -80,6 +80,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
     onResize,
     onResizeEnd,
   } = props;
+  const classNames = useClassNames();
 
   function renderColumn(column: TYPES.GridColumn, index: number) {
     if (isRowCheck(column)) {
@@ -93,7 +94,9 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
     return (
       <>
         <span
-          className={styles.headerColumnTitle}
+          className={classNames(styles.headerColumnTitle, {
+            [styles.resizable]: Boolean(onResize),
+          })}
           onClick={e => onClick && onClick(e, data, index)}
         >
           <Box as="span" flex={1}>

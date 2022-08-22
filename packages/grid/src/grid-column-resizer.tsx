@@ -1,3 +1,4 @@
+import { Divider } from '@axelor-ui/core';
 import React from 'react';
 import { useDrag } from 'react-dnd';
 
@@ -19,6 +20,7 @@ export function GridColumResizer(props: React.HTMLAttributes<HTMLSpanElement>) {
       style={{ ...props.style, visibility: isDragging ? 'hidden' : 'visible' }}
     >
       {preview && <span ref={preview} />}
+      <Divider vertical />
     </span>
   );
 }
