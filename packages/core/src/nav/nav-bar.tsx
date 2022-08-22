@@ -152,6 +152,7 @@ const NavBarItem = React.memo(function NavBarItem({
         className={classNames(classes.menuItem, {
           [classes.active]: active,
           [classes.float]: float,
+          [classes['has-children']]: hasChildren,
         })}
         onClick={handleClick}
       >
