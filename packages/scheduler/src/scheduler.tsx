@@ -117,6 +117,7 @@ function Scheduler({
   return (
     <DragAndDropCalendar
       popup
+      showMultiDayTimes
       date={date}
       rtl={rtl}
       view={view}
