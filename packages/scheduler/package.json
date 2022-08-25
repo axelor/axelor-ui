@@ -16,11 +16,11 @@
   },
   "dependencies": {
     "moment": "^2.29.3",
-    "react-big-calendar": "^0.40.2"
+    "react-big-calendar": "^1.5.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.14",
-    "@types/react-big-calendar": "^0.38.0",
+    "@types/react-big-calendar": "^0.38.1",
     "@types/react-dom": "^18.0.5",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-react-app": "^7.0.1",
