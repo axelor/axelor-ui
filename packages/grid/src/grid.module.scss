@@ -133,9 +133,10 @@
   height: 100%;
   cursor: col-resize;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   & hr {
     border-width: 2px !important;
+    margin: 0 !important;
   }
 }
 
