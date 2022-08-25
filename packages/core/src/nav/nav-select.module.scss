@@ -38,6 +38,14 @@ $borderWidth: 2px;
   margin-right: $spacing * 2;
   font-weight: 600;
 
+  &:first-child {
+    .root.rtl & {
+      margin-right: 0;
+    }
+    .root:not(.rtl) & {
+      margin-left: 0;
+    }
+  }
   & a {
     border: $borderWidth solid var(--bs-nav-link-color);
     border-right: none;
