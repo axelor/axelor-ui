@@ -36,6 +36,8 @@ export type GanttRecord = {
   startToFinish?: Record[];
   finishToStart?: Record[];
   finishToFinish?: Record[];
+  $color?: string;
+  _children?: number[];
 };
 
 export type GanttEdgeType = 'start' | 'finish';

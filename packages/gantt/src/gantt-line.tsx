@@ -16,6 +16,16 @@ function disablePreview(preview: (e: any, options: any) => void) {
 
 const { DND_TYPES } = CONFIG;
 
+function getRGBA(hex: string, opacity: number = 1): string {
+  const r = hex.slice(1, 3);
+  const g = hex.slice(3, 5);
+  const b = hex.slice(5, 7);
+  return `rgba(${parseInt(r, 16)}, ${parseInt(g, 16)}, ${parseInt(
+    b,
+    16
+  )}, ${opacity})`;
+}
+
 function VirtualLine({
   type,
   x1,
@@ -88,7 +98,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
     onUpdate,
     onConnect,
   } = props;
-  const { id, duration } = data;
+  const { id, duration, $color } = data;
 
   const { x, y, width } = (() => {
     const diffHours = moment
@@ -347,6 +357,12 @@ export const GanttLine = React.memo(function GanttLine(props: {
           width,
           height: CONFIG.LINE_HEIGHT,
           ...(rtl ? { right: x } : { left: x }),
+          ...($color
+            ? {
+                '--gantt-line-bg': getRGBA($color, 0.75),
+                '--gantt-progress-color': getRGBA($color, 1),
+              }
+            : {}),
         }}
       >
         <div
