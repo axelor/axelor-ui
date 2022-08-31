@@ -2,7 +2,7 @@ import React from 'react';
 import { GridGroupRow } from './grid-group-row';
 import { GridBodyRow } from './grid-body-row';
 import { GridFooterRow } from './grid-footer-row';
-import { GridDNDContainer, GridDNDRow } from './grid-dnd-row';
+import { GridDNDContainer } from './grid-dnd-row';
 import { isRowVisible } from './utils';
 import * as TYPES from './types';
 import styles from './grid.module.scss';
@@ -141,7 +141,8 @@ export function GridBody(props: GridBodyProps) {
 
         return (
           <GridBodyRow
-            renderer={onRowMove ? GridDNDRow : rowRenderer}
+            draggable={Boolean(onRowMove)}
+            renderer={rowRenderer}
             {...rowProps}
           />
         );

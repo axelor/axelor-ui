@@ -1,16 +1,19 @@
 import React from 'react';
 import { Input } from '@axelor-ui/core';
 import { useClassNames } from '@axelor-ui/core';
+import get from 'lodash/get';
 
 import { GridColumn } from './grid-column';
 import { isRowCheck } from './utils';
 import * as TYPES from './types';
 import styles from './grid.module.scss';
+import { GridDNDRow } from './grid-dnd-row';
 
 export const GridBodyRow = React.memo(function GridBodyRow(
   props: TYPES.GridRowProps
 ) {
   const {
+    draggable,
     className,
     columns = [],
     editCell,
@@ -58,15 +61,16 @@ export const GridBodyRow = React.memo(function GridBodyRow(
     }
     return column.formatter
       ? column.formatter(data.record, column)
-      : data.record[column.name];
+      : get(data.record, column.name);
   }
 
   const RowComponent = renderer || 'div';
   const rendererProps = renderer ? props : {};
   const classNames = useClassNames();
+  const DragComponent: any = draggable ? GridDNDRow : React.Fragment;
 
   return (
-    <>
+    <DragComponent {...(draggable ? { ...props } : {})}>
       <RowComponent
         {...rendererProps}
         className={classNames(styles.row, className, {
@@ -91,6 +95,6 @@ export const GridBodyRow = React.memo(function GridBodyRow(
           </GridColumn>
         ))}
       </RowComponent>
-    </>
+    </DragComponent>
   );
 });

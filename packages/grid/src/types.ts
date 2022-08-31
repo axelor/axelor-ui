@@ -124,6 +124,7 @@ export interface GridProps {
 export interface GridRowProps {
   data: GridRow;
   index: number;
+  draggable?: boolean;
   className?: string;
   children?: any;
   columns?: GridColumn[];
