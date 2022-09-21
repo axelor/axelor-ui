@@ -6,11 +6,10 @@ import { Box } from '../box';
 import { Fade } from '../fade';
 import { Portal } from '../portal';
 
-import { useClassNames } from '../styles';
+import { useClassNames, useTheme } from '../styles';
 import { TBackground, TForeground } from '../system';
 
 import styles from './popper.module.css';
-import { TransitionProps } from '../transitions/types';
 
 export type PopperPlacement =
   | 'top'
@@ -77,6 +76,7 @@ const PopperWrapper = ({
 }: PopperProps) => {
   const instance = useRef<Instance | null>(null);
   const [wrapperEl, setWrapperEl] = useState<HTMLDivElement | null>(null);
+  const { dir } = useTheme();
 
   const placement = PlacementMapping[popperPlacement];
   const [skidding = 0, distance = 0] = offset || [];
@@ -130,6 +130,7 @@ const PopperWrapper = ({
     <div
       ref={setWrapperEl}
       className={classNames(styles.popper, { 'drop-shadow-md': shadow })}
+      {...(dir === 'rtl' ? { dir: 'rtl' } : {})}
       {...props}
       style={{ position: 'fixed' }}
     >
