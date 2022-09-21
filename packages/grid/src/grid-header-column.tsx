@@ -91,6 +91,8 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
       );
     }
 
+    const canResize = column.name !== '__reorder__' && !(column as any).action;
+
     return (
       <>
         <span
@@ -111,7 +113,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
           )}
         </span>
 
-        {onResizeStart && onResize && onResizeEnd && (
+        {canResize && onResizeStart && onResize && onResizeEnd && (
           <GridColumResizer
             className={styles.columnResizer}
             draggable={true}
