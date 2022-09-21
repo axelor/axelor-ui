@@ -4,12 +4,12 @@ import { GridHeader } from './grid-header';
 import { GridBody } from './grid-body';
 import { GridDNDColumn } from './grid-dnd-row';
 import {
-  GRID_CONFIG,
   ROW_TYPE,
   navigator,
   getRows,
   isRowVisible,
   isRowCheck,
+  getColumnWidth,
   useRTL,
 } from './utils';
 import * as TYPES from './types';
@@ -162,7 +162,12 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           const remainWidth =
             totalWidth -
             computedColumns.reduce(
-              (total, col) => total + parseFloat(`${col.width}`),
+              (total, col) =>
+                total +
+                Math.max(
+                  parseFloat(`${col.width || 0}`),
+                  parseFloat(`${col.minWidth || 0}`)
+                ),
               0
             );
           const colWidth = remainWidth / unComputedColumns.length;
@@ -171,7 +176,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             if (col.computed) return col;
             return {
               ...col,
-              width: Math.max(GRID_CONFIG.COLUMN_MIN_WIDTH, colWidth),
+              width: getColumnWidth(col, colWidth, true),
             };
           });
         }
@@ -471,9 +476,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
         const diff = dataTransfer.x - clientX;
         const moved = isRTL ? -diff : diff;
-        const width = Math.max(
-          GRID_CONFIG.COLUMN_MIN_WIDTH,
-          dataTransfer.current - moved
+        const width = getColumnWidth(
+          column,
+          dataTransfer.current - moved,
+          true
         );
         refs.current.style.innerHTML = `
           .${styles.resizingColumns} .${getCssSelector(
@@ -497,10 +503,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         if (!dataTransfer.width) return;
 
         const container = containerRef.current;
-        const width = Math.max(
-          GRID_CONFIG.COLUMN_MIN_WIDTH,
-          dataTransfer.width
-        );
+        const width = getColumnWidth(column, dataTransfer.width, true);
         // set column width in state
         setState(draft => {
           const col = draft.columns.find(c => c.name === column.name);
@@ -660,7 +663,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           if (result === null) return;
         }
         // call event on record add
-        onRecordAdd && onRecordAdd();
+        const result: any = onRecordAdd && (await onRecordAdd());
+        if (result === true) {
+          return;
+        }
         setState(draft => {
           if (draft.editRow) {
             const [rowIndex] = draft.editRow;

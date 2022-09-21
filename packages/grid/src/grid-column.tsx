@@ -22,7 +22,7 @@ export interface GridColumnProps {
 
 export function GridColumn(props: GridColumnProps) {
   const { children, data, index, selected, renderer, onClick } = props;
-  const { width } = data;
+  const { width, minWidth } = data;
   const ColumnComponent = renderer || 'div';
   const rendererProps = renderer ? props : {};
   const columnRef = React.useRef<HTMLDivElement | null>(null);
@@ -42,7 +42,7 @@ export function GridColumn(props: GridColumnProps) {
   }, [selected]);
 
   const classNames = useClassNames();
-
+  const $width = Math.max(width || 0, minWidth || 0);
   return (
     <ColumnComponent
       {...(renderer ? {} : { ref: columnRef })}
@@ -52,7 +52,7 @@ export function GridColumn(props: GridColumnProps) {
         [styles.center]: ['row-checked'].includes(data.type || ''),
         [styles.selected]: selected,
       })}
-      style={{ minWidth: width, width }}
+      style={{ minWidth: $width, width: $width }}
     >
       {children}
     </ColumnComponent>

@@ -47,6 +47,19 @@ export const getRows = ({
   });
 };
 
+export function getColumnWidth(
+  column: GridColumn,
+  value?: number,
+  isResize = false
+) {
+  return Math.max(
+    GRID_CONFIG.COLUMN_MIN_WIDTH,
+    isResize ? 0 : column.width || 0,
+    column.minWidth || 0,
+    value || 0
+  );
+}
+
 export function doAggregate(
   data: any[] = [],
   field: GridColumn
@@ -111,9 +124,10 @@ export function doGroup(
   const fieldInfo = columns.find(x => x.name === name) || ({} as GridColumn);
   const groupData: any = {};
   data.forEach(record => {
-    const key = fieldInfo.formatter
-      ? fieldInfo.formatter(record, fieldInfo)
-      : record[name];
+    const key =
+      (fieldInfo.formatter
+        ? fieldInfo.formatter(record, fieldInfo)
+        : record[name]) || '';
     let target = groupData[key] || {
       data: [],
       type: ROW_TYPE.GROUP_ROW,
@@ -126,8 +140,14 @@ export function doGroup(
     target.data.push(record);
     groupData[key] = target;
   });
+
+  const groupKeys = Object.keys(groupData).sort((v1, v2) => {
+    if (v2.length === 0) return -1;
+    return 0;
+  });
+
   if (groups.length) {
-    Object.keys(groupData).forEach(k => {
+    groupKeys.forEach(k => {
       groupData[k].data = doGroup(
         groupData[k].data,
         [...groups],
@@ -136,7 +156,7 @@ export function doGroup(
       );
     });
   }
-  return Object.values(groupData);
+  return groupKeys.map(k => groupData[k]);
 }
 
 export function doIndexing(
