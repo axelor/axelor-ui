@@ -32,6 +32,9 @@
     background: var(--bs-table-active-bg);
     color: var(--bs-table-active-color);
   }
+  .body & {
+    height: 2rem;
+  }
 }
 
 .header {
@@ -59,6 +62,7 @@
 .footer {
   background-color: var(--bs-table-bg);
   width: fit-content;
+  min-width: 100%;
   border: 1px solid var(--bs-table-border-color);
   border-left: none;
   border-right: none;
@@ -76,7 +80,7 @@
 .header .column,
 .footer .column {
   font-weight: 600;
-  font-size: 0.925rem;
+  font-size: 0.875rem;
 }
 
 .container:not(.no-columns):not(.rtl) .header.options .column:last-child {
