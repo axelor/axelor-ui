@@ -71,6 +71,9 @@
   --bs-nav-link-active-color: #{$navbar-light-active-color};
   --bs-nav-link-transition: #{$nav-link-transition};
 }
+.nav-select {
+  --bs-primary: #6a67ff;
+}
 
 .nav-custom-tabs {
   --bs-nav-tabs-border-color: #{$nav-tabs-border-color};
@@ -127,4 +130,9 @@ $buttons: (
   .btn-outline-#{$type} {
     @include buttonStyles($color, $outline: true);
   }
+}
+
+:root {
+  --bs-link-color: #6a67ff;
+  --bs-link-hover-color: #0300e2;
 }

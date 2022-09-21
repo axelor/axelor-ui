@@ -1,0 +1,7 @@
+.link-primary {
+  color: var(--bs-link-color) !important;
+  &:focus,
+  &:hover {
+    color: var(--bs-link-hover-color) !important;
+  }
+}
