@@ -29,21 +29,26 @@ export const GridFooterRow = React.memo(function GridFooterRow(
         [styles.selected]: selected,
       })}
     >
-      {columns.map((column, index) => (
-        <GridColumn
-          key={column.name}
-          selected={selectedCell === index}
-          index={index}
-          data={column}
-          type="footer"
-        >
-          {column.aggregate
-            ? `${t(capitalizeWord(column.aggregate))} : ${
-                data.aggregate[column.name]
-              }`
-            : null}
-        </GridColumn>
-      ))}
+      {columns.map((column, index) => {
+        const value = column.aggregate && data.aggregate[column.name];
+        return (
+          <GridColumn
+            key={column.name}
+            selected={selectedCell === index}
+            index={index}
+            data={column}
+            type="footer"
+          >
+            {column.aggregate
+              ? `${t(capitalizeWord(column.aggregate))} : ${
+                  column.formatter
+                    ? column.formatter({ [column.name]: value }, column)
+                    : value
+                }`
+              : null}
+          </GridColumn>
+        );
+      })}
     </RowRenderer>
   );
 });
