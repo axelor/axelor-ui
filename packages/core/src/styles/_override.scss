@@ -1,3 +1,4 @@
+@use 'sass:color';
 @import '~bootstrap/scss/root';
 
 .accordion {
@@ -87,4 +88,43 @@
   --gantt-row-active-color: #{$table-hover-color};
   --gantt-connector-bg: #{$gray-200};
   --gantt-connector-border-color: #{$gray-300};
+}
+
+@mixin buttonStyles($color, $outline: false) {
+  $hoverShade: mix(black, $color, 12%);
+  $activeShade: mix(black, $color, 20%);
+  $disabled: mix(white, $color, 50%);
+
+  --bs-btn-border-color: #{$color};
+  --bs-btn-hover-bg: #{$hoverShade};
+  --bs-btn-hover-border-color: #{$hoverShade};
+  --bs-btn-active-bg: #{$activeShade};
+  --bs-btn-active-border-color: #{$activeShade};
+  --bs-btn-disabled-border-color: #{$disabled};
+  --bs-btn-focus-shadow-rgb: #{color.red($color)}, #{color.green($color)},
+    #{color.blue($color)};
+
+  @if $outline {
+    --bs-btn-bg: transparent;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-color: #{$color};
+    --bs-btn-hover-color: #{$white};
+  } @else {
+    --bs-btn-bg: #{$color};
+    --bs-btn-disabled-bg: #{$disabled};
+  }
+}
+
+$buttons: (
+  'primary': #6a67ff,
+  'danger': #ff6767,
+);
+
+@each $type, $color in $buttons {
+  .btn-#{$type} {
+    @include buttonStyles($color);
+  }
+  .btn-outline-#{$type} {
+    @include buttonStyles($color, $outline: true);
+  }
 }
