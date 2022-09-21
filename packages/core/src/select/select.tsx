@@ -32,6 +32,7 @@ export interface SelectProps {
   isDisabled?: boolean;
   isRtl?: boolean;
   isSearchable?: boolean;
+  isClearOnDelete?: boolean;
   value: any;
   onChange: (value: any) => void;
   onFocus?: (e: React.SyntheticEvent) => void;
@@ -113,6 +114,7 @@ export function Select({
   isRtl,
   isCreatable = false,
   isSearchable = true,
+  isClearOnDelete = true,
   loading: _loading,
   value,
   onChange,
@@ -197,6 +199,13 @@ export function Select({
   const handleMenuOpen = () => setMenuOpen(true);
   const handleMenuClose = () => setMenuOpen(false);
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const isDelete = isClearOnDelete && e.key === 'Delete';
+    if ((isDelete || (isMenuOpen && e.key === 'Backspace')) && value) {
+      onChange(null);
+    }
+    if (isDelete) {
+      setInputText('');
+    }
     if (!(isMenuOpen && e.key === 'Enter')) {
       onKeyDown && onKeyDown(e);
     }
@@ -219,17 +228,17 @@ export function Select({
   }, [clearTimer]);
 
   const SelectComponent = (isCreatable ? CreatableSelect : ReactSelect) as any;
+  const $options = React.useMemo(() => {
+    return [...(options || []), ...(addOnOptions || [])];
+  }, [options, addOnOptions]);
+
   const hasOption = inputText
-    ? (options || []).some(opt =>
+    ? ($options || []).some(opt =>
         (getOptionLabel(opt) || '')
           .toLowerCase()
           .includes(inputText.toLowerCase())
       )
-    : (options || []).length > 0;
-
-  const $options = React.useMemo(() => {
-    return [...(options || []), ...(addOnOptions || [])];
-  }, [options, addOnOptions]);
+    : ($options || []).length > 0;
 
   return (
     <SelectComponent
