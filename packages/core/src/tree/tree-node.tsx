@@ -4,6 +4,7 @@ import { ReactComponent as BiChevronDown } from 'bootstrap-icons/icons/chevron-d
 import { ReactComponent as BiChevronRight } from 'bootstrap-icons/icons/chevron-right.svg';
 import { ReactComponent as BiChevronLeft } from 'bootstrap-icons/icons/chevron-left.svg';
 
+import { Box } from '../box';
 import { TreeColumn } from './tree-column';
 import styles from './tree.module.css';
 import { useClassNames, useTheme } from '../styles';
@@ -34,12 +35,15 @@ const TreeNodeContent = React.forwardRef<
         return (
           <TreeColumn data={column} key={column.name}>
             {ind === 0 && (
-              <span
+              <Box
+                as="span"
+                d="flex"
                 className="indent"
                 style={{
                   paddingLeft: `${
                     (data.level || 0) + (hasChildren(data) ? 0 : 1)
                   }rem`,
+                  width: 20,
                 }}
               >
                 {hasChildren(data) && (
@@ -55,7 +59,7 @@ const TreeNodeContent = React.forwardRef<
                     className={styles.icon}
                   />
                 )}
-              </span>
+              </Box>
             )}
             <span className={styles.nodeText}>{render(column)}</span>
           </TreeColumn>
