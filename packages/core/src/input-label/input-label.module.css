@@ -1,3 +1,11 @@
+:root {
+  --label-color: var(--bs-body-color);
+}
+
+.label {
+  color: var(--label-color);
+}
+
 .required::after {
   content: ' *';
   color: inherit;

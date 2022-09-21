@@ -10,6 +10,7 @@ export interface InputLabelProps {
 export const InputLabel = styled.label<InputLabelProps>(
   ({ invalid, disabled, required }) => [
     'form-label',
+    styles.label,
     {
       'text-danger': invalid,
       'text-muted': disabled,
