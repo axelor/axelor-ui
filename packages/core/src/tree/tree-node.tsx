@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { ReactComponent as BiChevronDown } from 'bootstrap-icons/icons/chevron-down.svg';
 import { ReactComponent as BiChevronRight } from 'bootstrap-icons/icons/chevron-right.svg';
@@ -40,9 +40,7 @@ const TreeNodeContent = React.forwardRef<
                 d="flex"
                 className="indent"
                 style={{
-                  paddingLeft: `${
-                    (data.level || 0) + (hasChildren(data) ? 0 : 1)
-                  }rem`,
+                  marginLeft: `${data.level || 0}rem`,
                   width: 20,
                 }}
               >
@@ -69,22 +67,37 @@ const TreeNodeContent = React.forwardRef<
   );
 });
 
-function Parent(props: TYPES.TreeChildProps) {
+function DNDTreeNode(props: TYPES.TreeChildProps) {
   const {
     className,
     columns,
     data,
     index,
     textRenderer,
-    onDrop,
+    onEdit,
     onToggle,
+    onDrop,
     onClick,
+    onDoubleClick,
   } = props;
+  const ref = useRef(null);
   const classNames = useClassNames();
-  const [{ hovered }, dropRef] = useDrop({
+  const [, dragRef, dragPreviewRef] = useDrag({
+    type: NODE_TYPE,
+    item: { data, index, type: NODE_TYPE },
+  });
+
+  const [{ hovered, highlighted }, dropRef] = useDrop({
     accept: NODE_TYPE,
-    hover() {
-      if (!data.expanded) {
+    hover(item: any) {
+      const { id, childrenList = [] } = item.data || {};
+      function isSame() {
+        return id === data.id;
+      }
+      function isChildren() {
+        return childrenList.includes(data.id);
+      }
+      if (!data.expanded && !isSame() && !isChildren()) {
         onToggle && onToggle(data, index, true);
       }
     },
@@ -92,46 +105,21 @@ function Parent(props: TYPES.TreeChildProps) {
       onDrop && onDrop(item, { data, index });
     },
     canDrop(props: any) {
-      const { parent }: TYPES.TreeNode = props.data;
-      return parent !== data.id;
+      const { parent, childrenList = [] }: TYPES.TreeNode = props.data;
+      function isSameParent() {
+        return parent === data.id;
+      }
+      function isChildren() {
+        return childrenList.includes(data.id);
+      }
+      return !isSameParent() && !isChildren();
     },
     collect: function (monitor) {
       return {
+        highlighted: monitor.canDrop(),
         hovered: monitor.isOver(),
       };
     },
-  });
-  return (
-    <div
-      ref={dropRef}
-      className={classNames(className, {
-        [styles.hover]: hovered,
-      })}
-      onClick={onClick}
-    >
-      <TreeNodeContent
-        data={data}
-        columns={columns}
-        textRenderer={textRenderer}
-      />
-    </div>
-  );
-}
-
-function Leaf(props: TYPES.TreeChildProps) {
-  const {
-    className,
-    columns,
-    data,
-    textRenderer,
-    index,
-    onEdit,
-    onDoubleClick,
-    onClick,
-  } = props;
-  const [, dragRef, dragPreviewRef] = useDrag({
-    type: NODE_TYPE,
-    item: { data, index, type: NODE_TYPE },
   });
 
   function handleEdit(e: React.SyntheticEvent) {
@@ -143,18 +131,21 @@ function Leaf(props: TYPES.TreeChildProps) {
     onDoubleClick && onDoubleClick(e);
   }
 
+  dragRef(dropRef(ref));
   return (
     <div
-      ref={dragRef}
-      className={className}
+      ref={ref}
+      className={classNames(className, {
+        [styles.hover]: hovered && highlighted,
+      })}
       onClick={onClick}
       onDoubleClick={handleEdit}
     >
       <TreeNodeContent
         {...(index === 0 ? { ref: dragPreviewRef } : {})}
-        textRenderer={textRenderer}
         data={data}
         columns={columns}
+        textRenderer={textRenderer}
       />
     </div>
   );
@@ -175,7 +166,6 @@ export const TreeNode = React.memo(function TreeNode({
   textRenderer,
   renderer: Renderer = React.Fragment,
 }: TYPES.TreeNodeProps) {
-  const NodeComponent = hasChildren(data) ? Parent : Leaf;
   const RendererComponent = edit && editRenderer ? editRenderer : Renderer;
   const classNames = useClassNames();
   return (
@@ -187,7 +177,7 @@ export const TreeNode = React.memo(function TreeNode({
           })}
       {...(edit ? { node: data, index, columns, onCancel, onSave } : {})}
     >
-      <NodeComponent
+      <DNDTreeNode
         data={data}
         index={index}
         className={classNames(styles.node, {

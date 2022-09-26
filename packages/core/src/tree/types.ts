@@ -4,6 +4,7 @@ export interface TreeNode {
   id?: any;
   data: Record<string, any>;
   children?: boolean | null | number;
+  childrenList?: number[];
   expanded?: boolean;
   hover?: boolean;
   selected?: boolean;
