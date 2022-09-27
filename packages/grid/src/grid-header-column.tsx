@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Input, Icon } from '@axelor-ui/core';
+import { Divider, Box, Input, Icon } from '@axelor-ui/core';
 import { useClassNames } from '@axelor-ui/core';
 import { ReactComponent as BiSortUpAlt } from 'bootstrap-icons/icons/sort-up-alt.svg';
 import { ReactComponent as BiSortDownAlt } from 'bootstrap-icons/icons/sort-down-alt.svg';
@@ -91,7 +91,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
       );
     }
 
-    const canResize = column.name !== '__reorder__' && !(column as any).action;
+    const canResize = column.name !== '__reorder__' && !column.action;
 
     return (
       <>
@@ -113,7 +113,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
           )}
         </span>
 
-        {canResize && onResizeStart && onResize && onResizeEnd && (
+        {canResize && onResizeStart && onResize && onResizeEnd ? (
           <GridColumResizer
             className={styles.columnResizer}
             draggable={true}
@@ -127,13 +127,26 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
               onResize(e, column, index)
             }
           />
+        ) : (
+          <span className={classNames(styles.columnResizer, styles.fixed)}>
+            <Divider vertical />
+          </span>
         )}
       </>
     );
   }
 
   return (
-    <GridColumn type="header" index={index} data={data}>
+    <GridColumn
+      {...(data.action
+        ? {
+            className: styles.action,
+          }
+        : {})}
+      type="header"
+      index={index}
+      data={data}
+    >
       {renderColumn(data, index)}
     </GridColumn>
   );

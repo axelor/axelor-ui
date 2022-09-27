@@ -6,6 +6,7 @@ import styles from './grid.module.scss';
 export interface GridColumnProps {
   data: TYPES.GridColumn;
   index: number;
+  className?: string;
   value?: any;
   type?: 'header' | 'footer' | 'body';
   selected?: boolean;
@@ -21,7 +22,8 @@ export interface GridColumnProps {
 }
 
 export function GridColumn(props: GridColumnProps) {
-  const { children, data, index, selected, renderer, onClick } = props;
+  const { children, className, data, index, selected, renderer, onClick } =
+    props;
   const { width, minWidth } = data;
   const ColumnComponent = renderer || 'div';
   const rendererProps = renderer ? props : {};
@@ -48,7 +50,7 @@ export function GridColumn(props: GridColumnProps) {
       {...(renderer ? {} : { ref: columnRef })}
       {...rendererProps}
       onClick={e => onClick && onClick(e, data, index)}
-      className={classNames(styles.column, data.$css, {
+      className={classNames(styles.column, className, data.$css, {
         [styles.center]: ['row-checked'].includes(data.type || ''),
         [styles.selected]: selected,
       })}

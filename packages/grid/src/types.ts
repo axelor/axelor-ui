@@ -9,6 +9,7 @@ export interface GridColumn {
   visible?: boolean;
   computed?: boolean;
   sort?: boolean;
+  action?: boolean;
   aggregate?: 'sum' | 'min' | 'max' | 'avg' | 'count';
   formatter?: (data: any, column: GridColumn) => any;
   renderer?: (props: any) => any;
