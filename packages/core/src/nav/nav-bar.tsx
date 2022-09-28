@@ -4,6 +4,7 @@ import { ReactComponent as BiChevronLeft } from 'bootstrap-icons/icons/caret-lef
 import { ClickAwayListener } from '../click-away-listener';
 import { Popper } from '../popper';
 import { Collapse } from '../collapse';
+import { Badge } from '../badge';
 import { Box } from '../box';
 import { Icon } from '../icon';
 import { Nav } from './nav';
@@ -78,7 +79,7 @@ const NavBarItem = React.memo(function NavBarItem({
   const classNames = useClassNames();
   const rtl = useTheme().dir === 'rtl';
 
-  const { icon, iconColor: color, title, items } = item;
+  const { tag, tagStyle, icon, iconColor: color, title, items } = item;
   const bgColor = color && getRGB(color, 0.25);
   const hasChildren = (items || []).length > 0;
 
@@ -173,6 +174,17 @@ const NavBarItem = React.memo(function NavBarItem({
 
         <Box className={classes.menuItemTitle}>{title}</Box>
 
+        {tag && (
+          <Badge
+            className={classNames(classes.menuTag, {
+              [classes.hasMenuIcon]: hasChildren,
+            })}
+            data-tag-name={(item as any)?.name}
+            bg={(tagStyle || 'secondary') as any}
+          >
+            {`${tag}`.toUpperCase()}
+          </Badge>
+        )}
         {hasChildren && (
           <Box
             className={classNames(classes.menuIcon, {

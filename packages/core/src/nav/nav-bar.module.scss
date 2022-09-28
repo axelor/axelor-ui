@@ -126,3 +126,23 @@
     }
   }
 }
+
+.menuTag {
+  position: absolute;
+  right: 0.75rem;
+  padding-left: 0.65rem;
+  padding-right: 0.65rem;
+
+  .rtl & {
+    right: unset;
+    left: 0.75rem;
+  }
+
+  &.hasMenuIcon {
+   right: calc(0.75rem + 1rem); 
+   .rtl & {
+    right: unset;
+    left: calc(0.75rem + 1rem);
+   }
+  }
+}

@@ -12,6 +12,8 @@ export interface NavItemProps {
   checked?: boolean;
   disabled?: boolean;
   collapsed?: boolean;
+  tag?: string;
+  tagStyle?: null | string;
   items?: NavItemProps[];
   onClick?: React.MouseEventHandler<HTMLElement>;
 }
