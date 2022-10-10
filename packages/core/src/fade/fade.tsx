@@ -70,7 +70,7 @@ export function Fade({
       {state => {
         if (isValidElement(children)) {
           const style = getTransitionStyle(state, styles as any, children);
-          return cloneElement(children, {
+          return cloneElement(children as React.ReactElement, {
             style,
           });
         }
