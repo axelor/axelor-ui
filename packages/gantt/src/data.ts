@@ -1,4 +1,3 @@
-
 const response = {
   status: 0,
   offset: 0,

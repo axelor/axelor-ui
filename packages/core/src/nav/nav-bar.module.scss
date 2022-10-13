@@ -139,10 +139,10 @@
   }
 
   &.hasMenuIcon {
-   right: calc(0.75rem + 1rem); 
-   .rtl & {
-    right: unset;
-    left: calc(0.75rem + 1rem);
-   }
+    right: calc(0.75rem + 1rem);
+    .rtl & {
+      right: unset;
+      left: calc(0.75rem + 1rem);
+    }
   }
 }

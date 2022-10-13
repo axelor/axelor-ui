@@ -19,7 +19,7 @@ export const GridGroupRow = React.memo(function GridGroupRow(
   const rendererProps = renderer ? props : {};
   const classNames = useClassNames();
   const isRTL = useRTL();
-  
+
   return (
     <RowRenderer
       {...rendererProps}
@@ -36,7 +36,13 @@ export const GridGroupRow = React.memo(function GridGroupRow(
       >
         <Icon
           className={styles.groupRowIcon}
-          as={state === 'close' ? (isRTL ? BiCaretLeftFill : BiCaretRightFill) : BiCaretDownFill}
+          as={
+            state === 'close'
+              ? isRTL
+                ? BiCaretLeftFill
+                : BiCaretRightFill
+              : BiCaretDownFill
+          }
           size={1}
           title={state === 'close' ? 'Collapse' : 'Expand'}
         />

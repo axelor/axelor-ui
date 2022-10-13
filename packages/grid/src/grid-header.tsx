@@ -35,7 +35,7 @@ export interface GridHeaderProps
   ) => void;
   onColumnShow?: GridHeaderMenuProps['onColumnShow'];
   onColumnHide?: GridHeaderMenuProps['onColumnHide'];
-  onColumnCustomize?:  GridHeaderMenuProps['onColumnCustomize'];
+  onColumnCustomize?: GridHeaderMenuProps['onColumnCustomize'];
   onColumnDrop?: GridHeaderMenuProps['onColumnDrop'];
   onColumnGroupRemove?: GridHeaderMenuProps['onColumnGroupRemove'];
 }

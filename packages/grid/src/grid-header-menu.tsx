@@ -1,5 +1,13 @@
 import React from 'react';
-import { Box, Input, Menu, MenuItem, Icon, Divider, useClassNames } from '@axelor-ui/core';
+import {
+  Box,
+  Input,
+  Menu,
+  MenuItem,
+  Icon,
+  Divider,
+  useClassNames,
+} from '@axelor-ui/core';
 import { ReactComponent as BiThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg';
 import { ReactComponent as BiX } from 'bootstrap-icons/icons/x.svg';
 
@@ -127,7 +135,11 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
                     checked={visible}
                     onChange={() => {}}
                   />
-                  <Box className={styles.columnOptionMenuTitle} as="span" ms={2}>
+                  <Box
+                    className={styles.columnOptionMenuTitle}
+                    as="span"
+                    ms={2}
+                  >
                     {column.title}
                   </Box>
                 </Box>

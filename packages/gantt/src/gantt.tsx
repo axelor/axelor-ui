@@ -118,7 +118,7 @@ export function Gantt({
       }
     }
   }
-  
+
   return (
     <Box
       d="flex"
