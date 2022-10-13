@@ -136,7 +136,8 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
             <div className={cls} ref={ref}>
               <div ref={wrapperRef} className={styles.collapseWrapper}>
                 <div className={styles.collapseWrapperInner}>
-                  {children as React.ReactNode}
+                  {typeof children === 'function' && children(state)}
+                  {typeof children !== 'function' && children}
                 </div>
               </div>
             </div>

@@ -46,7 +46,14 @@ export const AccordionBody = withStyled(AccordionCollapse)(
     const className = classNames('accordion-body');
     return (
       <AccordionCollapse ref={ref} {...rest}>
-        <div className={className}>{children}</div>
+        {state => {
+          return (
+            <div className={className}>
+              {typeof children === 'function' && children(state)}
+              {typeof children !== 'function' && children}
+            </div>
+          );
+        }}
       </AccordionCollapse>
     );
   }
