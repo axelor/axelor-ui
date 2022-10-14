@@ -146,7 +146,8 @@ export const withStyled =
   <C extends StyledComponent<any, any>>(_: C) =>
   <P extends {}>(
     render: (
-      props: React.ComponentPropsWithoutRef<C> & P,
+      props: { as?: React.ElementType<{}> } & P &
+        React.ComponentPropsWithoutRef<C>,
       ref: React.Ref<any>
     ) => JSX.Element | null
   ) => {
