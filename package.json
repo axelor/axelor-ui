@@ -13,7 +13,8 @@
     "preinstall": "node scripts/check-yarn.js",
     "format": "prettier -w '**/*.{ts,tsx,js,jsx,json,css,scss}'",
     "storybook": "yarn workspace stories run storybook",
-    "build": "yarn workspaces run build",
+    "storybook:build": "yarn workspace stories run build-storybook",
+    "build": "node scripts/build-packages.js",
     "clean": "yarn workspaces run clean"
   },
   "devDependencies": {
