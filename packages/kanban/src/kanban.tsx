@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Box, useClassNames } from '@axelor-ui/core';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 
 import styles from './kanban.module.css';
 import KanbanColumn, { KanbanColumnProps } from './kanban-column';
@@ -24,12 +24,12 @@ function Kanban({
   ColumnProps,
 }: KanbanProps) {
   const getColumn = useCallback(
-    columnId => columns?.find(c => String(c.id) === String(columnId)),
+    (columnId: string) => columns?.find(c => String(c.id) === String(columnId)),
     [columns]
   );
 
   const handleDragEnd = useCallback(
-    result => {
+    (result: DropResult) => {
       const { source, destination, type } = result;
       if (!destination) {
         return;
