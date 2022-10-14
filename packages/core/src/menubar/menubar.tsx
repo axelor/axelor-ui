@@ -20,6 +20,8 @@ import { isElementDisabled, isElementHidden } from '../arrow-navigation/utils';
 import { withStyled } from '../styled';
 
 import styles from './menubar.module.scss';
+import { Portal } from '../portal';
+import { useForwardedRef } from '../hooks';
 
 const MenubarContext = React.createContext<any>({});
 
@@ -347,6 +349,8 @@ function MenuItem({
     [onMouseEnter]
   );
 
+  const { menubarRef } = useMenubar();
+
   return (
     <div
       tabIndex={-1}
@@ -363,14 +367,16 @@ function MenuItem({
         endIcon={rtl ? BiCaretLeftFill : BiCaretRightFill}
         onMouseEnter={handleItemMouseEnter}
       />
-      <Menu
-        target={target}
-        placement={rtl ? 'start-top' : 'end-top'}
-        onMouseEnter={handleMouseEnter}
-        {...MenuProps}
-      >
-        {children}
-      </Menu>
+      <Portal container={menubarRef.current}>
+        <Menu
+          target={target}
+          placement={rtl ? 'start-top' : 'end-top'}
+          onMouseEnter={handleMouseEnter}
+          {...MenuProps}
+        >
+          {children}
+        </Menu>
+      </Portal>
     </div>
   );
 }
@@ -457,12 +463,16 @@ export const Menubar = withStyled(Box)((props, ref) => {
     [rtl, showNext, showPrevious, hideMenu]
   );
 
-  const value = useMemo(() => ({ rtl, hideMenu }), [rtl, hideMenu]);
+  const menubarRef = useForwardedRef<HTMLDivElement>(ref);
+  const value = useMemo(
+    () => ({ rtl, menubarRef, hideMenu }),
+    [rtl, menubarRef, hideMenu]
+  );
 
   return (
     <MenubarContext.Provider value={value}>
       <ArrowNavigation selector="auto-horizontal">
-        <Box ref={ref} d="flex" {...props}>
+        <Box ref={menubarRef} d="flex" {...props}>
           {beforeElements}
           {menus.map((menu: any) => {
             const { text, onShow, onHide } = menu.props;
