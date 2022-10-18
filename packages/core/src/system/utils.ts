@@ -8,7 +8,7 @@ export const isNumeric = (value: any) =>
   isString(value) && value - parseFloat(value) + 1 >= 0;
 
 export const isUnitSize = (value: any) =>
-  isString(value) && parseFloat(value).toString() != value;
+  isString(value) && parseFloat(value).toString() !== value;
 
 export const isReponsive = (value: any) =>
   typeof value === 'object' && Breakpoints.some(bp => bp in value);

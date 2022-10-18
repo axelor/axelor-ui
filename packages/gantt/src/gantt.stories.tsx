@@ -10,7 +10,7 @@ import * as TYPES from './types';
 
 import response from './data';
 
-export default {
+const config = {
   component: Gantt,
   title: 'Advance/Gantt',
 };
@@ -106,3 +106,5 @@ export const Basic = () => {
     </DndProvider>
   );
 };
+
+export default config;

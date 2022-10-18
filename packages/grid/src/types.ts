@@ -5,9 +5,11 @@ export interface GridColumn {
   type?: string;
   title?: string;
   width?: number;
+  minWidth?: number;
   visible?: boolean;
   computed?: boolean;
   sort?: boolean;
+  action?: boolean;
   aggregate?: 'sum' | 'min' | 'max' | 'avg' | 'count';
   formatter?: (data: any, column: GridColumn) => any;
   renderer?: (props: any) => any;
@@ -64,15 +66,16 @@ export interface GridProps {
   allowSelection?: boolean;
   allowCheckboxSelection?: boolean;
   allowCellSelection?: boolean;
+  allowCellFocus?: boolean;
+  allowColumnOptions?: boolean;
   allowColumnResize?: boolean;
   allowColumnCustomize?: boolean;
   allowColumnHide?: boolean;
   allowRowReorder?: boolean;
   stickyHeader?: boolean;
   stickyFooter?: boolean;
-  addNewText?: string;
-  noRecordsText?: string;
-  groupingText?: string;
+  addNewText?: string | React.ReactNode;
+  noRecordsText?: string | React.ReactNode;
   cellRenderer?: Renderer;
   rowRenderer?: Renderer;
   editRowRenderer?: Renderer;
@@ -83,7 +86,7 @@ export interface GridProps {
   searchColumnRenderer?: Renderer;
   rowGroupHeaderRenderer?: Renderer;
   rowGroupFooterRenderer?: Renderer;
-  onColumnCustomize?: (e: React.SyntheticEvent, column: GridColumn) => void;
+  onColumnCustomize?: (e: React.SyntheticEvent, column?: GridColumn) => void;
   onRowClick?: (e: React.SyntheticEvent, row: any, rowIndex: number) => void;
   onRowDoubleClick?: (
     e: React.SyntheticEvent,
@@ -99,24 +102,31 @@ export interface GridProps {
   ) => void;
   onRowReorder?: (dragRow: GridRow, hoverRow: GridRow) => void;
   onRecordAdd?: () => void;
-  onRecordEdit?: (record: any, recordIndex?: number) => void;
+  onRecordEdit?: (
+    row: any,
+    rowIndex?: number,
+    cell?: any,
+    cellIndex?: number
+  ) => void;
   onRecordSave?: (
     record: any,
-    recordIndex?: number,
-    columnIndex?: number,
+    recordIndex: number,
+    columnIndex: number,
     dirty?: boolean,
     saveFromEdit?: boolean
   ) => any;
   onRecordDiscard?: (
     record: any,
-    recordIndex?: number,
-    columnIndex?: number
+    recordIndex: number,
+    columnIndex: number
   ) => void;
+  translate?: (key: string) => null | string;
 }
 
 export interface GridRowProps {
   data: GridRow;
   index: number;
+  draggable?: boolean;
   className?: string;
   children?: any;
   columns?: GridColumn[];
@@ -135,6 +145,12 @@ export interface GridRowProps {
     e: SyntheticEvent,
     row: GridRow,
     rowIndex: number,
-    columnIndex?: number
+    columnIndex?: number,
+    column?: GridColumn
   ) => void;
+  onUpdate?: (rowIndex: number, values: any) => void;
+}
+
+export interface DropObject extends GridColumn {
+  $group?: boolean;
 }

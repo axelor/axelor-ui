@@ -8,7 +8,7 @@ import { MenuHeader } from './menu-header';
 import { MenuItem } from './menu-item';
 import styled from '../styled';
 
-export default {
+const config = {
   component: Menu,
   title: 'Components/Menu',
 };
@@ -165,3 +165,5 @@ export const Positions = () => {
     </Box>
   );
 };
+
+export default config;

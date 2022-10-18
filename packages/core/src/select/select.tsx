@@ -1,15 +1,24 @@
 import React from 'react';
+import { Icon, IconProps } from '../icon';
 import ReactSelect, {
   components,
   ControlProps,
   IndicatorsContainerProps,
+  MenuListProps,
 } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { Box } from '../box';
 
-import selectStyles from './select.module.css';
+import selectStyles from './select.module.scss';
+import { useTheme } from '../styles';
 
 export type SelectOption = unknown;
+
+export interface SelectIcon {
+  id: string;
+  icon: IconProps['as'];
+  onClick?: React.MouseEventHandler<SVGSVGElement>;
+}
 
 export interface SelectProps {
   className?: string;
@@ -23,19 +32,22 @@ export interface SelectProps {
   isDisabled?: boolean;
   isRtl?: boolean;
   isSearchable?: boolean;
+  isClearOnDelete?: boolean;
   value: any;
   onChange: (value: any) => void;
   onFocus?: (e: React.SyntheticEvent) => void;
   onBlur?: (e: React.SyntheticEvent) => void;
   onKeyDown?: (e: React.SyntheticEvent) => void;
   options?: SelectOption[];
+  addOnOptions?: SelectOption[];
   fetchOptions?: (searchInput: string) => Promise<unknown>;
   optionLabel?: string | ((option: SelectOption) => string);
   optionValue?: string | ((option: SelectOption) => string);
-  actions?: React.ReactNode;
+  icons?: Array<SelectIcon>;
   createOption?: (inputString: string) => React.ReactNode;
   createOptionPosition?: 'first' | 'last';
   onCreate?: (value: SelectOption) => void;
+  components?: any;
 }
 
 const ControlContainer = (props: ControlProps<SelectOption, true>) => {
@@ -56,22 +68,38 @@ const ControlContainer = (props: ControlProps<SelectOption, true>) => {
   );
 };
 
+const MenuList = ({ innerProps, ...rest }: MenuListProps) => {
+  return (
+    <components.MenuList
+      {...rest}
+      innerProps={{ ...innerProps, ...(rest.isRtl ? { dir: 'rtl' } : {}) }}
+    />
+  );
+};
+
 const IndicatorsContainer = (
   props: IndicatorsContainerProps<SelectOption, true>
 ) => {
   function handleMouseDown(e: React.SyntheticEvent) {
+    const { onMenuClose } = props.selectProps || {};
+    onMenuClose && onMenuClose();
     e.preventDefault();
   }
+  const icons: SelectIcon[] =
+    (props.selectProps.components as any)?.icons || [];
   return (
-    <Box d="flex" className={selectStyles.indicators}>
+    icons.length > 0 && (
       <Box
         d="flex"
-        className={selectStyles.indicatorActions}
+        className={selectStyles.icons}
         onMouseDown={handleMouseDown}
+        me={1}
       >
-        {(props.selectProps.components as any)?.actions}
+        {icons.map(icon => (
+          <Icon key={icon.id} as={icon.icon} onClick={icon.onClick} />
+        ))}
       </Box>
-    </Box>
+    )
   );
 };
 
@@ -83,28 +111,35 @@ export function Select({
   isMulti,
   isClearable = true,
   isDisabled = false,
-  isRtl = false,
+  isRtl,
   isCreatable = false,
   isSearchable = true,
+  isClearOnDelete = true,
   loading: _loading,
   value,
   onChange,
   onFocus,
   onBlur,
   onKeyDown,
-  options,
+  options: _options,
+  addOnOptions,
   fetchOptions,
-  actions,
+  icons,
   optionLabel = 'label',
   optionValue = 'value',
   createOption,
   createOptionPosition = 'last',
   onCreate,
+  components,
 }: SelectProps) {
-  const [$options, setOptions] = React.useState(options);
+  const [options, setOptions] = React.useState(_options);
   const [inputText, setInputText] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
+  const [isMenuOpen, setMenuOpen] = React.useState(false);
+  const mounted = React.useRef(false);
   const timer = React.useRef<any>(null);
+
+  const { dir } = useTheme();
+  const rtl = typeof isRtl !== 'undefined' ? isRtl : dir === 'rtl';
 
   const setTimer = React.useCallback((callback: any, interval = 500) => {
     timer.current = setTimeout(callback, interval);
@@ -136,19 +171,14 @@ export function Select({
   const loadOptions = React.useCallback(
     (searchString: string) => {
       if (fetchOptions) {
-        setLoading(true);
         clearTimer();
-        setTimer(
-          async () => {
-            try {
-              const list = await fetchOptions(searchString);
-              setOptions(list as SelectOption[]);
-            } finally {
-              setLoading(false);
-            }
-          },
-          searchString ? 500 : 0
-        );
+        setTimer(async () => {
+          try {
+            const list = await fetchOptions(searchString);
+            setOptions(list as SelectOption[]);
+          } finally {
+          }
+        }, 500);
       }
     },
     [fetchOptions, setTimer, clearTimer]
@@ -166,49 +196,88 @@ export function Select({
     setInputText(value);
   }, []);
 
-  React.useEffect(() => {
-    setOptions(options);
-  }, [options]);
+  const handleMenuOpen = () => setMenuOpen(true);
+  const handleMenuClose = () => setMenuOpen(false);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const isDelete = isClearOnDelete && e.key === 'Delete';
+    if ((isDelete || (isMenuOpen && e.key === 'Backspace')) && value) {
+      onChange(null);
+    }
+    if (isDelete) {
+      setInputText('');
+    }
+    if (!(isMenuOpen && e.key === 'Enter')) {
+      onKeyDown && onKeyDown(e);
+    }
+  };
 
   React.useEffect(() => {
-    inputText && loadOptions(inputText);
+    setOptions(_options);
+  }, [_options]);
+
+  React.useEffect(() => {
+    mounted.current && loadOptions(inputText);
   }, [inputText, loadOptions]);
 
   React.useEffect(() => {
-    return () => clearTimer();
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+      clearTimer();
+    };
   }, [clearTimer]);
 
   const SelectComponent = (isCreatable ? CreatableSelect : ReactSelect) as any;
-  const isLoading = loading || _loading;
+  const $options = React.useMemo(() => {
+    return [...(options || []), ...(addOnOptions || [])];
+  }, [options, addOnOptions]);
+
+  const hasOption = inputText
+    ? ($options || []).some(opt =>
+        (getOptionLabel(opt) || '')
+          .toLowerCase()
+          .includes(inputText.toLowerCase())
+      )
+    : ($options || []).length > 0;
 
   return (
     <SelectComponent
       className={className}
       classNamePrefix={classNamePrefix}
       menuPortalTarget={document.body}
-      openMenuOnClick
+      menuIsOpen={hasOption && isMenuOpen}
+      menuPlacement="auto"
       {...{
-        options: isLoading ? [] : $options,
+        options: $options,
         placeholder,
         isMulti,
         isDisabled,
-        isRtl,
+        isRtl: rtl,
         isClearable,
         isSearchable,
-        isLoading,
         autoFocus,
         value,
         onChange,
+        inputValue: inputText,
         onInputChange: handleInputChange,
         onFocus: handleFocus,
         onBlur,
-        onKeyDown,
+        onKeyDown: handleKeyDown,
         getOptionLabel,
         getOptionValue,
         allowCreateWhileLoading: false,
-        components: actions
-          ? { Control: ControlContainer, IndicatorsContainer, actions }
-          : {},
+        closeMenuOnScroll: true,
+        openMenuOnClick: true,
+        onMenuOpen: handleMenuOpen,
+        onMenuClose: handleMenuClose,
+        noOptionsMessage: () => '',
+        components: {
+          Control: ControlContainer,
+          IndicatorsContainer,
+          icons,
+          MenuList,
+          ...components,
+        },
         ...(isCreatable
           ? {
               formatCreateLabel: createOption,

@@ -1,16 +1,19 @@
 import React from 'react';
 import { Input } from '@axelor-ui/core';
 import { useClassNames } from '@axelor-ui/core';
+import get from 'lodash/get';
 
 import { GridColumn } from './grid-column';
 import { isRowCheck } from './utils';
 import * as TYPES from './types';
-import styles from './grid.module.css';
+import styles from './grid.module.scss';
+import { GridDNDRow } from './grid-dnd-row';
 
 export const GridBodyRow = React.memo(function GridBodyRow(
   props: TYPES.GridRowProps
 ) {
   const {
+    draggable,
     className,
     columns = [],
     editCell,
@@ -24,12 +27,24 @@ export const GridBodyRow = React.memo(function GridBodyRow(
     onCellClick,
     onDoubleClick,
     onClick,
+    onUpdate,
   } = props;
 
+  const handleUpdate = React.useCallback(
+    (values: any) => {
+      onUpdate && onUpdate(rowIndex, values);
+    },
+    [onUpdate, rowIndex]
+  );
+
   const handleCellClick = React.useCallback(
-    function handleCellClick(e, cell, cellIndex) {
+    function handleCellClick(
+      e: React.SyntheticEvent,
+      cell: TYPES.GridColumn,
+      cellIndex: number
+    ) {
       onCellClick && onCellClick(e, cell, cellIndex, data, rowIndex);
-      onClick && onClick(e, data, rowIndex, cellIndex);
+      onClick && onClick(e, data, rowIndex, cellIndex, cell);
     },
     [data, rowIndex, onCellClick, onClick]
   );
@@ -46,15 +61,16 @@ export const GridBodyRow = React.memo(function GridBodyRow(
     }
     return column.formatter
       ? column.formatter(data.record, column)
-      : data.record[column.name];
+      : get(data.record, column.name);
   }
 
   const RowComponent = renderer || 'div';
   const rendererProps = renderer ? props : {};
   const classNames = useClassNames();
+  const DragComponent: any = draggable ? GridDNDRow : React.Fragment;
 
   return (
-    <>
+    <DragComponent {...(draggable ? { ...props } : {})}>
       <RowComponent
         {...rendererProps}
         className={classNames(styles.row, className, {
@@ -73,11 +89,12 @@ export const GridBodyRow = React.memo(function GridBodyRow(
             selected={selectedCell === index}
             renderer={cellRenderer || column.renderer}
             onClick={handleCellClick}
+            onUpdate={handleUpdate}
           >
             {renderColumn(column)}
           </GridColumn>
         ))}
       </RowComponent>
-    </>
+    </DragComponent>
   );
 });

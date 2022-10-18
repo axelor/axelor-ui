@@ -66,7 +66,11 @@ export function KanbanColumn({
   className,
   style,
 }: KanbanColumnProps) {
-  const { renderer: Component = DefaultColumn, id, disableDrag } = column;
+  const {
+    renderer: Component = DefaultColumn,
+    id,
+    disableDrag = true,
+  } = column;
 
   return (
     <Draggable

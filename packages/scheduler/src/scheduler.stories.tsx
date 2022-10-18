@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { SchedulerEvent } from './types';
 import Scheduler, { SchedulerProps } from './scheduler';
 
-export default {
+const config = {
   component: Scheduler,
   title: 'Advance/Scheduler',
 };
@@ -119,3 +119,5 @@ export const EventStyler = () => (
     eventStyler={() => ({ style: { backgroundColor: 'green' } })}
   />
 );
+
+export default config;

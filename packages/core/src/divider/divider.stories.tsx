@@ -1,7 +1,7 @@
 import { Box } from '../box';
 import { Divider } from './divider';
 
-export default {
+const config = {
   component: Divider,
   title: 'Components/Divider',
 };
@@ -27,3 +27,5 @@ export const Vertical = () => {
     </div>
   );
 };
+
+export default config;

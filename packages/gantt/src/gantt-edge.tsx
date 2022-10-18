@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react';
+import { Icon, useClassNames, useTheme } from '@axelor-ui/core';
+
 import { ReactComponent as BiCaretRightFill } from 'bootstrap-icons/icons/caret-right-fill.svg';
 import { ReactComponent as BiCaretLeftFill } from 'bootstrap-icons/icons/caret-left-fill.svg';
 
-import { Icon } from '@axelor-ui/core';
-import classes from './gantt.module.css';
+import classes from './gantt.module.scss';
 import * as TYPES from './types';
 
 const Line = React.memo<{
@@ -34,6 +35,11 @@ const Line = React.memo<{
   const width = x1 !== x2 ? Math.abs(x1 - x2) : 0;
   const height = y1 !== y2 ? Math.abs(y1 - y2) : 0;
 
+  const { dir } = useTheme();
+  const rtl = dir === 'rtl';
+
+  const classNames = useClassNames();
+
   const handleDelete = useCallback(
     () =>
       onDeleteConnector &&
@@ -48,6 +54,14 @@ const Line = React.memo<{
 
   const isStartPointer = targetEnd === 'start';
 
+  let pointerIcon;
+
+  if (isStartPointer) {
+    pointerIcon = rtl ? BiCaretLeftFill : BiCaretRightFill;
+  } else {
+    pointerIcon = rtl ? BiCaretRightFill : BiCaretLeftFill;
+  }
+
   return (
     <>
       <div
@@ -56,18 +70,18 @@ const Line = React.memo<{
         style={{
           width: width <= 2 ? 0 : width,
           height: height <= 2 ? 0 : height,
-          left,
           top,
+          ...(rtl ? { right: left } : { left }),
         }}
       >
         {pointer && (
           <Icon
-            as={isStartPointer ? BiCaretRightFill : BiCaretLeftFill}
-            className={
+            as={pointerIcon}
+            className={classNames(
               isStartPointer
                 ? classes.ganttEdgeIconStart
                 : classes.ganttEdgeIconEnd
-            }
+            )}
           />
         )}
       </div>

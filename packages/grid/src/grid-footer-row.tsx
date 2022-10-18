@@ -1,9 +1,11 @@
 import React from 'react';
 import { useClassNames } from '@axelor-ui/core';
+import * as TYPES from './types';
+
 import { GridColumn } from './grid-column';
 import { capitalizeWord } from './utils';
-import * as TYPES from './types';
-import styles from './grid.module.css';
+import { useTranslation } from './translate';
+import styles from './grid.module.scss';
 
 export const GridFooterRow = React.memo(function GridFooterRow(
   props: TYPES.GridRowProps
@@ -16,6 +18,7 @@ export const GridFooterRow = React.memo(function GridFooterRow(
     renderer,
     data,
   } = props;
+  const t = useTranslation();
   const RowRenderer = renderer || 'div';
   const rendererProps = renderer ? props : {};
   const classNames = useClassNames();
@@ -26,21 +29,26 @@ export const GridFooterRow = React.memo(function GridFooterRow(
         [styles.selected]: selected,
       })}
     >
-      {columns.map((column, index) => (
-        <GridColumn
-          key={column.name}
-          selected={selectedCell === index}
-          index={index}
-          data={column}
-          type="footer"
-        >
-          {column.aggregate
-            ? `${capitalizeWord(column.aggregate)} : ${
-                data.aggregate[column.name]
-              }`
-            : null}
-        </GridColumn>
-      ))}
+      {columns.map((column, index) => {
+        const value = column.aggregate && data.aggregate[column.name];
+        return (
+          <GridColumn
+            key={column.name}
+            selected={selectedCell === index}
+            index={index}
+            data={column}
+            type="footer"
+          >
+            {column.aggregate
+              ? `${t(capitalizeWord(column.aggregate))} : ${
+                  column.formatter
+                    ? column.formatter({ [column.name]: value }, column)
+                    : value
+                }`
+              : null}
+          </GridColumn>
+        );
+      })}
     </RowRenderer>
   );
 });

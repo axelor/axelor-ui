@@ -1,22 +1,21 @@
 import React from 'react';
-import { useRefs } from '@axelor-ui/core';
-import { useClassNames } from '@axelor-ui/core';
-
-import { GridGroup } from './grid-group';
+import { Box, useRefs, useClassNames } from '@axelor-ui/core';
 import { GridHeader } from './grid-header';
 import { GridBody } from './grid-body';
 import { GridDNDColumn } from './grid-dnd-row';
 import {
-  GRID_CONFIG,
   ROW_TYPE,
   navigator,
   getRows,
   isRowVisible,
   isRowCheck,
+  getColumnWidth,
+  useRTL,
 } from './utils';
 import * as TYPES from './types';
-import styles from './grid.module.css';
+import styles from './grid.module.scss';
 import { GridFooter } from './grid-footer';
+import { TranslateProvider } from './translate';
 
 function debounce(func: () => void, timeout: number = 300) {
   let timer: any;
@@ -33,6 +32,9 @@ const isDefined = (val: any) => val !== undefined;
 const isNull = (value: any) => !isDefined(value) || value === null;
 const getColumns = (columns: TYPES.GridColumn[]) =>
   columns.filter(column => column.visible !== false);
+const _translate = (str: string) => str;
+
+const getCssSelector = (str: string) => (str || '').replace(/\+/g, () => '\\+');
 
 function restoreGridSelection(
   state: TYPES.GridState,
@@ -42,8 +44,9 @@ function restoreGridSelection(
   let { selectedRows, selectedCell, rows } = state;
 
   function getRowNewIndex(oldIndex: number) {
-    const key = oldRows[oldIndex].key;
-    return rows.findIndex(row => row.key === key);
+    const key = oldRows[oldIndex]?.key;
+    const ind = rows.findIndex(row => row.key === key);
+    return ind === -1 ? oldIndex : ind;
   }
 
   if (selectedRows) {
@@ -61,14 +64,17 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
   (props, ref) => {
     const containerRef = React.useRef<any>();
     const refs = React.useRef<any>({});
+
     const { className, state, setState, columns, records } = props;
     const { editable, sortType, selectionType = 'multiple' } = props;
     const {
       allowSelection,
+      allowCellFocus = true,
       allowSorting,
       allowSearch,
       allowGrouping,
       allowColumnResize,
+      allowColumnOptions,
       allowCheckboxSelection,
       allowCellSelection,
       allowColumnCustomize,
@@ -76,7 +82,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       allowRowReorder,
       stickyHeader = true,
       stickyFooter = true,
+      translate = _translate,
     } = props;
+    const isRTL = useRTL();
 
     const {
       onRowClick,
@@ -145,7 +153,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           });
         }
 
-        const totalWidth = getContainerWidth();
+        const borderWidth = 1;
+        const totalWidth = getContainerWidth() - borderWidth * 2;
         if (totalWidth > 0) {
           const displayColumns = getColumns(columns);
           const computedColumns = displayColumns.filter(col => col.computed);
@@ -153,7 +162,12 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           const remainWidth =
             totalWidth -
             computedColumns.reduce(
-              (total, col) => total + parseFloat(`${col.width}`),
+              (total, col) =>
+                total +
+                Math.max(
+                  parseFloat(`${col.width || 0}`),
+                  parseFloat(`${col.minWidth || 0}`)
+                ),
               0
             );
           const colWidth = remainWidth / unComputedColumns.length;
@@ -162,7 +176,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             if (col.computed) return col;
             return {
               ...col,
-              width: Math.max(GRID_CONFIG.COLUMN_MIN_WIDTH, colWidth),
+              width: getColumnWidth(col, colWidth, true),
             };
           });
         }
@@ -171,7 +185,12 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     // handle column sorting
     const handleSort = React.useCallback(
-      (event, { name }, index?, sortOrder?: 'asc' | 'desc') => {
+      (
+        event: any,
+        { name }: TYPES.GridColumn,
+        index?: number,
+        sortOrder?: 'asc' | 'desc'
+      ) => {
         const newSort = { name, order: sortOrder || 'asc' };
         const { shiftKey } = event;
 
@@ -218,7 +237,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleRowStateChange = React.useCallback(
-      function handleRowStateChange(row, state?: 'open' | 'close') {
+      function handleRowStateChange(
+        row: TYPES.GridRow,
+        state?: 'open' | 'close'
+      ) {
         if (isDefined(row)) {
           const { key } = row;
           return setState(draft => {
@@ -233,10 +255,14 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     // handle group row toggle, row selection
     const handleRowClick = React.useCallback(
-      async (e, row, rowIndex, cellIndex = null) => {
-        const isSelectBox =
-          e.key === 'Enter' ||
-          ['checkbox', 'radio'].includes(e.target && e.target.type);
+      async (
+        e: any,
+        row: TYPES.GridRow,
+        rowIndex: number,
+        cellIndex: number | null = null,
+        cell?: TYPES.GridColumn
+      ) => {
+        const isSelectBox = e.key === 'Enter' || cell?.type === 'row-checked';
 
         // toggle group row
         if (row.type === 'group-row') {
@@ -250,7 +276,12 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         onRowClick && onRowClick(e, row, rowIndex);
         if (!isSelectBox && editable) {
           if (onRecordEdit) {
-            const result = await onRecordEdit(row, rowIndex);
+            const result = await onRecordEdit(
+              row,
+              rowIndex,
+              cell,
+              cellIndex || -1
+            );
             if (result === null) {
               return;
             }
@@ -374,7 +405,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleRowMove = React.useCallback(
-      (dragRow, hoverRow, isStartRow) => {
+      (dragRow: TYPES.GridRow, hoverRow: TYPES.GridRow) => {
         onRowReorder && onRowReorder(dragRow, hoverRow);
         return setState(draft => {
           const { rows } = draft;
@@ -384,7 +415,11 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           const [dragColumn] = rows.splice(dragIndex, 1);
 
           const hoverIndex = rows.findIndex(row => row.key === hoverRow.key);
-          rows.splice(hoverIndex + (isStartRow ? 0 : 1), 0, dragColumn);
+          rows.splice(
+            hoverIndex + (dragIndex <= hoverIndex ? 1 : 0),
+            0,
+            dragColumn
+          );
 
           const { selectedCell, selectedRows } = restoreGridSelection(
             draft,
@@ -398,8 +433,11 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleColumnResizeStart = React.useCallback(
-      function handleColumnResizeStart(e, column: TYPES.GridColumn) {
-        const ctx = e.target.cloneNode(true);
+      function handleColumnResizeStart(
+        e: React.DragEvent<HTMLElement>,
+        column: TYPES.GridColumn
+      ) {
+        const ctx = (e.target as HTMLElement).cloneNode(true) as HTMLElement;
         ctx.style.display = 'none';
         e.dataTransfer.setDragImage(ctx, 0, 0);
 
@@ -413,7 +451,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           y: clientY,
           current: width,
         };
-        const body = container.querySelector(`.${styles.body}`);
+        const body = container.querySelector(getCssSelector(`.${styles.body}`));
         body &&
           (body.style.minWidth = `${body.getBoundingClientRect().width}px`);
 
@@ -423,44 +461,49 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       []
     );
 
-    const handleColumnResize = React.useCallback(function handleColumnResize(
-      e,
-      column,
-      index
-    ) {
-      const dataTransfer = Object.assign({}, refs.current.event);
-      const clientX = e.clientX || (dataTransfer || {}).clientX || 0;
-      if (!dataTransfer || clientX <= 0) return;
+    const handleColumnResize = React.useCallback(
+      function handleColumnResize(
+        e: React.DragEvent<HTMLElement>,
+        column: TYPES.GridColumn,
+        index: number
+      ) {
+        const dataTransfer = Object.assign({}, refs.current.event);
+        const clientX = e.clientX || (dataTransfer || {}).clientX || 0;
+        if (!dataTransfer || clientX <= 0) return;
 
-      e.preventDefault();
-      e.stopPropagation();
+        e.preventDefault();
+        e.stopPropagation();
 
-      const diff = dataTransfer.x - clientX;
-      const moved = diff;
-      const width = Math.max(
-        GRID_CONFIG.COLUMN_MIN_WIDTH,
-        dataTransfer.current - moved
-      );
-      refs.current.style.innerHTML = `
-          .${styles.resizingColumns} .${styles.column}:nth-child(${index + 1}) {
+        const diff = dataTransfer.x - clientX;
+        const moved = isRTL ? -diff : diff;
+        const width = getColumnWidth(
+          column,
+          dataTransfer.current - moved,
+          true
+        );
+        refs.current.style.innerHTML = `
+          .${styles.resizingColumns} .${getCssSelector(
+          styles.column
+        )}:nth-child(${index + 1}) {
             width: ${width}px !important;
             min-width: ${width}px !important;
           }
         `;
-      refs.current.event.width = width;
-    },
-    []);
+        refs.current.event.width = width;
+      },
+      [isRTL]
+    );
 
     const handleColumnResizeEnd = React.useCallback(
-      function handleColumnResizeEnd(e, column) {
+      function handleColumnResizeEnd(
+        e: React.DragEvent<HTMLElement>,
+        column: TYPES.GridColumn
+      ) {
         const dataTransfer = refs.current.event;
         if (!dataTransfer.width) return;
 
         const container = containerRef.current;
-        const width = Math.max(
-          GRID_CONFIG.COLUMN_MIN_WIDTH,
-          dataTransfer.width
-        );
+        const width = getColumnWidth(column, dataTransfer.width, true);
         // set column width in state
         setState(draft => {
           const col = draft.columns.find(c => c.name === column.name);
@@ -472,7 +515,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         sizingColumns();
 
         // clear styles/dataTransfer
-        const body = container.querySelector(`.${styles.body}`);
+        const body = container.querySelector(getCssSelector(`.${styles.body}`));
         body.style.minWidth = null;
 
         container.classList.remove(styles.resizingColumns);
@@ -483,7 +526,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleColumnHide = React.useCallback(
-      (e, column) => {
+      (e: React.SyntheticEvent, column: TYPES.GridColumn) => {
         setState(draft => {
           const columnState = draft.columns.find(
             col => col.name === column.name
@@ -496,7 +539,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleColumnShow = React.useCallback(
-      (e, column) => {
+      (e: React.SyntheticEvent, column: TYPES.GridColumn) => {
         setState(draft => {
           const columnState = draft.columns.find(
             col => col.name === column.name
@@ -509,45 +552,54 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleGroupColumnDrop = React.useCallback(
-      function handleColumnDrop(dest, target) {
-        const isColumnReorder = dest.column && target.column;
+      function handleColumnDrop(
+        dest: TYPES.DropObject,
+        target: TYPES.DropObject
+      ) {
+        if (!dest?.name) return;
+
+        const isColumnReorder =
+          dest?.name && !dest?.$group && target?.name && !target?.$group;
 
         if (isColumnReorder) {
           return setState(draft => {
             const { columns } = draft;
-            const dragIndex = columns.findIndex(
-              c => c.name === dest.column.name
-            );
+            const dragIndex = columns.findIndex(c => c.name === dest.name);
             const [dragColumn] = columns.splice(dragIndex, 1);
+            const hoverIndex = columns.findIndex(c => c.name === target.name);
 
-            const hoverIndex = columns.findIndex(
-              c => c.name === target.column.name
+            columns.splice(
+              hoverIndex + (dragIndex <= hoverIndex ? 1 : 0),
+              0,
+              dragColumn
             );
-            columns.splice(hoverIndex, 0, dragColumn);
           });
         }
 
         setState(data => {
           !data.groupBy && (data.groupBy = []);
 
-          const isGroupExist = data.groupBy.find(
-            x => x === (dest.column || dest.group).name
-          );
-          if ((dest.column || dest.group) && isGroupExist) return;
+          function check(column: { name: string }) {
+            return (
+              column?.name &&
+              (data.groupBy || []).find(x => x.name === column?.name)
+            );
+          }
 
+          const isDestExist = check(dest);
+          const isTargetExist = check(target);
           // new group column added
           let group = {
-            name: (dest.column || dest.group).name,
+            name: dest.name,
           };
-          if (dest.column && !target.column) {
-            !isGroupExist && data.groupBy.push(group);
-          } else if (dest.group && target.group) {
+
+          if (isDestExist && isTargetExist) {
             // reorder
             const sourceIndex = data.groupBy.findIndex(
-              g => g.name === dest.group.name
+              g => g.name === dest.name
             );
             let targetIndex = data.groupBy.findIndex(
-              g => g.name === target.group.name
+              g => g.name === target.name
             );
             if (sourceIndex > -1) {
               [group] = data.groupBy.splice(sourceIndex, 1);
@@ -556,24 +608,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
               targetIndex = data.groupBy.length;
             }
             data.groupBy.splice(targetIndex, 0, group);
+          } else if (!isDestExist) {
+            data.groupBy.push(group);
           }
-          data.selectedCell = null;
-        });
-      },
-      [setState]
-    );
 
-    const handleGroupColumnAdd = React.useCallback(
-      (e, group) => {
-        setState(data => {
-          if (!data.groupBy) {
-            data.groupBy = [];
-          }
-          const groupBy = data.groupBy || [];
-          const index = groupBy.findIndex(g => g.name === group.name);
-          if (index === -1) {
-            groupBy.push(group);
-          }
           data.selectedCell = null;
         });
       },
@@ -581,7 +619,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleGroupColumnRemove = React.useCallback(
-      (e, group) => {
+      (e: React.SyntheticEvent, group: TYPES.GridGroup) => {
         setState(data => {
           const groupBy = data.groupBy || [];
           const index = groupBy.findIndex(g => g.name === group.name);
@@ -595,7 +633,13 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleRecordComplete = React.useCallback(
-      (row, rowIndex, columnIndex, discarded = false, reset = true) => {
+      (
+        row: any,
+        rowIndex: number,
+        columnIndex: number,
+        discarded = false,
+        reset = true
+      ) => {
         setState(draft => {
           if (draft.editRow && reset) {
             let [rowIndex, cellIndex] = draft.editRow;
@@ -610,25 +654,78 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       [setState]
     );
 
-    const handleRecordSave = React.useCallback(
-      async (row, rowIndex, columnIndex, dirty, saveFromEdit) => {
-        const isLast = !saveFromEdit && rowIndex === totalRows - 1;
-        let result = row;
-        if (dirty && onRecordSave) {
-          result = await onRecordSave(row, rowIndex);
+    const handleRecordAdd = React.useCallback(
+      async (checkEdit = true) => {
+        // check any current edit row
+        if (checkEdit && onRecordEdit) {
+          const result = await onRecordEdit({});
+          // if result is not, current edit record is invalidate
+          if (result === null) return;
         }
+        // call event on record add
+        const result: any = onRecordAdd && (await onRecordAdd());
+        if (result === true) {
+          return;
+        }
+        setState(draft => {
+          if (draft.editRow) {
+            const [rowIndex] = draft.editRow;
+            draft.editRow = [rowIndex + 1, 1];
+          } else {
+            draft.editRow = [draft.rows.length, 1];
+          }
+          draft.selectedRows = null;
+          draft.selectedCell = null;
+        });
+      },
+      [onRecordAdd, onRecordEdit, setState]
+    );
+
+    const handleRecordUpdate = React.useCallback(
+      function handleRecordUpdate(rowIndex: number, values: any) {
+        setState(draft => {
+          const row = draft.rows[rowIndex];
+          if (row && row.record && row.record.id) {
+            if (rowIndex > -1) {
+              draft.rows[rowIndex].record = {
+                ...draft.rows[rowIndex].record,
+                ...values,
+              };
+            }
+          }
+        });
+      },
+      [setState]
+    );
+
+    const handleRecordSave = React.useCallback(
+      async (
+        row: any,
+        rowIndex: number,
+        columnIndex: number,
+        dirty?: boolean,
+        saveFromEdit?: boolean
+      ) => {
+        // is last record save, then add new record
+        const isLast = !saveFromEdit && rowIndex === totalRows - 1;
+        let result: any = row;
+        let saved = false;
+        if (dirty && onRecordSave) {
+          result = await onRecordSave(row, rowIndex, 0);
+          // if record is null, current edit record is invalidate
+          if (result && result.record === null) {
+            result = null;
+          } else if (result && result.record) {
+            saved = true;
+          }
+        }
+        // record is validated
         if (result) {
           if (isLast && onRecordAdd) {
-            onRecordAdd();
-            setState(draft => {
-              if (draft.editRow) {
-                const [rowIndex] = draft.editRow;
-                draft.editRow = [rowIndex + 1, 1];
-              }
-              draft.selectedRows = null;
-              draft.selectedCell = null;
-            });
+            // add new record
+            handleRecordAdd(!saved);
           } else {
+            // complete record edit state
             handleRecordComplete(
               row,
               rowIndex,
@@ -640,19 +737,34 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         }
         return result;
       },
-      [setState, totalRows, handleRecordComplete, onRecordAdd, onRecordSave]
+      [
+        totalRows,
+        handleRecordComplete,
+        handleRecordAdd,
+        onRecordAdd,
+        onRecordSave,
+      ]
     );
 
     const handleRecordDiscard = React.useCallback(
-      (row, rowIndex, columnIndex) => {
+      (row: TYPES.GridRow, rowIndex: number, columnIndex: number) => {
+        // reset record state
         handleRecordComplete(row, rowIndex, columnIndex, true);
-        onRecordDiscard && onRecordDiscard(row, rowIndex);
+        onRecordDiscard && onRecordDiscard(row, rowIndex, 0);
       },
       [handleRecordComplete, onRecordDiscard]
     );
 
-    const handleNavigation = (event: React.KeyboardEvent<HTMLDivElement>) => {
-      const { key, ctrlKey, shiftKey } = event;
+    const handleNavigation = (event: React.KeyboardEvent<HTMLElement>) => {
+      const { ctrlKey, shiftKey } = event;
+      const key = (() => {
+        const { key } = event;
+        if (isRTL) {
+          if (key === 'ArrowRight') return 'ArrowLeft';
+          if (key === 'ArrowLeft') return 'ArrowRight';
+        }
+        return key;
+      })();
       if (
         state.editRow ||
         event.isPropagationStopped() ||
@@ -772,7 +884,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             key === 'ArrowLeft' &&
             findRow().state === 'open'
           ) {
-            return handleRowStateChange(row, 'close');
+            return handleRowStateChange(rows[row], 'close');
           }
           if (isGroupCell || isFirstColumn) {
             return moveUp() && moveToEnd();
@@ -788,7 +900,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             key === 'ArrowRight' &&
             findRow().state === 'close'
           ) {
-            return handleRowStateChange(row, 'open');
+            return handleRowStateChange(rows[row], 'open');
           }
           if (isGroupCell || isLastColumn) {
             return moveDown() && moveToStart();
@@ -866,7 +978,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
       const container = containerRef.current;
-      const header = container && container.querySelector(`.${styles.header}`);
+      const header =
+        container &&
+        container.querySelector(getCssSelector(`.${styles.header}`));
       if (header && stickyHeader) {
         if (!refs.current.stickOffset) {
           refs.current.stickOffset = header.offsetTop + header.offsetHeight;
@@ -881,18 +995,21 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     };
 
     const scrollToCell = React.useCallback(
-      function scrollToCell([row, col]) {
-        if (isNull(row) || isNull(col)) return;
+      function scrollToCell([row, col]: number[]) {
+        if (!allowCellFocus || isNull(row) || isNull(col)) return;
         const container = containerRef.current;
         const rowNode =
-          container && container.querySelector(`.${styles.body} .row-${row}`);
+          container &&
+          container.querySelector(
+            getCssSelector(`.${styles.body} .row-${row}`)
+          );
         const getCellNode = () => {
           if (!rowNode) return;
           let selector = `.${styles.column}:nth-child(${col + 1})`;
           if (rowNode.classList.contains(styles.groupRow)) {
             selector = `.${styles.groupRowContent}`;
           }
-          return rowNode.querySelector(selector);
+          return rowNode.querySelector(getCssSelector(selector));
         };
         const selectedCell = refs.current.selectedCell || { row };
         const isUpwards = stickyHeader && selectedCell.row > row;
@@ -915,12 +1032,18 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           const offsetTop =
             cellNode.offsetTop -
             (isUpwards
-              ? (container.querySelector(`.${styles.header}`) || {})
-                  .clientHeight
+              ? (
+                  container.querySelector(
+                    getCssSelector(`.${styles.header}`)
+                  ) || {}
+                ).clientHeight
               : isDownwards
               ? -(
-                  (container.querySelector(`.${styles.footer}`) || {})
-                    .clientHeight || 0
+                  (
+                    container.querySelector(
+                      getCssSelector(`.${styles.footer}`)
+                    ) || {}
+                  ).clientHeight || 0
                 )
               : 0);
           const cellYTotalOffset =
@@ -950,7 +1073,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         refs.current.selectedCell = { row, col };
         container && container.focus();
       },
-      [stickyHeader, stickyFooter]
+      [allowCellFocus, stickyHeader, stickyFooter]
     );
 
     const $orderBy = sortType === 'state' ? state.orderBy : null;
@@ -989,12 +1112,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     React.useEffect(() => {
       // exclude hide columns
       setState(draft => {
-        draft.columns = columns.filter(
-          column => !(state.groupBy || []).find(g => g.name === column.name)
-        );
+        draft.columns = [...columns];
       });
       sizingColumns();
-    }, [setState, columns, state.groupBy, sizingColumns]);
+    }, [setState, columns, sizingColumns]);
 
     React.useEffect(() => {
       if (state.selectedCell) {
@@ -1011,10 +1132,6 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       () => getColumns(state.columns),
       [state.columns]
     );
-    const hiddenColumns = React.useMemo(
-      () => state.columns.filter(column => column.visible === false),
-      [state.columns]
-    );
     const isEditMode = Boolean(state.editRow);
     const checkType = React.useMemo(() => {
       if ((state.selectedRows || []).length === 0) {
@@ -1028,124 +1145,131 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       }
       return 'indeterminate';
     }, [state.rows, state.selectedRows]);
+
+    const noColumns = React.useMemo(() => {
+      return (
+        displayColumns.every(
+          col =>
+            (col as any).action ||
+            col.type === 'row-checked' ||
+            (col.width && col.width < 50)
+        ) || displayColumns.length === 0
+      );
+    }, [displayColumns]);
+
     const classNames = useClassNames();
     return (
-      <div
-        ref={handleRef}
-        className={classNames(styles.container, className, {
-          [styles['no-records']]: records.length === 0,
-        })}
-        {...(allowCellSelection
-          ? { tabIndex: 0, onKeyDown: handleNavigation }
-          : {})}
-        onScroll={handleScroll}
-      >
-        {allowGrouping && (
-          <div className={styles.groupArea}>
-            <GridGroup
-              columns={columns}
-              orderBy={state.orderBy}
-              groupBy={state.groupBy}
-              groupingText={props.groupingText}
-              onGroupTagRemove={handleGroupColumnRemove}
-              onGroupTagClick={handleSort}
-              onGroupTagDrop={handleGroupColumnDrop}
-            />
-          </div>
-        )}
-        <GridHeader
-          className={classNames(styles.header, {
-            [styles.sticky]: stickyHeader,
+      <TranslateProvider t={translate}>
+        <Box
+          ref={handleRef}
+          className={classNames('table-grid', styles.container, className, {
+            [styles['no-records']]: records.length === 0,
+            [styles['no-columns']]: noColumns,
+            [styles['has-add-new']]: Boolean(props.addNewText),
+            [styles['has-footer']]: hasAggregation,
+            [styles['rtl']]: isRTL,
           })}
-          groupBy={state.groupBy}
-          orderBy={state.orderBy}
-          columns={displayColumns}
-          hiddenColumns={hiddenColumns}
-          rowRenderer={headerRowRenderer}
-          checkType={checkType}
-          selectionType={selectionType}
-          {...(allowSearch
-            ? {
-                searchRowRenderer,
-                searchColumnRenderer,
-              }
+          {...(allowCellSelection
+            ? { tabIndex: 0, onKeyDown: handleNavigation }
             : {})}
-          {...(!isEditMode
-            ? {
-                ...(allowColumnResize
-                  ? {
-                      onColumnResizeStart: handleColumnResizeStart,
-                      onColumnResize: handleColumnResize,
-                      onColumnResizeEnd: handleColumnResizeEnd,
-                    }
-                  : {}),
-                ...(allowSorting
-                  ? {
-                      onColumnClick: handleSort,
-                      onColumnSort: handleSort,
-                    }
-                  : {}),
-                ...(allowGrouping
-                  ? {
-                      onColumnDrop: handleGroupColumnDrop,
-                      onColumnGroupAdd: handleGroupColumnAdd,
-                      onColumnGroupRemove: handleGroupColumnRemove,
-                    }
-                  : {}),
-                ...(allowColumnCustomize ? { onColumnCustomize } : {}),
-                ...(allowColumnHide
-                  ? {
-                      onColumnShow: handleColumnShow,
-                      onColumnHide: handleColumnHide,
-                    }
-                  : {}),
-                onCheckAll: handleCheckAll,
-              }
-            : {})}
-        />
-        <GridBody
-          columns={displayColumns}
-          rows={state.rows}
-          editRow={state.editRow}
-          selectedRows={state.selectedRows}
-          selectedCell={state.selectedCell}
-          selectionType={selectionType}
-          noRecordsText={records.length === 0 ? props.noRecordsText : ''}
-          {...{
-            cellRenderer,
-            rowRenderer,
-            editRowRenderer,
-            editRowColumnRenderer,
-            rowGroupFooterRenderer,
-            rowGroupHeaderRenderer,
-          }}
-          {...(editable
-            ? {
-                editRowRenderer,
-                onRecordSave: handleRecordSave,
-                onRecordDiscard: handleRecordDiscard,
-              }
-            : {})}
-          {...(allowRowReorder
-            ? {
-                onRowMove: handleRowMove,
-              }
-            : {})}
-          onCellClick={onCellClick}
-          onRowClick={handleRowClick}
-          onRowDoubleClick={onRowDoubleClick}
-        />
-        {hasAggregation && (
-          <GridFooter
-            className={classNames(styles.footer, {
-              [styles.sticky]: stickyFooter,
+          onScroll={handleScroll}
+        >
+          <GridHeader
+            className={classNames(styles.header, {
+              [styles.sticky]: stickyHeader,
+              [styles.options]: allowColumnOptions,
             })}
-            rowRenderer={footerRowRenderer}
-            records={records}
+            groupBy={state.groupBy}
+            orderBy={state.orderBy}
             columns={displayColumns}
+            rowRenderer={headerRowRenderer}
+            checkType={checkType}
+            selectionType={selectionType}
+            {...(allowColumnOptions ? { allColumns: state.columns } : {})}
+            {...(allowSearch
+              ? {
+                  searchRowRenderer,
+                  searchColumnRenderer,
+                }
+              : {})}
+            {...(!isEditMode
+              ? {
+                  ...(allowColumnResize
+                    ? {
+                        onColumnResizeStart: handleColumnResizeStart,
+                        onColumnResize: handleColumnResize,
+                        onColumnResizeEnd: handleColumnResizeEnd,
+                      }
+                    : {}),
+                  ...(allowSorting
+                    ? {
+                        onColumnClick: handleSort,
+                      }
+                    : {}),
+                  ...(allowGrouping
+                    ? {
+                        onColumnDrop: handleGroupColumnDrop,
+                        onColumnGroupRemove: handleGroupColumnRemove,
+                      }
+                    : {}),
+                  ...(allowColumnCustomize ? { onColumnCustomize } : {}),
+                  ...(allowColumnHide
+                    ? {
+                        onColumnShow: handleColumnShow,
+                        onColumnHide: handleColumnHide,
+                      }
+                    : {}),
+                  onCheckAll: handleCheckAll,
+                }
+              : {})}
           />
-        )}
-      </div>
+          <GridBody
+            columns={displayColumns}
+            rows={state.rows}
+            editRow={state.editRow}
+            selectedRows={state.selectedRows}
+            selectedCell={state.selectedCell}
+            selectionType={selectionType}
+            noRecordsText={records.length === 0 ? props.noRecordsText : ''}
+            addNewText={props.addNewText}
+            {...{
+              cellRenderer,
+              rowRenderer,
+              editRowRenderer,
+              editRowColumnRenderer,
+              rowGroupFooterRenderer,
+              rowGroupHeaderRenderer,
+            }}
+            {...(editable
+              ? {
+                  editRowRenderer,
+                  onRecordAdd: handleRecordAdd,
+                  onRecordSave: handleRecordSave,
+                  onRecordDiscard: handleRecordDiscard,
+                }
+              : {})}
+            {...(allowRowReorder
+              ? {
+                  onRowMove: handleRowMove,
+                }
+              : {})}
+            onCellClick={onCellClick}
+            onRowClick={handleRowClick}
+            onRowDoubleClick={onRowDoubleClick}
+            onRecordUpdate={handleRecordUpdate}
+          />
+          {hasAggregation && (
+            <GridFooter
+              className={classNames(styles.footer, {
+                [styles.sticky]: stickyFooter,
+              })}
+              rowRenderer={footerRowRenderer}
+              records={records}
+              columns={displayColumns}
+            />
+          )}
+        </Box>
+      </TranslateProvider>
     );
   }
 );

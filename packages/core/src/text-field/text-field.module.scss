@@ -1,0 +1,57 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper,
+.icons {
+  display: flex;
+  align-items: center;
+}
+
+.wrapper {
+  position: relative;
+  & > input {
+    background-image: none !important;
+  }
+}
+
+.icons {
+  position: absolute;
+  padding: 0.5rem;
+  & > svg {
+    cursor: pointer;
+    margin: 0 0.25rem;
+    opacity: 0.7;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.disabled svg {
+  cursor: auto;
+  opacity: 0.5 !important;
+}
+
+:not(.rtl) > .wrapper > .icons {
+  right: 0;
+}
+
+.rtl > .wrapper > .icons {
+  left: 0;
+}
+
+@for $i from 1 through 6 {
+  :not(.rtl) > .icons-#{$i} {
+    input {
+      padding-right: ((1rem + (0.25rem * 2)) * $i) + (0.5rem * 2);
+    }
+  }
+
+  .rtl > .icons-#{$i} {
+    input {
+      padding-left: ((1rem + (0.25rem * 2)) * $i) + (0.5rem * 2);
+    }
+  }
+}

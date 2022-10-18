@@ -4,6 +4,8 @@ import { useCallback } from 'react';
 import stylesLtr from './styles.module.scss';
 import stylesRtl from './styles.rtl.module.scss';
 
+type CSSModuleClasses = { readonly [key: string]: string };
+
 const STYLES: Record<string, CSSModuleClasses> = {
   ltr: stylesLtr,
   rtl: stylesRtl,

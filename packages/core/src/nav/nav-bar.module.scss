@@ -1,0 +1,148 @@
+.root,
+.menuItemChildren {
+  user-select: none;
+}
+
+.root > .menu > .menuItemWrapper {
+  transition: all 0.2s ease-in-out;
+  &.active {
+    background: var(--bs-light);
+  }
+}
+
+.root:not(.rtl) > .menu > .menuItemWrapper {
+  border-left: 0.25rem solid transparent;
+  & > .menuItemChildren {
+    padding-left: 0.5rem;
+  }
+}
+.root.rtl > .menu > .menuItemWrapper {
+  border-right: 0.25rem solid transparent;
+  & > .menuItemChildren {
+    padding-right: 0.5rem;
+  }
+}
+
+.menuItem {
+  font-size: 1rem;
+  cursor: pointer;
+  position: relative;
+
+  &.active .menuItemTitle,
+  &.active .menuIcon,
+  &:hover .menuItemTitle,
+  &:hover .menuIcon {
+    color: var(--bs-nav-link-hover-color);
+  }
+
+  &.float .menuItemTitle,
+  &.float .menuIcon {
+    display: none;
+  }
+}
+
+.menuItemIcon {
+  font-size: 1rem;
+  height: 32px;
+  width: 32px;
+  min-width: 32px;
+  border-radius: 100%;
+}
+
+.menuItemTitle {
+  color: var(--bs-nav-link-color);
+  font-weight: 600;
+  margin: 0 1rem 0 0.5rem;
+  transition: var(--bs-nav-link-transition);
+  .rtl & {
+    margin: 0 0.5rem 0 1rem;
+  }
+  &:hover {
+    color: var(--bs-nav-link-hover-color);
+  }
+}
+
+.menuItemChildren {
+  margin-top: 0.25rem;
+  &.float {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  & .menuItemWrapper {
+    padding-left: 0.75rem;
+    .rtl & {
+      padding-left: unset;
+      padding-right: 0.75rem;
+    }
+    & .menuItem {
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+      &.has-children {
+        padding-right: 2rem;
+        .rtl & {
+          padding-right: unset;
+          padding-left: 2rem;
+        }
+      }
+    }
+  }
+
+  & .menuItemIcon {
+    font-size: 0.85rem;
+    background-color: transparent !important;
+    margin: 0 !important;
+    height: 24px;
+    width: 24px;
+  }
+
+  &.float .menuItemIcon {
+    display: none !important;
+  }
+
+  & & .menuItemTitle {
+    margin: 0 0.25rem;
+  }
+}
+
+.menuIcon {
+  font-size: 0.8rem;
+  font-weight: bold;
+  position: absolute;
+  right: 10px;
+  color: var(--bs-nav-link-color);
+  transition: all 0.2s ease-in-out;
+
+  .rtl & {
+    transform: rotate(180deg);
+    right: unset;
+    left: 10px;
+  }
+
+  &.expand {
+    transform: rotate(-90deg);
+    .rtl & {
+      transform: rotate(270deg);
+    }
+  }
+}
+
+.menuTag {
+  position: absolute;
+  right: 0.75rem;
+  padding-left: 0.65rem;
+  padding-right: 0.65rem;
+
+  .rtl & {
+    right: unset;
+    left: 0.75rem;
+  }
+
+  &.hasMenuIcon {
+    right: calc(0.75rem + 1rem);
+    .rtl & {
+      right: unset;
+      left: calc(0.75rem + 1rem);
+    }
+  }
+}

@@ -1,16 +1,18 @@
 import React from 'react';
 import { useClassNames } from '@axelor-ui/core';
 import * as TYPES from './types';
-import styles from './grid.module.css';
+import styles from './grid.module.scss';
 
 export interface GridColumnProps {
   data: TYPES.GridColumn;
   index: number;
+  className?: string;
   value?: any;
   type?: 'header' | 'footer' | 'body';
   selected?: boolean;
   focus?: boolean;
   renderer?: TYPES.Renderer;
+  onUpdate?: TYPES.GridRowProps['onUpdate'];
   onClick?: (
     e: React.SyntheticEvent,
     column: TYPES.GridColumn,
@@ -20,8 +22,9 @@ export interface GridColumnProps {
 }
 
 export function GridColumn(props: GridColumnProps) {
-  const { children, data, index, selected, renderer, onClick } = props;
-  const { width } = data;
+  const { children, className, data, index, selected, renderer, onClick } =
+    props;
+  const { width, minWidth } = data;
   const ColumnComponent = renderer || 'div';
   const rendererProps = renderer ? props : {};
   const columnRef = React.useRef<HTMLDivElement | null>(null);
@@ -41,17 +44,17 @@ export function GridColumn(props: GridColumnProps) {
   }, [selected]);
 
   const classNames = useClassNames();
-
+  const $width = Math.max(width || 0, minWidth || 0);
   return (
     <ColumnComponent
       {...(renderer ? {} : { ref: columnRef })}
       {...rendererProps}
       onClick={e => onClick && onClick(e, data, index)}
-      className={classNames(styles.column, data.$css, {
+      className={classNames(styles.column, className, data.$css, {
         [styles.center]: ['row-checked'].includes(data.type || ''),
         [styles.selected]: selected,
       })}
-      style={{ minWidth: width, width }}
+      style={{ minWidth: $width, width: $width }}
     >
       {children}
     </ColumnComponent>

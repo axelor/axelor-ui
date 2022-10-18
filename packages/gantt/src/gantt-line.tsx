@@ -2,19 +2,29 @@ import React from 'react';
 import moment from 'moment';
 import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import { Icon } from '@axelor-ui/core';
+import { Icon, useTheme } from '@axelor-ui/core';
 import { useClassNames } from '@axelor-ui/core';
 import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-down-fill.svg';
 
 import { CONFIG, getDateFromOffset } from './utils';
 import * as TYPES from './types';
-import classes from './gantt.module.css';
+import classes from './gantt.module.scss';
 
 function disablePreview(preview: (e: any, options: any) => void) {
   preview(getEmptyImage(), { captureDraggingState: true });
 }
 
 const { DND_TYPES } = CONFIG;
+
+function getRGBA(hex: string, opacity: number = 1): string {
+  const r = hex.slice(1, 3);
+  const g = hex.slice(3, 5);
+  const b = hex.slice(5, 7);
+  return `rgba(${parseInt(r, 16)}, ${parseInt(g, 16)}, ${parseInt(
+    b,
+    16
+  )}, ${opacity})`;
+}
 
 function VirtualLine({
   type,
@@ -35,13 +45,14 @@ function VirtualLine({
   const degree = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
   const leftSpace = type === 'start' ? 0 : 10;
 
+  const left = xMid - distance / 2 + leftSpace;
   return (
     <div
       style={{
         width: distance,
         top: yMid + 10,
-        left: xMid - distance / 2 + leftSpace,
         transform: `rotate(${degree}deg)`,
+        left,
       }}
       className={classes.virtualLine}
     >
@@ -74,6 +85,9 @@ export const GanttLine = React.memo(function GanttLine(props: {
     target?: TYPES.GanttVirtualLinePoint;
   } | null>(null);
 
+  const { dir } = useTheme();
+  const rtl = dir === 'rtl';
+
   const {
     startDate,
     index,
@@ -84,7 +98,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
     onUpdate,
     onConnect,
   } = props;
-  const { id, duration } = data;
+  const { id, duration, $color } = data;
 
   const { x, y, width } = (() => {
     const diffHours = moment
@@ -323,10 +337,10 @@ export const GanttLine = React.memo(function GanttLine(props: {
   React.useEffect(() => {
     const dragLine = dragLineRef.current;
     if (dragLine) {
-      dragLine.style.left = `${x}px`;
+      dragLine.style[rtl ? 'right' : 'left'] = `${x}px`;
       dragLine.style.top = `${y}px`;
     }
-  }, [x, y, data]);
+  }, [x, y, data, rtl]);
 
   const classNames = useClassNames();
 
@@ -339,10 +353,16 @@ export const GanttLine = React.memo(function GanttLine(props: {
         })}
         style={{
           top: y,
-          left: x,
           position: 'absolute',
           width,
           height: CONFIG.LINE_HEIGHT,
+          ...(rtl ? { right: x } : { left: x }),
+          ...($color
+            ? {
+                '--gantt-line-bg': getRGBA($color, 0.75),
+                '--gantt-progress-color': getRGBA($color, 1),
+              }
+            : {}),
         }}
       >
         <div
@@ -355,7 +375,9 @@ export const GanttLine = React.memo(function GanttLine(props: {
         >
           <div
             className={classes.ganttLineProgressContent}
-            style={{ left: `${progress}%` }}
+            style={{
+              ...(rtl ? { right: `${progress}%` } : { left: `${progress}%` }),
+            }}
           >
             <div className={classes.ganttLineProgressLabel}>
               {`${progress > 0 ? Math.round(progress) : '0'}%`}
@@ -364,7 +386,9 @@ export const GanttLine = React.memo(function GanttLine(props: {
         </div>
         <div
           ref={leftConnectRef}
-          className={classNames(classes.ganttConnector, classes.left, {
+          className={classNames(classes.ganttConnector, {
+            [classes.left]: !rtl,
+            [classes.right]: rtl,
             [classes.show]:
               leftConnectProps.isOver ||
               dropProps.isOver ||
@@ -375,16 +399,26 @@ export const GanttLine = React.memo(function GanttLine(props: {
           <div className={classes.ganttConnectorLink} />
         </div>
 
-        <div className={classNames(classes.ganttLineDragArea, classes.left)} />
+        <div
+          className={classNames(classes.ganttLineDragArea, {
+            [classes.left]: !rtl,
+            [classes.right]: rtl,
+          })}
+        />
 
         <div
           ref={leftResizeDrag}
-          className={classNames(classes.ganttLineDrag, classes.left)}
+          className={classNames(classes.ganttLineDrag, {
+            [classes.left]: !rtl,
+            [classes.right]: rtl,
+          })}
         />
 
         <div
           ref={rightConnectRef}
-          className={classNames(classes.ganttConnector, classes.right, {
+          className={classNames(classes.ganttConnector, {
+            [classes.left]: rtl,
+            [classes.right]: !rtl,
             [classes.show]:
               rightConnectProps.isOver ||
               dropProps.isOver ||
@@ -395,11 +429,19 @@ export const GanttLine = React.memo(function GanttLine(props: {
           <div className={classes.ganttConnectorLink} />
         </div>
 
-        <div className={classNames(classes.ganttLineDragArea, classes.right)} />
+        <div
+          className={classNames(classes.ganttLineDragArea, {
+            [classes.left]: rtl,
+            [classes.right]: !rtl,
+          })}
+        />
 
         <div
           ref={rightResizeDrag}
-          className={classNames(classes.ganttLineDrag, classes.right)}
+          className={classNames(classes.ganttLineDrag, {
+            [classes.left]: rtl,
+            [classes.right]: !rtl,
+          })}
         />
 
         <div className={classes.ganttLineTitle}>
@@ -410,7 +452,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
           ref={progressDrag}
           className={classes.ganttLineProgressIndicator}
           style={{
-            left: Math.min(
+            [rtl ? 'right' : 'left']: Math.min(
               width - 10,
               Math.max(0, progressWidth - (progressWidth > 5 ? 5 : 0))
             ),

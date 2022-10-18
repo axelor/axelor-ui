@@ -6,7 +6,7 @@ import { Box } from '../box';
 import { Fade } from '../fade';
 import { Portal } from '../portal';
 
-import { useClassNames } from '../styles';
+import { useClassNames, useTheme } from '../styles';
 import { TBackground, TForeground } from '../system';
 
 import styles from './popper.module.css';
@@ -76,26 +76,32 @@ const PopperWrapper = ({
 }: PopperProps) => {
   const instance = useRef<Instance | null>(null);
   const [wrapperEl, setWrapperEl] = useState<HTMLDivElement | null>(null);
+  const { dir } = useTheme();
 
   const placement = PlacementMapping[popperPlacement];
   const [skidding = 0, distance = 0] = offset || [];
-  const arrowPadding = arrow ? 6 : 0; // match with .arrow css
 
-  const modifiers = [
-    { name: 'preventOverflow' },
-    { name: 'flip' },
-    {
-      name: 'offset',
-      enabled: Boolean(offset) || Boolean(arrow),
-      options: {
-        offset: [skidding, distance + arrowPadding],
+  const enabled = Boolean(offset) || Boolean(arrow);
+  const arrowEnabled = Boolean(arrow);
+
+  const modifiers = React.useMemo(() => {
+    const arrowPadding = arrowEnabled ? 6 : 0; // match with .arrow css
+    return [
+      { name: 'preventOverflow' },
+      { name: 'flip' },
+      {
+        name: 'offset',
+        enabled,
+        options: {
+          offset: [skidding, distance + arrowPadding],
+        },
       },
-    },
-    {
-      name: 'arrow',
-      enabled: Boolean(arrow),
-    },
-  ];
+      {
+        name: 'arrow',
+        enabled: arrowEnabled,
+      },
+    ];
+  }, [skidding, distance, enabled, arrowEnabled]);
 
   useEffect(() => {
     instance.current?.forceUpdate();
@@ -116,14 +122,15 @@ const PopperWrapper = ({
       instance.current?.destroy();
       instance.current = null;
     };
-  }, [target, wrapperEl, open]);
+  }, [target, wrapperEl, open, placement, strategy, modifiers]);
 
   const classNames = useClassNames();
 
   return (
     <div
       ref={setWrapperEl}
-      className={classNames(styles.popper, { [styles.shadow]: shadow })}
+      className={classNames(styles.popper, { 'drop-shadow-md': shadow })}
+      {...(dir === 'rtl' ? { dir: 'rtl' } : {})}
       {...props}
       style={{ position: 'fixed' }}
     >
@@ -191,7 +198,7 @@ export const Popper = ({
             onEnter: handleEnter,
             onExited: handleExited,
             children: render(),
-          })
+          } as any)
         : render()}
     </PopperWrapper>
   );

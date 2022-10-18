@@ -1,3 +1,5 @@
+import React from 'react';
+
 export type Record = {
   id: number;
 };
@@ -5,7 +7,12 @@ export type GanttType = 'year' | 'month' | 'week' | 'day';
 export type GanttField = {
   name: string;
   title?: string;
-  formatter?: (data: any, field: GanttField) => any;
+  formatter?: (data: GanttRecord, field: GanttField) => any;
+  renderer?: React.FC<{
+    data: GanttRecord;
+    field: GanttField;
+    value: string | number;
+  }>;
 };
 export type GanttHeaderItem = {
   title: string;
@@ -29,6 +36,8 @@ export type GanttRecord = {
   startToFinish?: Record[];
   finishToStart?: Record[];
   finishToFinish?: Record[];
+  $color?: string;
+  _children?: number[];
 };
 
 export type GanttEdgeType = 'start' | 'finish';

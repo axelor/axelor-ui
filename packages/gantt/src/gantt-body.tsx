@@ -1,11 +1,11 @@
 import React from 'react';
-import { useClassNames } from '@axelor-ui/core';
+import { useTheme, useClassNames } from '@axelor-ui/core';
 import { useDrop } from 'react-dnd';
 
 import * as TYPES from './types';
 import { CONFIG } from './utils';
 import { RenderList } from './gantt-header';
-import classes from './gantt.module.css';
+import classes from './gantt.module.scss';
 
 const { DND_TYPES } = CONFIG;
 
@@ -55,8 +55,10 @@ export function GanttBody({
   items: TYPES.GanttHeaderItem[];
 }) {
   const bodyRef = React.useRef<HTMLDivElement>(null);
+  const { dir } = useTheme();
+  const rtl = dir === 'rtl';
 
-  const [dropProps, drop] = useDrop({
+  const [, drop] = useDrop({
     accept: [
       DND_TYPES.LINE,
       DND_TYPES.RESIZE_LEFT,
@@ -76,7 +78,7 @@ export function GanttBody({
       const bound = dragLine.getBoundingClientRect();
       const parentBound = dragLine.parentElement?.getBoundingClientRect();
       const offset = {
-        x: clientOffset.x - bound.left,
+        x: rtl ? bound.right - clientOffset.x : clientOffset.x - bound.left,
         y: clientOffset.y - bound.top,
       };
       const { element } = refs.current;
@@ -86,7 +88,9 @@ export function GanttBody({
         case DND_TYPES.RESIZE_RIGHT:
           if (parentBound && clientOffset) {
             const offset = {
-              x: clientOffset.x - parentBound.left,
+              x: rtl
+                ? parentBound.right - clientOffset.x
+                : clientOffset.x - parentBound.left,
               y: clientOffset.y - parentBound.top,
             };
             let width = 0;
@@ -106,7 +110,7 @@ export function GanttBody({
             }
 
             if (dragLine) {
-              dragLine.style.left = `${element.x}px`;
+              dragLine.style[rtl ? 'right' : 'left'] = `${element.x}px`;
               dragLine.style.width = `${element.width}px`;
             }
             refs.current.element = element;
@@ -135,9 +139,9 @@ export function GanttBody({
           progressElement &&
             ((progressElement as HTMLDivElement).style.width = `${value}px`);
           progressContentElement &&
-            ((
-              progressContentElement as HTMLDivElement
-            ).style.left = `${value}px`);
+            ((progressContentElement as HTMLDivElement).style[
+              rtl ? 'right' : 'left'
+            ] = `${value}px`);
 
           refs.current.progress = progressValue.toFixed(2);
 
@@ -149,10 +153,16 @@ export function GanttBody({
           if (parentBound) {
             refs.current.element = {
               ...refs.current.element,
-              x: clientOffset.x - parentBound.left,
+              x: rtl
+                ? parentBound.right -
+                  clientOffset.x -
+                  refs.current.element.width
+                : clientOffset.x - parentBound.left,
               y: clientOffset.y - parentBound.top,
             };
-            dragLine.style.left = `${refs.current.element.x}px`;
+            dragLine.style[
+              rtl ? 'right' : 'left'
+            ] = `${refs.current.element.x}px`;
           }
           break;
         case DND_TYPES.CONNECT_START:

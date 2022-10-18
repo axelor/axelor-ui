@@ -5,8 +5,9 @@ import { ReactComponent as BiArrowRightCircle } from 'bootstrap-icons/icons/arro
 import { Icon } from '../icon';
 import { Box } from '../box';
 import { Tabs } from '../tabs';
+import { useTheme } from '../styles';
 
-export default {
+const config = {
   component: Tabs,
   title: 'Components/Tabs',
 };
@@ -80,17 +81,18 @@ export const Basic = () => {
 
 export const ScrollButtons = () => {
   const [active, setActive] = React.useState(0);
+  const isRTL = useTheme().dir === 'rtl';
   return (
     <Box border>
       <Tabs
         scrollLeft={
           <Box d="flex" justifyContent="center" alignItems="center" px={2}>
-            <Icon as={BiArrowLeftCircle} />
+            <Icon as={isRTL ? BiArrowRightCircle : BiArrowLeftCircle} />
           </Box>
         }
         scrollRight={
           <Box d="flex" justifyContent="center" alignItems="center" px={2}>
-            <Icon as={BiArrowRightCircle} />
+            <Icon as={isRTL ? BiArrowLeftCircle : BiArrowRightCircle} />
           </Box>
         }
         value={active}
@@ -110,3 +112,5 @@ export const ScrollButtons = () => {
     </Box>
   );
 };
+
+export default config;

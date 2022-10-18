@@ -2,39 +2,34 @@ import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useClassNames } from '@axelor-ui/core';
 import * as TYPES from './types';
-import classes from './grid.module.css';
+import classes from './grid.module.scss';
 
 const DND_TYPES = {
   ELEMENT: 'GROUP_DRAG_ELEMENT',
 };
 
-interface Object {
-  column?: TYPES.GridColumn;
-  group?: TYPES.GridGroup;
-}
-
 export type DropHandler = (
-  destination: Record<'column' | 'group', Object>,
-  target: Record<'column' | 'group', Object>
+  destination: TYPES.DropObject,
+  target: TYPES.DropObject
 ) => void;
 
 export interface GridDragElementProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onDrop'> {
   canDrag?: boolean;
+  canDrop?: boolean;
   column?: TYPES.GridColumn;
-  group?: TYPES.GridGroup;
   onDrop?: DropHandler;
 }
 
 const GridDragElementComponent = React.memo(function GridDragElementComponent(
   props: GridDragElementProps
 ) {
-  const { canDrag = true, className, column, group, onDrop, ...rest } = props;
+  const { canDrag = true, canDrop, className, column, onDrop, ...rest } = props;
   const ref = React.useRef<HTMLDivElement>(null);
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: DND_TYPES.ELEMENT,
-      item: { ...column, ...group },
+      item: column,
       canDrag: () => canDrag,
       collect: monitor => ({
         isDragging: monitor.isDragging(),
@@ -45,11 +40,11 @@ const GridDragElementComponent = React.memo(function GridDragElementComponent(
         }
         const dropResult = monitor.getDropResult();
         if (dropResult) {
-          onDrop && onDrop(props as any, dropResult);
+          onDrop && onDrop((props as any).column, (dropResult as any).column);
         }
       },
     }),
-    [canDrag, column, group, onDrop]
+    [canDrag, column, onDrop]
   );
 
   const [{ isOver, isOverCurrent }, drop] = useDrop(
@@ -65,10 +60,20 @@ const GridDragElementComponent = React.memo(function GridDragElementComponent(
         const item: any = monitor.getItem();
         return item.name !== (column || {}).name;
       },
-      collect: monitor => ({
-        isOver: monitor.isOver(),
-        isOverCurrent: monitor.isOver({ shallow: true }),
-      }),
+      collect: monitor => {
+        const item: any = monitor.getItem();
+        const canOver =
+          (item &&
+            column &&
+            !item.$group &&
+            !(column as TYPES.DropObject).$group) ||
+          (!item?.$group && !column) ||
+          (item?.$group && (column as TYPES.DropObject)?.$group);
+        return {
+          isOver: canOver && monitor.isOver(),
+          isOverCurrent: canOver && monitor.isOver({ shallow: true }),
+        };
+      },
     }),
     [column]
   );

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useRefs } from '../hooks';
+import { useTheme } from '../styles';
 import {
   ownerDocument,
   getNextElement,
@@ -27,6 +28,9 @@ export const ArrowNavigation = React.forwardRef(
       selector as string
     );
 
+    const { dir } = useTheme();
+    const rtl = dir === 'rtl';
+
     function handleKeyDown(e: KeyboardEvent) {
       // get selector elements
       const elements =
@@ -35,9 +39,17 @@ export const ArrowNavigation = React.forwardRef(
 
       if (isAutoLayout) {
         const prevKey =
-          selector === LAYOUT.HORIZONTAL ? 'ArrowLeft' : 'ArrowUp';
+          selector === LAYOUT.HORIZONTAL
+            ? rtl
+              ? 'ArrowRight'
+              : 'ArrowLeft'
+            : 'ArrowUp';
         const nextKey =
-          selector === LAYOUT.HORIZONTAL ? 'ArrowRight' : 'ArrowDown';
+          selector === LAYOUT.HORIZONTAL
+            ? rtl
+              ? 'ArrowLeft'
+              : 'ArrowRight'
+            : 'ArrowDown';
         const activeElement = ownerDocument(list).activeElement as HTMLElement;
 
         if (
@@ -73,7 +85,7 @@ export const ArrowNavigation = React.forwardRef(
 
         perform(activeElement);
       } else if (elements) {
-        const cell = navigate(elements, e.key);
+        const cell = navigate(elements, e.key, rtl);
 
         if (cell) {
           e.preventDefault();

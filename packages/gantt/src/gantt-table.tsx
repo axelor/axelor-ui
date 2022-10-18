@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@axelor-ui/core';
 import { useClassNames } from '@axelor-ui/core';
 import * as TYPES from './types';
-import classes from './gantt.module.css';
+import classes from './gantt.module.scss';
 
 const GanttTableHeader = React.memo(function GanttTableHeader({
   items,
@@ -41,9 +41,16 @@ const GanttTableBodyRow = React.memo(function GanttTableBodyRow({
     >
       {items.map(item => {
         const value: any = (data as any)[item.name];
+        const $value = item.formatter ? item.formatter(data, item) : value;
+        function renderer() {
+          const Component: any = item.renderer;
+          return <Component field={item} data={data} value={$value} />;
+        }
         return (
           <div key={item.name} className={classes.tableBodyRowCell}>
-            {item.formatter ? item.formatter(value, item) : value}
+            <div className={classes.tableBodyRowCellContent}>
+              {item.renderer ? renderer() : $value}
+            </div>
           </div>
         );
       })}
@@ -58,8 +65,9 @@ export function GanttTable(props: {
   records: TYPES.GanttProps['records'];
 }) {
   const { items, records, activeRowIndex, setActiveRowIndex } = props;
+  const classNames = useClassNames();
   return (
-    <Box className={classes.table}>
+    <Box className={classNames('table-grid', classes.table)}>
       <GanttTableHeader items={items} />
       <div className={classes.tableBody}>
         {records.map((record, ind) => (

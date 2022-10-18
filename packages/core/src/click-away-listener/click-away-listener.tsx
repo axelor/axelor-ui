@@ -73,7 +73,7 @@ export const ClickAwayListener = ({
         onClickAwayRef.current(event);
       }
     },
-    []
+    [getDoc]
   );
 
   React.useEffect(() => {
@@ -102,7 +102,7 @@ export const ClickAwayListener = ({
       document.removeEventListener('touchend', handleClickAway);
       document.removeEventListener('touchmove', handleTouchMove);
     };
-  }, [handleClickAway]);
+  }, [handleClickAway, getDoc]);
 
   // handle mouse event
   React.useEffect(() => {
@@ -112,7 +112,7 @@ export const ClickAwayListener = ({
     return () => {
       document.removeEventListener('click', handleClickAway);
     };
-  }, [handleClickAway]);
+  }, [handleClickAway, getDoc]);
 
   return React.cloneElement(children, {
     onTouchEnd: createHandleSynthetic('onTouchEnd'),

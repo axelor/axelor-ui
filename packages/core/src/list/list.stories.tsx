@@ -16,7 +16,7 @@ import { List, ListItem } from './list';
 import { IconProps } from '../icon/icon';
 import { withStyled } from '../styled';
 
-export default {
+const config = {
   component: List,
   title: 'Components/List',
 };
@@ -287,3 +287,5 @@ export const Nested = () => {
     </NestedList>
   );
 };
+
+export default config;

@@ -11,8 +11,7 @@
 .header {
   display: flex;
   flex-grow: 1;
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--bs-table-border-color);
 }
 
 .headerColumn {
@@ -27,7 +26,8 @@
   flex: 1;
   display: flex;
   align-items: center;
-  padding: 0px 8px;
+  padding: 0.5rem;
+  overflow: hidden;
 }
 .column.edit {
   z-index: 1;
@@ -38,22 +38,28 @@
 
 .columnSortIcon {
   display: flex;
-  margin-left: 4px;
+  margin-left: 0.25rem;
 }
 
 .node {
   cursor: default;
   display: flex;
-  min-height: 32px;
+  min-height: 1rem;
   align-items: center;
 }
+.nodeText {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
 .node.selected {
-  background: #337ab7;
-  color: #fff;
+  background: var(--bs-table-active-bg);
+  color: var(--bs-table-active-color);
 }
 .node.hover {
-  background: #eee;
-  color: #000;
+  background: var(--bs-table-hover-bg);
+  color: var(--bs-table-hover-color);
 }
 .node.edit {
   z-index: 1;
@@ -65,9 +71,7 @@
 }
 .icon {
   cursor: pointer;
-  font-size: 12px;
-  margin: 0 4px;
-  /* height: 24px;
-  width: 24px; */
+  font-size: 1rem;
+  margin: 0 0.24rem;
   display: inline-flex;
 }

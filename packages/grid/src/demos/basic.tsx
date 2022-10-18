@@ -46,8 +46,10 @@ export default function Basic() {
           allowCheckboxSelection
           allowCellSelection
           allowColumnHide
+          allowColumnOptions
+          allowColumnCustomize
+          onColumnCustomize={e => console.log('onColumnCustomize')}
           sortType="state"
-          groupingText={'Drag columns here...'}
           selectionType="multiple"
           records={bulkRecords}
           columns={columns}

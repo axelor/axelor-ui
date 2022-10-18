@@ -1,8 +1,11 @@
 import styled from '../styled';
+import styles from './input.module.scss';
 
 export interface InputProps {
   intermediate?: boolean;
   invalid?: boolean;
+  large?: boolean;
+  small?: boolean;
 }
 
 const formClass = (type: string) => {
@@ -20,6 +23,17 @@ const formClass = (type: string) => {
 };
 
 export const Input = styled.input<InputProps>(
-  ({ type = 'text', invalid }) => [formClass(type), { 'is-invalid': invalid }],
+  ({ type = 'text', invalid, large, small }) => [
+    styles.input,
+    formClass(type),
+    {
+      [styles.invalid]: invalid,
+      [styles['input-sm']]: small,
+      [styles['input-lg']]: large,
+      'form-control-sm': small,
+      'form-control-lg': large,
+      'is-invalid': invalid,
+    },
+  ],
   ({ type = 'text' }) => ({ type })
 );

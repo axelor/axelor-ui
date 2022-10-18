@@ -2,10 +2,10 @@ import React from 'react';
 import { GridGroupRow } from './grid-group-row';
 import { GridBodyRow } from './grid-body-row';
 import { GridFooterRow } from './grid-footer-row';
-import { GridDNDRow } from './grid-dnd-row';
+import { GridDNDContainer } from './grid-dnd-row';
 import { isRowVisible } from './utils';
 import * as TYPES from './types';
-import styles from './grid.module.css';
+import styles from './grid.module.scss';
 
 export interface GridBodyProps
   extends Pick<
@@ -16,12 +16,14 @@ export interface GridBodyProps
       TYPES.GridProps,
       | 'selectionType'
       | 'noRecordsText'
+      | 'addNewText'
       | 'cellRenderer'
       | 'rowGroupHeaderRenderer'
       | 'rowGroupFooterRenderer'
       | 'rowRenderer'
       | 'editRowRenderer'
       | 'editRowColumnRenderer'
+      | 'onRecordAdd'
       | 'onRecordSave'
       | 'onRecordDiscard'
       | 'onRowDoubleClick'
@@ -29,6 +31,7 @@ export interface GridBodyProps
     > {
   onRowMove?: TYPES.GridRowProps['onMove'];
   onRowClick?: TYPES.GridRowProps['onClick'];
+  onRecordUpdate?: TYPES.GridRowProps['onUpdate'];
 }
 
 export function GridBody(props: GridBodyProps) {
@@ -45,9 +48,12 @@ export function GridBody(props: GridBodyProps) {
     rowGroupFooterRenderer,
     editRowRenderer,
     editRowColumnRenderer,
+    addNewText,
     noRecordsText,
+    onRecordAdd,
     onRecordSave,
     onRecordDiscard,
+    onRecordUpdate,
     onCellClick,
     onRowMove,
     onRowClick,
@@ -62,9 +68,28 @@ export function GridBody(props: GridBodyProps) {
       })),
     [rows]
   );
+  const getTotalWidth = () =>
+    columns.reduce((total, c) => total + (c.width || 0), 0);
 
-  return (
-    <div className={styles.body}>
+  const showNoRecords = noRecordsText && !addNewText;
+
+  function render(children: React.ReactNode) {
+    const props = {
+      ...(showNoRecords ? { style: { width: getTotalWidth() + 2 } } : {}),
+      className: styles.body,
+    };
+    if (onRowMove) {
+      return (
+        <GridDNDContainer {...props} rows={rows} onRowMove={onRowMove}>
+          {children}
+        </GridDNDContainer>
+      );
+    }
+    return <div {...props}>{children}</div>;
+  }
+
+  return render(
+    <>
       {renderRows.map(({ row, visible }, index) => {
         if (!visible) {
           return null;
@@ -85,6 +110,7 @@ export function GridBody(props: GridBodyProps) {
           onClick: onRowClick,
           onDoubleClick: onRowDoubleClick,
           onMove: onRowMove,
+          onUpdate: onRecordUpdate,
         };
 
         if (editRow) {
@@ -115,12 +141,18 @@ export function GridBody(props: GridBodyProps) {
 
         return (
           <GridBodyRow
-            renderer={onRowMove ? GridDNDRow : rowRenderer}
+            draggable={Boolean(onRowMove)}
+            renderer={rowRenderer}
             {...rowProps}
           />
         );
       })}
-      {noRecordsText && <div>{noRecordsText}</div>}
-    </div>
+      {addNewText && (
+        <div className={styles.addNewText} onClick={onRecordAdd}>
+          {addNewText}
+        </div>
+      )}
+      {showNoRecords && <div>{noRecordsText}</div>}
+    </>
   );
 }

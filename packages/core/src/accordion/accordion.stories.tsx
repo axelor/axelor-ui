@@ -6,7 +6,7 @@ import {
   AccordionBody,
 } from './accordion';
 
-export default {
+const config = {
   component: Accordion,
   title: 'Components/Accordion',
 };
@@ -94,3 +94,5 @@ export const Flush = () => {
     </Box>
   );
 };
+
+export default config;

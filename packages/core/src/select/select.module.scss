@@ -1,0 +1,31 @@
+$spacing: 0.25rem;
+
+$size: 1rem;
+$wrapperSpacing: $spacing * 2;
+$iconSpacing: $spacing;
+
+.icons {
+  & > svg {
+    cursor: pointer;
+    margin: 0 0.1rem;
+    opacity: 0.7;
+    font-size: 0.85rem;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+@for $i from 1 through 4 {
+  .icons-#{$i} {
+    input {
+      padding-right: (($size + ($iconSpacing * 2)) * $i);
+    }
+  }
+
+  [dir='rtl'] .icons-#{$i} {
+    input {
+      padding-left: (($size + ($iconSpacing * 2)) * $i);
+    }
+  }
+}

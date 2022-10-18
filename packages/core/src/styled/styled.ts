@@ -3,11 +3,7 @@ import { createElement, forwardRef, useMemo } from 'react';
 import { StyleName, useClassNames } from '../styles';
 import { StyleProps, useStyleProps } from '../system';
 
-type PropsOf<
-  C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>
-> = JSX.LibraryManagedAttributes<C, React.ComponentProps<C>>;
-
-type Merge<P, O> = O extends Array<any>
+export type Merge<P, O> = O extends Array<any>
   ? P
   : keyof O extends never
   ? P
@@ -18,18 +14,15 @@ type Merge<P, O> = O extends Array<any>
   : O & Omit<P, keyof O>;
 
 export type StyledComponentProps<
-  C extends React.ElementType,
-  P extends {},
-  A extends React.ElementType = React.ElementType
-> = Merge<PropsOf<C>, P> & { as?: A };
+  C extends React.ElementType<{}>,
+  P extends {}
+> = Merge<React.ComponentProps<C>, P>;
 
-export interface StyledComponent<C extends React.ElementType, P extends {}>
+export interface StyledComponent<C extends React.ElementType<{}>, P extends {}>
   extends React.FC<StyledComponentProps<C, P>> {
   (props: StyledComponentProps<C, P>): JSX.Element | null;
-  <As extends React.ElementType = C>(
-    props: As extends never
-      ? StyledComponentProps<C, P>
-      : StyledComponentProps<As, P, As>
+  <As extends React.ElementType<{}>>(
+    props: { as?: As } & StyledComponentProps<As, P>
   ): JSX.Element | null;
 }
 
@@ -40,7 +33,11 @@ export interface StyledComponentFactory<
   P extends {}
 > {
   <O extends {}>(
-    ...styles: Array<StyledConfig<StyledComponentProps<C, Merge<P, O>>>>
+    ...styles: Array<
+      StyledConfig<
+        { as?: React.ElementType<{}> } & StyledComponentProps<C, Merge<P, O>>
+      >
+    >
   ): StyledComponent<C, Merge<P, O>>;
 }
 

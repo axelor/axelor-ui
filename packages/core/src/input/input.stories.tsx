@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { Meta } from '@storybook/react';
 
 import { Box } from '../box';
-import { Input, InputProps } from './input';
+import { Input } from './input';
 import { withStyled } from '../styled';
 
-export default {
+const config = {
   component: Input,
   title: 'Components/Input',
   decorators: [
@@ -85,10 +85,35 @@ const Checkbox = withStyled(Input)((props, ref) => {
   );
 });
 
+export const Sizing = () => {
+  const [value, setValue] = useState('');
+  return (
+    <Box display="flex" flexDirection="column" g={2}>
+      <Input
+        value={value}
+        onChange={(e: any) => setValue(e.target.value)}
+        placeholder="large"
+        large
+      />
+      <Input
+        value={value}
+        onChange={(e: any) => setValue(e.target.value)}
+        placeholder="default"
+      />
+      <Input
+        value={value}
+        onChange={(e: any) => setValue(e.target.value)}
+        placeholder="small"
+        small
+      />
+    </Box>
+  );
+};
+
 function FormControl({ label, children }: any) {
   return (
-    <Box mb={2}>
-      <Box>{label}</Box>
+    <Box mb={3}>
+      <Box mb={2}>{label}</Box>
       <Box>{children}</Box>
     </Box>
   );
@@ -227,3 +252,5 @@ export const Types = () => {
     </Box>
   );
 };
+
+export default config;

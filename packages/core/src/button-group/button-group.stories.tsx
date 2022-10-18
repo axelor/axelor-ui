@@ -1,8 +1,7 @@
 import { Button } from '../button';
 import { ButtonGroup } from '../button-group';
-import { ThemeProvider } from '../styles';
 
-export default {
+const config = {
   component: ButtonGroup,
   title: 'Components/ButtonGroup',
 };
@@ -27,16 +26,4 @@ export const Vertical = () => {
   );
 };
 
-export const RTL = () => {
-  return (
-    <ThemeProvider dir="rtl">
-      <div>
-        <ButtonGroup>
-          <Button variant="primary">One</Button>
-          <Button variant="primary">Two</Button>
-          <Button variant="primary">Three</Button>
-        </ButtonGroup>
-      </div>
-    </ThemeProvider>
-  );
-};
+export default config;

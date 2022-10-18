@@ -36,7 +36,6 @@ export default function Aggregation() {
           allowGrouping
           allowSorting
           sortType="state"
-          groupingText={'Drag columns here...'}
           records={records}
           columns={columns}
           state={state}

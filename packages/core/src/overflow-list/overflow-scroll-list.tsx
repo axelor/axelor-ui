@@ -4,15 +4,28 @@ import { ReactComponent as BiChevronRight } from 'bootstrap-icons/icons/chevron-
 
 import { Box } from '../box';
 import { Icon } from '../icon';
-import { IconProps } from '../icon/icon';
 import { OverflowScrollListProps } from './types';
 import styled, { withStyled } from '../styled';
 import cssStyles from './overflow-list.module.css';
+import { useTheme } from '../styles';
 
-const Icons: Record<string, IconProps['as']> = {
-  'chevron-right': BiChevronRight,
-  'chevron-left': BiChevronLeft,
-};
+function negative(value: string | number) {
+  return -1 * Number(value);
+}
+
+function getScrollButtonIcon(type: 'right' | 'left', rtl?: boolean) {
+  switch (type) {
+    case 'right': {
+      return rtl ? BiChevronLeft : BiChevronRight;
+    }
+    case 'left': {
+      return rtl ? BiChevronRight : BiChevronLeft;
+    }
+    default: {
+      return () => null;
+    }
+  }
+}
 
 const Content = styled.div(() => [cssStyles.content, cssStyles.scrollable]);
 
@@ -24,12 +37,17 @@ const OverflowScrollList = withStyled(Content)<OverflowScrollListProps>(
     const scrollProp = vertical ? 'scrollHeight' : 'scrollWidth';
     const contentProp = vertical ? 'scrollTop' : 'scrollLeft';
 
+    const { dir } = useTheme();
+    const rtl = dir === 'rtl';
+
     function handleScrollStart() {
       const content = contentRef.current;
       if (content) {
         const size = content[clientProp];
-        const val = Math.max(0, (content[contentProp] || 0) - size / 2);
-        content[contentProp] = val;
+        const scroll = content[contentProp];
+        const current = scroll ? (rtl ? negative(scroll) : scroll) : 0;
+        const val = Math.max(0, current - size / 2);
+        content[contentProp] = rtl ? negative(val) : val;
       }
     }
 
@@ -39,8 +57,10 @@ const OverflowScrollList = withStyled(Content)<OverflowScrollListProps>(
         const size = content[clientProp];
         const scrollSize = content[scrollProp];
         const maxVal = scrollSize - size;
-        const val = Math.min(maxVal, (content[contentProp] || 0) + size / 2);
-        content[contentProp] = val;
+        const scroll = content[contentProp];
+        const current = scroll ? (rtl ? negative(scroll) : scroll) : 0;
+        const val = Math.min(maxVal, current + size / 2);
+        content[contentProp] = rtl ? negative(val) : val;
       }
     }
 
@@ -60,7 +80,7 @@ const OverflowScrollList = withStyled(Content)<OverflowScrollListProps>(
             px={2}
             {...props}
           >
-            <Icon as={Icons[`chevron-${type}`]} />
+            <Icon as={getScrollButtonIcon(type, rtl)} />
           </Box>
         );
       }

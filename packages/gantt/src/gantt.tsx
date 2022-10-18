@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { Box } from '@axelor-ui/core';
+import { Box, useTheme, useClassNames } from '@axelor-ui/core';
 
 import * as TYPES from './types';
 import { GanttLine } from './gantt-line';
@@ -9,7 +9,7 @@ import { GanttBody } from './gantt-body';
 import { GanttEdge } from './gantt-edge';
 import { GanttTable } from './gantt-table';
 import { getGraphConfig, getHeader, getGraphEdges } from './utils';
-import classes from './gantt.module.css';
+import classes from './gantt.module.scss';
 
 function GanttView(props: {
   view: TYPES.GanttType;
@@ -90,6 +90,10 @@ export function Gantt({
   const [container, setContainer] = React.useState<HTMLDivElement | null>(null);
   const [activeRowIndex, setActiveRowIndex] = React.useState(-1);
 
+  const { dir } = useTheme();
+  const rtl = dir === 'rtl';
+  const classNames = useClassNames();
+
   const config = React.useMemo(
     () => container && getGraphConfig(records, view, container.offsetWidth),
     [container, records, view]
@@ -116,7 +120,12 @@ export function Gantt({
   }
 
   return (
-    <Box d="flex" className={classes.root}>
+    <Box
+      d="flex"
+      className={classNames('gantt', classes.root, {
+        [classes.rtl]: rtl,
+      })}
+    >
       <GanttTable {...{ items, records, activeRowIndex, setActiveRowIndex }} />
       <Box
         ref={setContainer}

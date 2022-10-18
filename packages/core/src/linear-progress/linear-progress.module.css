@@ -3,6 +3,10 @@
   animation: 1.5s linear infinite progress-indeterminate;
 }
 
+.rtl.indeterminate {
+  animation: 1.5s linear infinite progress-indeterminate-rtl;
+}
+
 .animated {
   animation: 1s linear infinite progress-bar-stripes;
 }
@@ -20,6 +24,17 @@
   }
   to {
     left: 100%;
+    width: 25%;
+  }
+}
+
+@keyframes progress-indeterminate-rtl {
+  from {
+    right: -25%;
+    width: 25%;
+  }
+  to {
+    right: 100%;
     width: 25%;
   }
 }

@@ -350,7 +350,7 @@ export function getDateFromOffset(
   view: TYPES.GanttType,
   cellSize: number
 ) {
-  const { type, width } = viewConfig[view];
+  const { type } = viewConfig[view];
   const total = Number((offsetX / cellSize).toFixed(0));
   let date = startDate.clone();
   date = date.add(total, type);

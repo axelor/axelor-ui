@@ -1,8 +1,10 @@
 import { Box } from '../box';
-import { Badge } from '../badge';
+import { Badge as BadgeComponent } from '../badge';
 import { Button } from '../button';
 
-export default {
+const Badge = (props: any) => <BadgeComponent bg="secondary" {...props} />;
+
+const config = {
   component: Badge,
   title: 'Components/Badge',
 };
@@ -149,3 +151,5 @@ export const Variant = () => {
     </Box>
   );
 };
+
+export default config;

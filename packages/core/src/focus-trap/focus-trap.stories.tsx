@@ -3,7 +3,7 @@ import { Button } from '../button';
 import { Input } from '../input';
 import { FocusTrap } from './focus-trap';
 
-export default {
+const config = {
   component: FocusTrap,
   title: 'Core/FocusTrap',
 };
@@ -30,3 +30,5 @@ export const Basic = function () {
     </FocusTrap>
   );
 };
+
+export default config;

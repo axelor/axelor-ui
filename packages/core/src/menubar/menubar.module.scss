@@ -1,0 +1,28 @@
+$bg-light: #f8f9fa;
+
+.active {
+  color: #1e2125 !important;
+  background-color: #e9ecef !important;
+}
+
+.item:hover {
+  color: unset;
+  background-color: unset;
+}
+
+.menu:focus {
+  outline: 0px solid transparent;
+}
+
+.btn.active-btn {
+  background-color: $bg-light;
+}
+
+.btn:hover {
+  background-color: $bg-light;
+  border-color: transparent;
+}
+
+.btn:active {
+  border-color: transparent;
+}

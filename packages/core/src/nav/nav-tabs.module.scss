@@ -1,0 +1,113 @@
+$spacing: 0.25rem;
+
+.root {
+  user-select: none;
+  width: 100%;
+}
+
+.dndWrapper {
+  & > div {
+    max-width: 100%;
+    flex: 1;
+    display: flex;
+    & > div {
+      width: 100%;
+      & > div:nth-child(2) {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.tab {
+  outline: none;
+  cursor: pointer;
+  padding-top: $spacing * 1.5;
+  padding-bottom: $spacing * 1.5;
+  position: relative;
+  background: var(--bs-nav-tabs-bg);
+  transition: background ease-in-out 0.2s;
+  border: 1px solid transparent;
+  border-bottom-color: var(--bs-nav-tabs-border-color);
+  border-top-left-radius: $spacing * 2;
+  border-top-right-radius: $spacing * 2;
+  color: var(--bs-nav-active-color);
+  &.active {
+    z-index: 1;
+    background: var(--bs-white) !important;
+    border-color: var(--bs-nav-tabs-border-color);
+    border-bottom-color: transparent;
+  }
+  &:first-child,
+  &:hover,
+  &:hover + & {
+    color: var(--bs-nav-hover-color);
+    & .tabDivider {
+      opacity: 0;
+    }
+  }
+  &:hover {
+    background: var(--bs-nav-tabs-hover-bg);
+  }
+}
+
+.tabIcon {
+  font-size: 0.65rem;
+  height: 22px;
+  width: 22px;
+  background: var(--bs-nav-tabs-border-color);
+  border-radius: 100%;
+}
+
+.tabClose {
+  cursor: pointer;
+  font-size: 0.75rem;
+}
+
+.tabBorder {
+  position: absolute;
+  left: 0px;
+  bottom: -1px;
+  height: 1px;
+  background: inherit;
+  width: 100%;
+  .rtl & {
+    left: unset;
+    right: 0;
+  }
+}
+.tabDivider {
+  height: 60%;
+  border-left: 1px solid var(--bs-nav-tabs-border-color);
+  position: absolute;
+  left: 0;
+  top: 20%;
+  transition: opacity ease-in-out 0.2s;
+  opacity: 1;
+  .rtl & {
+    border-left: unset;
+    border-right: 1px solid var(--bs-nav-tabs-border-color);
+    left: unset;
+    right: 0;
+  }
+}
+.tabTitle {
+  min-width: 100px;
+}
+.tabTitle span {
+  white-space: nowrap;
+  user-select: none;
+}
+
+.tabs-divider {
+  top: -1px;
+  height: 1px;
+  border-top: 1px solid var(--bs-nav-tabs-border-color);
+  position: relative;
+}
+
+.hide {
+  position: absolute !important;
+  visibility: hidden;
+  left: -100px;
+}

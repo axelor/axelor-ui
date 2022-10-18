@@ -5,10 +5,9 @@ import { ReactComponent as BiFileEarmark } from 'bootstrap-icons/icons/file-earm
 
 import { Input } from '../input';
 import { Box } from '../box';
-import { Icon } from '../icon';
 import { Select } from '../select';
 
-export default {
+const SelectStories = {
   component: Select,
   title: 'Components/Select',
 };
@@ -65,7 +64,7 @@ const fetchColors = (colorStr: string) => {
             )
           : colors
       );
-    }, 800);
+    }, 2000);
   });
 };
 
@@ -215,45 +214,11 @@ export const Actions = () => {
       </Box>
       <FormControl label="Colors">
         <Select
-          actions={
-            (canRead || canCreate || canEdit) && (
-              <Box d="flex">
-                {value && canEdit && (
-                  <Box
-                    p={1}
-                    d="flex"
-                    alignItems="center"
-                    title="Edit"
-                    onClick={() => console.log('do edit')}
-                  >
-                    <Icon as={BiPencil} />
-                  </Box>
-                )}
-                {canCreate && (
-                  <Box
-                    p={1}
-                    d="flex"
-                    alignItems="center"
-                    title="New"
-                    onClick={() => console.log('do create')}
-                  >
-                    <Icon as={BiPlusSquare} />
-                  </Box>
-                )}
-                {value && canRead && (
-                  <Box
-                    p={1}
-                    d="flex"
-                    alignItems="center"
-                    title="View"
-                    onClick={() => console.log('do view')}
-                  >
-                    <Icon as={BiFileEarmark} />
-                  </Box>
-                )}
-              </Box>
-            )
-          }
+          icons={[
+            ...(value && canEdit ? [{ id: 'search', icon: BiPencil }] : []),
+            ...(canCreate ? [{ id: 'new', icon: BiPlusSquare }] : []),
+            ...(canRead && value ? [{ id: 'edit', icon: BiFileEarmark }] : []),
+          ]}
           value={value}
           onChange={setValue}
           options={colors}
@@ -264,3 +229,5 @@ export const Actions = () => {
     </Box>
   );
 };
+
+export default SelectStories;
