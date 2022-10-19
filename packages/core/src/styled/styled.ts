@@ -14,15 +14,17 @@ export type Merge<P, O> = O extends Array<any>
   : O & Omit<P, keyof O>;
 
 export type StyledComponentProps<
-  C extends React.ElementType<{}>,
+  C extends React.ElementType,
   P extends {}
-> = Merge<React.ComponentProps<C>, P>;
+> = C extends React.ElementType<infer Q>
+  ? Merge<React.ComponentProps<C>, Merge<Q, P>>
+  : Merge<React.ComponentProps<C>, P>;
 
-export interface StyledComponent<C extends React.ElementType<{}>, P extends {}>
+export interface StyledComponent<C extends React.ElementType, P extends {}>
   extends React.FC<StyledComponentProps<C, P>> {
   (props: StyledComponentProps<C, P>): JSX.Element | null;
-  <As extends React.ElementType<{}>>(
-    props: { as?: As } & StyledComponentProps<As, P>
+  <As extends React.ElementType>(
+    props: { as: As } & StyledComponentProps<As, P>
   ): JSX.Element | null;
 }
 
@@ -35,7 +37,7 @@ export interface StyledComponentFactory<
   <O extends {}>(
     ...styles: Array<
       StyledConfig<
-        { as?: React.ElementType<{}> } & StyledComponentProps<C, Merge<P, O>>
+        { as?: React.ElementType } & StyledComponentProps<C, Merge<P, O>>
       >
     >
   ): StyledComponent<C, Merge<P, O>>;
@@ -146,8 +148,7 @@ export const withStyled =
   <C extends StyledComponent<any, any>>(_: C) =>
   <P extends {}>(
     render: (
-      props: { as?: React.ElementType<{}> } & P &
-        React.ComponentPropsWithoutRef<C>,
+      props: { as?: React.ElementType } & P & React.ComponentPropsWithoutRef<C>,
       ref: React.Ref<any>
     ) => JSX.Element | null
   ) => {
