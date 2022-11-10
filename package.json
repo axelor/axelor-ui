@@ -1,12 +1,26 @@
 {
   "name": "@axelor/ui",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "author": "Axelor",
   "license": "AGPL-3.0-only",
+  "keywords": [
+    "react",
+    "components",
+    "ui",
+    "axelor"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=14",
     "yarn": ">=1.22"
   },
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "preinstall": "node scripts/check-yarn.js",
     "format": "prettier -w '**/*.{ts,tsx,js,jsx,json,css,scss}'",
