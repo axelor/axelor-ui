@@ -9,49 +9,77 @@ React components by Axelor.
 
 ```bash
 # Nodejs
-curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
-sudo apt-get install -y nodejs
+$ curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+$ sudo apt-get install -y nodejs
 
 # Alternatively, `nvm` can be used as a Node Version Manager
-curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash 
-source ~/.profile 
-nvm install 16
+$ curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
+$ source ~/.profile
+$ nvm install 16
 
 # Yarn
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-sudo apt update && sudo apt install --no-install-recommends yarn
+$ curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+$ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+$ sudo apt update && sudo apt install --no-install-recommends yarn
 ```
 
-## Quickstart
+## Quick start
 
-Run following commands from terminal:
+Install the library :
 
 ```bash
-# Install the project dependencies
-yarn install
-
-# Launch storybook
-yarn storybook
+$ yarn add @axelor/ui
 ```
 
-The storybook app will start on http://localhost:6006/
+You can import from the main bundle:
 
-## Build
+```js
+import { Button } from '@axelor/ui';
+```
 
-### Build and publish storybook
+Only `core` components are available from the main bundle.
 
-Run following commands to build storybook : `yarn storybook:build`
+For others components (`grid`, `kanban`, `gantt`, ...), you have to import the component directly :
+
+```js
+import Grid from '@axelor/ui/grid';
+
+import Kanban from '@axelor/ui/kanban';
+```
+
+## Development
+
+Before any command, install dependencies running following command:
+
+```bash
+$ yarn install
+```
+
+### Storybook
+
+Run following commands to build storybook :
+
+```bash
+$ yarn storybook:build
+```
 
 This build Storybook as a static web application capable of being served by any web server. 
 Default build files are located under `apps/stories/dist/*`
 
-### Build components
+To run storybook locally :
+
+```bash
+$ yarn storybook
+```
+
+the storybook will be served on http://localhost:6006
+
+### Build
 
 Run following command to build components :
 
 ```bash
-yarn build
+$ yarn build
 ```
 
-Components are ready to be used by `axelor-web` !
+components are generated under `dist/`.
