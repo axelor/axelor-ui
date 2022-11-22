@@ -10,7 +10,6 @@
 
 .header {
   display: flex;
-  flex-grow: 1;
   border-bottom: 1px solid var(--bs-table-border-color);
 }
 
@@ -20,6 +19,7 @@
 
 .body {
   min-height: 240px;
+  flex-grow: 1;
 }
 
 .column {

@@ -8,9 +8,12 @@ import styles from './tree.module.css';
 
 function toNode(record: any): TYPES.TreeNode {
   return {
+    $key: record.$key,
     id: record.id,
     data: record,
     children: record._children,
+    draggable: record._draggable,
+    droppable: record._droppable,
     level: 0,
   };
 }
@@ -22,8 +25,8 @@ function getChildrenList(data: any, parent: any): number[] {
       .reduce(
         (list: any[], item: any): any => [
           ...list,
-          item.id,
-          ...collectChildrenIds(item.id),
+          item.$key,
+          ...collectChildrenIds(item.$key),
         ],
         []
       );
@@ -35,11 +38,11 @@ function getParentList(data: any, parent: any): number[] {
   const collectParentIds = (parent: any): any => {
     if (!parent) return [];
     return data
-      .filter((item: any) => item.id === parent)
+      .filter((item: any) => item.$key === parent)
       .reduce(
         (list: any[], item: any): any => [
           ...list,
-          item.id,
+          item.$key,
           ...collectParentIds(item.parent),
         ],
         []
@@ -107,7 +110,7 @@ export function Tree(props: TYPES.TreeProps) {
               0,
               ...children.map((item: any) => ({
                 ...toNode(item),
-                parent: record.id,
+                parent: record.$key,
               }))
             );
             return [...data];
@@ -128,7 +131,7 @@ export function Tree(props: TYPES.TreeProps) {
                   [updateKey]: true,
                   expanded: !record.expanded,
                 }
-              : (record.childrenList || []).includes(row.id)
+              : (record.childrenList || []).includes(row.$key)
               ? { ...row, hidden: Boolean(record.expanded) }
               : row
           )
@@ -159,35 +162,35 @@ export function Tree(props: TYPES.TreeProps) {
         const hoverParent = hoverItem;
 
         let updatedNode = { ...dragItem };
-        if (hoverParent.id !== dragItem.parent && onNodeMove) {
+        if (hoverParent.$key !== dragItem.parent && onNodeMove) {
           updatedNode = await onNodeMove(
             dragItem,
             hoverParent as TYPES.TreeNode
           );
         }
         setData(data => {
-          const dragIndex = data.findIndex(item => item.id === dragItem?.id);
+          const dragIndex = data.findIndex(item => item.$key === dragItem?.$key);
           data.splice(dragIndex, 1);
 
-          let hoverIndex = data.findIndex(item => item.id === hoverItem?.id);
+          let hoverIndex = data.findIndex(item => item.$key === hoverItem?.$key);
           data.splice(hoverIndex + 1, 0, {
             ...updatedNode,
-            parent: hoverParent.id,
+            parent: hoverParent.$key,
           });
 
           let nextDragItem = dragItem;
           let nextHoverItem = dragItem;
 
-          const childrenList = getChildrenList(data, dragItem.id);
+          const childrenList = getChildrenList(data, dragItem.$key);
           if (childrenList.length > 0) {
-            childrenList.forEach((id: number) => {
-              const dragIndex = data.findIndex(item => item.id === id);
+            childrenList.forEach(($id: number) => {
+              const dragIndex = data.findIndex(item => item.$key === $id);
               if (dragIndex > -1) {
                 nextDragItem = data[dragIndex];
                 data.splice(dragIndex, 1);
               }
               const hoverIndex = data.findIndex(
-                item => item.id === nextHoverItem.id
+                item => item.$key === nextHoverItem.$key
               );
               if (hoverIndex > -1) {
                 data.splice(hoverIndex + 1, 0, nextDragItem);
@@ -282,7 +285,7 @@ export function Tree(props: TYPES.TreeProps) {
 
   const $data = useMemo(() => {
     return data.map((item: any) => {
-      const childrenList = getChildrenList(data, item.id);
+      const childrenList = getChildrenList(data, item.$key);
       const parentList = getParentList(data, item.parent);
       return {
         ...item,

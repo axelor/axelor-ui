@@ -1,8 +1,11 @@
 import React from 'react';
 
 export interface TreeNode {
+  $key?: any;
   id?: any;
   data: Record<string, any>;
+  draggable?: boolean;
+  droppable?: boolean;
   children?: boolean | null | number;
   childrenList?: number[];
   expanded?: boolean;
@@ -10,7 +13,7 @@ export interface TreeNode {
   selected?: boolean;
   level?: number;
   hidden?: boolean;
-  parent?: number | null;
+  parent?: number | string | null;
 }
 
 export interface TreeColumn {

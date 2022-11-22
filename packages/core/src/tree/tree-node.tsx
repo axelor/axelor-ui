@@ -84,18 +84,19 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
   const classNames = useClassNames();
   const [, dragRef, dragPreviewRef] = useDrag({
     type: NODE_TYPE,
+    canDrag: () => data.draggable === true,
     item: { data, index, type: NODE_TYPE },
   });
 
   const [{ hovered, highlighted }, dropRef] = useDrop({
     accept: NODE_TYPE,
     hover(item: any) {
-      const { id, childrenList = [] } = item.data || {};
+      const { $key, childrenList = [] } = item.data || {};
       function isSame() {
-        return id === data.id;
+        return $key === data.$key;
       }
       function isChildren() {
-        return childrenList.includes(data.id);
+        return childrenList.includes(data.$key);
       }
       if (!data.expanded && !isSame() && !isChildren()) {
         onToggle && onToggle(data, index, true);
@@ -105,14 +106,20 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
       onDrop && onDrop(item, { data, index });
     },
     canDrop(props: any) {
-      const { parent, childrenList = [] }: TYPES.TreeNode = props.data;
+      const { $key, parent, childrenList = [] }: TYPES.TreeNode = props.data;
+      function isOwn() {
+        return $key === data.$key;
+      }
       function isSameParent() {
-        return parent === data.id;
+        return parent === data.$key;
       }
       function isChildren() {
-        return childrenList.includes(data.id);
+        return childrenList.includes(data.$key);
       }
-      return !isSameParent() && !isChildren();
+
+      return Boolean(
+        data.droppable && !isOwn() && !isSameParent() && !isChildren()
+      );
     },
     collect: function (monitor) {
       return {
