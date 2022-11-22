@@ -7,37 +7,11 @@ import { DndProvider } from 'react-dnd';
 import { Tree } from '../tree';
 import { Input } from '../../input';
 import { useClassNames } from '../../styles';
+import records from './data';
 
 const columns = [
   { name: 'title', title: 'Title', type: 'String' },
   { name: 'progress', title: 'Progress', type: 'String' },
-];
-
-const records = [
-  {
-    id: 1,
-    title: 'Project 1',
-    _children: true,
-    tasks: [
-      { id: 101, title: 'Analysis', progress: 0 },
-      { id: 102, title: 'Definition', progress: 50 },
-      { id: 103, title: 'Presale analysis', progress: 10 },
-      { id: 104, title: 'Test', progress: 20 },
-    ],
-  },
-  {
-    id: 2,
-    title: 'Project 2',
-    _children: true,
-    tasks: [
-      { id: 105, title: 'Design', progress: 5 },
-      { id: 106, title: 'Development', progress: 50 },
-      { id: 107, title: 'Follow-up', progress: 30 },
-      { id: 108, title: 'Implementation', progress: 20 },
-      { id: 109, title: 'Research', progress: 90 },
-      { id: 110, title: 'UI Design', progress: 45 },
-    ],
-  },
 ];
 
 const FormHandlers = React.createContext(React.createRef<any>());
@@ -151,7 +125,7 @@ function Form({ node, index, columns, onSave, onCancel }: any) {
 }
 
 export default function Editable() {
-  const onLoad = React.useCallback(async record => {
+  const onLoad = React.useCallback(async (record: any) => {
     return new Promise(resolve => {
       const project = records.find(p => p.id === record.id);
 
@@ -161,7 +135,7 @@ export default function Editable() {
     });
   }, []);
 
-  const onUpdate = React.useCallback(record => {
+  const onUpdate = React.useCallback((record: any) => {
     return record;
   }, []);
 
