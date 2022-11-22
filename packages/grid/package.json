@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "immer": "^9.0.12",
-    "lodash": "^4.17.21",
     "react-beautiful-dnd": "^13.1.1",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1"
