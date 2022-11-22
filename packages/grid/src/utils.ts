@@ -1,4 +1,5 @@
 import { useTheme } from '@axelor-ui/core';
+
 import { GridColumn, GridGroup, GridRow, GridSortColumn } from './types';
 
 export const GRID_CONFIG = {
@@ -101,10 +102,23 @@ export function doSort(
       const { name, order: by } = sorts[i];
       const isDesc = by === 'desc';
       const field = columns.find(col => col.name === name);
-      const formatter = (data: any) =>
-        field && field.formatter ? field.formatter(data, field) : data[name];
-      const value1 = formatter(obj1);
-      const value2 = formatter(obj2);
+      const isNumber =
+        field &&
+        field.type &&
+        ['decimal', 'integer', 'long'].includes(field.type);
+
+      const formatter = (data: any) => {
+        const value = data[name];
+        return field && field.formatter
+          ? field.formatter(field, value, data)
+          : value;
+      };
+      const getValue = (data: any) =>
+        isNumber ? Number(data[field.name] || 0) : formatter(data);
+
+      const value1 = getValue(obj1);
+      const value2 = getValue(obj2);
+
       if (value1 < value2) return isDesc ? 1 : -1;
       if (value1 > value2) return isDesc ? -1 : 1;
     }
@@ -126,7 +140,7 @@ export function doGroup(
   data.forEach(record => {
     const key =
       (fieldInfo.formatter
-        ? fieldInfo.formatter(record, fieldInfo)
+        ? fieldInfo.formatter(fieldInfo, record[fieldInfo.name], record)
         : record[name]) || '';
     let target = groupData[key] || {
       data: [],

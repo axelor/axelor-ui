@@ -42,7 +42,7 @@ export const GridFooterRow = React.memo(function GridFooterRow(
             {column.aggregate
               ? `${t(capitalizeWord(column.aggregate))} : ${
                   column.formatter
-                    ? column.formatter({ [column.name]: value }, column)
+                    ? column.formatter(column, value, { [column.name]: value })
                     : value
                 }`
               : null}

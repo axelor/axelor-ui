@@ -1,7 +1,6 @@
 import React from 'react';
 import { Input } from '@axelor-ui/core';
 import { useClassNames } from '@axelor-ui/core';
-import get from 'lodash/get';
 
 import { GridColumn } from './grid-column';
 import { isRowCheck } from './utils';
@@ -59,9 +58,10 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         />
       );
     }
+    const value = data.record[column.name];
     return column.formatter
-      ? column.formatter(data.record, column)
-      : get(data.record, column.name);
+      ? column.formatter(column, value, data.record)
+      : value;
   }
 
   const RowComponent = renderer || 'div';

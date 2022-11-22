@@ -11,7 +11,7 @@ export interface GridColumn {
   sort?: boolean;
   action?: boolean;
   aggregate?: 'sum' | 'min' | 'max' | 'avg' | 'count';
-  formatter?: (data: any, column: GridColumn) => any;
+  formatter?: (column: GridColumn, value: any, record: any) => any;
   renderer?: (props: any) => any;
   $changed?: boolean;
   $css?: string;
