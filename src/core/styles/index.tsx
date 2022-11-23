@@ -34,15 +34,6 @@ const names = (item: StyleName): string[] => {
   return item ? clean([item.toString()]) : [];
 };
 
-export function styleNames(...args: StyleName[]) {
-  console.warn(
-    "Don't use `styleNames` function, use `useClassNames` hook instead."
-  );
-  return names(args)
-    .flatMap(name => STYLES.ltr[name] ?? name)
-    .join(' ');
-}
-
 export interface ThemeContextValue {
   dir?: string;
 }
