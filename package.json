@@ -12,10 +12,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "engines": {
-    "node": ">=14",
-    "yarn": ">=1.22"
-  },
+  "packageManager": "yarn@3.3.0",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "files": [
