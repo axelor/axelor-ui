@@ -71,7 +71,7 @@ async function doPackage(dir, out) {
     encoding: 'utf8',
   });
 
-  const { main, files, scripts, devDependencies, ...othData } = pkgData;
+  const { main, files, exports, scripts, eslintConfig, devDependencies, ...othData } = pkgData;
   const newData = {
     ...othData,
   };

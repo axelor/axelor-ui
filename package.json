@@ -13,11 +13,14 @@
     "access": "public"
   },
   "packageManager": "yarn@3.3.0",
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*/index.ts",
+    "./core/*": "./src/core/*/index.ts",
+    "./core/styles": "./src/core/styles/index.tsx",
+    "./grid/utils": "./src/grid/utils.ts",
+    "./gantt/utils": "./src/gantt/utils.ts"
+  },
   "scripts": {
     "preinstall": "node scripts/check-yarn.js",
     "format": "prettier -w '**/*.{ts,tsx,js,jsx,json,css,scss}'",
