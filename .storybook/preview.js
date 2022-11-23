@@ -1,4 +1,6 @@
 import { WithThemeProvider, WithTranslationProvider } from './decorators';
+import { PARAM_KEY as DIRECTION } from './addons/rtl-switch/constants';
+import { PARAM_KEY as LOCALE } from './addons/locale/constants';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -23,3 +25,8 @@ export const parameters = {
 };
 
 export const decorators = [WithThemeProvider, WithTranslationProvider];
+
+export const globals = {
+  [DIRECTION]: undefined,
+  [LOCALE]: undefined,
+};

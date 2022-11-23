@@ -36,6 +36,6 @@ addons.register(ADDON_ID, function () {
     title: 'RTL Switch',
     type: types.TOOL,
     match: () => true,
-    render: RTLSwitch,
+    render: () => <RTLSwitch/>,
   });
 });

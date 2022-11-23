@@ -74,6 +74,6 @@ addons.register(ADDON_ID, function () {
     title: 'Locale',
     type: types.TOOL,
     match: () => true,
-    render: Locale,
+    render: () => <Locale/>,
   });
 });
