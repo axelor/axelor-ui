@@ -4,8 +4,8 @@ React components by Axelor.
 
 ## Prerequisite
 
-* node >= v14.17.0
-* yarn >= 1.22.10
+- node >= v18.12.1
+- yarn >= 3.3.0
 
 ```bash
 # Nodejs
@@ -15,7 +15,7 @@ $ sudo apt-get install -y nodejs
 # Alternatively, `nvm` can be used as a Node Version Manager
 $ curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
 $ source ~/.profile
-$ nvm install 16
+$ nvm install 18
 
 # Yarn
 $ curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
@@ -60,11 +60,11 @@ $ yarn install
 Run following commands to build storybook :
 
 ```bash
-$ yarn storybook:build
+$ yarn build-storybook
 ```
 
 This build Storybook as a static web application capable of being served by any web server. 
-Default build files are located under `apps/stories/dist/*`
+Default build files are located under `storybook-static/*`
 
 To run storybook locally :
 
