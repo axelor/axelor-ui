@@ -1,5 +1,4 @@
 import * as React from 'react';
-import isPropValid from '@emotion/is-prop-valid';
 import { ReactComponent as BiThreeDots } from 'bootstrap-icons/icons/three-dots.svg';
 
 import { Fade } from '../fade';
@@ -56,8 +55,8 @@ function DropdownMenuItem({
 }
 
 const DropdownList = styled('div', {
-  shouldForwardProp: prop =>
-    prop === 'onOverflowChange' ? false : isPropValid(prop),
+  shouldForwardProp: (prop, isValid) =>
+    prop !== 'onOverflowChange' && isValid(prop),
 })<OverflowDropdownProps>(({ vertical }) => [
   cssStyles.dropdownList,
   {

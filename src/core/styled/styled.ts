@@ -45,7 +45,11 @@ export interface StyledComponentFactory<
 
 export type StyledOptions = {
   displayName?: string;
-  shouldForwardProp?: (name: string) => boolean;
+  shouldForwardProp?: (
+    name: string,
+    isValid: (name: string) => boolean,
+    component: React.ElementType | 'string'
+  ) => boolean;
 };
 
 export interface CreateStyled {
@@ -92,14 +96,12 @@ const createStyled: CreateStyled =
         }
         const shouldForward = shouldForwardProp
           ? shouldForwardProp
-          : typeof Component === 'string'
-          ? isPropValid
-          : () => true;
+          : prop => typeof component !== 'string' || isPropValid(prop);
 
         const result = Object.keys(props)
-          .filter(shouldForward)
-          .reduce((prev, curr) => {
-            prev[curr] = props[curr];
+          .filter(prop => shouldForward(prop, isPropValid, component))
+          .reduce((prev, prop) => {
+            prev[prop] = props[prop];
             return prev;
           }, {} as any);
 
