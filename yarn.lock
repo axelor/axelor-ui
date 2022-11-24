@@ -52,8 +52,8 @@ __metadata:
     "@types/react-dom": ^18.0.5
     "@types/react-transition-group": ^4.4.5
     "@vitejs/plugin-react": ^2.2.0
-    bootstrap: ^5.2.1
-    bootstrap-icons: ^1.9.1
+    bootstrap: ^5.2.3
+    bootstrap-icons: ^1.10.0
     commander: ^9.4.1
     csstype: ^3.1.1
     eslint: ^8.27.0
@@ -5098,19 +5098,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bootstrap-icons@npm:^1.9.1":
-  version: 1.9.1
-  resolution: "bootstrap-icons@npm:1.9.1"
-  checksum: b388264719b5d2526809df509b83aa7e696d467f3b976d79faefb6fc7f07cee5427a894331af90b00b1ceb8d28a99fc398f1ca0553afaa53eb77a7749bb73ea5
+"bootstrap-icons@npm:^1.10.0":
+  version: 1.10.2
+  resolution: "bootstrap-icons@npm:1.10.2"
+  checksum: 1d73556a70b05c1b219c379243c24ea8186c773990b3bc5e8248825e7eae1c8137be90a2b7dd81fd46060a99558763886a069587a65a7f70a362bf5934e795e7
   languageName: node
   linkType: hard
 
-"bootstrap@npm:^5.2.1":
-  version: 5.2.2
-  resolution: "bootstrap@npm:5.2.2"
+"bootstrap@npm:^5.2.3":
+  version: 5.2.3
+  resolution: "bootstrap@npm:5.2.3"
   peerDependencies:
     "@popperjs/core": ^2.11.6
-  checksum: 14e6df28feb975dc10702cac0a6c2a21132a6e4e5562e31cdae1db3970e287ed29001020066b61d96b2cea2a45ecf44c08c8c26bc84a31cdeabec0a9be6b9389
+  checksum: 0211805dec6a190c0911d142966df30fdb4b4139a04cc6c23dd83c6045ea3cb0a966b360ab2e701e7b3ad96ff01e05fdc0914be97b41bd876b11e457a8bdc6a3
   languageName: node
   linkType: hard
 
