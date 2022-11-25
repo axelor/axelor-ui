@@ -7,7 +7,7 @@ export type GanttType = 'year' | 'month' | 'week' | 'day';
 export type GanttField = {
   name: string;
   title?: string;
-  formatter?: (data: GanttRecord, field: GanttField) => any;
+  formatter?: (field: GanttField, value: any, data: GanttRecord) => any;
   renderer?: React.FC<{
     data: GanttRecord;
     field: GanttField;

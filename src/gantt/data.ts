@@ -404,8 +404,7 @@ const DATA = {
     const field = schema.data.fields.find(f => f.name === item.name);
     const attrs: any = {};
     if (field?.type === 'MANY_TO_ONE' && field.targetName) {
-      attrs.formatter = (data: any, field: any) => {
-        const value = data[field.name];
+      attrs.formatter = (field: any, value: any, data: any) => {
         return value && value[field.targetName];
       };
     }

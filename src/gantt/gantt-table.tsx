@@ -41,7 +41,9 @@ const GanttTableBodyRow = React.memo(function GanttTableBodyRow({
     >
       {items.map(item => {
         const value: any = (data as any)[item.name];
-        const $value = item.formatter ? item.formatter(data, item) : value;
+        const $value = item.formatter
+          ? item.formatter(item, (data as any)[item.name], data)
+          : value;
         function renderer() {
           const Component: any = item.renderer;
           return <Component field={item} data={data} value={$value} />;
