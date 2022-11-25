@@ -96,7 +96,8 @@ const createStyled: CreateStyled =
         }
         const shouldForward = shouldForwardProp
           ? shouldForwardProp
-          : prop => typeof component !== 'string' || isPropValid(prop);
+          : (prop: string) =>
+              typeof Component !== 'string' || isPropValid(prop);
 
         const result = Object.keys(props)
           .filter(prop => shouldForward(prop, isPropValid, component))
