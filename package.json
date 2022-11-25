@@ -24,8 +24,8 @@
   "scripts": {
     "preinstall": "node scripts/check-yarn.js",
     "format": "prettier -w '**/*.{ts,tsx,js,jsx,json,css,scss}'",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
+    "storybook": "storybook dev --disable-telemetry -p 6006",
+    "build-storybook": "storybook --disable-telemetry build",
     "build": "node scripts/build.js . -o dist",
     "clean": "rimraf dist"
   },
