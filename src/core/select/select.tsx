@@ -92,7 +92,9 @@ const IndicatorsContainer = (
       <Box
         d="flex"
         className={selectStyles.icons}
-        onMouseDown={handleMouseDown}
+        {...(icons.some(icon => icon.onClick)
+          ? { onMouseDown: handleMouseDown }
+          : {})}
         me={1}
       >
         {icons.map(icon => (
