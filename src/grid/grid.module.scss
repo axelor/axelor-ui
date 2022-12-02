@@ -79,8 +79,11 @@
 }
 .header .column,
 .footer .column {
-  font-weight: 600;
   font-size: 0.875rem;
+}
+.header .column,
+.footerRow .column {
+  font-weight: 600;
 }
 
 .container:not(.no-columns):not(.rtl)

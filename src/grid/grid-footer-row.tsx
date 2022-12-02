@@ -25,7 +25,7 @@ export const GridFooterRow = React.memo(function GridFooterRow(
   return (
     <RowRenderer
       {...rendererProps}
-      className={classNames(styles.row, className, {
+      className={classNames(styles.row, styles.footerRow, className, {
         [styles.selected]: selected,
       })}
     >
