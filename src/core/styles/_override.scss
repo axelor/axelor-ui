@@ -57,7 +57,7 @@
   --bs-table-sm-cell-padding: #{$table-cell-padding-y-sm} #{$table-cell-padding-x-sm};
   --bs-table-cell-padding: #{$table-cell-padding-y} #{$table-cell-padding-x};
 }
-.table-grid {
+.table-grid,.table-tree {
   --bs-table-bg: #fbfbff;
 }
 

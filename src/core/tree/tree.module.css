@@ -10,11 +10,14 @@
 
 .header {
   display: flex;
+  background-color: var(--bs-table-bg);
   border-bottom: 1px solid var(--bs-table-border-color);
+  border-top: 1px solid var(--bs-table-border-color);
 }
 
 .headerColumn {
   font-weight: 600;
+  border-right: thin solid rgba(0, 0, 0, 0.15);
 }
 
 .body {
@@ -26,8 +29,9 @@
   flex: 1;
   display: flex;
   align-items: center;
-  padding: 0.5rem;
+  padding: 0.35rem;
   overflow: hidden;
+  font-size: 0.875rem;
 }
 .column.edit {
   z-index: 1;
