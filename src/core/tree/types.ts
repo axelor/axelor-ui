@@ -31,7 +31,8 @@ export interface TreeProps {
   records: any[];
   columns: TreeColumn[];
   sortable?: boolean;
-  onLoad?: (data: TreeNode, sortColumn?: TreeSortColumn) => any;
+  onSort?: (sortColumns?: TreeSortColumn[]) => void;
+  onLoad?: (data: TreeNode, sortColumns?: TreeSortColumn[]) => any;
   textRenderer?: TreeNodeProps['renderer'];
   nodeRenderer?: TreeNodeProps['renderer'];
   editNodeRenderer?: TreeNodeProps['editRenderer'];
@@ -66,7 +67,7 @@ export interface TreeColumnProps {
   data: TreeColumn;
   children: React.ReactNode;
   className?: string;
-  onClick?: (e: React.SyntheticEvent, column: TreeColumn) => void;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>, column: TreeColumn) => void;
 }
 
 export interface TreeHeaderColumnProps {

@@ -55,6 +55,7 @@ export function Tree(props: TYPES.TreeProps) {
   const {
     sortable,
     onLoad,
+    onSort,
     onNodeMove,
     onNodeEdit,
     onNodeSave,
@@ -68,7 +69,9 @@ export function Tree(props: TYPES.TreeProps) {
   const [data, setData] = useState<TYPES.TreeNode[]>([]);
   const [loading, setLoading] = useState(false);
   const [editNode, setEditNode] = useState<TYPES.TreeNode | null>(null);
-  const [sortColumn, setSortColumn] = useState<TYPES.TreeSortColumn>();
+  const [sortColumns, setSortColumns] = useState<TYPES.TreeSortColumn[] | null>(
+    null
+  );
 
   const selectRow = useCallback((index: number) => {
     setData(data =>
@@ -82,15 +85,30 @@ export function Tree(props: TYPES.TreeProps) {
   }, []);
 
   const handleSort = useCallback(
-    (e: React.SyntheticEvent, column: TYPES.TreeColumn) => {
-      setSortColumn(sortColumn => {
-        return {
-          name: column.name,
-          order:
-            sortColumn?.name === column.name && sortColumn?.order === 'asc'
-              ? 'desc'
-              : 'asc',
-        };
+    (e: React.MouseEvent<HTMLDivElement>, column: TYPES.TreeColumn) => {
+      setSortColumns(sortColumns => {
+        if (!sortColumns) {
+          sortColumns = [];
+        }
+        const exist = sortColumns.find(c => c.name === column.name);
+        if (exist) {
+          if (!e.shiftKey) {
+            sortColumns = [exist];
+          }
+          return sortColumns.map(col => {
+            if (col.name === column.name) {
+              return { ...col, order: col.order === 'asc' ? 'desc' : 'asc' };
+            }
+            return col;
+          });
+        }
+        return [
+          ...(e.shiftKey ? sortColumns : []),
+          {
+            name: column.name,
+            order: 'asc',
+          },
+        ];
       });
     },
     []
@@ -103,7 +121,7 @@ export function Tree(props: TYPES.TreeProps) {
 
         setLoading(true);
         try {
-          const children = await onLoad(record, sortColumn);
+          const children = await onLoad(record, sortColumns || []);
           setData(data => {
             data.splice(
               index + 1,
@@ -137,7 +155,7 @@ export function Tree(props: TYPES.TreeProps) {
           )
       );
     },
-    [onLoad, sortColumn]
+    [onLoad, sortColumns]
   );
 
   const handleSelect = useCallback(
@@ -267,8 +285,9 @@ export function Tree(props: TYPES.TreeProps) {
   };
 
   useEffect(() => {
+    const [sortColumn] = sortColumns || [];
     setData(
-      (sortColumn
+      (sortColumn && !onSort
         ? [...records].sort((r1, r2) => {
             const v1 = r1[sortColumn.name];
             const v2 = r2[sortColumn.name];
@@ -279,7 +298,11 @@ export function Tree(props: TYPES.TreeProps) {
         : [...records]
       ).map(toNode)
     );
-  }, [records, sortColumn]);
+  }, [records, sortColumns, onSort]);
+
+  useEffect(() => {
+    onSort && sortColumns && onSort(sortColumns);
+  }, [sortColumns, onSort]);
 
   useEffect(() => {
     editNode && onNodeEdit && onNodeEdit(editNode);
@@ -318,12 +341,14 @@ export function Tree(props: TYPES.TreeProps) {
     >
       <div className={styles.header}>
         {columns.map(column => {
-          const hasSort = sortColumn && sortColumn.name === column.name;
+          const sortColumn = (sortColumns || []).find(
+            c => c.name === column.name
+          );
           return (
             <TreeHeaderColumn
               key={column.name}
               data={column}
-              {...(hasSort ? { sort: sortColumn?.order } : {})}
+              {...(sortColumn ? { sort: sortColumn.order } : {})}
               {...(sortable
                 ? {
                     onSort: handleSort,
