@@ -16,10 +16,11 @@
   "exports": {
     ".": "./src/index.ts",
     "./*": "./src/*/index.ts",
+    "./*/types": "./src/*/types.ts",
+    "./*/utils": "./src/*/utils.ts",
     "./core/*": "./src/core/*/index.ts",
-    "./core/styles": "./src/core/styles/index.tsx",
-    "./grid/utils": "./src/grid/utils.ts",
-    "./gantt/utils": "./src/gantt/utils.ts"
+    "./core/*/types": "./src/core/*/types.ts",
+    "./core/styles": "./src/core/styles/index.tsx"
   },
   "scripts": {
     "preinstall": "node scripts/check-yarn.js",
