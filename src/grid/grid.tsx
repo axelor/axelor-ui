@@ -66,7 +66,12 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     const refs = React.useRef<any>({});
 
     const { className, state, setState, columns, records } = props;
-    const { editable, sortType, selectionType = 'multiple' } = props;
+    const {
+      editable,
+      sortType,
+      aggregationType = 'group',
+      selectionType = 'multiple',
+    } = props;
     const {
       allowSelection,
       allowCellFocus = true,
@@ -1157,7 +1162,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       );
     }, [displayColumns]);
 
+    const hasFooter = hasAggregation && aggregationType === 'all';
     const classNames = useClassNames();
+
     return (
       <TranslateProvider t={translate}>
         <Box
@@ -1166,7 +1173,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             [styles['no-records']]: records.length === 0,
             [styles['no-columns']]: noColumns,
             [styles['has-add-new']]: Boolean(props.addNewText),
-            [styles['has-footer']]: hasAggregation,
+            [styles['has-footer']]: hasFooter,
             [styles['rtl']]: isRTL,
           })}
           {...(allowCellSelection
@@ -1258,7 +1265,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             onRowDoubleClick={onRowDoubleClick}
             onRecordUpdate={handleRecordUpdate}
           />
-          {hasAggregation && (
+          {hasFooter && (
             <GridFooter
               className={classNames(styles.footer, {
                 [styles.sticky]: stickyFooter,

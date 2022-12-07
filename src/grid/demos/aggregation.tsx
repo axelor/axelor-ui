@@ -36,6 +36,7 @@ export default function Aggregation() {
           allowGrouping
           allowSorting
           sortType="state"
+          aggregationType="all"
           records={records}
           columns={columns}
           state={state}

@@ -59,6 +59,7 @@ export interface GridProps {
   sortType?: 'live' | 'state';
   resizeType?: 'live' | 'highlight';
   selectionType?: 'single' | 'multiple';
+  aggregationType?: 'group' | 'all';
   editable?: boolean;
   allowGrouping?: boolean;
   allowSearch?: boolean;
