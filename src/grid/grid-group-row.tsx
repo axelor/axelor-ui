@@ -8,17 +8,19 @@ import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-d
 import * as TYPES from './types';
 import { useRTL } from './utils';
 import styles from './grid.module.scss';
+import { useTranslation } from './translate';
 
 export const GridGroupRow = React.memo(function GridGroupRow(
   props: TYPES.GridRowProps
 ) {
   const { className, selected, data, index, renderer, onClick } = props;
   const { state, record } = data;
-  const { level, value } = record;
+  const { level, value, total } = record;
   const RowRenderer = renderer || 'div';
   const rendererProps = renderer ? props : {};
   const classNames = useClassNames();
   const isRTL = useRTL();
+  const t = useTranslation();
 
   return (
     <RowRenderer
@@ -46,7 +48,7 @@ export const GridGroupRow = React.memo(function GridGroupRow(
           size={1}
           title={state === 'close' ? 'Collapse' : 'Expand'}
         />
-        {value}
+        {value} ({total} {t('items')})
       </div>
     </RowRenderer>
   );
