@@ -14,8 +14,8 @@ export const Portal = ({
   const [mountNode, setMountNode] = useState<Element | null>(null);
   useEffect(() => {
     let node = container;
-    if (typeof node === 'function') {
-      node = node();
+    if (typeof container === 'function') {
+      node = (container as Function)();
     }
     setMountNode(node);
   }, [container]);
