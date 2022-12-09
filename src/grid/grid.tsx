@@ -142,6 +142,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             title: '',
             type: 'row-checked',
             computed: true,
+            sortable: false,
             width: 30,
           });
         }
@@ -154,6 +155,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             width: 30,
             computed: true,
             title: '',
+            sortable: false,
             renderer: GridDNDColumn,
           });
         }

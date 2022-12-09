@@ -92,19 +92,19 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
     }
 
     const canResize = column.name !== '__reorder__' && !column.action;
-
+    const canSort = column.sortable !== false;
     return (
       <>
         <span
           className={classNames(styles.headerColumnTitle, {
             [styles.resizable]: Boolean(onResize),
           })}
-          onClick={e => onClick && onClick(e, data, index)}
+          onClick={e => canSort && onClick && onClick(e, data, index)}
         >
           <Box as="span" flex={1}>
             {column.title}
           </Box>
-          {sort && (
+          {canSort && sort && (
             <Icon
               size={1}
               as={sort === 'asc' ? BiSortUpAlt : BiSortDownAlt}
