@@ -3,6 +3,8 @@
   flex-grow: 1;
   flex-direction: column;
   outline: none;
+  overflow: hidden;
+  max-height: 100%;
 }
 .tree.loading {
   opacity: 0.5;
@@ -19,10 +21,15 @@
   font-weight: 600;
   border-right: thin solid rgba(0, 0, 0, 0.15);
 }
+.headerColumn:last-child {
+  border-right: none;
+}
 
 .body {
   min-height: 240px;
   flex-grow: 1;
+  overflow: auto;
+  max-height: min-content;
 }
 
 .column {
