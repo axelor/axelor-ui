@@ -48,6 +48,7 @@ export const Basic = () => {
         options={colors}
         optionLabel="title"
         optionValue="code"
+        noOptionsMessage={() => 'No results'}
       />
     </FormControl>
   );
