@@ -40,6 +40,7 @@ export interface SelectProps {
   onKeyDown?: (e: React.SyntheticEvent) => void;
   options?: SelectOption[];
   addOnOptions?: SelectOption[];
+  noOptionsMessage?: () => string;
   fetchOptions?: (searchInput: string) => Promise<unknown>;
   optionLabel?: string | ((option: SelectOption) => string);
   optionValue?: string | ((option: SelectOption) => string);
@@ -125,6 +126,7 @@ export function Select({
   onKeyDown,
   options: _options,
   addOnOptions,
+  noOptionsMessage,
   fetchOptions,
   icons,
   optionLabel = 'label',
@@ -170,15 +172,19 @@ export function Select({
     [optionValue]
   );
 
+  const [loadingOptions, setLoadingOptions] = React.useState(false);
+
   const loadOptions = React.useCallback(
     (searchString: string) => {
       if (fetchOptions) {
+        setLoadingOptions(true);
         clearTimer();
         setTimer(async () => {
           try {
             const list = await fetchOptions(searchString);
             setOptions(list as SelectOption[]);
           } finally {
+            setLoadingOptions(false);
           }
         }, 500);
       }
@@ -230,8 +236,20 @@ export function Select({
   }, [clearTimer]);
 
   const SelectComponent = (isCreatable ? CreatableSelect : ReactSelect) as any;
+
+  const canShowNoOptions = React.useMemo(
+    () => noOptionsMessage && !loadingOptions,
+    [noOptionsMessage, loadingOptions]
+  );
+
   const $options = React.useMemo(() => {
-    return [...(options || []), ...(addOnOptions || [])];
+    return [
+      ...(options || []),
+      ...(addOnOptions || []).map((option: any) => ({
+        ...option,
+        __isAddOn: true,
+      })),
+    ];
   }, [options, addOnOptions]);
 
   const hasOption = inputText
@@ -242,13 +260,19 @@ export function Select({
       )
     : ($options || []).length > 0;
 
+  const styles = {
+    option: (styles: any, { data }: any) =>
+      data.__isAddOn ? { ...styles, fontStyle: 'italic' } : styles,
+  };
+
   return (
     <SelectComponent
       className={className}
       classNamePrefix={classNamePrefix}
       menuPortalTarget={document.body}
-      menuIsOpen={hasOption && isMenuOpen}
+      menuIsOpen={(canShowNoOptions || hasOption) && isMenuOpen}
       menuPlacement="auto"
+      styles={styles}
       {...{
         options: $options,
         placeholder,
@@ -272,7 +296,7 @@ export function Select({
         openMenuOnClick: true,
         onMenuOpen: handleMenuOpen,
         onMenuClose: handleMenuClose,
-        noOptionsMessage: () => '',
+        noOptionsMessage: noOptionsMessage || (() => ''),
         components: {
           Control: ControlContainer,
           IndicatorsContainer,
