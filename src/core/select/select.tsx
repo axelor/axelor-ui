@@ -243,7 +243,13 @@ export function Select({
   );
 
   const $options = React.useMemo(() => {
-    return [...(options || []), ...(addOnOptions || [])];
+    return [
+      ...(options || []),
+      ...(addOnOptions || []).map((option: any) => ({
+        ...option,
+        __isAddOn: true,
+      })),
+    ];
   }, [options, addOnOptions]);
 
   const hasOption = inputText
@@ -254,6 +260,11 @@ export function Select({
       )
     : ($options || []).length > 0;
 
+  const styles = {
+    option: (styles: any, { data }: any) =>
+      data.__isAddOn ? { ...styles, fontStyle: 'italic' } : styles,
+  };
+
   return (
     <SelectComponent
       className={className}
@@ -261,6 +272,7 @@ export function Select({
       menuPortalTarget={document.body}
       menuIsOpen={(canShowNoOptions || hasOption) && isMenuOpen}
       menuPlacement="auto"
+      styles={styles}
       {...{
         options: $options,
         placeholder,
