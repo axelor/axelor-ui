@@ -225,7 +225,7 @@ export function Select({
   }, [_options]);
 
   React.useEffect(() => {
-    mounted.current && loadOptions(inputText);
+    mounted.current && isMenuOpen && loadOptions(inputText);
   }, [inputText, loadOptions]);
 
   React.useEffect(() => {
