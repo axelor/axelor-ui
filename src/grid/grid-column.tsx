@@ -56,7 +56,11 @@ export function GridColumn(props: GridColumnProps) {
       })}
       style={{ minWidth: $width, width: $width }}
     >
-      {children}
+      {children && typeof children === 'object' ? (
+        children
+      ) : (
+        <span>{children}</span>
+      )}
     </ColumnComponent>
   );
 }
