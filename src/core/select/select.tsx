@@ -262,7 +262,7 @@ export function Select({
 
   const styles = {
     option: (styles: any, { data }: any) =>
-      data.__isAddOn ? { ...styles, fontStyle: 'italic' } : styles,
+      data?.__isAddOn ? { ...styles, fontStyle: 'italic' } : styles,
   };
 
   return (
