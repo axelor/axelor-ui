@@ -1,13 +1,9 @@
 module.exports = {
   stories: ['../src/**/*.stories.tsx'],
-  addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    './addons/rtl-switch/manager.jsx',
-    './addons/locale/manager.jsx',
-  ],
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
   framework: {
     name: '@storybook/react-vite',
+    options: {},
   },
   core: {
     disableTelemetry: true,
