@@ -69,6 +69,37 @@ const ScrollButton = withStyled(Box)((props, ref) => {
   );
 });
 
+const NavTabIcon = React.memo(function NavTabIcon({
+  icon,
+  color,
+  bgColor,
+}: {
+  icon?: NavItemProps['icon'];
+  color?: NavItemProps['iconColor'];
+  bgColor: string;
+}) {
+  return (
+    <Box
+      d="flex"
+      justifyContent="center"
+      alignItems="center"
+      className={classes.tabIcon}
+      ms={2}
+      me={1}
+      style={{ backgroundColor: bgColor }}
+    >
+      {icon && (
+        <Icon
+          as={icon}
+          style={{
+            color,
+          }}
+        />
+      )}
+    </Box>
+  );
+});
+
 const NavTab = withStyled(Box)(
   (
     {
@@ -101,22 +132,7 @@ const NavTab = withStyled(Box)(
         {...rest}
       >
         {item.icon && (
-          <Box
-            d="flex"
-            justifyContent="center"
-            alignItems="center"
-            className={classes.tabIcon}
-            ms={2}
-            me={1}
-            style={{ backgroundColor: bgColor }}
-          >
-            <Icon
-              as={item.icon}
-              style={{
-                color,
-              }}
-            />
-          </Box>
+          <NavTabIcon icon={item.icon} color={color} bgColor={bgColor} />
         )}
         {onRender ? (
           onRender(item)
