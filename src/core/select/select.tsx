@@ -117,7 +117,6 @@ export function Select({
   isRtl,
   isCreatable = false,
   isSearchable = true,
-  isClearOnDelete = true,
   loading: _loading,
   value,
   onChange,
@@ -135,6 +134,7 @@ export function Select({
   createOptionPosition = 'last',
   onCreate,
   components,
+  ...props
 }: SelectProps) {
   const [options, setOptions] = React.useState(_options);
   const [inputText, setInputText] = React.useState('');
@@ -143,6 +143,7 @@ export function Select({
   const timer = React.useRef<any>(null);
 
   const { dir } = useTheme();
+  const { isClearOnDelete = !isMulti } = props;
   const rtl = typeof isRtl !== 'undefined' ? isRtl : dir === 'rtl';
 
   const setTimer = React.useCallback((callback: any, interval = 500) => {
@@ -208,7 +209,7 @@ export function Select({
   const handleMenuClose = () => setMenuOpen(false);
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const isDelete = isClearOnDelete && e.key === 'Delete';
-    if ((isDelete || (isMenuOpen && e.key === 'Backspace')) && value) {
+    if ((isDelete || (!isMulti && isMenuOpen && e.key === 'Backspace')) && value) {
       onChange(null);
     }
     if (isDelete) {
