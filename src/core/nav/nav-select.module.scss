@@ -1,6 +1,6 @@
 @use 'sass:math';
 
-$height: 32px;
+$height: 28px;
 $spacing: 0.25rem;
 $borderWidth: 2px;
 
@@ -53,12 +53,12 @@ $borderWidth: 2px;
     display: inline;
     position: relative;
     line-height: $height;
-    padding-right: $spacing * 3;
-    padding-left: $spacing * 6;
+    padding-right: $spacing * 2.5;
+    padding-left: $spacing * 5;
     white-space: nowrap;
     .rtl & {
-      padding-right: $spacing * 6;
-      padding-left: $spacing * 3;
+      padding-right: $spacing * 5;
+      padding-left: $spacing * 2.5;
     }
   }
 
