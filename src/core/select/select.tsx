@@ -106,6 +106,12 @@ const IndicatorsContainer = (
   );
 };
 
+enum OptionsState {
+  Ready,
+  Scheduled,
+  Loading,
+}
+
 export function Select({
   className,
   classNamePrefix,
@@ -147,10 +153,12 @@ export function Select({
   const rtl = typeof isRtl !== 'undefined' ? isRtl : dir === 'rtl';
 
   const setTimer = React.useCallback((callback: any, interval = 500) => {
+    setOptionsState(OptionsState.Scheduled);
     timer.current = setTimeout(callback, interval);
   }, []);
 
   const clearTimer = React.useCallback(() => {
+    setOptionsState(OptionsState.Ready);
     timer.current && clearTimeout(timer.current);
   }, []);
 
@@ -173,17 +181,17 @@ export function Select({
     [optionValue]
   );
 
-  const [loadingOptions, setLoadingOptions] = React.useState(false);
+  const [optionsState, setOptionsState] = React.useState(OptionsState.Ready);
 
   const loadOptionsNow = React.useCallback(
     async (searchString: string) => {
       if (!fetchOptions) return;
-      setLoadingOptions(true);
+      setOptionsState(OptionsState.Loading);
       try {
         const list = await fetchOptions(searchString);
         setOptions(list as SelectOption[]);
       } finally {
-        setLoadingOptions(false);
+        setOptionsState(OptionsState.Ready);
       }
     },
     [fetchOptions]
@@ -246,12 +254,12 @@ export function Select({
   const SelectComponent = (isCreatable ? CreatableSelect : ReactSelect) as any;
 
   const canShowNoOptions = React.useMemo(
-    () => noOptionsMessage && !loadingOptions,
-    [noOptionsMessage, loadingOptions]
+    () => noOptionsMessage && optionsState === OptionsState.Ready,
+    [noOptionsMessage, optionsState]
   );
 
   const $options = React.useMemo(() => {
-    if (loadingOptions) return [];
+    if (optionsState === OptionsState.Loading && !inputText) return [];
     return [
       ...(options || []),
       ...(addOnOptions || []).map((option: any) => ({
@@ -259,7 +267,7 @@ export function Select({
         __isAddOn: true,
       })),
     ];
-  }, [options, addOnOptions, loadingOptions]);
+  }, [options, addOnOptions, optionsState, inputText]);
 
   const hasOption = inputText
     ? ($options || []).some(opt =>
