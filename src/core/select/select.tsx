@@ -175,30 +175,34 @@ export function Select({
 
   const [loadingOptions, setLoadingOptions] = React.useState(false);
 
-  const loadOptions = React.useCallback(
-    (searchString: string) => {
-      if (fetchOptions) {
-        setLoadingOptions(true);
-        clearTimer();
-        setTimer(async () => {
-          try {
-            const list = await fetchOptions(searchString);
-            setOptions(list as SelectOption[]);
-          } finally {
-            setLoadingOptions(false);
-          }
-        }, 500);
+  const loadOptionsNow = React.useCallback(
+    async (searchString: string) => {
+      if (!fetchOptions) return;
+      setLoadingOptions(true);
+      try {
+        const list = await fetchOptions(searchString);
+        setOptions(list as SelectOption[]);
+      } finally {
+        setLoadingOptions(false);
       }
     },
-    [fetchOptions, setTimer, clearTimer]
+    [fetchOptions]
+  );
+
+  const loadOptions = React.useCallback(
+    (searchString: string) => {
+      clearTimer();
+      setTimer(() => loadOptionsNow(searchString), 500);
+    },
+    [loadOptionsNow, setTimer, clearTimer]
   );
 
   const handleFocus = React.useCallback(
     (e: React.SyntheticEvent) => {
       onFocus && onFocus(e);
-      loadOptions('');
+      loadOptionsNow('');
     },
-    [loadOptions, onFocus]
+    [loadOptionsNow, onFocus]
   );
 
   const handleInputChange = React.useCallback((value: any) => {
@@ -247,6 +251,7 @@ export function Select({
   );
 
   const $options = React.useMemo(() => {
+    if (loadingOptions) return [];
     return [
       ...(options || []),
       ...(addOnOptions || []).map((option: any) => ({
@@ -254,7 +259,7 @@ export function Select({
         __isAddOn: true,
       })),
     ];
-  }, [options, addOnOptions]);
+  }, [options, addOnOptions, loadingOptions]);
 
   const hasOption = inputText
     ? ($options || []).some(opt =>
