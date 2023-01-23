@@ -107,9 +107,10 @@ const IndicatorsContainer = (
 };
 
 enum OptionsState {
-  Ready,
+  FetchNeeded,
   Scheduled,
   Loading,
+  Ready,
 }
 
 export function Select({
@@ -145,6 +146,9 @@ export function Select({
   const [options, setOptions] = React.useState(_options);
   const [inputText, setInputText] = React.useState('');
   const [isMenuOpen, setMenuOpen] = React.useState(false);
+  const [optionsState, setOptionsState] = React.useState(
+    OptionsState.FetchNeeded
+  );
   const mounted = React.useRef(false);
   const timer = React.useRef<any>(null);
 
@@ -181,13 +185,11 @@ export function Select({
     [optionValue]
   );
 
-  const [optionsState, setOptionsState] = React.useState(OptionsState.Ready);
-
   const loadOptionsNow = React.useCallback(
     async (searchString: string) => {
-      if (!fetchOptions) return;
-      setOptionsState(OptionsState.Loading);
       try {
+        if (!fetchOptions) return;
+        setOptionsState(OptionsState.Loading);
         const list = await fetchOptions(searchString);
         setOptions(list as SelectOption[]);
       } finally {
@@ -207,11 +209,32 @@ export function Select({
 
   const handleFocus = React.useCallback(
     (e: React.SyntheticEvent) => {
-      onFocus && onFocus(e);
-      loadOptionsNow('');
+      return onFocus && onFocus(e);
     },
-    [loadOptionsNow, onFocus]
+    [onFocus]
   );
+
+  const handleBlur = React.useCallback(
+    (e: React.SyntheticEvent) => {
+      setOptionsState(OptionsState.FetchNeeded);
+      return onBlur && onBlur(e);
+    },
+    [onBlur]
+  );
+
+  const handleChange = React.useCallback(
+    (e: React.SyntheticEvent) => {
+      setOptionsState(OptionsState.FetchNeeded);
+      return onChange && onChange(e);
+    },
+    [onChange]
+  );
+
+  React.useEffect(() => {
+    if (isMenuOpen && optionsState === OptionsState.FetchNeeded) {
+      loadOptionsNow('');
+    }
+  }, [isMenuOpen, optionsState, loadOptionsNow]);
 
   const handleInputChange = React.useCallback((value: any) => {
     setInputText(value);
@@ -225,7 +248,7 @@ export function Select({
       (isDelete || (!isMulti && isMenuOpen && e.key === 'Backspace')) &&
       value
     ) {
-      onChange(null);
+      handleChange(null);
     }
     if (isDelete) {
       setInputText('');
@@ -259,7 +282,7 @@ export function Select({
   );
 
   const $options = React.useMemo(() => {
-    if (optionsState === OptionsState.Loading && !inputText) return [];
+    if (optionsState !== OptionsState.Ready && !inputText) return [];
     return [
       ...(options || []),
       ...(addOnOptions || []).map((option: any) => ({
@@ -277,6 +300,10 @@ export function Select({
       )
     : ($options || []).length > 0;
 
+  const menuIsOpen = React.useMemo(() => {
+    return isMenuOpen && (canShowNoOptions || hasOption);
+  }, [isMenuOpen, canShowNoOptions, hasOption]);
+
   const styles = {
     option: (styles: any, { data }: any) =>
       data?.__isAddOn ? { ...styles, fontStyle: 'italic' } : styles,
@@ -287,7 +314,7 @@ export function Select({
       className={className}
       classNamePrefix={classNamePrefix}
       menuPortalTarget={document.body}
-      menuIsOpen={(canShowNoOptions || hasOption) && isMenuOpen}
+      menuIsOpen={menuIsOpen}
       menuPlacement="auto"
       styles={styles}
       {...{
@@ -300,11 +327,11 @@ export function Select({
         isSearchable,
         autoFocus,
         value,
-        onChange,
+        onChange: handleChange,
         inputValue: inputText,
         onInputChange: handleInputChange,
         onFocus: handleFocus,
-        onBlur,
+        onBlur: handleBlur,
         onKeyDown: handleKeyDown,
         getOptionLabel,
         getOptionValue,
