@@ -152,7 +152,7 @@ export function GridBody(props: GridBodyProps) {
           {addNewText}
         </div>
       )}
-      {showNoRecords && <div>{noRecordsText}</div>}
+      {showNoRecords && <div className={styles.noRecordsText}>{noRecordsText}</div>}
     </>
   );
 }

@@ -288,6 +288,11 @@
   }
 }
 
+.noRecordsText {
+  color: var(--text-color);
+  font-size: 0.9rem;
+}
+
 .columnOptions {
   padding: 0.25rem;
   cursor: pointer;
