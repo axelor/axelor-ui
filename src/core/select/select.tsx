@@ -223,7 +223,7 @@ export function Select({
   );
 
   const handleChange = React.useCallback(
-    (e: React.SyntheticEvent) => {
+    (e: any) => {
       setOptionsState(OptionsState.FetchNeeded);
       return onChange && onChange(e);
     },
