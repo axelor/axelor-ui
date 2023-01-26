@@ -47,7 +47,7 @@
     "bootstrap-icons": "^1.10.3",
     "csstype": "^3.1.1",
     "focus-trap": "^7.2.0",
-    "immer": "^9.0.16",
+    "immer": "^9.0.18",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "prop-types": "^15.8.1",
