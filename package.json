@@ -78,7 +78,7 @@
     "@types/react-dom": "^18.0.5",
     "@types/react-transition-group": "^4.4.5",
     "@vitejs/plugin-react-swc": "^3.0.1",
-    "commander": "^9.4.1",
+    "commander": "^10.0.0",
     "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-react-app": "^7.0.1",
