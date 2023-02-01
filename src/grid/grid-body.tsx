@@ -30,6 +30,7 @@ export interface GridBodyProps
       | 'onCellClick'
     > {
   onRowMove?: TYPES.GridRowProps['onMove'];
+  onRowMoveStart?: TYPES.GridRowProps['onMoveStart'];
   onRowClick?: TYPES.GridRowProps['onClick'];
   onRecordUpdate?: TYPES.GridRowProps['onUpdate'];
 }
@@ -56,6 +57,7 @@ export function GridBody(props: GridBodyProps) {
     onRecordUpdate,
     onCellClick,
     onRowMove,
+    onRowMoveStart,
     onRowClick,
     onRowDoubleClick,
   } = props;
@@ -80,7 +82,7 @@ export function GridBody(props: GridBodyProps) {
     };
     if (onRowMove) {
       return (
-        <GridDNDContainer {...props} rows={rows} onRowMove={onRowMove}>
+        <GridDNDContainer {...props} rows={rows} onRowMove={onRowMove} onRowMoveStart={onRowMoveStart}>
           {children}
         </GridDNDContainer>
       );
@@ -110,6 +112,7 @@ export function GridBody(props: GridBodyProps) {
           onClick: onRowClick,
           onDoubleClick: onRowDoubleClick,
           onMove: onRowMove,
+          onMoveStart: onRowMoveStart,
           onUpdate: onRecordUpdate,
         };
 

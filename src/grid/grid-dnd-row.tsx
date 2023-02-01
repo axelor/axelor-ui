@@ -14,6 +14,7 @@ export interface GridDNDBodyProps extends Pick<TYPES.GridState, 'rows'> {
   style?: any;
   className?: string;
   onRowMove?: TYPES.GridRowProps['onMove'];
+  onRowMoveStart?: TYPES.GridRowProps['onMoveStart'];
 }
 
 function getStyle(style: any) {
@@ -33,10 +34,13 @@ function getStyle(style: any) {
 }
 
 export function GridDNDContainer(props: GridDNDBodyProps) {
-  const { className, style, children, rows, onRowMove } = props;
+  const { className, style, children, rows, onRowMove, onRowMoveStart } = props;
 
   function handleDragEnd(result: any) {
     const { source, destination } = result;
+    // serve as row move end
+    onRowMoveStart && onRowMoveStart(null);
+
     // dropped outside the list
     if (!result.destination) {
       return;
@@ -51,7 +55,7 @@ export function GridDNDContainer(props: GridDNDBodyProps) {
   }
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
+    <DragDropContext onDragStart={onRowMoveStart} onDragEnd={handleDragEnd}>
       <Droppable
         droppableId={'GRID_ROWS'}
         type={'GRID_ROW'}

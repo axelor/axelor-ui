@@ -413,6 +413,14 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       ]
     );
 
+    const showHideAddNewLine = React.useCallback((hide = true) => {
+      const container = containerRef.current;
+      const addElement = container && container.querySelector(`.${styles.addNewText}`);
+      if (addElement) {
+        addElement.style.visibility = hide ? 'hidden' : null;
+      }
+    }, []);
+
     const handleRowMove = React.useCallback(
       (dragRow: TYPES.GridRow, hoverRow: TYPES.GridRow) => {
         onRowReorder && onRowReorder(dragRow, hoverRow);
@@ -1262,6 +1270,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             {...(allowRowReorder
               ? {
                   onRowMove: handleRowMove,
+                  onRowMoveStart: showHideAddNewLine,
                 }
               : {})}
             onCellClick={onCellClick}

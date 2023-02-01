@@ -144,6 +144,7 @@ export interface GridRowProps {
   onCellClick?: GridProps['onCellClick'];
   onDoubleClick?: GridProps['onRowDoubleClick'];
   onMove?: (dragRow: GridRow, hoverRow: GridRow, isFirstRow?: boolean) => void;
+  onMoveStart?: (dragInfo: any) => void;
   onClick?: (
     e: SyntheticEvent,
     row: GridRow,
