@@ -2,7 +2,7 @@ import moment from 'moment';
 import { useState } from 'react';
 
 import { SchedulerEvent } from './types';
-import Scheduler, { SchedulerProps } from './scheduler';
+import { Scheduler, SchedulerProps } from './scheduler';
 
 const config = {
   component: Scheduler,

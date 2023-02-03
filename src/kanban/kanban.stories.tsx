@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { Box, Input, Button, Icon, Menu, MenuItem } from '../core';
 import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-down-fill.svg';
 
-import Kanban, { KanbanProps } from './kanban';
+import { Kanban, KanbanProps } from './kanban';
 import { CardEvent, Column, ColumnEvent } from './types';
 
 const config = {
