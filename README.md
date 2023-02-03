@@ -5,7 +5,7 @@ React components by Axelor.
 ## Prerequisite
 
 - node >= v18.12.1
-- yarn >= 3.3.0
+- pnpm >= 7.26.3
 
 ```bash
 # Nodejs
@@ -17,10 +17,9 @@ $ curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
 $ source ~/.profile
 $ nvm install 18
 
-# Yarn
-$ curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-$ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-$ sudo apt update && sudo apt install --no-install-recommends yarn
+# pnpm
+$ corepack enable
+$ corepack prepare pnpm@latest --activate
 ```
 
 ## Quick start
@@ -28,7 +27,7 @@ $ sudo apt update && sudo apt install --no-install-recommends yarn
 Install the library :
 
 ```bash
-$ yarn add @axelor/ui
+$ pnpm add @axelor/ui
 ```
 
 You can import from the main bundle:
@@ -52,7 +51,7 @@ import Kanban from '@axelor/ui/kanban';
 Before any command, install dependencies running following command:
 
 ```bash
-$ yarn install
+$ pnpm install
 ```
 
 ### Storybook
@@ -60,16 +59,16 @@ $ yarn install
 Run following commands to build storybook :
 
 ```bash
-$ yarn build-storybook
+$ pnpm build-storybook
 ```
 
-This build Storybook as a static web application capable of being served by any web server. 
+This build Storybook as a static web application capable of being served by any web server.
 Default build files are located under `storybook-static/*`
 
 To run storybook locally :
 
 ```bash
-$ yarn storybook
+$ pnpm storybook
 ```
 
 the storybook will be served on http://localhost:6006
@@ -79,7 +78,7 @@ the storybook will be served on http://localhost:6006
 Run following command to build components :
 
 ```bash
-$ yarn build
+$ pnpm build
 ```
 
 components are generated under `dist/`.
