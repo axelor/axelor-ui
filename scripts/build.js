@@ -74,6 +74,48 @@ async function doPackage(dir, out) {
   const { main, files, exports, scripts, eslintConfig, devDependencies, ...othData } = pkgData;
   const newData = {
     ...othData,
+    "exports": {
+      ".": {
+        "types": "./index.d.ts",
+        "import": "./index.js",
+        "require": "./index.js"
+      },
+      "./*": {
+        "types": "./*/index.d.ts",
+        "import": "./*/index.js",
+        "require": "./*/index.js"
+      },
+      "./*/types": {
+        "types": "./*/types.d.ts",
+        "import": "./*/types.js",
+        "require": "./*/types.js"
+      },
+      "./grid/utils": {
+        "types": "./grid/utils.d.ts",
+        "import": "./grid/utils.js",
+        "require": "./grid/utils.js"
+      },
+      "./gantt/utils": {
+        "types": "./gantt/utils.d.ts",
+        "import": "./gantt/utils.js",
+        "require": "./gantt/utils.js"
+      },
+      "./core/*":  {
+        "types": "./core/*/index.d.ts",
+        "import": "./core/*/index.js",
+        "require": "./core/*/index.js"
+      },
+      "./core/*/types":  {
+        "types": "./core/*/types.d.ts",
+        "import": "./core/*/types.js",
+        "require": "./core/*/types.js"
+      },
+      "./core/styles":  {
+        "types": "./core/styles/index.d.ts",
+        "import": "./core/styles/index.js",
+        "require": "./core/styles/index.js"
+      }
+    }
   };
 
   await fse.ensureDir(out);
