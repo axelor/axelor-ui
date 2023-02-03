@@ -3,7 +3,7 @@ import {
   TransitionActions,
 } from 'react-transition-group/Transition';
 
-type TransitionHandlerKeys =
+export type TransitionHandlerKeys =
   | 'onEnter'
   | 'onEntering'
   | 'onEntered'
@@ -11,7 +11,7 @@ type TransitionHandlerKeys =
   | 'onExiting'
   | 'onExited';
 
-type TransitionKeys =
+export type TransitionKeys =
   | 'in'
   | 'timeout'
   | 'mountOnEnter'

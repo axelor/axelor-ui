@@ -1,4 +1,4 @@
-import { Grid } from './grid';
-export { GridProvider } from './grid-provider';
-
-export default Grid;
+export * from './grid';
+export * from './grid-provider';
+export * from './types';
+export * from './utils';

@@ -1,3 +1,2 @@
-import Scheduler from './scheduler';
-
-export default Scheduler;
+export * from './scheduler';
+export * from './types';

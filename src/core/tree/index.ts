@@ -1,1 +1,2 @@
-export { Tree } from './tree';
+export * from './tree';
+export * from './types';

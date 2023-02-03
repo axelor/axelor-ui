@@ -1,1 +1,1 @@
-export { InputFeedback } from './input-feedback';
+export * from './input-feedback';

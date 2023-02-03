@@ -29,9 +29,11 @@ export const GridGroupRow = React.memo(function GridGroupRow(
         [styles.selected]: selected,
       })}
     >
-      {new Array(level).fill(0).map((_, ind) => (
-        ind !== 0 ? <div key={ind} className={styles.groupSpacer} /> : null
-      ))}
+      {new Array(level)
+        .fill(0)
+        .map((_, ind) =>
+          ind !== 0 ? <div key={ind} className={styles.groupSpacer} /> : null
+        )}
       <div
         onClick={e => onClick && data && onClick(e as any, data, index)}
         className={styles.groupRowContent}

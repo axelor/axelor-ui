@@ -1,3 +1,2 @@
-export { OverflowList } from './overflow-list';
-import * as OverflowListTypes from './types';
-export { OverflowListTypes };
+export * from './overflow-list';
+export * from './types';

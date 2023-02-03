@@ -1,21 +1,21 @@
-import React from 'react';
-import {
-  Droppable,
-  Draggable,
-  DragDropContext,
-  DropResult,
-} from 'react-beautiful-dnd';
 import { ReactComponent as BiChevronLeft } from 'bootstrap-icons/icons/chevron-left.svg';
 import { ReactComponent as BiChevronRight } from 'bootstrap-icons/icons/chevron-right.svg';
 import { ReactComponent as BiClose } from 'bootstrap-icons/icons/x-lg.svg';
+import React from 'react';
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+} from 'react-beautiful-dnd';
 
 import { Box } from '../box';
 import { Icon } from '../icon';
-import { OverflowList, OverflowListTypes } from '../overflow-list';
-import { Nav } from './nav';
-import { NavItemProps, NavProps } from './types';
+import { OverflowList, OverflowListButtonType } from '../overflow-list';
 import { withStyled } from '../styled';
 import { useClassNames, useTheme } from '../styles';
+import { Nav } from './nav';
+import { NavItemProps, NavProps } from './types';
 import { getRGB } from './utils';
 
 import classes from './nav-tabs.module.scss';
@@ -288,10 +288,7 @@ const RenderNavTabs: React.FC<NavTabsProps> = props => {
                 onRender={onItemRender}
               />
             )}
-            renderButton={(
-              type: OverflowListTypes.OverflowListButtonType,
-              props: any
-            ) => {
+            renderButton={(type: OverflowListButtonType, props: any) => {
               const buttonProps = {
                 className: classNames(props.className, {
                   [classes.hide]: !scroll,

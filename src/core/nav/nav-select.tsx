@@ -3,7 +3,11 @@ import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-d
 
 import { Box } from '../box/box';
 import { Icon } from '../icon';
-import { OverflowList, OverflowListTypes } from '../overflow-list';
+import {
+  OverflowList,
+  OverflowListButtonType,
+  OverflowListItemProps,
+} from '../overflow-list';
 import { MenuItem } from '../menu/menu-item';
 import { MenuProps } from '../menu/menu';
 import { useClassNames, useTheme } from '../styles';
@@ -27,7 +31,7 @@ const menuConfig: Partial<MenuProps> = {
   disablePortal: true,
 };
 
-interface NavSelectItemProps {
+export interface NavSelectItemProps {
   active?: Boolean;
 }
 
@@ -95,10 +99,7 @@ export function NavSelect({
               onOverflowChange: setOffset,
             }
           : {})}
-        renderListItem={(
-          _item: OverflowListTypes.OverflowListItemProps,
-          index: number
-        ) => {
+        renderListItem={(_item: OverflowListItemProps, index: number) => {
           const item = _item as TNavSelectItem;
           return (
             <NavSelectItem
@@ -114,7 +115,7 @@ export function NavSelect({
           );
         }}
         renderOverflow={(
-          items: OverflowListTypes.OverflowListItemProps[],
+          items: OverflowListItemProps[],
           closeDropdown?: () => void
         ) => {
           return (items as TNavSelectItem[]).map((item, index) => {
@@ -137,10 +138,7 @@ export function NavSelect({
             );
           });
         }}
-        renderButton={(
-          type: OverflowListTypes.OverflowListButtonType,
-          props: any
-        ) => {
+        renderButton={(type: OverflowListButtonType, props: any) => {
           if (type === 'dropdown') {
             const selectedInDropdown = offset < items.length && selectedHidden;
             return (

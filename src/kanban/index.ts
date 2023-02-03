@@ -1,3 +1,1 @@
-import Kanban from './kanban';
-
-export default Kanban;
+export * from './kanban';

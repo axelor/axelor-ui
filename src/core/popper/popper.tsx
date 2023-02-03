@@ -1,6 +1,5 @@
 import { createPopper, Instance, Placement } from '@popperjs/core';
-import { useEffect, useRef, useState } from 'react';
-import * as React from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Box } from '../box';
 import { Fade } from '../fade';
@@ -84,7 +83,7 @@ const PopperWrapper = ({
   const enabled = Boolean(offset) || Boolean(arrow);
   const arrowEnabled = Boolean(arrow);
 
-  const modifiers = React.useMemo(() => {
+  const modifiers = useMemo(() => {
     const arrowPadding = arrowEnabled ? 6 : 0; // match with .arrow css
     return [
       { name: 'preventOverflow' },
@@ -154,7 +153,7 @@ export const Popper = ({
   disablePortal,
   ...props
 }: PopperProps) => {
-  const [exited, setExited] = React.useState(true);
+  const [exited, setExited] = useState(true);
 
   const handleEnter = () => {
     setExited(false);

@@ -82,7 +82,12 @@ export function GridBody(props: GridBodyProps) {
     };
     if (onRowMove) {
       return (
-        <GridDNDContainer {...props} rows={rows} onRowMove={onRowMove} onRowMoveStart={onRowMoveStart}>
+        <GridDNDContainer
+          {...props}
+          rows={rows}
+          onRowMove={onRowMove}
+          onRowMoveStart={onRowMoveStart}
+        >
           {children}
         </GridDNDContainer>
       );
@@ -155,7 +160,9 @@ export function GridBody(props: GridBodyProps) {
           {addNewText}
         </div>
       )}
-      {showNoRecords && <div className={styles.noRecordsText}>{noRecordsText}</div>}
+      {showNoRecords && (
+        <div className={styles.noRecordsText}>{noRecordsText}</div>
+      )}
     </>
   );
 }

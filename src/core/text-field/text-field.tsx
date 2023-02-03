@@ -14,7 +14,7 @@ export interface TextFieldIcon {
   onClick?: React.MouseEventHandler<SVGSVGElement>;
 }
 
-interface TextFieldProps extends InputProps {
+export interface TextFieldProps extends InputProps {
   label?: string | JSX.Element;
   icons?: Array<TextFieldIcon>;
   description?: string | JSX.Element;

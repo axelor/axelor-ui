@@ -23,7 +23,7 @@ export const AccordionHeader = withStyled(AccordionHeaderButton)(
   }
 );
 
-type EventKey = string | number;
+export type EventKey = string | number;
 
 export interface AccordionItemProps {
   flush?: boolean;

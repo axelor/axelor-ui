@@ -1,10 +1,10 @@
 import styled from '../styled';
 
-type SvgIcon = React.FunctionComponent<React.SVGProps<SVGSVGElement>> & {
+export type SvgIcon = React.FunctionComponent<React.SVGProps<SVGSVGElement>> & {
   title?: string;
 };
 
-const IconSize = {
+export const IconSize = {
   sm: '.875em',
   lg: '1.33em',
   1: '1em',

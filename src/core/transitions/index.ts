@@ -1,2 +1,2 @@
-export * from './gantt';
+export * from './utils';
 export * from './types';

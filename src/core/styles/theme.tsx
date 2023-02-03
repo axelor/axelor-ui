@@ -1,6 +1,4 @@
-import { cloneElement, createContext } from 'react';
-import { useContext } from 'react';
-import { useCallback } from 'react';
+import { cloneElement, createContext, useCallback, useContext } from 'react';
 import stylesLtr from './styles.module.scss';
 import stylesRtl from './styles.rtl.module.scss';
 

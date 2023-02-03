@@ -415,7 +415,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     const showHideAddNewLine = React.useCallback((hide = true) => {
       const container = containerRef.current;
-      const addElement = container && container.querySelector(`.${styles.addNewText}`);
+      const addElement =
+        container && container.querySelector(`.${styles.addNewText}`);
       if (addElement) {
         addElement.style.visibility = hide ? 'hidden' : null;
       }

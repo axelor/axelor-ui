@@ -4,7 +4,7 @@ import { ReactComponent as BiChevronRight } from 'bootstrap-icons/icons/chevron-
 
 import { Box } from '../box';
 import { Icon } from '../icon';
-import { OverflowList, OverflowListTypes } from '../overflow-list';
+import { OverflowList, OverflowListButtonType } from '../overflow-list';
 import { useClassNames, useTheme } from '../styles';
 import styles from './tabs.module.scss';
 
@@ -128,10 +128,7 @@ export function Tabs({
           })
         ) as any
       }
-      renderButton={(
-        type: OverflowListTypes.OverflowListButtonType,
-        props: any
-      ) => {
+      renderButton={(type: OverflowListButtonType, props: any) => {
         const buttonProps = {
           className: classNames(props.className, {
             [styles.hide]: !scroll,

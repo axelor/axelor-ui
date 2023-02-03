@@ -1,3 +1,5 @@
+import { ReactComponent as BiCaretLeftFill } from 'bootstrap-icons/icons/caret-left-fill.svg';
+import { ReactComponent as BiCaretRightFill } from 'bootstrap-icons/icons/caret-right-fill.svg';
 import React, {
   useCallback,
   useContext,
@@ -6,22 +8,20 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { ReactComponent as BiCaretRightFill } from 'bootstrap-icons/icons/caret-right-fill.svg';
-import { ReactComponent as BiCaretLeftFill } from 'bootstrap-icons/icons/caret-left-fill.svg';
 
+import { ArrowNavigation } from '../arrow-navigation';
+import { isElementDisabled, isElementHidden } from '../arrow-navigation/utils';
 import { Box } from '../box';
 import { Button } from '../button';
 import { Menu as AxMenu } from '../menu/menu';
-import { ArrowNavigation } from '../arrow-navigation';
 import { MenuItem as AxMenuItem } from '../menu/menu-item';
+import { withStyled } from '../styled';
 import { useClassNames, useTheme } from '../styles';
 import { tryFocus } from './utils';
-import { isElementDisabled, isElementHidden } from '../arrow-navigation/utils';
-import { withStyled } from '../styled';
 
-import styles from './menubar.module.scss';
-import { Portal } from '../portal';
 import { useForwardedRef } from '../hooks';
+import { Portal } from '../portal';
+import styles from './menubar.module.scss';
 
 const MenubarContext = React.createContext<any>({});
 

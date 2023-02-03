@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef } from 'react';
+import { forwardRef, useRef } from 'react';
 import { Transition } from 'react-transition-group';
 import { useClassNames } from '../styles';
 import { TransitionProps } from '../transitions/types';

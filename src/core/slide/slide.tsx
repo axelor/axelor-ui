@@ -1,4 +1,4 @@
-import { isValidElement, cloneElement } from 'react';
+import { cloneElement, isValidElement } from 'react';
 import { Transition } from 'react-transition-group';
 import { useTheme } from '../styles';
 import { TransitionProps } from '../transitions/types';
