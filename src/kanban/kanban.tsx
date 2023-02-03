@@ -15,7 +15,7 @@ export type KanbanProps = {
   ColumnProps?: Pick<KanbanColumnProps, 'className' | 'style'>;
 };
 
-function Kanban({
+export function Kanban({
   columns,
   onColumnMove,
   onCardMove,
@@ -94,5 +94,3 @@ function Kanban({
     </DragDropContext>
   );
 }
-
-export default Kanban;

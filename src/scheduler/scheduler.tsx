@@ -38,7 +38,7 @@ export interface SchedulerProps {
   onNavigationChange?(date: Date, view: View, action: NavigationAction): void;
 }
 
-function Scheduler({
+export function Scheduler({
   date,
   events,
   view,
@@ -137,5 +137,3 @@ function Scheduler({
     />
   );
 }
-
-export default Scheduler;

@@ -64,6 +64,35 @@ async function doCopy(dir, out) {
   );
 }
 
+function processConfig(config) {
+  let { main, module, types, exports } = config;
+
+  exports = Object.entries(exports).reduce((prev, [key, value]) => {
+    const base = value.replace(/\.\/src\/(.*)\.(ts|tsx)/, '$1');
+    return {
+      ...prev,
+      [key]: {
+        types: `./${base}.d.ts`,
+        import: `./${base}.js`,
+        require: `./${base}.js`,
+      },
+    };
+  }, {});
+
+  main = main?.replace(/\.\/src\/(.*)\.(ts|tsx)/, './$1.js');
+  types = types?.replace(/\.\/src\/(.*)\.(ts|tsx)/, './$1.d.ts');
+  module = module?.replace(/\.\/src\/(.*)\.(ts|tsx)/, './$1.js');
+
+  Object.assign(config, {
+    main,
+    types,
+    module,
+    exports,
+  });
+
+  return config;
+}
+
 async function doPackage(dir, out) {
   const pkgPath = path.join(dir, 'package.json');
   const newPath = path.join(out, 'package.json');
@@ -71,54 +100,9 @@ async function doPackage(dir, out) {
     encoding: 'utf8',
   });
 
-  const { main, files, exports, scripts, eslintConfig, devDependencies, ...othData } = pkgData;
-  const newData = {
-    ...othData,
-    "exports": {
-      ".": {
-        "types": "./index.d.ts",
-        "import": "./index.js",
-        "require": "./index.js"
-      },
-      "./*": {
-        "types": "./*/index.d.ts",
-        "import": "./*/index.js",
-        "require": "./*/index.js"
-      },
-      "./*/types": {
-        "types": "./*/types.d.ts",
-        "import": "./*/types.js",
-        "require": "./*/types.js"
-      },
-      "./grid/utils": {
-        "types": "./grid/utils.d.ts",
-        "import": "./grid/utils.js",
-        "require": "./grid/utils.js"
-      },
-      "./gantt/utils": {
-        "types": "./gantt/utils.d.ts",
-        "import": "./gantt/utils.js",
-        "require": "./gantt/utils.js"
-      },
-      "./core/*":  {
-        "types": "./core/*/index.d.ts",
-        "import": "./core/*/index.js",
-        "require": "./core/*/index.js"
-      },
-      "./core/*/types":  {
-        "types": "./core/*/types.d.ts",
-        "import": "./core/*/types.js",
-        "require": "./core/*/types.js"
-      },
-      "./core/styles":  {
-        "types": "./core/styles/index.d.ts",
-        "import": "./core/styles/index.js",
-        "require": "./core/styles/index.js"
-      }
-    }
-  };
+  const { files, scripts, eslintConfig, devDependencies, ...othData } = pkgData;
+  const newData = processConfig(othData);
 
-  await fse.ensureDir(out);
   await fse.writeJSON(newPath, newData, {
     encoding: 'utf8',
     spaces: 2,
