@@ -8,27 +8,31 @@ cache: &global_cache
     - .yarn/cache
   policy: pull-push
 
-build:
+build_package:
   stage: build
   image: node:16-bullseye
   cache:
     <<: *global_cache
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - dist
   only:
     - tags
   script:
     - yarn install
     - yarn build
       
-publish:
+publish_to_npm:
   stage: publish
   image: node:16-bullseye
   cache:
     <<: *global_cache
     policy: pull
+  dependencies:
+    - build_package
   only:
     - tags
   script:
-    - yarn install
-    - yarn build
     - npm config set -- '//registry.npmjs.org/:_authToken' "${NPMJS_TOKEN}"
     - (cd dist && npm publish --access public)
