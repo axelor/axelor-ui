@@ -1,0 +1,34 @@
+stages:
+  - build
+  - publish
+    
+cache: &global_cache
+  key: $CI_COMMIT_REF_SLUG
+  paths:
+    - .yarn/cache
+  policy: pull-push
+
+build:
+  stage: build
+  image: node:16-bullseye
+  cache:
+    <<: *global_cache
+  only:
+    - tags
+  script:
+    - yarn install
+    - yarn build
+      
+publish:
+  stage: publish
+  image: node:16-bullseye
+  cache:
+    <<: *global_cache
+    policy: pull
+  only:
+    - tags
+  script:
+    - yarn install
+    - yarn build
+    - npm config set -- '//registry.npmjs.org/:_authToken' "${NPMJS_TOKEN}"
+    - (cd dist && npm publish --access public)
