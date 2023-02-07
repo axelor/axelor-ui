@@ -34,6 +34,7 @@ export interface SelectProps {
   isSearchable?: boolean;
   isClearOnDelete?: boolean;
   value: any;
+  onInputChange?: (value: any) => void;
   onChange: (value: any) => void;
   onFocus?: (e: React.SyntheticEvent) => void;
   onBlur?: (e: React.SyntheticEvent) => void;
@@ -126,6 +127,7 @@ export function Select({
   isSearchable = true,
   loading: _loading,
   value,
+  onInputChange,
   onChange,
   onFocus,
   onBlur,
@@ -239,6 +241,10 @@ export function Select({
   const handleInputChange = React.useCallback((value: any) => {
     setInputText(value);
   }, []);
+
+  React.useEffect(() => {
+    onInputChange && onInputChange(inputText);
+  }, [onInputChange, inputText]);
 
   const handleMenuOpen = () => setMenuOpen(true);
   const handleMenuClose = () => setMenuOpen(false);
