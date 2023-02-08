@@ -312,7 +312,14 @@ export function Select({
 
   const styles = {
     option: (styles: any, { data }: any) =>
-      data?.__isAddOn ? { ...styles, fontStyle: 'italic' } : styles,
+      data?.__isAddOn
+        ? {
+            ...styles,
+            fontStyle: 'italic',
+            marginLeft: '0.5em',
+            color: 'var(--bs-primary)',
+          }
+        : styles,
   };
 
   return (
