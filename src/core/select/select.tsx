@@ -320,8 +320,8 @@ export function Select({
         ? {
             ...styles,
             fontStyle: 'italic',
-            marginLeft: '0.5em',
-            color: 'var(--bs-primary)',
+            paddingLeft: '1.5em',
+            width: 'auto'
           }
         : styles,
   };
