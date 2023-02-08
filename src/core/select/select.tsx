@@ -114,6 +114,10 @@ enum OptionsState {
   Ready,
 }
 
+function filterOption(candidate: any, input: any) {
+  return candidate.data.__isAddOn || candidate.label.includes(input);
+}
+
 export function Select({
   className,
   classNamePrefix,
@@ -330,6 +334,7 @@ export function Select({
       menuIsOpen={menuIsOpen}
       menuPlacement="auto"
       styles={styles}
+      filterOption={filterOption}
       {...{
         options: $options,
         placeholder,
