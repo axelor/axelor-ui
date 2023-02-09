@@ -5,6 +5,7 @@ import ReactSelect, {
   ControlProps,
   IndicatorsContainerProps,
   MenuListProps,
+  createFilter,
 } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { Box } from '../box';
@@ -114,11 +115,10 @@ enum OptionsState {
   Ready,
 }
 
+const defaultFilter = createFilter();
+
 function filterOption(candidate: any, input: any) {
-  return (
-    candidate.data.__isAddOn ||
-    candidate.label.toLowerCase().includes(input?.toLowerCase())
-  );
+  return candidate.data.__isAddOn || defaultFilter(candidate, input);
 }
 
 export function Select({
