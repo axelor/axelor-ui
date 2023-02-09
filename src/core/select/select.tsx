@@ -115,7 +115,10 @@ enum OptionsState {
 }
 
 function filterOption(candidate: any, input: any) {
-  return candidate.data.__isAddOn || candidate.label.includes(input);
+  return (
+    candidate.data.__isAddOn ||
+    candidate.label.toLowerCase().includes(input?.toLowerCase())
+  );
 }
 
 export function Select({
@@ -321,7 +324,7 @@ export function Select({
             ...styles,
             fontStyle: 'italic',
             paddingLeft: '1.5em',
-            width: 'auto'
+            width: 'auto',
           }
         : styles,
   };
