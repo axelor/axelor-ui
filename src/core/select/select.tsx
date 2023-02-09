@@ -295,7 +295,9 @@ export function Select({
   );
 
   const $options = React.useMemo(() => {
-    if (optionsState !== OptionsState.Ready && !inputText) return [];
+    if (optionsState !== OptionsState.Ready) {
+      return inputText ? options || [] : [];
+    }
     return [
       ...(options || []),
       ...(addOnOptions || []).map((option: any) => ({
