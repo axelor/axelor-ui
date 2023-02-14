@@ -50,6 +50,12 @@ export interface SelectProps {
   createOption?: (inputString: string) => React.ReactNode;
   createOptionPosition?: 'first' | 'last';
   onCreate?: (value: SelectOption) => void;
+  isValidNewOption?: (
+    inputValue: string,
+    selectValue: SelectOption[],
+    selectOptions: SelectOption[],
+    accessors: any
+  ) => boolean;
   components?: any;
 }
 
@@ -149,6 +155,7 @@ export function Select({
   createOption,
   createOptionPosition = 'last',
   onCreate,
+  isValidNewOption,
   components,
   ...props
 }: SelectProps) {
@@ -381,6 +388,7 @@ export function Select({
               formatCreateLabel: createOption,
               createOptionPosition,
               onCreateOption: onCreate,
+              isValidNewOption: isValidNewOption || undefined,
             }
           : {}),
       }}
