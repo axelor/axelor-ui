@@ -315,13 +315,18 @@ export function Select({
       )
     : ($options || []).length > 0;
 
+  const canShowCreate = React.useMemo(
+    () => isCreatable && inputText,
+    [isCreatable, inputText]
+  );
+
   const menuIsOpen = React.useMemo(() => {
-    return isMenuOpen && (canShowNoOptions || hasOption);
-  }, [isMenuOpen, canShowNoOptions, hasOption]);
+    return isMenuOpen && (canShowNoOptions || hasOption || canShowCreate);
+  }, [isMenuOpen, canShowNoOptions, hasOption, canShowCreate]);
 
   const styles = {
     option: (styles: any, { data }: any) =>
-      data?.__isAddOn
+      data?.__isAddOn || data?.__isNew__
         ? {
             ...styles,
             fontStyle: 'italic',

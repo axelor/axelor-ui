@@ -101,7 +101,7 @@ export const Multiple = () => {
 };
 
 function CreateNewOption(str: string) {
-  return `Create.. "${str}"`;
+  return `Create "${str}"`;
 }
 
 export const Creatable = () => {
