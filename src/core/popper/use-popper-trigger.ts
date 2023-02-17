@@ -63,13 +63,13 @@ export function usePopperTrigger({
 
   // handle click trigger
   useEffect(() => {
-    if (targetEl && trigger === 'click') {
+    if (targetEl && (trigger === 'click' || interactive)) {
       targetEl.addEventListener('click', togglePopper);
       return () => {
         targetEl.addEventListener('click', togglePopper);
       };
     }
-  }, [trigger, targetEl, togglePopper]);
+  }, [trigger, interactive, targetEl, togglePopper]);
 
   // handle hover trigger
   useEffect(() => {
