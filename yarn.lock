@@ -77,6 +77,11 @@ __metadata:
     typescript: ^4.9.4
     vite: ^4.0.4
     vite-plugin-svgr: ^2.4.0
+  peerDependencies:
+    react: ^18.2.0-0
+    react-dnd: ^16.0.1
+    react-dnd-html5-backend: ^16.0.1
+    react-dom: ^18.2.0-0
   languageName: unknown
   linkType: soft
 
