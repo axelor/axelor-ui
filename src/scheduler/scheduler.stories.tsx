@@ -102,6 +102,10 @@ function SchedulerContainer(props: SchedulerProps) {
 
 export const Basic = () => <SchedulerContainer />;
 
+export const Readonly = () => (
+  <SchedulerContainer onEventDrop={undefined} onEventResize={undefined} />
+);
+
 export const Component = () => (
   <SchedulerContainer
     components={{

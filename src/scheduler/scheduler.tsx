@@ -114,8 +114,11 @@ export function Scheduler({
     [onViewChange]
   );
 
+  const CalendarComponent =
+    onEventDrop || onEventResize ? DragAndDropCalendar : Calendar;
+
   return (
-    <DragAndDropCalendar
+    <CalendarComponent
       popup
       showMultiDayTimes
       date={date}
