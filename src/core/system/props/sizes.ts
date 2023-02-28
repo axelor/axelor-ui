@@ -18,14 +18,14 @@ export interface SizeProps {
   w?: TDimension;
   h?: TDimension;
 
-  maxW?: boolean;
-  maxH?: boolean;
+  maxW?: 100;
+  maxH?: 100;
 
-  vw?: boolean;
-  vh?: boolean;
+  vw?: 25 | 50 | 75 | 100;
+  vh?: 25 | 50 | 75 | 100;
 
-  minVW?: boolean;
-  minVH?: boolean;
+  minVW?: 100;
+  minVH?: 100;
 }
 
 const size = (cls: string) => (value: any, breakpoint?: string) => {
