@@ -1,4 +1,4 @@
-import { isValidElement, cloneElement } from 'react';
+import { cloneElement, isValidElement, useRef } from 'react';
 import { Transition } from 'react-transition-group';
 import { TransitionProps } from '../transitions/types';
 import {
@@ -28,7 +28,9 @@ export function Grow({
   onExit,
   ...props
 }: GrowProps) {
-  const handleEnter = (node: HTMLElement, isAppearing: boolean) => {
+  const nodeRef = useRef(null);
+  const handleEnter = (isAppearing: boolean) => {
+    const node: HTMLElement = nodeRef.current!;
     const style = node.style;
     const { easing, duration, delay } = getTransitionProps('enter', {
       timeout,
@@ -48,7 +50,8 @@ export function Grow({
     }
   };
 
-  const handleEntering = (node: HTMLElement, isAppearing: boolean) => {
+  const handleEntering = (isAppearing: boolean) => {
+    const node: HTMLElement = nodeRef.current!;
     node.style.opacity = '1';
     node.style.transform = 'scale(1, 1)';
 
@@ -57,7 +60,8 @@ export function Grow({
     }
   };
 
-  const handleEntered = (node: HTMLElement, isAppearing: boolean) => {
+  const handleEntered = (isAppearing: boolean) => {
+    const node: HTMLElement = nodeRef.current!;
     node.style.opacity = '1';
     node.style.transform = 'none';
 
@@ -66,7 +70,8 @@ export function Grow({
     }
   };
 
-  const handleExit = (node: HTMLElement) => {
+  const handleExit = () => {
+    const node: HTMLElement = nodeRef.current!;
     const style = node.style;
     const { easing, duration, delay } = getTransitionProps('exit', {
       timeout,
@@ -98,6 +103,7 @@ export function Grow({
       onEntering={handleEntering}
       onEntered={handleEntered}
       onExit={handleExit}
+      nodeRef={nodeRef}
       {...props}
     >
       {state => {
@@ -105,6 +111,7 @@ export function Grow({
           const style = getTransitionStyle(state, styles as any, children);
           return cloneElement(children as React.ReactElement, {
             style,
+            ref: nodeRef,
           });
         }
       }}

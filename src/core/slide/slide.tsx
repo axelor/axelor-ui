@@ -1,4 +1,4 @@
-import { cloneElement, isValidElement } from 'react';
+import { cloneElement, isValidElement, useRef } from 'react';
 import { Transition } from 'react-transition-group';
 import { useTheme } from '../styles';
 import { TransitionProps } from '../transitions/types';
@@ -91,7 +91,9 @@ export function Slide({
   ...props
 }: SlideProps) {
   const { dir } = useTheme();
-  const handleEnter = (node: HTMLElement, isAppearing: boolean) => {
+  const nodeRef = useRef(null);
+  const handleEnter = (isAppearing: boolean) => {
+    const node: HTMLElement = nodeRef.current!;
     node.style.transform = getTranslateValue(node, direction, dir);
 
     reflow(node);
@@ -101,7 +103,8 @@ export function Slide({
     }
   };
 
-  const handleEntering = (node: HTMLElement, isAppearing: boolean) => {
+  const handleEntering = (isAppearing: boolean) => {
+    const node: HTMLElement = nodeRef.current!;
     const style = node.style;
     const options = getTransitionProps('enter', { timeout, style });
 
@@ -114,20 +117,23 @@ export function Slide({
     }
   };
 
-  const handleEntered = (node: HTMLElement, isAppearing: boolean) => {
+  const handleEntered = (isAppearing: boolean) => {
+    const node: HTMLElement = nodeRef.current!;
     if (onEntered) {
       onEntered(node, isAppearing);
     }
   };
 
-  const handleExit = (node: HTMLElement) => {
+  const handleExit = () => {
+    const node: HTMLElement = nodeRef.current!;
     node.style.transform = getTranslateValue(node, direction, dir);
     if (onExit) {
       onExit(node);
     }
   };
 
-  const handleExiting = (node: HTMLElement) => {
+  const handleExiting = () => {
+    const node: HTMLElement = nodeRef.current!;
     const style = node.style;
     const options = getTransitionProps('enter', { timeout, style });
 
@@ -138,7 +144,8 @@ export function Slide({
     }
   };
 
-  const handleExited = (node: HTMLElement) => {
+  const handleExited = () => {
+    const node: HTMLElement = nodeRef.current!;
     node.style.transform = 'translateX(-100000px)';
     node.style.transition = '';
     node.style.visibility = 'hidden';
@@ -156,6 +163,7 @@ export function Slide({
       onExit={handleExit}
       onExiting={handleExiting}
       onExited={handleExited}
+      nodeRef={nodeRef}
       {...props}
     >
       {state => {
@@ -163,6 +171,7 @@ export function Slide({
           const style = getTransitionStyle(state, styles as any, children);
           return cloneElement(children as React.ReactElement, {
             style,
+            ref: nodeRef,
           });
         }
       }}

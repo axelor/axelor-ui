@@ -1,4 +1,4 @@
-import { isValidElement, cloneElement } from 'react';
+import { cloneElement, isValidElement, useRef } from 'react';
 import { Transition } from 'react-transition-group';
 import { TransitionProps } from '../transitions/types';
 import {
@@ -25,7 +25,9 @@ export function Fade({
   onExit,
   ...props
 }: FadeProps) {
-  const handleEnter = (node: HTMLElement, isAppearing: boolean) => {
+  const nodeRef = useRef(null);
+  const handleEnter = (isAppearing: boolean) => {
+    const node: HTMLElement = nodeRef.current!;
     const style = node.style;
     const options = getTransitionProps('enter', {
       timeout,
@@ -43,7 +45,8 @@ export function Fade({
     }
   };
 
-  const handleExit = (node: HTMLElement) => {
+  const handleExit = () => {
+    const node: HTMLElement = nodeRef.current!;
     const style = node.style;
     const options = getTransitionProps('exit', {
       timeout,
@@ -65,6 +68,7 @@ export function Fade({
       timeout={timeout}
       onEnter={handleEnter}
       onExit={handleExit}
+      nodeRef={nodeRef}
       {...props}
     >
       {state => {
@@ -72,6 +76,7 @@ export function Fade({
           const style = getTransitionStyle(state, styles as any, children);
           return cloneElement(children as React.ReactElement, {
             style,
+            ref: nodeRef,
           });
         }
       }}
