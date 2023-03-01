@@ -3,6 +3,17 @@
   user-select: none;
 }
 
+.root > .menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.menuItem {
+  gap: 0.5rem;
+  margin: 0 0.5rem;
+}
+
 .root > .menu > .menuItemWrapper {
   transition: all 0.2s ease-in-out;
   &.active {
@@ -28,6 +39,8 @@
   cursor: pointer;
   position: relative;
 
+  line-height: 2rem;
+
   &.active .menuItemTitle,
   &.active .menuIcon,
   &:hover .menuItemTitle,
@@ -52,39 +65,21 @@
 .menuItemTitle {
   color: var(--bs-nav-link-color);
   font-weight: 600;
-  margin: 0 1rem 0 0.5rem;
   transition: var(--bs-nav-link-transition);
-  .rtl & {
-    margin: 0 0.5rem 0 1rem;
-  }
   &:hover {
     color: var(--bs-nav-link-hover-color);
   }
 }
 
 .menuItemChildren {
-  margin-top: 0.25rem;
   &.float {
     padding-top: 0.25rem;
     padding-bottom: 0.25rem;
   }
 
   & .menuItemWrapper {
-    padding-left: 0.75rem;
-    .rtl & {
-      padding-left: unset;
-      padding-right: 0.75rem;
-    }
     & .menuItem {
       font-size: 0.9rem;
-      margin-bottom: 0.25rem;
-      &.has-children {
-        padding-right: 2rem;
-        .rtl & {
-          padding-right: unset;
-          padding-left: 2rem;
-        }
-      }
     }
   }
 
@@ -99,16 +94,11 @@
   &.float .menuItemIcon {
     display: none !important;
   }
-
-  & & .menuItemTitle {
-    margin: 0 0.25rem;
-  }
 }
 
 .menuIcon {
   font-size: 0.8rem;
   font-weight: bold;
-  position: absolute;
   right: 10px;
   color: var(--bs-nav-link-color);
   transition: all 0.2s ease-in-out;

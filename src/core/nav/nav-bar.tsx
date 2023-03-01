@@ -162,17 +162,14 @@ const NavBarItem = React.memo(function NavBarItem({
           d="flex"
           justifyContent="center"
           alignItems="center"
-          ms={2}
-          me={1}
-          my={1}
           style={{
             backgroundColor: bgColor,
           }}
         >
-          {icon ? icon({ color }) : null}
+          {icon && icon({ color })}
         </Box>
 
-        <Box className={classes.menuItemTitle}>{title}</Box>
+        <Box flex={1} className={classes.menuItemTitle}>{title}</Box>
 
         {tag && (
           <Badge
