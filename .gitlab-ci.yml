@@ -5,12 +5,12 @@ stages:
 cache: &global_cache
   key: $CI_COMMIT_REF_SLUG
   paths:
-    - .yarn/cache
+    - node_modules/.pnpm
   policy: pull-push
 
 build_package:
   stage: build
-  image: node:16-bullseye
+  image: node:18-bullseye
   cache:
     <<: *global_cache
   artifacts:
@@ -20,12 +20,14 @@ build_package:
   only:
     - tags
   script:
-    - yarn install
-    - yarn build
+    - corepack enable
+    - corepack prepare pnpm@latest --activate
+    - pnpm install
+    - pnpm build
       
 publish_to_npm:
   stage: publish
-  image: node:16-bullseye
+  image: node:18-bullseye
   cache:
     <<: *global_cache
     policy: pull
