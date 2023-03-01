@@ -88,14 +88,7 @@ const NavTabIcon = React.memo(function NavTabIcon({
       me={1}
       style={{ backgroundColor: bgColor }}
     >
-      {icon && (
-        <Icon
-          as={icon}
-          style={{
-            color,
-          }}
-        />
-      )}
+      {icon ? icon({ color }) : null}
     </Box>
   );
 });

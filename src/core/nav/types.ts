@@ -4,7 +4,7 @@ export interface NavItemProps {
   id: string;
   text?: string;
   title?: string;
-  icon?: IconProps['as'];
+  icon?: (props: { color?: string }) => JSX.Element;
   iconColor?: string;
   header?: boolean;
   divider?: boolean;

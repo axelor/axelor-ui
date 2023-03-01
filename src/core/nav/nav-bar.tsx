@@ -169,7 +169,7 @@ const NavBarItem = React.memo(function NavBarItem({
             backgroundColor: bgColor,
           }}
         >
-          {icon && <Icon as={icon} style={{ color }} />}
+          {icon ? icon({ color }) : null}
         </Box>
 
         <Box className={classes.menuItemTitle}>{title}</Box>

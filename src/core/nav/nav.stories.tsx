@@ -34,7 +34,7 @@ const items = [
   {
     id: '1',
     title: 'Messaging',
-    icon: BiChat,
+    icon: () => <Icon as={BiChat} style={{ color: 'purple' }} />,
     iconColor: 'violet',
     items: [
       { id: '101', title: 'Inbox' },
@@ -53,7 +53,7 @@ const items = [
   {
     id: '2',
     title: 'Teamwork',
-    icon: BiPerson,
+    icon: () => <Icon as={BiPerson} style={{ color: 'teal' }} />,
     iconColor: 'green',
     items: [
       {
@@ -203,7 +203,7 @@ export const NavTabs = () => {
     {
       id: 'tab1',
       title: 'Calendar',
-      icon: BiCalendarEvent,
+      icon: ({ color }) => <Icon as={BiCalendarEvent} style={{ color }} />,
       iconColor: 'purple',
     },
     { id: 'tab2', title: 'Teams', icon: BiHeartFill, iconColor: 'orange' },
