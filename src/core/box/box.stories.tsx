@@ -1,18 +1,22 @@
+import type { Meta, StoryObj } from "@storybook/react";
+
 import { Box } from "./box";
 
-const config = {
-  component: Box,
+const meta = {
   title: "Layout/Box",
-};
+  component: Box,
+} satisfies Meta<typeof Box>;
 
-export const Basic = ({ t }: any) => {
-  return (
-    <Box style={{ width: 400 }}>
-      <Box p={4} border>
-        {t("welcome")}
-      </Box>
-    </Box>
-  );
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Basic: Story = {
+  args: {
+    border: true,
+    p: 4,
+    children: "Welcome!",
+  },
 };
 
 export const Border = ({ t }: any) => {
@@ -445,5 +449,3 @@ export const Overflow = ({ t }: any) => {
     </Box>
   );
 };
-
-export default config;
