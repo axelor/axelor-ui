@@ -1,7 +1,5 @@
 import React, { CSSProperties, useMemo } from 'react';
 import { useClassNames } from '../styles';
-import { ComputeResult } from './types';
-import { isReponsive } from './utils';
 import {
   BackgroundConfig,
   BackgroundProps,
@@ -27,6 +25,8 @@ import {
   TextConfig,
   TextProps,
 } from './props';
+import { ComputeResult } from './types';
+import { isReponsive } from './utils';
 
 export interface StyleProps
   extends BackgroundProps,
@@ -143,8 +143,8 @@ export const useStyleProps = <T extends CSSStyleProps>(props: T) => {
   );
 
   return {
-    className: computedClassName,
-    style: computedStyle,
+    className: computedClassName || undefined,
+    style: computedStyle || undefined,
     ...rest,
   };
 };
