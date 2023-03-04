@@ -26,17 +26,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "build": "node scripts/build.js . -o dist",
-    "clean": "rimraf dist"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "rules": {
-      "react/jsx-uses-react": "off",
-      "react/react-in-jsx-scope": "off"
-    }
+    "clean": "rimraf dist",
+    "lint": "eslint src"
   },
   "peerDependencies": {
     "react": "^18.2.0-0",
@@ -78,7 +69,6 @@
     "eslint": "^8.35.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-config-react-app": "^7.0.1",
-    "eslint-plugin-prettier": "^4.2.1",
     "fast-glob": "^3.2.12",
     "fs-extra": "^11.1.0",
     "i18next": "^22.4.9",
@@ -95,5 +85,13 @@
     "vite": "^4.1.4",
     "vite-plugin-svgr": "^2.4.0"
   },
-  "packageManager": "pnpm@7.28.0"
+  "packageManager": "pnpm@7.28.0",
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "@babel/*",
+        "@eslint/*"
+      ]
+    }
+  }
 }
