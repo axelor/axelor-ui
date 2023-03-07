@@ -39,6 +39,7 @@ export interface PopperProps {
   bg?: TBackground;
   color?: TForeground;
   transition?: null | React.FunctionComponent<{
+    children?: React.ReactNode;
     in: boolean | undefined;
     appear: boolean;
     onEnter: () => void;
@@ -148,7 +149,7 @@ export const Popper = ({
   bg = 'light',
   color = 'body',
   container,
-  transition = Fade,
+  transition: Transition = Fade,
   children,
   disablePortal,
   ...props
@@ -190,14 +191,15 @@ export const Popper = ({
       open={open || !exited}
       {...props}
     >
-      {transition
-        ? transition({
-            in: open,
-            appear: true,
-            onEnter: handleEnter,
-            onExited: handleExited,
-            children: render(),
-          } as any)
+      {Transition
+        ? <Transition
+            in={open}
+            appear
+            onEnter={handleEnter}
+            onExited={handleExited}
+          >
+            {render()}
+          </Transition>
         : render()}
     </PopperWrapper>
   );
