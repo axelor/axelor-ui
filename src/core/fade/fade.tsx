@@ -1,5 +1,6 @@
-import { cloneElement, isValidElement, useRef } from 'react';
+import { cloneElement, forwardRef, isValidElement } from 'react';
 import { Transition } from 'react-transition-group';
+import { useForwardedRef } from '../hooks';
 import { TransitionProps } from '../transitions/types';
 import {
   getTransition,
@@ -17,69 +18,67 @@ const styles = {
   },
 };
 
-export function Fade({
-  appear = true,
-  timeout = 350,
-  children,
-  onEnter,
-  onExit,
-  ...props
-}: FadeProps) {
-  const nodeRef = useRef(null);
-  const handleEnter = (isAppearing: boolean) => {
-    const node: HTMLElement = nodeRef.current!;
-    const style = node.style;
-    const options = getTransitionProps('enter', {
-      timeout,
-      style,
-    });
+export const Fade = forwardRef<HTMLElement, FadeProps>(
+  (
+    { appear = true, timeout = 350, children, onEnter, onExit, ...props },
+    ref
+  ) => {
+    const nodeRef = useForwardedRef<any>(ref);
+    const handleEnter = (isAppearing: boolean) => {
+      const node: HTMLElement = nodeRef.current!;
+      const style = node.style;
+      const options = getTransitionProps('enter', {
+        timeout,
+        style,
+      });
 
-    reflow(node);
+      reflow(node);
 
-    style.opacity = '1';
-    style.visibility = '';
-    style.transition = getTransition('opacity', options);
+      style.opacity = '1';
+      style.visibility = '';
+      style.transition = getTransition('opacity', options);
 
-    if (onEnter) {
-      onEnter(node, isAppearing);
-    }
-  };
+      if (onEnter) {
+        onEnter(node, isAppearing);
+      }
+    };
 
-  const handleExit = () => {
-    const node: HTMLElement = nodeRef.current!;
-    const style = node.style;
-    const options = getTransitionProps('exit', {
-      timeout,
-      style,
-    });
+    const handleExit = () => {
+      const node: HTMLElement = nodeRef.current!;
+      const style = node.style;
+      const options = getTransitionProps('exit', {
+        timeout,
+        style,
+      });
 
-    style.opacity = '0';
-    style.transition = getTransition('opacity', options);
+      style.opacity = '0';
+      style.transition = getTransition('opacity', options);
 
-    if (onExit) {
-      onExit(node);
-    }
-  };
+      if (onExit) {
+        onExit(node);
+      }
+    };
 
-  return (
-    <Transition
-      in={props.in}
-      appear={appear}
-      timeout={timeout}
-      onEnter={handleEnter}
-      onExit={handleExit}
-      nodeRef={nodeRef}
-      {...props}
-    >
-      {state => {
-        if (isValidElement(children)) {
-          const style = getTransitionStyle(state, styles as any, children);
-          return cloneElement(children as React.ReactElement, {
-            style,
-            ref: nodeRef,
-          });
-        }
-      }}
-    </Transition>
-  );
-}
+    return (
+      <Transition
+        in={props.in}
+        appear={appear}
+        timeout={timeout}
+        onEnter={handleEnter}
+        onExit={handleExit}
+        nodeRef={nodeRef}
+        {...props}
+      >
+        {state => {
+          if (isValidElement(children)) {
+            const style = getTransitionStyle(state, styles as any, children);
+            return cloneElement(children as React.ReactElement, {
+              style,
+              ref: nodeRef,
+            });
+          }
+        }}
+      </Transition>
+    );
+  }
+);
