@@ -17,6 +17,6 @@
     "jsx": "react-jsx"
   },
   "include": ["src"],
-  "exclude": ["*/**/*.stories.tsx", "*/**/demos/*.tsx", "**/dist"],
+  "exclude": ["**/dist"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
