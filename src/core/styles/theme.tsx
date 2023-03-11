@@ -18,6 +18,10 @@ export type StyleName =
 const clean = (names: string[]) =>
   names.flatMap(n => n.trim().split(/\s+/)).filter(Boolean);
 
+export const clsx = (...args: StyleName[]): string => {
+  return names(args).flat().filter(Boolean).join(' ');
+};
+
 const names = (item: StyleName): string[] => {
   if (Array.isArray(item)) return item.flatMap(names);
   if (typeof item === 'object') {
@@ -75,6 +79,7 @@ export function useClassNames() {
     (...args: StyleName[]) => {
       return names(args)
         .flatMap(name => styles[name] ?? name)
+        .filter(Boolean)
         .join(' ');
     },
     [styles]

@@ -79,9 +79,14 @@ const createStyled: CreateStyled =
             Object.assign(computed, res);
           }
         }
+
+        const className = [computed.className, classNames(classes)]
+          .filter(Boolean)
+          .join(' ');
+
         return {
           ...computed,
-          className: classNames(computed.className, classes),
+          className,
         };
       }, [props, classNames]);
     }

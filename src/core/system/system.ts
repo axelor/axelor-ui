@@ -1,5 +1,5 @@
 import React, { CSSProperties, useMemo } from 'react';
-import { useClassNames } from '../styles';
+import { clsx, useClassNames } from '../styles';
 import {
   BackgroundConfig,
   BackgroundProps,
@@ -133,8 +133,8 @@ export const useStyleProps = <T extends CSSStyleProps>(props: T) => {
   const classNames = useClassNames();
 
   const computedClassName = useMemo(
-    (): string => classNames(className, classes),
-    [className, classes, classNames]
+    (): string => classNames(classes),
+    [classes, classNames]
   );
 
   const computedStyle = useMemo(
@@ -143,7 +143,7 @@ export const useStyleProps = <T extends CSSStyleProps>(props: T) => {
   );
 
   return {
-    className: computedClassName || undefined,
+    className: clsx(className, computedClassName),
     style: computedStyle || undefined,
     ...rest,
   };
