@@ -1,5 +1,6 @@
-import { cloneElement, isValidElement, useRef } from "react";
+import { cloneElement, forwardRef, isValidElement } from "react";
 import { Transition } from "react-transition-group";
+import { useForwardedRef } from "../hooks";
 import { useTheme } from "../styles";
 import { TransitionProps } from "../transitions/types";
 import {
@@ -78,103 +79,108 @@ const getTranslateValue = (
   return `translateY(-${rect.top + rect.height - offsetY}px)`;
 };
 
-export function Slide({
-  timeout = 300,
-  direction = "end",
-  children,
-  onEnter,
-  onEntering,
-  onEntered,
-  onExit,
-  onExiting,
-  onExited,
-  ...props
-}: SlideProps) {
-  const { dir } = useTheme();
-  const nodeRef = useRef(null);
-  const handleEnter = (isAppearing: boolean) => {
-    const node: HTMLElement = nodeRef.current!;
-    node.style.transform = getTranslateValue(node, direction, dir);
+export const Slide = forwardRef<HTMLElement, SlideProps>(
+  (
+    {
+      timeout = 300,
+      direction = "end",
+      children,
+      onEnter,
+      onEntering,
+      onEntered,
+      onExit,
+      onExiting,
+      onExited,
+      ...props
+    }: SlideProps,
+    ref
+  ) => {
+    const { dir } = useTheme();
+    const nodeRef = useForwardedRef<any>(ref);
+    const handleEnter = (isAppearing: boolean) => {
+      const node: HTMLElement = nodeRef.current!;
+      node.style.transform = getTranslateValue(node, direction, dir);
 
-    reflow(node);
+      reflow(node);
 
-    if (onEnter) {
-      onEnter(node, isAppearing);
-    }
-  };
+      if (onEnter) {
+        onEnter(node, isAppearing);
+      }
+    };
 
-  const handleEntering = (isAppearing: boolean) => {
-    const node: HTMLElement = nodeRef.current!;
-    const style = node.style;
-    const options = getTransitionProps("enter", { timeout, style });
+    const handleEntering = (isAppearing: boolean) => {
+      const node: HTMLElement = nodeRef.current!;
+      const style = node.style;
+      const options = getTransitionProps("enter", { timeout, style });
 
-    style.visibility = "";
-    style.transform = "";
-    style.transition = getTransition("transform", options);
+      style.visibility = "";
+      style.transform = "";
+      style.transition = getTransition("transform", options);
 
-    if (onEntering) {
-      onEntering(node, isAppearing);
-    }
-  };
+      if (onEntering) {
+        onEntering(node, isAppearing);
+      }
+    };
 
-  const handleEntered = (isAppearing: boolean) => {
-    const node: HTMLElement = nodeRef.current!;
-    if (onEntered) {
-      onEntered(node, isAppearing);
-    }
-  };
+    const handleEntered = (isAppearing: boolean) => {
+      const node: HTMLElement = nodeRef.current!;
+      if (onEntered) {
+        onEntered(node, isAppearing);
+      }
+    };
 
-  const handleExit = () => {
-    const node: HTMLElement = nodeRef.current!;
-    node.style.transform = getTranslateValue(node, direction, dir);
-    if (onExit) {
-      onExit(node);
-    }
-  };
+    const handleExit = () => {
+      const node: HTMLElement = nodeRef.current!;
+      node.style.transform = getTranslateValue(node, direction, dir);
+      if (onExit) {
+        onExit(node);
+      }
+    };
 
-  const handleExiting = () => {
-    const node: HTMLElement = nodeRef.current!;
-    const style = node.style;
-    const options = getTransitionProps("enter", { timeout, style });
+    const handleExiting = () => {
+      const node: HTMLElement = nodeRef.current!;
+      const style = node.style;
+      const options = getTransitionProps("enter", { timeout, style });
 
-    style.transition = getTransition("transform", options);
+      style.transition = getTransition("transform", options);
 
-    if (onExiting) {
-      onExiting(node);
-    }
-  };
+      if (onExiting) {
+        onExiting(node);
+      }
+    };
 
-  const handleExited = () => {
-    const node: HTMLElement = nodeRef.current!;
-    node.style.transform = "translateX(-100000px)";
-    node.style.transition = "";
-    node.style.visibility = "hidden";
-    if (onExited) {
-      onExited(node);
-    }
-  };
+    const handleExited = () => {
+      const node: HTMLElement = nodeRef.current!;
+      node.style.transform = "translateX(-100000px)";
+      node.style.transition = "";
+      node.style.visibility = "hidden";
+      if (onExited) {
+        onExited(node);
+      }
+    };
 
-  return (
-    <Transition
-      timeout={timeout}
-      onEnter={handleEnter}
-      onEntering={handleEntering}
-      onEntered={handleEntered}
-      onExit={handleExit}
-      onExiting={handleExiting}
-      onExited={handleExited}
-      nodeRef={nodeRef}
-      {...props}
-    >
-      {(state) => {
-        if (isValidElement(children)) {
-          const style = getTransitionStyle(state, styles as any, children);
-          return cloneElement(children as React.ReactElement, {
-            style,
-            ref: nodeRef,
-          });
-        }
-      }}
-    </Transition>
-  );
-}
+    return (
+      <Transition
+        timeout={timeout}
+        onEnter={handleEnter}
+        onEntering={handleEntering}
+        onEntered={handleEntered}
+        onExit={handleExit}
+        onExiting={handleExiting}
+        onExited={handleExited}
+        nodeRef={nodeRef}
+        {...props}
+      >
+        {(state) => {
+          if (isValidElement(children)) {
+            const style = getTransitionStyle(state, styles as any, children);
+            return cloneElement(children as React.ReactElement, {
+              style,
+              ref: nodeRef,
+            });
+          }
+        }}
+      </Transition>
+    );
+  }
+);
