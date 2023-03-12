@@ -1,2 +1,19 @@
 $material-symbols-font-path: "~material-symbols/";
 @import "~material-symbols";
+
+:root {
+  --ax-material-icon-fill: 0;
+  --ax-material-icon-grad: 0;
+  --ax-material-icon-wght: 400;
+  --ax-material-icon-opsz: 48;
+  --ax-material-icon-fnsz: 48px;
+}
+
+.material-symbols-outlined,
+.material-symbols-rounded,
+.material-symbols-sharp {
+  font-size: var(--ax-material-icon-fnsz);
+  font-variation-settings: "FILL" var(--ax-material-icon-fill),
+    "wght" var(--ax-material-icon-wght), "GRAD" var(--ax-material-icon-grad),
+    "opsz" var(--ax-material-icon-opsz);
+}

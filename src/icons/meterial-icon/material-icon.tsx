@@ -1,5 +1,5 @@
 import { MaterialSymbol } from "material-symbols";
-import { forwardRef } from "react";
+import { forwardRef, useMemo } from "react";
 import { Box } from "../../core";
 import { clsx } from "../../core/styles";
 import { TForeground } from "../../core/system";
@@ -17,26 +17,51 @@ export interface MaterialIconProps {
   className?: string;
 }
 
+const styleNames = ["fill", "grade", "weight", "opticalSize"] as const;
+
+const hasStyles = (props: Partial<MaterialIconProps>) => {
+  return styleNames.some((name) => props[name] !== void 0);
+};
+
+const getStyles = ({
+  fill,
+  grade,
+  weight,
+  opticalSize: size,
+}: Partial<MaterialIconProps>) => {
+  const FILL = fill ?? "var(--ax-material-icon-fill)";
+  const GRAD = grade ?? "var(--ax-material-icon-grad)";
+  const wght = weight ?? "var(--ax-material-icon-wght)";
+  const opsz = size ?? "var(--ax-material-icon-opsz)";
+
+  const fontVariationSettings = `"FILL" ${FILL}, "GRAD" ${GRAD}, "wght" ${wght}, "opsz" ${opsz}`;
+  const fontSize = size ? `${size}px` : "var(--ax-material-icon-fnsz)";
+
+  return {
+    fontVariationSettings,
+    fontSize,
+  };
+};
+
 export const MaterialIcon = forwardRef<HTMLSpanElement, MaterialIconProps>(
   (props, ref) => {
     const {
       className,
       icon,
       variant = "outlined",
-      fill = 0,
-      weight = 400,
-      grade = 0,
-      opticalSize = 48,
+      fill,
+      weight,
+      grade,
+      opticalSize,
       color,
     } = props;
 
     const cls = `material-symbols-${variant}`;
     const clsName = clsx(className, styles[cls]);
-
-    const fontVariationSettings = `"FILL" ${fill}, "wght" ${weight}, "GRAD" ${grade}, "opsz" ${opticalSize}`;
-    const fontSize = `${opticalSize}px`;
-
-    const style = { fontVariationSettings, fontSize };
+    const style = useMemo(() => {
+      const props = { fill, weight, grade, opticalSize };
+      return hasStyles(props) ? getStyles(props) : undefined;
+    }, [fill, weight, grade, opticalSize]);
 
     return (
       <Box as="span" className={clsName} color={color} style={style} ref={ref}>
