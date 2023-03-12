@@ -1,6 +1,6 @@
-import styled, { withStyled } from '../styled';
-import { useTheme } from '../styles';
-import styles from './linear-progress.module.css';
+import styled, { withStyled } from "../styled";
+import { useTheme } from "../styles";
+import styles from "./linear-progress.module.css";
 
 export interface LinearProgressProps {
   indeterminate?: boolean;
@@ -12,9 +12,9 @@ export interface LinearProgressProps {
 
 const Inner = styled.div<LinearProgressProps & { dir: string }>(
   ({ indeterminate, striped, animated, dir }) => [
-    'progress-bar',
+    "progress-bar",
     {
-      'progress-bar-striped': striped,
+      "progress-bar-striped": striped,
       [styles.animated]: animated,
       [styles.indeterminate]: indeterminate,
       [styles[dir]]: dir,
@@ -23,7 +23,7 @@ const Inner = styled.div<LinearProgressProps & { dir: string }>(
 );
 
 const Outer = styled.div<LinearProgressProps>(
-  () => ['progress'],
+  () => ["progress"],
   ({ thickness }) => ({
     style: { height: thickness },
   })
@@ -36,12 +36,12 @@ export const LinearProgress = withStyled(Outer)(
       striped,
       animated,
       value = 0,
-      role = 'progressbar',
+      role = "progressbar",
       ...props
     },
     ref
   ) => {
-    const { dir = '' } = useTheme();
+    const { dir = "" } = useTheme();
     return (
       <Outer {...props} ref={ref}>
         <Inner

@@ -1,9 +1,9 @@
-import { Box } from '../box';
-import { Stack } from './stack';
+import { Box } from "../box";
+import { Stack } from "./stack";
 
 const config = {
   component: Box,
-  title: 'Layout/Stack',
+  title: "Layout/Stack",
 };
 
 export const Basic = () => {

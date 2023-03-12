@@ -1,38 +1,38 @@
-import moment from 'moment';
-import * as TYPES from './types';
+import moment from "moment";
+import * as TYPES from "./types";
 
-const CONNECT_FINISH = 'finish';
-const CONNECT_START = 'start';
+const CONNECT_FINISH = "finish";
+const CONNECT_START = "start";
 
 export const CONFIG = {
   LINE_HEIGHT: 30,
   CELL_HEIGHT: 36,
   DND_TYPES: {
-    LINE: 'LINE',
-    PROGRESS: 'PROGRESS',
-    RESIZE_LEFT: 'RESIZE_LEFT',
-    RESIZE_RIGHT: 'RESIZE_RIGHT',
-    CONNECT_START: 'CONNECT_START',
-    CONNECT_END: 'CONNECT_END',
+    LINE: "LINE",
+    PROGRESS: "PROGRESS",
+    RESIZE_LEFT: "RESIZE_LEFT",
+    RESIZE_RIGHT: "RESIZE_RIGHT",
+    CONNECT_START: "CONNECT_START",
+    CONNECT_END: "CONNECT_END",
   },
 };
 
 export const GANTT_TYPES: Record<string, TYPES.GanttType> = {
-  DAY: 'day',
-  WEEK: 'week',
-  MONTH: 'month',
-  YEAR: 'year',
+  DAY: "day",
+  WEEK: "week",
+  MONTH: "month",
+  YEAR: "year",
 };
 
 const viewConfig: Record<TYPES.GanttType, any> = {
-  month: { width: 50, value: 7 * 24, type: 'weeks' },
-  day: { width: 50, value: 1, type: 'hours' },
-  week: { width: 70, value: 24, type: 'days' },
-  year: { width: 100, value: 31 * 24, type: 'months' },
+  month: { width: 50, value: 7 * 24, type: "weeks" },
+  day: { width: 50, value: 1, type: "hours" },
+  week: { width: 70, value: 24, type: "days" },
+  year: { width: 100, value: 31 * 24, type: "months" },
 };
 
 function getMomentList(
-  type: 'hour' | 'month' | 'day' | 'week' | 'year',
+  type: "hour" | "month" | "day" | "week" | "year",
   format:
     | string
     | ((
@@ -43,8 +43,8 @@ function getMomentList(
   startDate: moment.Moment,
   endDate: moment.Moment,
   hourSize: number,
-  compareType?: 'hour' | 'month' | 'day' | 'week' | 'year',
-  startOfType?: 'isoWeek'
+  compareType?: "hour" | "month" | "day" | "week" | "year",
+  startOfType?: "isoWeek"
 ): TYPES.GanttHeaderItem[] {
   compareType = compareType || type;
   const list: TYPES.GanttHeaderItem[] = [];
@@ -60,10 +60,10 @@ function getMomentList(
 
     const hours = moment.duration(end.diff(start)).asHours();
     const highlight =
-      format === 'ddd DD' && ['Sat', 'Sun'].includes(current.format('ddd'));
+      format === "ddd DD" && ["Sat", "Sun"].includes(current.format("ddd"));
 
     const title =
-      typeof format === 'function'
+      typeof format === "function"
         ? format(current, start, end)
         : `${current.format(format)}`;
 
@@ -87,13 +87,13 @@ export function getGraphConfig(
   containerWidth: number
 ) {
   const config = viewConfig[view];
-  const dateData = data.filter(x => x.startDate);
+  const dateData = data.filter((x) => x.startDate);
 
-  const startDates = dateData.map(item => moment(item.startDate));
-  const endDates = dateData.map(item =>
+  const startDates = dateData.map((item) => moment(item.startDate));
+  const endDates = dateData.map((item) =>
     item.endDate
       ? moment(item.endDate)
-      : moment(item.startDate).add(Number(item.duration || 0), 'h')
+      : moment(item.startDate).add(Number(item.duration || 0), "h")
   );
 
   const minDate = moment.min(startDates);
@@ -217,7 +217,7 @@ export function getGraphEdges(
         function prepareEdge(item: TYPES.Record): TYPES.GanttEdge {
           const targetItem = { x, y, height, width };
           const sourceItem =
-            computedData.find(e => e.record.id === item.id) || targetItem;
+            computedData.find((e) => e.record.id === item.id) || targetItem;
 
           const sx =
             sourceItem.x + (start === CONNECT_START ? 0 : sourceItem.width);
@@ -245,7 +245,7 @@ export function getGraphEdges(
           };
         }
         edges.push(
-          ...(list || []).map(prepareEdge).filter(item => Boolean(item))
+          ...(list || []).map(prepareEdge).filter((item) => Boolean(item))
         );
       }
 
@@ -271,71 +271,71 @@ export function getHeader(
   switch (type) {
     case GANTT_TYPES.WEEK: {
       const dayList = getMomentList(
-        'day',
-        'ddd DD',
+        "day",
+        "ddd DD",
         startDate,
         endDate,
         hourSize
       );
       const weekList = getMomentList(
-        'week',
+        "week",
         (current, start, end) =>
-          `${current.format('W')}(${start.format('DD/MM/YYYY')} - ${end.format(
-            'DD/MM/YYYY'
+          `${current.format("W")}(${start.format("DD/MM/YYYY")} - ${end.format(
+            "DD/MM/YYYY"
           )})`,
         startDate,
         endDate,
         hourSize,
-        'day',
-        'isoWeek'
+        "day",
+        "isoWeek"
       );
       return [weekList, dayList];
     }
     case GANTT_TYPES.DAY: {
       const hoursList = getMomentList(
-        'hour',
-        'HH:00',
+        "hour",
+        "HH:00",
         startDate,
         endDate,
         hourSize
       );
       const dayList = getMomentList(
-        'day',
-        'DD/MM/YYYY',
+        "day",
+        "DD/MM/YYYY",
         startDate,
         endDate,
         hourSize,
-        'hour'
+        "hour"
       );
       return [dayList, hoursList];
     }
     case GANTT_TYPES.MONTH: {
-      const weekList = getMomentList('week', 'W', startDate, endDate, hourSize);
+      const weekList = getMomentList("week", "W", startDate, endDate, hourSize);
       const monthList = getMomentList(
-        'month',
-        'MMMM, YYYY',
+        "month",
+        "MMMM, YYYY",
         startDate,
         endDate,
         hourSize,
-        'day'
+        "day"
       );
       return [monthList, weekList];
     }
     case GANTT_TYPES.YEAR: {
       const monthList = getMomentList(
-        'month',
-        'MMM',
+        "month",
+        "MMM",
         startDate,
         endDate,
         hourSize
       );
       const yearList = getMomentList(
-        'year',
-        'YYYY',
+        "year",
+        "YYYY",
         startDate,
         endDate,
         hourSize,
-        'day'
+        "day"
       );
       return [yearList, monthList];
     }

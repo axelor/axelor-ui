@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export type PoppupTriggerProps = {
-  trigger: 'click' | 'hover' | 'focus';
+  trigger: "click" | "hover" | "focus";
   interactive?: boolean;
   delay?: { open?: number; close?: number };
 };
@@ -13,7 +13,7 @@ const defaultDelay = {
 };
 
 export function usePopperTrigger({
-  trigger = 'click',
+  trigger = "click",
   interactive,
   delay,
 }: PoppupTriggerProps) {
@@ -43,7 +43,7 @@ export function usePopperTrigger({
   }, [setOpen, hideDelay]);
 
   const togglePopper = useCallback(() => {
-    setOpen(state => !state);
+    setOpen((state) => !state);
   }, [setOpen]);
 
   const onContentEnter = useCallback(() => {
@@ -63,46 +63,46 @@ export function usePopperTrigger({
 
   // handle click trigger
   useEffect(() => {
-    if (targetEl && (trigger === 'click' || interactive)) {
-      targetEl.addEventListener('click', togglePopper);
+    if (targetEl && (trigger === "click" || interactive)) {
+      targetEl.addEventListener("click", togglePopper);
       return () => {
-        targetEl.addEventListener('click', togglePopper);
+        targetEl.addEventListener("click", togglePopper);
       };
     }
   }, [trigger, interactive, targetEl, togglePopper]);
 
   // handle hover trigger
   useEffect(() => {
-    if (targetEl && trigger === 'hover') {
-      targetEl.addEventListener('mouseenter', showPopper);
-      targetEl.addEventListener('mouseleave', hidePopper);
+    if (targetEl && trigger === "hover") {
+      targetEl.addEventListener("mouseenter", showPopper);
+      targetEl.addEventListener("mouseleave", hidePopper);
       return () => {
-        targetEl.removeEventListener('mouseenter', showPopper);
-        targetEl.removeEventListener('mouseleave', hidePopper);
+        targetEl.removeEventListener("mouseenter", showPopper);
+        targetEl.removeEventListener("mouseleave", hidePopper);
       };
     }
   }, [trigger, targetEl, showPopper, hidePopper]);
 
   // handle focus trigger
   useEffect(() => {
-    if (targetEl && trigger === 'focus') {
-      targetEl.addEventListener('focus', showPopper);
-      targetEl.addEventListener('blur', hidePopper);
+    if (targetEl && trigger === "focus") {
+      targetEl.addEventListener("focus", showPopper);
+      targetEl.addEventListener("blur", hidePopper);
       return () => {
-        targetEl.removeEventListener('focus', showPopper);
-        targetEl.removeEventListener('blur', hidePopper);
+        targetEl.removeEventListener("focus", showPopper);
+        targetEl.removeEventListener("blur", hidePopper);
       };
     }
   }, [trigger, targetEl, showPopper, hidePopper]);
 
   // handle interactive options
   useEffect(() => {
-    if (interactive && contentEl && trigger !== 'click') {
-      contentEl.addEventListener('mouseenter', onContentEnter);
-      contentEl.addEventListener('mouseleave', onContentLeave);
+    if (interactive && contentEl && trigger !== "click") {
+      contentEl.addEventListener("mouseenter", onContentEnter);
+      contentEl.addEventListener("mouseleave", onContentLeave);
       return () => {
-        contentEl.removeEventListener('mouseenter', onContentEnter);
-        contentEl.removeEventListener('mouseleave', onContentLeave);
+        contentEl.removeEventListener("mouseenter", onContentEnter);
+        contentEl.removeEventListener("mouseleave", onContentLeave);
       };
     }
   }, [trigger, interactive, contentEl, onContentEnter, onContentLeave]);

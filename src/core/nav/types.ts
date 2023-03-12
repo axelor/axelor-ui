@@ -1,4 +1,4 @@
-import { IconProps } from '../icon';
+import { IconProps } from "../icon";
 
 export interface NavItemProps {
   id: string;

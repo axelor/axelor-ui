@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
 export type Record = {
   id: number;
 };
-export type GanttType = 'year' | 'month' | 'week' | 'day';
+export type GanttType = "year" | "month" | "week" | "day";
 export type GanttField = {
   name: string;
   title?: string;
@@ -40,7 +40,7 @@ export type GanttRecord = {
   _children?: number[];
 };
 
-export type GanttEdgeType = 'start' | 'finish';
+export type GanttEdgeType = "start" | "finish";
 export type GanttPoint = {
   x: number;
   y: number;

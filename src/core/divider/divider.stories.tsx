@@ -1,9 +1,9 @@
-import { Box } from '../box';
-import { Divider } from './divider';
+import { Box } from "../box";
+import { Divider } from "./divider";
 
 const config = {
   component: Divider,
-  title: 'Components/Divider',
+  title: "Components/Divider",
 };
 
 export const Basic = () => {
@@ -19,7 +19,7 @@ export const Basic = () => {
 export const Vertical = () => {
   return (
     <div>
-      <Box d={'flex'} p={5} style={{ height: 200 }}>
+      <Box d={"flex"} p={5} style={{ height: 200 }}>
         <Box border p={4} bgColor="light" />
         <Divider vertical />
         <Box border p={4} bgColor="light" />

@@ -23,7 +23,7 @@ $iconSpacing: $spacing;
     }
   }
 
-  [dir='rtl'] .icons-#{$i} {
+  [dir="rtl"] .icons-#{$i} {
     input {
       padding-left: (($size + ($iconSpacing * 2)) * $i);
     }

@@ -1,21 +1,21 @@
 /**
  * @title Custom Renderer
  */
-import { Box } from '../../core';
-import { Grid } from '../grid';
-import { columns, records } from './demo-data';
-import useGridState from './useGridState';
+import { Box } from "../../core";
+import { Grid } from "../grid";
+import { columns, records } from "./demo-data";
+import useGridState from "./useGridState";
 
 function CustomRowRenderer({ className, children }: any) {
   return (
     <div
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        border: '1px solid',
+        display: "flex",
+        flexDirection: "column",
+        border: "1px solid",
         padding: 4,
         margin: 4,
-        float: 'left',
+        float: "left",
         width: 240,
       }}
       {...{ className, children }}
@@ -31,7 +31,7 @@ function CustomCellRenderer({ className, style, data, children }: any) {
         ...style,
         minWidth: null,
         width: null,
-        border: 'none',
+        border: "none",
       }}
     >
       {data.title} : {children}

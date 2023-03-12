@@ -1,24 +1,24 @@
-import React, { ReactElement, useState } from 'react';
-import { ReactComponent as BiArchive } from 'bootstrap-icons/icons/archive.svg';
-import { ReactComponent as BiCardImage } from 'bootstrap-icons/icons/card-image.svg';
-import { ReactComponent as BiBank } from 'bootstrap-icons/icons/bank.svg';
-import { ReactComponent as BiChevronUp } from 'bootstrap-icons/icons/chevron-up.svg';
-import { ReactComponent as BiChevronDown } from 'bootstrap-icons/icons/chevron-down.svg';
-import { ReactComponent as BiSendFill } from 'bootstrap-icons/icons/send-fill.svg';
-import { ReactComponent as BiMailBox } from 'bootstrap-icons/icons/mailbox.svg';
-import { ReactComponent as BiInboxFill } from 'bootstrap-icons/icons/inbox-fill.svg';
-import { ReactComponent as BiSendCheckFill } from 'bootstrap-icons/icons/send-check-fill.svg';
+import React, { ReactElement, useState } from "react";
+import { ReactComponent as BiArchive } from "bootstrap-icons/icons/archive.svg";
+import { ReactComponent as BiCardImage } from "bootstrap-icons/icons/card-image.svg";
+import { ReactComponent as BiBank } from "bootstrap-icons/icons/bank.svg";
+import { ReactComponent as BiChevronUp } from "bootstrap-icons/icons/chevron-up.svg";
+import { ReactComponent as BiChevronDown } from "bootstrap-icons/icons/chevron-down.svg";
+import { ReactComponent as BiSendFill } from "bootstrap-icons/icons/send-fill.svg";
+import { ReactComponent as BiMailBox } from "bootstrap-icons/icons/mailbox.svg";
+import { ReactComponent as BiInboxFill } from "bootstrap-icons/icons/inbox-fill.svg";
+import { ReactComponent as BiSendCheckFill } from "bootstrap-icons/icons/send-check-fill.svg";
 
-import { Collapse } from '../collapse';
-import { Box } from '../box';
-import { Icon } from '../icon';
-import { List, ListItem } from './list';
-import { IconProps } from '../icon/icon';
-import { withStyled } from '../styled';
+import { Collapse } from "../collapse";
+import { Box } from "../box";
+import { Icon } from "../icon";
+import { List, ListItem } from "./list";
+import { IconProps } from "../icon/icon";
+import { withStyled } from "../styled";
 
 const config = {
   component: List,
-  title: 'Components/List',
+  title: "Components/List",
 };
 
 export const Active = () => {
@@ -156,7 +156,7 @@ export const Numbered = () => {
   );
 };
 
-function ListItemIcon({ icon }: { icon: IconProps['as'] }) {
+function ListItemIcon({ icon }: { icon: IconProps["as"] }) {
   return (
     <Box as="span" me={2}>
       <Icon as={icon} />
@@ -177,7 +177,7 @@ const NestedList = withStyled(List)(({ children, ...props }, ref) => {
 
   return (
     <List ref={ref} style={{ paddingLeft: 16 }} {...props}>
-      {React.Children.map(children, item => {
+      {React.Children.map(children, (item) => {
         if (item && (item as ReactElement).type === NestedListItem) {
           return React.cloneElement(item as ReactElement, {
             isOpen: activeMenuItem === (item as ReactElement).props.title,
@@ -201,7 +201,7 @@ function NestedListItem({
 }: {
   children: React.ReactNode;
   title: string;
-  icon?: IconProps['as'];
+  icon?: IconProps["as"];
   isOpen?: boolean;
   onOpen?: (title: string) => void;
   onClose?: () => void;
@@ -219,7 +219,7 @@ function NestedListItem({
       <Box
         d="flex"
         justifyContent="space-between"
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: "pointer" }}
         onClick={toggle}
       >
         <Box>

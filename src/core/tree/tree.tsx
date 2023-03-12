@@ -1,10 +1,10 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from "react";
 
-import { TreeHeaderColumn } from './tree-column';
-import { TreeNode } from './tree-node';
-import { useClassNames } from '../styles';
-import * as TYPES from './types';
-import styles from './tree.module.css';
+import { TreeHeaderColumn } from "./tree-column";
+import { TreeNode } from "./tree-node";
+import { useClassNames } from "../styles";
+import * as TYPES from "./types";
+import styles from "./tree.module.css";
 
 function toNode(record: any): TYPES.TreeNode {
   return {
@@ -74,7 +74,7 @@ export function Tree(props: TYPES.TreeProps) {
   );
 
   const selectRow = useCallback((index: number) => {
-    setData(data =>
+    setData((data) =>
       data.map((row, i) => {
         if (i === index) {
           return { ...row, selected: true };
@@ -86,18 +86,18 @@ export function Tree(props: TYPES.TreeProps) {
 
   const handleSort = useCallback(
     (e: React.MouseEvent<HTMLDivElement>, column: TYPES.TreeColumn) => {
-      setSortColumns(sortColumns => {
+      setSortColumns((sortColumns) => {
         if (!sortColumns) {
           sortColumns = [];
         }
-        const exist = sortColumns.find(c => c.name === column.name);
+        const exist = sortColumns.find((c) => c.name === column.name);
         if (exist) {
           if (!e.shiftKey) {
             sortColumns = [exist];
           }
-          return sortColumns.map(col => {
+          return sortColumns.map((col) => {
             if (col.name === column.name) {
-              return { ...col, order: col.order === 'asc' ? 'desc' : 'asc' };
+              return { ...col, order: col.order === "asc" ? "desc" : "asc" };
             }
             return col;
           });
@@ -106,7 +106,7 @@ export function Tree(props: TYPES.TreeProps) {
           ...(e.shiftKey ? sortColumns : []),
           {
             name: column.name,
-            order: 'asc',
+            order: "asc",
           },
         ];
       });
@@ -122,7 +122,7 @@ export function Tree(props: TYPES.TreeProps) {
         setLoading(true);
         try {
           const children = await onLoad(record, sortColumns || []);
-          setData(data => {
+          setData((data) => {
             data.splice(
               index + 1,
               0,
@@ -137,10 +137,10 @@ export function Tree(props: TYPES.TreeProps) {
           setLoading(false);
         }
       }
-      const updateKey = isHover ? 'hover' : 'selected';
-      setData(data =>
+      const updateKey = isHover ? "hover" : "selected";
+      setData((data) =>
         data
-          .map(row => (row[updateKey] ? { ...row, [updateKey]: false } : row))
+          .map((row) => (row[updateKey] ? { ...row, [updateKey]: false } : row))
           .map((row, i) =>
             i === index
               ? {
@@ -186,14 +186,14 @@ export function Tree(props: TYPES.TreeProps) {
             hoverParent as TYPES.TreeNode
           );
         }
-        setData(data => {
+        setData((data) => {
           const dragIndex = data.findIndex(
-            item => item.$key === dragItem?.$key
+            (item) => item.$key === dragItem?.$key
           );
           data.splice(dragIndex, 1);
 
           let hoverIndex = data.findIndex(
-            item => item.$key === hoverItem?.$key
+            (item) => item.$key === hoverItem?.$key
           );
           data.splice(hoverIndex + 1, 0, {
             ...updatedNode,
@@ -206,13 +206,13 @@ export function Tree(props: TYPES.TreeProps) {
           const childrenList = getChildrenList(data, dragItem.$key);
           if (childrenList.length > 0) {
             childrenList.forEach(($id: number) => {
-              const dragIndex = data.findIndex(item => item.$key === $id);
+              const dragIndex = data.findIndex((item) => item.$key === $id);
               if (dragIndex > -1) {
                 nextDragItem = data[dragIndex];
                 data.splice(dragIndex, 1);
               }
               const hoverIndex = data.findIndex(
-                item => item.$key === nextHoverItem.$key
+                (item) => item.$key === nextHoverItem.$key
               );
               if (hoverIndex > -1) {
                 data.splice(hoverIndex + 1, 0, nextDragItem);
@@ -240,7 +240,7 @@ export function Tree(props: TYPES.TreeProps) {
         record.data = await onNodeSave(record.data);
       }
       setEditNode(null);
-      setData(data => {
+      setData((data) => {
         return data.map((rec, ind) => (ind === index ? record : rec));
       });
     },
@@ -256,21 +256,21 @@ export function Tree(props: TYPES.TreeProps) {
   );
 
   const handleNavigation = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    let currentIndex: number = data.findIndex(row => row.selected);
+    let currentIndex: number = data.findIndex((row) => row.selected);
     let activeIndex = currentIndex;
 
     if (activeIndex > -1) {
       switch (e.key) {
-        case 'Enter':
+        case "Enter":
           return handleSelect({}, data[activeIndex], activeIndex);
-        case 'ArrowUp':
+        case "ArrowUp":
           for (let i = 0; i < data.length; i++) {
             if (i < currentIndex && !data[i].hidden) {
               activeIndex = i;
             }
           }
           break;
-        case 'ArrowDown':
+        case "ArrowDown":
           for (let i = 0; i < data.length; i++) {
             if (i > currentIndex && !data[i].hidden) {
               activeIndex = i;
@@ -291,8 +291,8 @@ export function Tree(props: TYPES.TreeProps) {
         ? [...records].sort((r1, r2) => {
             const v1 = r1[sortColumn.name];
             const v2 = r2[sortColumn.name];
-            if (v1 > v2) return sortColumn.order === 'asc' ? 1 : -1;
-            if (v1 < v2) return sortColumn.order === 'asc' ? -1 : 1;
+            if (v1 > v2) return sortColumn.order === "asc" ? 1 : -1;
+            if (v1 < v2) return sortColumn.order === "asc" ? -1 : 1;
             return 0;
           })
         : [...records]
@@ -329,7 +329,7 @@ export function Tree(props: TYPES.TreeProps) {
 
   return (
     <div
-      className={classNames('table-tree', styles.tree, {
+      className={classNames("table-tree", styles.tree, {
         [styles.loading]: loading,
       })}
       {...(editNode
@@ -340,9 +340,9 @@ export function Tree(props: TYPES.TreeProps) {
           })}
     >
       <div className={styles.header}>
-        {columns.map(column => {
+        {columns.map((column) => {
           const sortColumn = (sortColumns || []).find(
-            c => c.name === column.name
+            (c) => c.name === column.name
           );
           return (
             <TreeHeaderColumn

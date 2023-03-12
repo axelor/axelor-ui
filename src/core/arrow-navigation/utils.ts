@@ -5,13 +5,13 @@ export function ownerDocument(node: Node | null | undefined): Document {
 export function isElementDisabled(element: HTMLElement): boolean {
   return (
     // @ts-ignore
-    element.disabled || `${element.getAttribute('aria-disabled')}` === 'true'
+    element.disabled || `${element.getAttribute("aria-disabled")}` === "true"
   );
 }
 
 export function isElementHidden(element: HTMLElement): boolean {
   const style = window.getComputedStyle(element);
-  return style.display === 'none' || style.visibility === 'hidden';
+  return style.display === "none" || style.visibility === "hidden";
 }
 
 function hasFocus(element: Node) {
@@ -37,7 +37,7 @@ export function navigate(
   key: string,
   rtl?: boolean
 ) {
-  if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
+  if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(key)) {
     return null;
   }
 
@@ -70,15 +70,15 @@ export function navigate(
   const isEnd = () => col === elements[row].length - 1;
   const hasCol = () => col >= 0;
 
-  const leftKey = rtl ? 'ArrowRight' : 'ArrowLeft';
-  const rightKey = rtl ? 'ArrowLeft' : 'ArrowRight';
+  const leftKey = rtl ? "ArrowRight" : "ArrowLeft";
+  const rightKey = rtl ? "ArrowLeft" : "ArrowRight";
 
   function perform(key: string): HTMLElement {
     switch (key) {
-      case 'ArrowUp':
+      case "ArrowUp":
         prevRow();
         break;
-      case 'ArrowDown':
+      case "ArrowDown":
         nextRow();
         break;
       case leftKey:

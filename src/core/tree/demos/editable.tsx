@@ -1,17 +1,17 @@
 /**
  * @title Editable
  */
-import React from 'react';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DndProvider } from 'react-dnd';
-import { Tree } from '../tree';
-import { Input } from '../../input';
-import { useClassNames } from '../../styles';
-import records from './data';
+import React from "react";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
+import { Tree } from "../tree";
+import { Input } from "../../input";
+import { useClassNames } from "../../styles";
+import records from "./data";
 
 const columns = [
-  { name: 'title', title: 'Title', type: 'String' },
-  { name: 'progress', title: 'Progress', type: 'String' },
+  { name: "title", title: "Title", type: "String" },
+  { name: "progress", title: "Progress", type: "String" },
 ];
 
 const FormHandlers = React.createContext(React.createRef<any>());
@@ -26,7 +26,7 @@ function FormField({
   onChange,
   onCancel,
 }: any) {
-  const { name = '', type = '', options } = data || {};
+  const { name = "", type = "", options } = data || {};
   const [value, setValue] = React.useState(_value);
   const initRef = React.useRef(false);
   const classNames = useClassNames();
@@ -49,7 +49,7 @@ function FormField({
     };
     if (options) {
       return (
-        <select className={classNames('form-control')} {...props}>
+        <select className={classNames("form-control")} {...props}>
           <option value="">Select</option>
           {options.map((option: string) => (
             <option key={option} value={option}>
@@ -59,7 +59,7 @@ function FormField({
         </select>
       );
     }
-    if (type === 'String') {
+    if (type === "String") {
       return <Input type="text" {...props} />;
     }
     return null;
@@ -108,7 +108,7 @@ function Form({ node, index, columns, onSave, onCancel }: any) {
   }, [handlers, handleSave]);
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: "flex" }}>
       {columns.map((column: any, index: number) => (
         <FormField
           focus={index === 0}
@@ -126,8 +126,8 @@ function Form({ node, index, columns, onSave, onCancel }: any) {
 
 export default function Editable() {
   const onLoad = React.useCallback(async (record: any) => {
-    return new Promise(resolve => {
-      const project = records.find(p => p.id === record.id);
+    return new Promise((resolve) => {
+      const project = records.find((p) => p.id === record.id);
 
       setTimeout(() => {
         resolve(project?.tasks || []);

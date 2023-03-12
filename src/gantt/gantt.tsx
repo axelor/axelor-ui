@@ -1,15 +1,15 @@
-import React from 'react';
-import moment from 'moment';
-import { Box, useTheme, useClassNames } from '../core';
+import React from "react";
+import moment from "moment";
+import { Box, useTheme, useClassNames } from "../core";
 
-import * as TYPES from './types';
-import { GanttLine } from './gantt-line';
-import { GanttHeader } from './gantt-header';
-import { GanttBody } from './gantt-body';
-import { GanttEdge } from './gantt-edge';
-import { GanttTable } from './gantt-table';
-import { getGraphConfig, getHeader, getGraphEdges } from './utils';
-import classes from './gantt.module.scss';
+import * as TYPES from "./types";
+import { GanttLine } from "./gantt-line";
+import { GanttHeader } from "./gantt-header";
+import { GanttBody } from "./gantt-body";
+import { GanttEdge } from "./gantt-edge";
+import { GanttTable } from "./gantt-table";
+import { getGraphConfig, getHeader, getGraphEdges } from "./utils";
+import classes from "./gantt.module.scss";
 
 function GanttView(props: {
   view: TYPES.GanttType;
@@ -19,9 +19,9 @@ function GanttView(props: {
   endDate: moment.Moment;
   hourSize: number;
   cellSize: number;
-  onRecordUpdate?: TYPES.GanttProps['onRecordUpdate'];
-  onRecordConnect?: TYPES.GanttProps['onRecordConnect'];
-  onRecordDisconnect?: TYPES.GanttProps['onRecordDisconnect'];
+  onRecordUpdate?: TYPES.GanttProps["onRecordUpdate"];
+  onRecordConnect?: TYPES.GanttProps["onRecordConnect"];
+  onRecordDisconnect?: TYPES.GanttProps["onRecordDisconnect"];
 }) {
   const {
     view,
@@ -91,7 +91,7 @@ export function Gantt({
   const [activeRowIndex, setActiveRowIndex] = React.useState(-1);
 
   const { dir } = useTheme();
-  const rtl = dir === 'rtl';
+  const rtl = dir === "rtl";
   const classNames = useClassNames();
 
   const config = React.useMemo(
@@ -122,7 +122,7 @@ export function Gantt({
   return (
     <Box
       d="flex"
-      className={classNames('gantt', classes.root, {
+      className={classNames("gantt", classes.root, {
         [classes.rtl]: rtl,
       })}
     >

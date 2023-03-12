@@ -1,5 +1,5 @@
-import { TVariant } from '../theme';
-import { Config } from '../types';
+import { TVariant } from "../theme";
+import { Config } from "../types";
 
 export interface BorderProps {
   border?: boolean;
@@ -9,7 +9,7 @@ export interface BorderProps {
   borderEnd?: boolean;
   borderWidth?: 0 | 1 | 2 | 3 | 4 | 5;
   borderColor?: TVariant;
-  rounded?: boolean | 0 | 1 | 2 | 3 | 'circle' | 'pill';
+  rounded?: boolean | 0 | 1 | 2 | 3 | "circle" | "pill";
   roundedTop?: boolean;
   roundedBottom?: boolean;
   roundedStart?: boolean;
@@ -33,16 +33,16 @@ const roundedSide = (name: string) => (value: any) => {
 };
 
 export const BorderConfig: Config<BorderProps> = {
-  border: border('border'),
-  borderTop: border('border-top'),
-  borderBottom: border('border-bottom'),
-  borderStart: border('border-start'),
-  borderEnd: border('border-end'),
-  borderWidth: border('border'),
-  borderColor: border('border'),
+  border: border("border"),
+  borderTop: border("border-top"),
+  borderBottom: border("border-bottom"),
+  borderStart: border("border-start"),
+  borderEnd: border("border-end"),
+  borderWidth: border("border"),
+  borderColor: border("border"),
   rounded: rounded(),
-  roundedTop: roundedSide('rounded-top'),
-  roundedBottom: roundedSide('rounded-bottom'),
-  roundedStart: roundedSide('rounded-start'),
-  roundedEnd: roundedSide('rounded-end'),
+  roundedTop: roundedSide("rounded-top"),
+  roundedBottom: roundedSide("rounded-bottom"),
+  roundedStart: roundedSide("rounded-start"),
+  roundedEnd: roundedSide("rounded-end"),
 };

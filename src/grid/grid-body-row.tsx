@@ -1,12 +1,12 @@
-import React from 'react';
-import { Input } from '../core';
-import { useClassNames } from '../core';
+import React from "react";
+import { Input } from "../core";
+import { useClassNames } from "../core";
 
-import { GridColumn } from './grid-column';
-import { isRowCheck } from './utils';
-import * as TYPES from './types';
-import styles from './grid.module.scss';
-import { GridDNDRow } from './grid-dnd-row';
+import { GridColumn } from "./grid-column";
+import { isRowCheck } from "./utils";
+import * as TYPES from "./types";
+import styles from "./grid.module.scss";
+import { GridDNDRow } from "./grid-dnd-row";
 
 export const GridBodyRow = React.memo(function GridBodyRow(
   props: TYPES.GridRowProps
@@ -52,7 +52,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
     if (isRowCheck(column)) {
       return (
         <Input
-          type={selectionType === 'single' ? 'radio' : 'checkbox'}
+          type={selectionType === "single" ? "radio" : "checkbox"}
           checked={selected}
           onChange={() => {}}
         />
@@ -64,7 +64,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
       : value;
   }
 
-  const RowComponent = renderer || 'div';
+  const RowComponent = renderer || "div";
   const rendererProps = renderer ? props : {};
   const classNames = useClassNames();
   const DragComponent: any = draggable ? GridDNDRow : React.Fragment;
@@ -76,7 +76,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         className={classNames(styles.row, className, {
           [styles.selected]: selected,
         })}
-        onDoubleClick={e => onDoubleClick && onDoubleClick(e, data, rowIndex)}
+        onDoubleClick={(e) => onDoubleClick && onDoubleClick(e, data, rowIndex)}
       >
         {columns.map((column, index) => (
           <GridColumn

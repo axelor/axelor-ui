@@ -1,13 +1,13 @@
-import * as React from 'react';
-import { TransitionStatus } from 'react-transition-group';
+import * as React from "react";
+import { TransitionStatus } from "react-transition-group";
 
 export const reflow = (node: Element) => node.scrollTop;
 
 export const easings = {
-  easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
-  easeOut: 'cubic-bezier(0.0, 0, 0.2, 1)',
-  easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
-  sharp: 'cubic-bezier(0.4, 0, 0.6, 1)',
+  easeInOut: "cubic-bezier(0.4, 0, 0.2, 1)",
+  easeOut: "cubic-bezier(0.0, 0, 0.2, 1)",
+  easeIn: "cubic-bezier(0.4, 0, 1, 1)",
+  sharp: "cubic-bezier(0.4, 0, 0.6, 1)",
 } as const;
 
 export const durations = {
@@ -28,7 +28,7 @@ export const getTransitionStyle = (
 });
 
 const getOptionValue = (value: any, mode: string, defaultValue?: any) =>
-  (typeof value === 'object' ? value[mode] : value) || defaultValue;
+  (typeof value === "object" ? value[mode] : value) || defaultValue;
 
 const getStyleValue = (value: string | undefined) => {
   if (value === undefined || value === null || value.length === 0) return null;
@@ -36,7 +36,7 @@ const getStyleValue = (value: string | undefined) => {
 };
 
 export const getTransitionProps = (
-  mode: 'enter' | 'exit',
+  mode: "enter" | "exit",
   options: {
     easing?: string | { enter?: string; exit?: string };
     timeout: number | { enter?: number; exit?: number };
@@ -56,7 +56,7 @@ export const getTransitionProps = (
 };
 
 const formatMs = (value: string | number) => {
-  if (typeof value === 'number') {
+  if (typeof value === "number") {
     return `${Math.round(value)}ms`;
   }
   return value;
@@ -64,9 +64,9 @@ const formatMs = (value: string | number) => {
 
 export const getTransition = (
   props:
-    | 'all'
+    | "all"
     | keyof React.CSSProperties
-    | [keyof React.CSSProperties] = 'all',
+    | [keyof React.CSSProperties] = "all",
   options: {
     easing?: string;
     duration?: string | number;
@@ -80,6 +80,6 @@ export const getTransition = (
   } = options;
   return [props]
     .flat()
-    .map(prop => `${prop} ${formatMs(duration)} ${easing} ${formatMs(delay)}`)
-    .join(',');
+    .map((prop) => `${prop} ${formatMs(duration)} ${easing} ${formatMs(delay)}`)
+    .join(",");
 };

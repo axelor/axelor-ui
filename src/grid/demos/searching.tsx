@@ -1,14 +1,14 @@
 /**
  * @title Searching
  */
-import React from 'react';
-import { Box, Input } from '../../core';
-import { Grid } from '../grid';
-import { GridProvider } from '../grid-provider';
-import { GridColumn } from '../types';
-import { isRowCheck } from '../utils';
-import { columns, records as records_data } from './demo-data';
-import useGridState from './useGridState';
+import React from "react";
+import { Box, Input } from "../../core";
+import { Grid } from "../grid";
+import { GridProvider } from "../grid-provider";
+import { GridColumn } from "../types";
+import { isRowCheck } from "../utils";
+import { columns, records as records_data } from "./demo-data";
+import useGridState from "./useGridState";
 
 const SearchContext = React.createContext({});
 
@@ -40,7 +40,7 @@ export default function Searching() {
       if (value) {
         setRecords(
           records_data.filter((record: any) =>
-            ((record[column.name] as string) || '')
+            ((record[column.name] as string) || "")
               .toString()
               .toLowerCase()
               .includes(`${value}`.toLowerCase())

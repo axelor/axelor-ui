@@ -1,18 +1,18 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { Box } from '../box';
-import { Button } from '../button';
-import { Collapse } from './collapse';
+import { Box } from "../box";
+import { Button } from "../button";
+import { Collapse } from "./collapse";
 
 const config = {
   component: Collapse,
-  title: 'Animation/Collapse',
+  title: "Animation/Collapse",
 };
 
 export const Basic = function () {
   const [show, setShow] = useState(false);
   const toggle = function () {
-    setShow(prev => !prev);
+    setShow((prev) => !prev);
   };
 
   return (
@@ -35,7 +35,7 @@ export const Basic = function () {
 export const Horizontal = function () {
   const [show, setShow] = useState(false);
   const toggle = function () {
-    setShow(prev => !prev);
+    setShow((prev) => !prev);
   };
 
   return (

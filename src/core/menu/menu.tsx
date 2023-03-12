@@ -1,15 +1,15 @@
-import { ArrowNavigation } from '../arrow-navigation';
+import { ArrowNavigation } from "../arrow-navigation";
 
-import { ClickAwayListener } from '../click-away-listener';
-import { FocusTrap } from '../focus-trap';
-import { Popper, PopperProps } from '../popper/popper';
-import styled, { withStyled } from '../styled';
-import styles from './menu.module.css';
+import { ClickAwayListener } from "../click-away-listener";
+import { FocusTrap } from "../focus-trap";
+import { Popper, PopperProps } from "../popper/popper";
+import styled, { withStyled } from "../styled";
+import styles from "./menu.module.css";
 
 export interface MenuProps
   extends Pick<
     PopperProps,
-    'placement' | 'container' | 'offset' | 'arrow' | 'transition'
+    "placement" | "container" | "offset" | "arrow" | "transition"
   > {
   target?: HTMLElement | null;
   flip?: boolean;
@@ -21,7 +21,7 @@ export interface MenuProps
 
 const MenuContent = styled.div<MenuProps>(({ show, placement }) => [
   styles.dropdownMenu,
-  'dropdown-menu',
+  "dropdown-menu",
   {
     show,
     [`dropdown-menu-${placement}`]: placement,
@@ -36,7 +36,7 @@ export const Menu = withStyled(MenuContent)(
       onHide,
       container = document.body,
       target,
-      placement = 'bottom-start',
+      placement = "bottom-start",
       disablePortal,
       offset,
       navigation,

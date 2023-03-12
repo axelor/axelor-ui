@@ -1,18 +1,18 @@
-import React from 'react';
-import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-down-fill.svg';
+import React from "react";
+import { ReactComponent as BiCaretDownFill } from "bootstrap-icons/icons/caret-down-fill.svg";
 
-import { Box } from '../box/box';
-import { Icon } from '../icon';
+import { Box } from "../box/box";
+import { Icon } from "../icon";
 import {
   OverflowList,
   OverflowListButtonType,
   OverflowListItemProps,
-} from '../overflow-list';
-import { MenuItem } from '../menu/menu-item';
-import { MenuProps } from '../menu/menu';
-import { useClassNames, useTheme } from '../styles';
-import { withStyled } from '../styled';
-import classes from './nav-select.module.scss';
+} from "../overflow-list";
+import { MenuItem } from "../menu/menu-item";
+import { MenuProps } from "../menu/menu";
+import { useClassNames, useTheme } from "../styles";
+import { withStyled } from "../styled";
+import classes from "./nav-select.module.scss";
 
 export interface TNavSelectItem {
   title: string;
@@ -38,7 +38,7 @@ export interface NavSelectItemProps {
 const NavSelectItem = withStyled(Box)<NavSelectItemProps>((props, ref) => {
   const { active, className, children, ...rest } = props;
   const classNames = useClassNames();
-  const { dir = '' } = useTheme();
+  const { dir = "" } = useTheme();
   return (
     <Box
       ref={ref}
@@ -71,7 +71,7 @@ export function NavSelect({
   const selectedHidden =
     selected &&
     offset >= 0 &&
-    items.slice(offset).find(item => item.value === selected.value);
+    items.slice(offset).find((item) => item.value === selected.value);
 
   React.useEffect(() => {
     const ref = overflowDropdown.current;
@@ -81,11 +81,11 @@ export function NavSelect({
   }, [selectedHidden]);
 
   const classNames = useClassNames();
-  const rtl = useTheme().dir === 'rtl';
+  const rtl = useTheme().dir === "rtl";
 
   return (
     <Box
-      className={classNames('nav-select', classes.root, {
+      className={classNames("nav-select", classes.root, {
         [classes.rtl]: rtl,
       })}
     >
@@ -139,7 +139,7 @@ export function NavSelect({
           });
         }}
         renderButton={(type: OverflowListButtonType, props: any) => {
-          if (type === 'dropdown') {
+          if (type === "dropdown") {
             const selectedInDropdown = offset < items.length && selectedHidden;
             return (
               <NavSelectItem

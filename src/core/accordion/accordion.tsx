@@ -1,20 +1,20 @@
-import React, { forwardRef, useCallback, useState } from 'react';
-import { Collapse } from '../collapse';
-import styled, { withStyled } from '../styled';
-import { useClassNames } from '../styles';
+import React, { forwardRef, useCallback, useState } from "react";
+import { Collapse } from "../collapse";
+import styled, { withStyled } from "../styled";
+import { useClassNames } from "../styles";
 
 export interface AccordionHeaderProps {
   collapsed?: boolean;
 }
 
 const AccordionHeaderButton = styled.button<AccordionHeaderProps>(
-  ({ collapsed }) => ['accordion-button', { collapsed }]
+  ({ collapsed }) => ["accordion-button", { collapsed }]
 );
 
 export const AccordionHeader = withStyled(AccordionHeaderButton)(
   (props, ref) => {
     const classNames = useClassNames();
-    const className = classNames('accordion-header');
+    const className = classNames("accordion-header");
     return (
       <h2 className={className}>
         <AccordionHeaderButton ref={ref} type="button" {...props} />
@@ -31,26 +31,26 @@ export interface AccordionItemProps {
 }
 
 export const AccordionItem = styled.div<AccordionItemProps>(() => [
-  'accordion-item',
+  "accordion-item",
 ]);
 
 export interface AccordionBodyProps {}
 
 const AccordionCollapse = styled(Collapse)<AccordionBodyProps>(() => [
-  'accordion-collapse',
+  "accordion-collapse",
 ]);
 
 export const AccordionBody = withStyled(AccordionCollapse)(
   ({ children, ...rest }, ref) => {
     const classNames = useClassNames();
-    const className = classNames('accordion-body');
+    const className = classNames("accordion-body");
     return (
       <AccordionCollapse ref={ref} {...rest}>
-        {state => {
+        {(state) => {
           return (
             <div className={className}>
-              {typeof children === 'function' && children(state)}
-              {typeof children !== 'function' && children}
+              {typeof children === "function" && children(state)}
+              {typeof children !== "function" && children}
             </div>
           );
         }}
@@ -82,9 +82,9 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
     );
     const classNames = useClassNames();
     const classes = classNames([
-      'accordion',
+      "accordion",
       {
-        'accordion-flush': flush,
+        "accordion-flush": flush,
       },
       className,
     ]);
@@ -92,7 +92,7 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
     const handleHeaderOnClick = useCallback(
       (
         event: React.MouseEvent<any>,
-        eventKey: AccordionItemProps['eventKey']
+        eventKey: AccordionItemProps["eventKey"]
       ) => {
         setActive((active: any) => {
           if (alwaysOpen) {
@@ -115,7 +115,7 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
       const { eventKey, children: itemChildren } = child.props;
 
       return React.cloneElement(child, {
-        children: React.Children.map(itemChildren, nestedchild => {
+        children: React.Children.map(itemChildren, (nestedchild) => {
           const { type } = nestedchild;
 
           const isActive = alwaysOpen

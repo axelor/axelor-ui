@@ -1,26 +1,26 @@
-import { useState } from 'react';
-import * as React from 'react';
+import { useState } from "react";
+import * as React from "react";
 
-import { Box } from '../box';
-import { Button } from '../button';
-import { ClickAwayListener } from '../click-away-listener';
-import { Grow } from '../grow';
-import { Input } from '../input';
-import { InputLabel } from '../input-label';
-import { useClassNames } from '../styles';
-import { Popper } from './popper';
-import { usePopperTrigger } from './use-popper-trigger';
+import { Box } from "../box";
+import { Button } from "../button";
+import { ClickAwayListener } from "../click-away-listener";
+import { Grow } from "../grow";
+import { Input } from "../input";
+import { InputLabel } from "../input-label";
+import { useClassNames } from "../styles";
+import { Popper } from "./popper";
+import { usePopperTrigger } from "./use-popper-trigger";
 
 const config = {
   component: Popper,
-  title: 'Core/Popper',
+  title: "Core/Popper",
 };
 
 export const Basic = () => {
   const [open, setOpen] = useState(false);
   const [targetEl, setTargetEl] = useState<HTMLButtonElement | null>(null);
 
-  const toggle = () => setOpen(v => !v);
+  const toggle = () => setOpen((v) => !v);
 
   return (
     <Box m={5} p={5}>
@@ -38,7 +38,7 @@ export const Dropdown = () => {
   const [open, setOpen] = useState(false);
   const [targetEl, setTargetEl] = useState<HTMLButtonElement | null>(null);
   const classNames = useClassNames();
-  const toggle = () => setOpen(v => !v);
+  const toggle = () => setOpen((v) => !v);
 
   return (
     <Box m={5} p={5}>
@@ -48,21 +48,21 @@ export const Dropdown = () => {
       <Popper open={open} target={targetEl} offset={[0, 4]} arrow>
         <ul
           className={classNames(
-            'dropdown-menu show border-0 rounded-0 position-static bg-transparent'
+            "dropdown-menu show border-0 rounded-0 position-static bg-transparent"
           )}
         >
           <li>
-            <a href="#" className={classNames('dropdown-item')}>
+            <a href="#" className={classNames("dropdown-item")}>
               Item 1
             </a>
           </li>
           <li>
-            <a href="#" className={classNames('dropdown-item')}>
+            <a href="#" className={classNames("dropdown-item")}>
               Item 2
             </a>
           </li>
           <li>
-            <a href="#" className={classNames('dropdown-item')}>
+            <a href="#" className={classNames("dropdown-item")}>
               Item 3
             </a>
           </li>
@@ -113,8 +113,8 @@ export const Hook = () => {
           <Input
             type="checkbox"
             checked={interactive}
-            onClick={() => setInteractive(checked => !checked)}
-          />{' '}
+            onClick={() => setInteractive((checked) => !checked)}
+          />{" "}
           Interactive
         </InputLabel>
       </Box>
@@ -141,10 +141,10 @@ export const Placement = () => {
   const [placement, setPlacement] = useState<any>();
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const newPlacement = e.currentTarget?.textContent || 'bottom';
+    const newPlacement = e.currentTarget?.textContent || "bottom";
     setTargetEl(e.currentTarget);
     setPlacement(newPlacement);
-    setOpen(prev => placement !== newPlacement || !prev);
+    setOpen((prev) => placement !== newPlacement || !prev);
   };
 
   return (
@@ -170,7 +170,7 @@ export const Placement = () => {
           d="flex"
           flexDirection="column"
           alignItems="start"
-          style={{ width: '50%' }}
+          style={{ width: "50%" }}
         >
           <MyButton onClick={handleClick}>start-top</MyButton>
           <MyButton onClick={handleClick}>start</MyButton>
@@ -180,7 +180,7 @@ export const Placement = () => {
           d="flex"
           flexDirection="column"
           alignItems="end"
-          style={{ width: '50%' }}
+          style={{ width: "50%" }}
         >
           <MyButton onClick={handleClick}>end-top</MyButton>
           <MyButton onClick={handleClick}>end</MyButton>
@@ -200,7 +200,7 @@ export const Transition = () => {
   const [open, setOpen] = useState(false);
   const [targetEl, setTargetEl] = useState<HTMLButtonElement | null>(null);
 
-  const toggle = () => setOpen(v => !v);
+  const toggle = () => setOpen((v) => !v);
 
   return (
     <Box m={5} p={5}>

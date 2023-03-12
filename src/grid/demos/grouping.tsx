@@ -1,15 +1,15 @@
 /**
  * @title Grouping
  */
-import { Box } from '../../core';
-import { Grid } from '../grid';
-import { GridProvider } from '../grid-provider';
-import { columns, records } from './demo-data';
-import useGridState from './useGridState';
+import { Box } from "../../core";
+import { Grid } from "../grid";
+import { GridProvider } from "../grid-provider";
+import { columns, records } from "./demo-data";
+import useGridState from "./useGridState";
 
 export default function Grouping() {
   const [state, setState] = useGridState({
-    groupBy: [{ name: 'category' }, { name: 'color' }],
+    groupBy: [{ name: "category" }, { name: "color" }],
   });
 
   return (

@@ -1,8 +1,8 @@
-import { Box } from '../core';
-import { Draggable } from 'react-beautiful-dnd';
+import { Box } from "../core";
+import { Draggable } from "react-beautiful-dnd";
 
-import { Column, Record } from './types';
-import { DefaultRecord } from './kanban-default';
+import { Column, Record } from "./types";
+import { DefaultRecord } from "./kanban-default";
 
 export type KanbanRecordProps = {
   record: Record;

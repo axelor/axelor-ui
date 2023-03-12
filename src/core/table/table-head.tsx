@@ -1,5 +1,5 @@
-import styled from '../styled';
-import { TVariant } from '../system';
+import styled from "../styled";
+import { TVariant } from "../system";
 
 export interface TableHeadProps {
   color?: TVariant;

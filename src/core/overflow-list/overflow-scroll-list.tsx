@@ -1,24 +1,24 @@
-import * as React from 'react';
-import { ReactComponent as BiChevronLeft } from 'bootstrap-icons/icons/chevron-left.svg';
-import { ReactComponent as BiChevronRight } from 'bootstrap-icons/icons/chevron-right.svg';
+import * as React from "react";
+import { ReactComponent as BiChevronLeft } from "bootstrap-icons/icons/chevron-left.svg";
+import { ReactComponent as BiChevronRight } from "bootstrap-icons/icons/chevron-right.svg";
 
-import { Box } from '../box';
-import { Icon } from '../icon';
-import { OverflowScrollListProps } from './types';
-import styled, { withStyled } from '../styled';
-import cssStyles from './overflow-list.module.css';
-import { useTheme } from '../styles';
+import { Box } from "../box";
+import { Icon } from "../icon";
+import { OverflowScrollListProps } from "./types";
+import styled, { withStyled } from "../styled";
+import cssStyles from "./overflow-list.module.css";
+import { useTheme } from "../styles";
 
 function negative(value: string | number) {
   return -1 * Number(value);
 }
 
-function getScrollButtonIcon(type: 'right' | 'left', rtl?: boolean) {
+function getScrollButtonIcon(type: "right" | "left", rtl?: boolean) {
   switch (type) {
-    case 'right': {
+    case "right": {
       return rtl ? BiChevronLeft : BiChevronRight;
     }
-    case 'left': {
+    case "left": {
       return rtl ? BiChevronRight : BiChevronLeft;
     }
     default: {
@@ -33,12 +33,12 @@ const OverflowScrollList = withStyled(Content)<OverflowScrollListProps>(
   (props, ref) => {
     const { vertical, renderButton } = props;
     const contentRef = React.useRef<HTMLDivElement | null>(null);
-    const clientProp = vertical ? 'clientHeight' : 'clientWidth';
-    const scrollProp = vertical ? 'scrollHeight' : 'scrollWidth';
-    const contentProp = vertical ? 'scrollTop' : 'scrollLeft';
+    const clientProp = vertical ? "clientHeight" : "clientWidth";
+    const scrollProp = vertical ? "scrollHeight" : "scrollWidth";
+    const contentProp = vertical ? "scrollTop" : "scrollLeft";
 
     const { dir } = useTheme();
-    const rtl = dir === 'rtl';
+    const rtl = dir === "rtl";
 
     function handleScrollStart() {
       const content = contentRef.current;
@@ -64,7 +64,7 @@ const OverflowScrollList = withStyled(Content)<OverflowScrollListProps>(
       }
     }
 
-    function renderScrollButton(type: 'left' | 'right', onClick: () => void) {
+    function renderScrollButton(type: "left" | "right", onClick: () => void) {
       const props = {
         className: cssStyles.dropdownIcon,
         onClick,
@@ -90,9 +90,9 @@ const OverflowScrollList = withStyled(Content)<OverflowScrollListProps>(
 
     return (
       <>
-        {renderScrollButton('left', handleScrollStart)}
+        {renderScrollButton("left", handleScrollStart)}
         <Content ref={contentRef} {...props} />
-        {renderScrollButton('right', handleScrollEnd)}
+        {renderScrollButton("right", handleScrollEnd)}
       </>
     );
   }

@@ -1,5 +1,5 @@
-import { TBackground } from '../theme';
-import { Config } from '../types';
+import { TBackground } from "../theme";
+import { Config } from "../types";
 
 export interface BackgroundProps {
   bg?: TBackground;
@@ -8,7 +8,7 @@ export interface BackgroundProps {
 }
 
 export const BackgroundConfig: Config<BackgroundProps> = {
-  bg: value => `bg-${value}`,
-  bgColor: value => `bg-${value}`,
-  bgGradient: value => value && `bg-gradient`,
+  bg: (value) => `bg-${value}`,
+  bgColor: (value) => `bg-${value}`,
+  bgGradient: (value) => value && `bg-gradient`,
 };

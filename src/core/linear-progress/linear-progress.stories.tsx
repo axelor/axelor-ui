@@ -1,9 +1,9 @@
-import { Box } from '../box';
-import { LinearProgress } from './linear-progress';
+import { Box } from "../box";
+import { LinearProgress } from "./linear-progress";
 
 const config = {
   component: LinearProgress,
-  title: 'Components/LinearProgress',
+  title: "Components/LinearProgress",
 };
 
 export const Animated = () => {

@@ -1,32 +1,32 @@
-import { useCallback } from 'react';
-import * as React from 'react';
+import { useCallback } from "react";
+import * as React from "react";
 import {
   Calendar,
   momentLocalizer,
   View as CalendarView,
   NavigateAction as CalendarNavigateAction,
-} from 'react-big-calendar';
-import { useTheme } from '../core';
-import moment from 'moment';
-import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
+} from "react-big-calendar";
+import { useTheme } from "../core";
+import moment from "moment";
+import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 
-import { Event, Component, View, SchedulerEvent } from './types';
+import { Event, Component, View, SchedulerEvent } from "./types";
 
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 
 const localizer = momentLocalizer(moment);
 const DragAndDropCalendar = withDragAndDrop(Calendar as any);
 
-export type NavigationAction = 'NEXT' | 'PREV' | 'TODAY';
+export type NavigationAction = "NEXT" | "PREV" | "TODAY";
 
-const views: View[] = ['month', 'week', 'day'];
+const views: View[] = ["month", "week", "day"];
 
 export interface SchedulerProps {
   date?: Date;
   events?: SchedulerEvent[] | undefined;
   view?: View;
-  selectable?: boolean | 'ignoreEvents';
+  selectable?: boolean | "ignoreEvents";
   style?: React.CSSProperties;
   components?: Component;
   eventStyler?(event: Event): { className?: string; style?: object };
@@ -54,7 +54,7 @@ export function Scheduler({
   onNavigationChange,
 }: SchedulerProps) {
   const { dir } = useTheme();
-  const rtl = dir === 'rtl';
+  const rtl = dir === "rtl";
 
   const handleEventStyler = useCallback(
     (event: any, start: any, end: any) => {

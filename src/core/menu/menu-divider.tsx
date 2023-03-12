@@ -1,6 +1,6 @@
-import styled from '../styled';
+import styled from "../styled";
 
 export const MenuDivider = styled.hr(
-  () => ['dropdown-divider'],
-  () => ({ 'aria-disabled': true })
+  () => ["dropdown-divider"],
+  () => ({ "aria-disabled": true })
 );

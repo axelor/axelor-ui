@@ -1,11 +1,11 @@
-import React from 'react';
-import { useDrag, useDrop } from 'react-dnd';
-import { useClassNames } from '../core';
-import * as TYPES from './types';
-import classes from './grid.module.scss';
+import React from "react";
+import { useDrag, useDrop } from "react-dnd";
+import { useClassNames } from "../core";
+import * as TYPES from "./types";
+import classes from "./grid.module.scss";
 
 const DND_TYPES = {
-  ELEMENT: 'GROUP_DRAG_ELEMENT',
+  ELEMENT: "GROUP_DRAG_ELEMENT",
 };
 
 export type DropHandler = (
@@ -14,7 +14,7 @@ export type DropHandler = (
 ) => void;
 
 export interface GridDragElementProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onDrop'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onDrop"> {
   canDrag?: boolean;
   canDrop?: boolean;
   column?: TYPES.GridColumn;
@@ -31,7 +31,7 @@ const GridDragElementComponent = React.memo(function GridDragElementComponent(
       type: DND_TYPES.ELEMENT,
       item: column,
       canDrag: () => canDrag,
-      collect: monitor => ({
+      collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
       end: (item: any, monitor: any) => {
@@ -60,7 +60,7 @@ const GridDragElementComponent = React.memo(function GridDragElementComponent(
         const item: any = monitor.getItem();
         return item.name !== (column || {}).name;
       },
-      collect: monitor => {
+      collect: (monitor) => {
         const item: any = monitor.getItem();
         const canOver =
           (item &&
@@ -86,7 +86,7 @@ const GridDragElementComponent = React.memo(function GridDragElementComponent(
     <div
       ref={ref}
       className={classNames(className, classes.dragElement, {
-        [classes['drag-over-current']]: isOver || isOverCurrent,
+        [classes["drag-over-current"]]: isOver || isOverCurrent,
         [classes.dragging]: isDragging,
       })}
       {...rest}

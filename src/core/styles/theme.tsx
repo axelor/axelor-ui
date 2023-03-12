@@ -1,6 +1,6 @@
-import { cloneElement, createContext, useCallback, useContext } from 'react';
-import stylesLtr from './styles.module.scss';
-import stylesRtl from './styles.rtl.module.scss';
+import { cloneElement, createContext, useCallback, useContext } from "react";
+import stylesLtr from "./styles.module.scss";
+import stylesRtl from "./styles.rtl.module.scss";
 
 type CSSModuleClasses = { readonly [key: string]: string };
 
@@ -16,15 +16,15 @@ export type StyleName =
   | StyleName[];
 
 const clean = (names: string[]) =>
-  names.flatMap(n => n.trim().split(/\s+/)).filter(Boolean);
+  names.flatMap((n) => n.trim().split(/\s+/)).filter(Boolean);
 
 export const clsx = (...args: StyleName[]): string => {
-  return names(args).flat().filter(Boolean).join(' ');
+  return names(args).flat().filter(Boolean).join(" ");
 };
 
 const names = (item: StyleName): string[] => {
   if (Array.isArray(item)) return item.flatMap(names);
-  if (typeof item === 'object') {
+  if (typeof item === "object") {
     let items: string[] = [];
     for (let k in item) {
       if (item[k]) {
@@ -78,9 +78,9 @@ export function useClassNames() {
   const cls = useCallback(
     (...args: StyleName[]) => {
       return names(args)
-        .flatMap(name => styles[name] ?? name)
+        .flatMap((name) => styles[name] ?? name)
         .filter(Boolean)
-        .join(' ');
+        .join(" ");
     },
     [styles]
   );

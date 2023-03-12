@@ -1,8 +1,8 @@
-import React from 'react';
-import { Box, useRefs, useClassNames } from '../core';
-import { GridHeader } from './grid-header';
-import { GridBody } from './grid-body';
-import { GridDNDColumn } from './grid-dnd-row';
+import React from "react";
+import { Box, useRefs, useClassNames } from "../core";
+import { GridHeader } from "./grid-header";
+import { GridBody } from "./grid-body";
+import { GridDNDColumn } from "./grid-dnd-row";
 import {
   ROW_TYPE,
   navigator,
@@ -11,11 +11,11 @@ import {
   isRowCheck,
   getColumnWidth,
   useRTL,
-} from './utils';
-import * as TYPES from './types';
-import styles from './grid.module.scss';
-import { GridFooter } from './grid-footer';
-import { TranslateProvider } from './translate';
+} from "./utils";
+import * as TYPES from "./types";
+import styles from "./grid.module.scss";
+import { GridFooter } from "./grid-footer";
+import { TranslateProvider } from "./translate";
 
 function debounce(func: () => void, timeout: number = 300) {
   let timer: any;
@@ -31,10 +31,10 @@ function debounce(func: () => void, timeout: number = 300) {
 const isDefined = (val: any) => val !== undefined;
 const isNull = (value: any) => !isDefined(value) || value === null;
 const getColumns = (columns: TYPES.GridColumn[]) =>
-  columns.filter(column => column.visible !== false);
+  columns.filter((column) => column.visible !== false);
 const _translate = (str: string) => str;
 
-const getCssSelector = (str: string) => (str || '').replace(/\+/g, () => '\\+');
+const getCssSelector = (str: string) => (str || "").replace(/\+/g, () => "\\+");
 
 function restoreGridSelection(
   state: TYPES.GridState,
@@ -45,7 +45,7 @@ function restoreGridSelection(
 
   function getRowNewIndex(oldIndex: number) {
     const key = oldRows[oldIndex]?.key;
-    const ind = rows.findIndex(row => row.key === key);
+    const ind = rows.findIndex((row) => row.key === key);
     return ind === -1 ? oldIndex : ind;
   }
 
@@ -69,8 +69,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     const {
       editable,
       sortType,
-      aggregationType = 'group',
-      selectionType = 'multiple',
+      aggregationType = "group",
+      selectionType = "multiple",
     } = props;
     const {
       allowSelection,
@@ -130,17 +130,17 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     // auto size columns
     const sizingColumns = React.useCallback(() => {
-      setState(state => {
+      setState((state) => {
         const columns = [...state.columns];
         if (!columns.length) return;
         if (
           allowCheckboxSelection &&
-          !columns.find(col => col.name === '__select__')
+          !columns.find((col) => col.name === "__select__")
         ) {
           columns.unshift({
-            name: '__select__',
-            title: '',
-            type: 'row-checked',
+            name: "__select__",
+            title: "",
+            type: "row-checked",
             computed: true,
             sortable: false,
             searchable: false,
@@ -149,13 +149,13 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         }
         if (
           allowRowReorder &&
-          !columns.find(col => col.name === '__reorder__')
+          !columns.find((col) => col.name === "__reorder__")
         ) {
           columns.push({
-            name: '__reorder__',
+            name: "__reorder__",
             width: 30,
             computed: true,
-            title: '',
+            title: "",
             sortable: false,
             searchable: false,
             renderer: GridDNDColumn,
@@ -166,8 +166,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         const totalWidth = getContainerWidth() - borderWidth * 2;
         if (totalWidth > 0) {
           const displayColumns = getColumns(columns);
-          const computedColumns = displayColumns.filter(col => col.computed);
-          const unComputedColumns = displayColumns.filter(col => !col.computed);
+          const computedColumns = displayColumns.filter((col) => col.computed);
+          const unComputedColumns = displayColumns.filter(
+            (col) => !col.computed
+          );
           const remainWidth =
             totalWidth -
             computedColumns.reduce(
@@ -181,7 +183,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             );
           const colWidth = remainWidth / unComputedColumns.length;
 
-          state.columns = columns.map(col => {
+          state.columns = columns.map((col) => {
             if (col.computed) return col;
             return {
               ...col,
@@ -198,19 +200,19 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         event: any,
         { name }: TYPES.GridColumn,
         index?: number,
-        sortOrder?: 'asc' | 'desc'
+        sortOrder?: "asc" | "desc"
       ) => {
-        const newSort = { name, order: sortOrder || 'asc' };
+        const newSort = { name, order: sortOrder || "asc" };
         const { shiftKey } = event;
 
-        setState(data => {
+        setState((data) => {
           // multiple column sort with shift key press
           !data.orderBy && (data.orderBy = []);
-          const sortIndex = data.orderBy.findIndex(x => x.name === name);
+          const sortIndex = data.orderBy.findIndex((x) => x.name === name);
           if (sortIndex > -1) {
             newSort.order =
               sortOrder ||
-              (data.orderBy[sortIndex].order === 'asc' ? 'desc' : 'asc');
+              (data.orderBy[sortIndex].order === "asc" ? "desc" : "asc");
           }
           if (shiftKey) {
             if (sortIndex > -1) {
@@ -230,7 +232,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     // handle rows check/uncheck all
     const handleCheckAll = React.useCallback(
       function onCheckAll(checked: boolean) {
-        setState(data => {
+        setState((data) => {
           data.selectedRows = checked
             ? data.rows.reduce(
                 (selected, row, i) =>
@@ -248,14 +250,14 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     const handleRowStateChange = React.useCallback(
       function handleRowStateChange(
         row: TYPES.GridRow,
-        state?: 'open' | 'close'
+        state?: "open" | "close"
       ) {
         if (isDefined(row)) {
           const { key } = row;
-          return setState(draft => {
-            const row = draft.rows.find($row => $row.key === key);
+          return setState((draft) => {
+            const row = draft.rows.find(($row) => $row.key === key);
             row &&
-              (row.state = state || (row.state === 'open' ? 'close' : 'open'));
+              (row.state = state || (row.state === "open" ? "close" : "open"));
           });
         }
       },
@@ -271,14 +273,14 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         cellIndex: number | null = null,
         cell?: TYPES.GridColumn
       ) => {
-        const isSelectBox = e.key === 'Enter' || cell?.type === 'row-checked';
+        const isSelectBox = e.key === "Enter" || cell?.type === "row-checked";
 
         // toggle group row
-        if (row.type === 'group-row') {
+        if (row.type === "group-row") {
           const { key } = row;
-          return setState(draft => {
-            const row = draft.rows.find($row => $row.key === key);
-            row && (row.state = row.state === 'open' ? 'close' : 'open');
+          return setState((draft) => {
+            const row = draft.rows.find(($row) => $row.key === key);
+            row && (row.state = row.state === "open" ? "close" : "open");
           });
         }
 
@@ -295,7 +297,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
               return;
             }
           }
-          return setState(draft => {
+          return setState((draft) => {
             draft.selectedCell = null;
             draft.selectedRows = [rowIndex];
             draft.editRow = [rowIndex, cellIndex];
@@ -304,11 +306,11 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
         if (!allowSelection) return;
         if (row.type === ROW_TYPE.ROW) {
-          const isMultiple = selectionType === 'multiple';
+          const isMultiple = selectionType === "multiple";
           const withShift = isMultiple && e.shiftKey;
           const withControl = e.ctrlKey || isSelectBox;
 
-          setState(draft => {
+          setState((draft) => {
             if (draft.editRow) return;
 
             // handle shift (except combined with ctrl) selection
@@ -316,7 +318,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             let _selectedRows: any = [...rows];
             let _selectedCell: any = [...(draft.selectedCell || [])];
             let _selectedCols: any = [...(draft.selectedCols || [])];
-            const dataRowIds = draft.rows.map(x => x.record.id);
+            const dataRowIds = draft.rows.map((x) => x.record.id);
             if (!withControl && withShift) {
               const endIndex = refs.current.lastSelectionWithShiftKey
                 ? 0
@@ -336,7 +338,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
                     : null
                 )
                 .filter(
-                  x =>
+                  (x) =>
                     x !== null &&
                     draft.rows[x].type === ROW_TYPE.ROW &&
                     isRowVisible(draft.rows, draft.rows[x])
@@ -380,7 +382,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             }
 
             function assignArrayValue(
-              key: 'selectedCell' | 'selectedCols' | 'selectedRows',
+              key: "selectedCell" | "selectedCols" | "selectedRows",
               val: any
             ) {
               if ((val || []).length === 0) {
@@ -393,9 +395,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
                 (draft[key] as any).length = val.length;
               }
             }
-            assignArrayValue('selectedCell', _selectedCell);
-            assignArrayValue('selectedCols', _selectedCols);
-            assignArrayValue('selectedRows', _selectedRows);
+            assignArrayValue("selectedCell", _selectedCell);
+            assignArrayValue("selectedCols", _selectedCols);
+            assignArrayValue("selectedRows", _selectedRows);
           });
 
           refs.current.lastSelectionWithShiftKey = withShift;
@@ -418,21 +420,21 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       const addElement =
         container && container.querySelector(`.${styles.addNewText}`);
       if (addElement) {
-        addElement.style.visibility = hide ? 'hidden' : null;
+        addElement.style.visibility = hide ? "hidden" : null;
       }
     }, []);
 
     const handleRowMove = React.useCallback(
       (dragRow: TYPES.GridRow, hoverRow: TYPES.GridRow) => {
         onRowReorder && onRowReorder(dragRow, hoverRow);
-        return setState(draft => {
+        return setState((draft) => {
           const { rows } = draft;
           const oldRows = [...rows];
 
-          const dragIndex = rows.findIndex(row => row.key === dragRow.key);
+          const dragIndex = rows.findIndex((row) => row.key === dragRow.key);
           const [dragColumn] = rows.splice(dragIndex, 1);
 
-          const hoverIndex = rows.findIndex(row => row.key === hoverRow.key);
+          const hoverIndex = rows.findIndex((row) => row.key === hoverRow.key);
           rows.splice(
             hoverIndex + (dragIndex <= hoverIndex ? 1 : 0),
             0,
@@ -456,14 +458,14 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         column: TYPES.GridColumn
       ) {
         const ctx = (e.target as HTMLElement).cloneNode(true) as HTMLElement;
-        ctx.style.display = 'none';
+        ctx.style.display = "none";
         e.dataTransfer.setDragImage(ctx, 0, 0);
 
         const { width = 0 } = column;
         const { clientX, clientY } = e;
         const container = containerRef.current;
 
-        refs.current.style = document.createElement('style');
+        refs.current.style = document.createElement("style");
         refs.current.event = {
           x: clientX,
           y: clientY,
@@ -523,8 +525,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         const container = containerRef.current;
         const width = getColumnWidth(column, dataTransfer.width, true);
         // set column width in state
-        setState(draft => {
-          const col = draft.columns.find(c => c.name === column.name);
+        setState((draft) => {
+          const col = draft.columns.find((c) => c.name === column.name);
           if (col) {
             col.width = width;
             col.computed = true;
@@ -545,9 +547,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     const handleColumnHide = React.useCallback(
       (e: React.SyntheticEvent, column: TYPES.GridColumn) => {
-        setState(draft => {
+        setState((draft) => {
           const columnState = draft.columns.find(
-            col => col.name === column.name
+            (col) => col.name === column.name
           ) as TYPES.GridColumn;
           columnState && (columnState.visible = false);
         });
@@ -558,9 +560,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     const handleColumnShow = React.useCallback(
       (e: React.SyntheticEvent, column: TYPES.GridColumn) => {
-        setState(draft => {
+        setState((draft) => {
           const columnState = draft.columns.find(
-            col => col.name === column.name
+            (col) => col.name === column.name
           ) as TYPES.GridColumn;
           columnState && (columnState.visible = true);
         });
@@ -580,11 +582,11 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           dest?.name && !dest?.$group && target?.name && !target?.$group;
 
         if (isColumnReorder) {
-          return setState(draft => {
+          return setState((draft) => {
             const { columns } = draft;
-            const dragIndex = columns.findIndex(c => c.name === dest.name);
+            const dragIndex = columns.findIndex((c) => c.name === dest.name);
             const [dragColumn] = columns.splice(dragIndex, 1);
-            const hoverIndex = columns.findIndex(c => c.name === target.name);
+            const hoverIndex = columns.findIndex((c) => c.name === target.name);
 
             columns.splice(
               hoverIndex + (dragIndex <= hoverIndex ? 1 : 0),
@@ -594,13 +596,13 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           });
         }
 
-        setState(data => {
+        setState((data) => {
           !data.groupBy && (data.groupBy = []);
 
           function check(column: { name: string }) {
             return (
               column?.name &&
-              (data.groupBy || []).find(x => x.name === column?.name)
+              (data.groupBy || []).find((x) => x.name === column?.name)
             );
           }
 
@@ -614,10 +616,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           if (isDestExist && isTargetExist) {
             // reorder
             const sourceIndex = data.groupBy.findIndex(
-              g => g.name === dest.name
+              (g) => g.name === dest.name
             );
             let targetIndex = data.groupBy.findIndex(
-              g => g.name === target.name
+              (g) => g.name === target.name
             );
             if (sourceIndex > -1) {
               [group] = data.groupBy.splice(sourceIndex, 1);
@@ -638,9 +640,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     const handleGroupColumnRemove = React.useCallback(
       (e: React.SyntheticEvent, group: TYPES.GridGroup) => {
-        setState(data => {
+        setState((data) => {
           const groupBy = data.groupBy || [];
-          const index = groupBy.findIndex(g => g.name === group.name);
+          const index = groupBy.findIndex((g) => g.name === group.name);
           if (index > -1) {
             groupBy.splice(index, 1);
           }
@@ -658,7 +660,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         discarded = false,
         reset = true
       ) => {
-        setState(draft => {
+        setState((draft) => {
           if (draft.editRow && reset) {
             let [rowIndex, cellIndex] = draft.editRow;
             if (discarded && !row.id) {
@@ -685,7 +687,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         if (result === true) {
           return;
         }
-        setState(draft => {
+        setState((draft) => {
           if (draft.editRow) {
             const [rowIndex] = draft.editRow;
             draft.editRow = [rowIndex + 1, 1];
@@ -701,7 +703,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     const handleRecordUpdate = React.useCallback(
       function handleRecordUpdate(rowIndex: number, values: any) {
-        setState(draft => {
+        setState((draft) => {
           const row = draft.rows[rowIndex];
           if (row && row.record && row.record.id) {
             if (rowIndex > -1) {
@@ -778,8 +780,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       const key = (() => {
         const { key } = event;
         if (isRTL) {
-          if (key === 'ArrowRight') return 'ArrowLeft';
-          if (key === 'ArrowLeft') return 'ArrowRight';
+          if (key === "ArrowRight") return "ArrowLeft";
+          if (key === "ArrowLeft") return "ArrowRight";
         }
         return key;
       })();
@@ -793,12 +795,12 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           )) ||
         ctrlKey ||
         ![
-          'Enter',
-          'Tab',
-          'ArrowRight',
-          'ArrowLeft',
-          'ArrowUp',
-          'ArrowDown',
+          "Enter",
+          "Tab",
+          "ArrowRight",
+          "ArrowLeft",
+          "ArrowUp",
+          "ArrowDown",
         ].includes(key)
       )
         return;
@@ -809,19 +811,19 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       const selectedCell = state.selectedCell || [];
       const selectedRows = state.selectedRows || [];
       const selectedCols = state.selectedCols || [];
-      const isMultipleSelection = selectionType === 'multiple';
-      const data = rows.map(x => x.record.id);
+      const isMultipleSelection = selectionType === "multiple";
+      const data = rows.map((x) => x.record.id);
       let [row, col] = selectedCell.length ? selectedCell : [];
       let isHeaderCell = selectedCols.length > 0;
 
-      if (key === 'Enter') {
+      if (key === "Enter") {
         const isCheckboxCell = columns[col] && isRowCheck(columns[col]);
         if (isHeaderCell) {
           if (isCheckboxCell) {
             //@ts-ignore
             const [checkbox] = (
               event.target as HTMLElement
-            ).getElementsByTagName('input');
+            ).getElementsByTagName("input");
             handleCheckAll(!checkbox.checked);
           } else {
             handleSort(event, columns[col], col);
@@ -833,14 +835,14 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           return handleRowClick(event, rows[row], row, col);
         } else if (rows[row] && rows[row].type === ROW_TYPE.ROW) {
           if (props.editRowRenderer) {
-            return setState(data => {
+            return setState((data) => {
               data.editRow = [row, col];
             });
           }
         }
       }
 
-      const isTabKey = key === 'Tab';
+      const isTabKey = key === "Tab";
       const isEditMode = isTabKey;
       //@ts-ignore
       [row, col] = selectedCell.length ? selectedCell : [];
@@ -874,7 +876,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           if (!isHeaderCell) {
             row = Math.max(
               0,
-              Helper[isEditMode ? 'findAndShowPrevRows' : 'findLastVisibleRow'](
+              Helper[isEditMode ? "findAndShowPrevRows" : "findLastVisibleRow"](
                 row
               )
             );
@@ -886,7 +888,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           if (!isHeaderCell) {
             row = Math.min(
               maxRow,
-              Helper[isEditMode ? 'findAndShowNextRows' : 'findNextVisibleRow'](
+              Helper[isEditMode ? "findAndShowNextRows" : "findNextVisibleRow"](
                 row
               )
             );
@@ -899,10 +901,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           }
           if (
             isGroupCell &&
-            key === 'ArrowLeft' &&
-            findRow().state === 'open'
+            key === "ArrowLeft" &&
+            findRow().state === "open"
           ) {
-            return handleRowStateChange(rows[row], 'close');
+            return handleRowStateChange(rows[row], "close");
           }
           if (isGroupCell || isFirstColumn) {
             return moveUp() && moveToEnd();
@@ -915,10 +917,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           }
           if (
             isGroupCell &&
-            key === 'ArrowRight' &&
-            findRow().state === 'close'
+            key === "ArrowRight" &&
+            findRow().state === "close"
           ) {
-            return handleRowStateChange(rows[row], 'open');
+            return handleRowStateChange(rows[row], "open");
           }
           if (isGroupCell || isLastColumn) {
             return moveDown() && moveToStart();
@@ -956,9 +958,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         [row, col] = [0, 0];
       }
 
-      setState(data => {
+      setState((data) => {
         const checkAndAssign = (
-          key: 'selectedCell' | 'selectedRows' | 'selectedCols',
+          key: "selectedCell" | "selectedRows" | "selectedCols",
           value: any
         ) => {
           const toString = (obj: any) => JSON.stringify(obj);
@@ -968,12 +970,12 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         };
 
         if (isHeaderCell && !isTabKey) {
-          checkAndAssign('selectedCols', [col]);
+          checkAndAssign("selectedCols", [col]);
         } else {
           if ((selectedCols || []).length) {
             data.selectedCols = null;
           }
-          checkAndAssign('selectedCell', [row, col]);
+          checkAndAssign("selectedCell", [row, col]);
 
           if (selectedRows && (selectedRows || []).length) {
             const rowIndex = row;
@@ -988,7 +990,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             } else {
               newRows = [rowIndex];
             }
-            checkAndAssign('selectedRows', newRows);
+            checkAndAssign("selectedRows", newRows);
           }
         }
       });
@@ -1094,10 +1096,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       [allowCellFocus, stickyHeader, stickyFooter]
     );
 
-    const $orderBy = sortType === 'state' ? state.orderBy : null;
+    const $orderBy = sortType === "state" ? state.orderBy : null;
     React.useEffect(() => {
       // generate computed rows from records
-      setState(draft => {
+      setState((draft) => {
         const newRows = getRows({
           records,
           columns,
@@ -1129,7 +1131,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     React.useEffect(() => {
       // exclude hide columns
-      setState(draft => {
+      setState((draft) => {
         draft.columns = [...columns];
       });
       sizingColumns();
@@ -1142,7 +1144,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     }, [state.selectedCell, scrollToCell]);
 
     const hasAggregation = React.useMemo(
-      () => columns.some(column => column.aggregate),
+      () => columns.some((column) => column.aggregate),
       [columns]
     );
 
@@ -1153,41 +1155,41 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     const isEditMode = Boolean(state.editRow);
     const checkType = React.useMemo(() => {
       if ((state.selectedRows || []).length === 0) {
-        return 'unchecked';
+        return "unchecked";
       }
       if (
-        state.rows.filter(row => row.type === ROW_TYPE.ROW).length ===
+        state.rows.filter((row) => row.type === ROW_TYPE.ROW).length ===
         state.selectedRows?.length
       ) {
-        return 'checked';
+        return "checked";
       }
-      return 'indeterminate';
+      return "indeterminate";
     }, [state.rows, state.selectedRows]);
 
     const noColumns = React.useMemo(() => {
       return (
         displayColumns.every(
-          col =>
+          (col) =>
             (col as any).action ||
-            col.type === 'row-checked' ||
+            col.type === "row-checked" ||
             (col.width && col.width < 50)
         ) || displayColumns.length === 0
       );
     }, [displayColumns]);
 
-    const hasFooter = hasAggregation && aggregationType === 'all';
+    const hasFooter = hasAggregation && aggregationType === "all";
     const classNames = useClassNames();
 
     return (
       <TranslateProvider t={translate}>
         <Box
           ref={handleRef}
-          className={classNames('table-grid', styles.container, className, {
-            [styles['no-records']]: records.length === 0,
-            [styles['no-columns']]: noColumns,
-            [styles['has-add-new']]: Boolean(props.addNewText),
-            [styles['has-footer']]: hasFooter,
-            [styles['rtl']]: isRTL,
+          className={classNames("table-grid", styles.container, className, {
+            [styles["no-records"]]: records.length === 0,
+            [styles["no-columns"]]: noColumns,
+            [styles["has-add-new"]]: Boolean(props.addNewText),
+            [styles["has-footer"]]: hasFooter,
+            [styles["rtl"]]: isRTL,
           })}
           {...(allowCellSelection
             ? { tabIndex: 0, onKeyDown: handleNavigation }
@@ -1250,7 +1252,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             selectedRows={state.selectedRows}
             selectedCell={state.selectedCell}
             selectionType={selectionType}
-            noRecordsText={records.length === 0 ? props.noRecordsText : ''}
+            noRecordsText={records.length === 0 ? props.noRecordsText : ""}
             addNewText={props.addNewText}
             {...{
               cellRenderer,

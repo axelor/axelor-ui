@@ -1,5 +1,5 @@
-import styled from '../styled';
-import { TVariant } from '../system';
+import styled from "../styled";
+import { TVariant } from "../system";
 
 export interface TableRowProps {
   color?: TVariant;
@@ -9,6 +9,6 @@ export interface TableRowProps {
 export const TableRow = styled.tr<TableRowProps>(({ color, selected }) => [
   {
     [`table-${color}`]: color,
-    'table-active': selected,
+    "table-active": selected,
   },
 ]);

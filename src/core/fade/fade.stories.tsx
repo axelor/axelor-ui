@@ -1,18 +1,18 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { Box } from '../box';
-import { Button } from '../button';
-import { Fade } from './fade';
+import { Box } from "../box";
+import { Button } from "../button";
+import { Fade } from "./fade";
 
 const config = {
   component: Fade,
-  title: 'Animation/Fade',
+  title: "Animation/Fade",
 };
 
 export const Basic = function () {
   const [show, setShow] = useState(false);
   const toggle = function () {
-    setShow(prev => !prev);
+    setShow((prev) => !prev);
   };
 
   return (

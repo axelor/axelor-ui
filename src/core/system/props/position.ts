@@ -1,6 +1,6 @@
-import { Config } from '../types';
+import { Config } from "../types";
 
-export type TPosition = 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
+export type TPosition = "static" | "relative" | "absolute" | "fixed" | "sticky";
 
 export type TPositionValue = 0 | 50 | 100;
 
@@ -9,7 +9,7 @@ export type TPositionEdge = {
   b?: TPositionValue;
   s?: TPositionValue;
   e?: TPositionValue;
-  middle?: boolean | 'x' | 'y';
+  middle?: boolean | "x" | "y";
 };
 
 export interface PositionProps {
@@ -19,8 +19,8 @@ export interface PositionProps {
 }
 
 export const PositionConfig: Config<PositionProps> = {
-  pos: value => `position-${value}`,
-  position: value => `position-${value}`,
+  pos: (value) => `position-${value}`,
+  position: (value) => `position-${value}`,
   edge: ({ t, b, s, e, middle }) => {
     return {
       classes: {
@@ -29,8 +29,8 @@ export const PositionConfig: Config<PositionProps> = {
         [`start-${s}`]: s,
         [`end-${e}`]: e,
         [`translate-middle`]: middle === true,
-        [`translate-x`]: middle === 'x',
-        [`translate-y`]: middle === 'y',
+        [`translate-x`]: middle === "x",
+        [`translate-y`]: middle === "y",
       },
     };
   },

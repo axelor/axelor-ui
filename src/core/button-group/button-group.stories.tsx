@@ -1,9 +1,9 @@
-import { Button } from '../button';
-import { ButtonGroup } from '../button-group';
+import { Button } from "../button";
+import { ButtonGroup } from "../button-group";
 
 const config = {
   component: ButtonGroup,
-  title: 'Components/ButtonGroup',
+  title: "Components/ButtonGroup",
 };
 
 export const Basic = () => {

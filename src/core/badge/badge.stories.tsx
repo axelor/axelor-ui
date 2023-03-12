@@ -1,12 +1,12 @@
-import { Box } from '../box';
-import { Badge as BadgeComponent } from '../badge';
-import { Button } from '../button';
+import { Box } from "../box";
+import { Badge as BadgeComponent } from "../badge";
+import { Button } from "../button";
 
 const Badge = (props: any) => <BadgeComponent bg="secondary" {...props} />;
 
 const config = {
   component: Badge,
-  title: 'Components/Badge',
+  title: "Components/Badge",
 };
 
 export const Basic = () => {

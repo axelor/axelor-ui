@@ -1,5 +1,5 @@
-import styled from '../styled';
-import { TVariant } from '../system';
+import styled from "../styled";
+import { TVariant } from "../system";
 
 export interface InputFeedbackProps {
   invalid?: boolean;
@@ -7,6 +7,6 @@ export interface InputFeedbackProps {
 }
 
 export const InputFeedback = styled.div<InputFeedbackProps>(({ invalid }) => [
-  'form-text',
-  { 'text-danger': invalid },
+  "form-text",
+  { "text-danger": invalid },
 ]);

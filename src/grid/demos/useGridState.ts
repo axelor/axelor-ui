@@ -1,6 +1,6 @@
-import React from 'react';
-import { produce } from 'immer';
-import * as TYPES from '../types';
+import React from "react";
+import { produce } from "immer";
+import * as TYPES from "../types";
 
 function useGridState(
   initState?: Partial<TYPES.GridState>

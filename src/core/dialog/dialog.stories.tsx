@@ -1,19 +1,19 @@
-import { useState } from 'react';
-import { Box } from '../box';
-import { Button } from '../button';
-import { Input } from '../input';
-import { InputLabel } from '../input-label';
+import { useState } from "react";
+import { Box } from "../box";
+import { Button } from "../button";
+import { Input } from "../input";
+import { InputLabel } from "../input-label";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from './dialog';
+} from "./dialog";
 
 const config = {
   component: Dialog,
-  title: 'Components/Dialog',
+  title: "Components/Dialog",
 };
 
 export const Basic = (props: any) => {
@@ -32,16 +32,16 @@ export const Basic = (props: any) => {
           <Input
             type="checkbox"
             checked={scrollable}
-            onChange={e => setScrollable(!scrollable)}
-          />{' '}
+            onChange={(e) => setScrollable(!scrollable)}
+          />{" "}
           Scrollable
         </InputLabel>
         <InputLabel m={0}>
           <Input
             type="checkbox"
             checked={fullScreen}
-            onChange={e => setFullScreen(!fullScreen)}
-          />{' '}
+            onChange={(e) => setFullScreen(!fullScreen)}
+          />{" "}
           Fullscreen
         </InputLabel>
       </Box>

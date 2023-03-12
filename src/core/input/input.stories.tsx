@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { Meta } from '@storybook/react';
+import { useState } from "react";
+import { Meta } from "@storybook/react";
 
-import { Box } from '../box';
-import { Input } from './input';
-import { withStyled } from '../styled';
+import { Box } from "../box";
+import { Input } from "./input";
+import { withStyled } from "../styled";
 
 const config = {
   component: Input,
-  title: 'Components/Input',
+  title: "Components/Input",
   decorators: [
-    Story => (
+    (Story) => (
       <Box style={{ width: 400 }}>
         <Story />
       </Box>
@@ -18,7 +18,7 @@ const config = {
 } as Meta;
 
 export const Basic = () => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
 
   return (
     <Input value={value} onChange={(e: any) => setValue(e.target.value)} />
@@ -86,7 +86,7 @@ const Checkbox = withStyled(Input)((props, ref) => {
 });
 
 export const Sizing = () => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   return (
     <Box display="flex" flexDirection="column" g={2}>
       <Input

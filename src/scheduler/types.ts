@@ -1,8 +1,8 @@
-import * as React from 'react';
+import * as React from "react";
 
 export type StringOrDate = string | Date;
 
-export type View = 'month' | 'week' | 'day';
+export type View = "month" | "week" | "day";
 
 export interface SchedulerEvent {
   id: string | number;

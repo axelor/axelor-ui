@@ -56,12 +56,12 @@
   display: none;
 }
 
-[dir='rtl'].drawer.start {
+[dir="rtl"].drawer.start {
   left: auto;
   right: 0;
 }
 
-[dir='rtl'].drawer.end {
+[dir="rtl"].drawer.end {
   left: 0;
   right: auto;
 }

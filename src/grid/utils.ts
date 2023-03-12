@@ -1,24 +1,24 @@
-import { useTheme } from '../core';
+import { useTheme } from "../core";
 
-import { GridColumn, GridGroup, GridRow, GridSortColumn } from './types';
+import { GridColumn, GridGroup, GridRow, GridSortColumn } from "./types";
 
 export const GRID_CONFIG = {
   COLUMN_MIN_WIDTH: 100,
 };
 
 export const ROW_TYPE = {
-  GROUP_ROW: 'group-row',
-  FOOTER_ROW: 'footer-row',
-  ROW: 'row',
+  GROUP_ROW: "group-row",
+  FOOTER_ROW: "footer-row",
+  ROW: "row",
 };
 
 export const isRowVisible = (rows: GridRow[], { parent }: any): boolean => {
   if (!parent) return true;
-  const row = rows.find(x => x.key === parent);
-  return (row || {}).state === 'open' && isRowVisible(rows, row);
+  const row = rows.find((x) => x.key === parent);
+  return (row || {}).state === "open" && isRowVisible(rows, row);
 };
 
-export const isRowCheck = (column: GridColumn) => column.type === 'row-checked';
+export const isRowCheck = (column: GridColumn) => column.type === "row-checked";
 
 export const getRows = ({
   columns,
@@ -66,25 +66,25 @@ export function doAggregate(
   field: GridColumn
 ): number | string {
   if (!field || !field.name || !field.aggregate) return 0;
-  const flatData = data.map(x => {
+  const flatData = data.map((x) => {
     if (x.type === ROW_TYPE.GROUP_ROW) {
       return doAggregate(x.data, field);
     }
-    return field.aggregate === 'count' ? 1 : x[field.name] || 0;
+    return field.aggregate === "count" ? 1 : x[field.name] || 0;
   });
   switch (field.aggregate) {
-    case 'count':
-    case 'sum':
-    case 'avg':
+    case "count":
+    case "sum":
+    case "avg":
       const total = flatData.reduce((total, val) => total + Number(val), 0);
       return Number(
-        field.aggregate === 'avg' && flatData.length
+        field.aggregate === "avg" && flatData.length
           ? Math.round(total / flatData.length)
           : total
       ).toFixed(2);
-    case 'min':
+    case "min":
       return Math.min(...flatData);
-    case 'max':
+    case "max":
       return Math.max(...flatData);
     default:
       return 0;
@@ -100,12 +100,12 @@ export function doSort(
   return data.sort((obj1, obj2) => {
     for (let i = 0; i < sorts.length; i++) {
       const { name, order: by } = sorts[i];
-      const isDesc = by === 'desc';
-      const field = columns.find(col => col.name === name);
+      const isDesc = by === "desc";
+      const field = columns.find((col) => col.name === name);
       const isNumber =
         field &&
         field.type &&
-        ['decimal', 'integer', 'long'].includes(field.type);
+        ["decimal", "integer", "long"].includes(field.type);
 
       const formatter = (data: any) => {
         const value = data[name];
@@ -135,13 +135,13 @@ export function doGroup(
   const group = (groups || []).shift();
   if (!group) return data;
   const { name } = group;
-  const fieldInfo = columns.find(x => x.name === name) || ({} as GridColumn);
+  const fieldInfo = columns.find((x) => x.name === name) || ({} as GridColumn);
   const groupData: any = {};
-  data.forEach(record => {
+  data.forEach((record) => {
     const key =
       (fieldInfo.formatter
         ? fieldInfo.formatter(fieldInfo, record[fieldInfo.name], record)
-        : record[name]) || '';
+        : record[name]) || "";
     let target = groupData[key] || {
       data: [],
       type: ROW_TYPE.GROUP_ROW,
@@ -161,7 +161,7 @@ export function doGroup(
   });
 
   if (groups.length) {
-    groupKeys.forEach(k => {
+    groupKeys.forEach((k) => {
       groupData[k].data = doGroup(
         groupData[k].data,
         [...groups],
@@ -170,7 +170,7 @@ export function doGroup(
       );
     });
   }
-  return groupKeys.map(k => groupData[k]);
+  return groupKeys.map((k) => groupData[k]);
 }
 
 export function doIndexing(
@@ -184,10 +184,10 @@ export function doIndexing(
     columns: GridColumn[];
   },
   parent = null,
-  defaultState = 'open'
+  defaultState = "open"
 ): any[] {
   const newData = [];
-  const hasAggregation = columns.some(x => x.aggregate);
+  const hasAggregation = columns.some((x) => x.aggregate);
   for (let i = 0; i < data.length; i++) {
     const record = data[i];
     const isGroupRecord =
@@ -195,14 +195,14 @@ export function doIndexing(
     if (isGroupRecord) {
       const { data, ...groupRecord } = record;
       const aggregate: any = {};
-      groupRecord.id = `${parent ? `${parent}_` : ''}${groupRecord.column}_${
+      groupRecord.id = `${parent ? `${parent}_` : ""}${groupRecord.column}_${
         groupRecord.value
       }_${groupRecord.level}`;
       const parentId = groupRecord.id;
       hasAggregation &&
         columns
-          .filter(x => x.aggregate)
-          .forEach(field => {
+          .filter((x) => x.aggregate)
+          .forEach((field) => {
             aggregate[field.name] = doAggregate(record.data, field);
           });
 
@@ -210,7 +210,8 @@ export function doIndexing(
       newData.push({
         parent,
         key: parentId,
-        state: (rows.find(x => x.key === parentId) || {}).state || defaultState,
+        state:
+          (rows.find((x) => x.key === parentId) || {}).state || defaultState,
         type: ROW_TYPE.GROUP_ROW,
         aggregate,
         record: { ...groupRecord, total: data.length },
@@ -249,7 +250,7 @@ export const navigator = (
   }: {
     maxRow: number;
     isGroupCell: boolean;
-    updateRowState: (row: any, state: 'open' | 'close') => void;
+    updateRowState: (row: any, state: "open" | "close") => void;
   }
 ) => ({
   findNextVisibleRow: (row: number) => {
@@ -273,7 +274,7 @@ export const navigator = (
           let parent = record.parent;
           while (parent) {
             const row = findRow(parent);
-            updateRowState(row, 'open');
+            updateRowState(row, "open");
             parent = row && row.parent;
           }
         }
@@ -288,7 +289,7 @@ export const navigator = (
         case ROW_TYPE.ROW:
           return i;
         case ROW_TYPE.GROUP_ROW:
-          updateRowState(i, 'open');
+          updateRowState(i, "open");
           break;
       }
     }
@@ -301,10 +302,10 @@ export const noop = () => {};
 export const identity = (value: any) => value;
 
 export function capitalizeWord(word: string) {
-  return (word[0] || '').toUpperCase() + (word || '').substring(1);
+  return (word[0] || "").toUpperCase() + (word || "").substring(1);
 }
 
 export function useRTL() {
   const { dir } = useTheme();
-  return dir === 'rtl';
+  return dir === "rtl";
 }

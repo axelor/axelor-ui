@@ -1,14 +1,14 @@
-import { ReactComponent as BiAlarm } from 'bootstrap-icons/icons/alarm.svg';
-import { ReactComponent as BiHeartFill } from 'bootstrap-icons/icons/heart-fill.svg';
-import { ReactComponent as BiShop } from 'bootstrap-icons/icons/shop.svg';
-import { ReactComponent as BiToggles } from 'bootstrap-icons/icons/toggles.svg';
+import { ReactComponent as BiAlarm } from "bootstrap-icons/icons/alarm.svg";
+import { ReactComponent as BiHeartFill } from "bootstrap-icons/icons/heart-fill.svg";
+import { ReactComponent as BiShop } from "bootstrap-icons/icons/shop.svg";
+import { ReactComponent as BiToggles } from "bootstrap-icons/icons/toggles.svg";
 
-import { Box } from '../../core';
-import { SvgIcon } from './svg-icon';
+import { Box } from "../../core";
+import { SvgIcon } from "./svg-icon";
 
 const config = {
   component: SvgIcon,
-  title: 'Icons/Svg',
+  title: "Icons/Svg",
 };
 
 export const Name = () => {

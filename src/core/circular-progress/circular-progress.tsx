@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
-import styled, { withStyled } from '../styled';
-import { useClassNames } from '../styles';
-import styles from './circular-progress.module.css';
+import { useMemo } from "react";
+import styled, { withStyled } from "../styled";
+import { useClassNames } from "../styles";
+import styles from "./circular-progress.module.css";
 
 const SIZE = 40;
 const VIEW_BOX = `${SIZE / 2} ${SIZE / 2} ${SIZE} ${SIZE}`;
@@ -32,17 +32,17 @@ export const CircularProgress = withStyled(CircularProgressRoot)(
     const rootClass = classNames([
       styles.root,
       {
-        [styles['root-determinate']]: !indeterminate,
+        [styles["root-determinate"]]: !indeterminate,
       },
     ]);
 
     const svgClass = classNames({
-      [styles['svg-indeterminate']]: indeterminate,
+      [styles["svg-indeterminate"]]: indeterminate,
     });
 
     const circleClass = classNames({
-      [styles['indeterminate']]: indeterminate,
-      [styles['determinate']]: !indeterminate,
+      [styles["indeterminate"]]: indeterminate,
+      [styles["determinate"]]: !indeterminate,
     });
 
     const radius = (SIZE - thickness) / 2;

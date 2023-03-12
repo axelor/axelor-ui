@@ -1,20 +1,20 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { Box } from '../box';
-import { Button } from '../button';
-import { Popper } from '../popper';
-import { ClickAwayListener } from './click-away-listener';
+import { Box } from "../box";
+import { Button } from "../button";
+import { Popper } from "../popper";
+import { ClickAwayListener } from "./click-away-listener";
 
 const config = {
   component: ClickAwayListener,
-  title: 'Core/ClickAwayListener',
+  title: "Core/ClickAwayListener",
 };
 
 export const Basic = () => {
   const [open, setOpen] = useState(false);
   const [targetEl, setTargetEl] = useState<HTMLButtonElement | null>(null);
 
-  const toggle = () => setOpen(v => !v);
+  const toggle = () => setOpen((v) => !v);
 
   return (
     <div>

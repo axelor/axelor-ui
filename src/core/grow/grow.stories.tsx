@@ -1,18 +1,18 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { Box } from '../box';
-import { Button } from '../button';
-import { Grow } from './grow';
+import { Box } from "../box";
+import { Button } from "../button";
+import { Grow } from "./grow";
 
 const config = {
   component: Grow,
-  title: 'Animation/Grow',
+  title: "Animation/Grow",
 };
 
 export const Basic = function () {
   const [show, setShow] = useState(false);
   const toggle = function () {
-    setShow(prev => !prev);
+    setShow((prev) => !prev);
   };
 
   return (

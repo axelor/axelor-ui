@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import { Meta } from '@storybook/react';
+import { useState } from "react";
+import { Meta } from "@storybook/react";
 
-import { Box } from '../box';
-import { TextField } from './text-field';
+import { Box } from "../box";
+import { TextField } from "./text-field";
 
-import { ReactComponent as BiCalendar } from 'bootstrap-icons/icons/calendar.svg';
-import { ReactComponent as BiAlarm } from 'bootstrap-icons/icons/alarm.svg';
-import { ReactComponent as BiTranslate } from 'bootstrap-icons/icons/translate.svg';
+import { ReactComponent as BiCalendar } from "bootstrap-icons/icons/calendar.svg";
+import { ReactComponent as BiAlarm } from "bootstrap-icons/icons/alarm.svg";
+import { ReactComponent as BiTranslate } from "bootstrap-icons/icons/translate.svg";
 
 const config = {
   component: TextField,
-  title: 'Components/TextField',
+  title: "Components/TextField",
   decorators: [
-    Story => (
+    (Story) => (
       <Box style={{ width: 400 }}>
         <Story />
       </Box>
@@ -21,7 +21,7 @@ const config = {
 } as Meta;
 
 export const Basic = () => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   return (
     <Box display="flex" flexDirection="column" gap="1rem">
       <TextField
@@ -35,11 +35,11 @@ export const Basic = () => {
         onChange={(e: any) => setValue(e.target.value)}
         icons={[
           {
-            id: 'calender',
+            id: "calender",
             icon: BiCalendar,
           },
           {
-            id: 'alarm',
+            id: "alarm",
             icon: BiAlarm,
           },
         ]}
@@ -51,11 +51,11 @@ export const Basic = () => {
         onChange={(e: any) => setValue(e.target.value)}
         icons={[
           {
-            id: 'calender',
+            id: "calender",
             icon: BiCalendar,
           },
           {
-            id: 'alarm',
+            id: "alarm",
             icon: BiAlarm,
           },
         ]}
@@ -68,11 +68,11 @@ export const Basic = () => {
         onChange={(e: any) => setValue(e.target.value)}
         icons={[
           {
-            id: 'calender',
+            id: "calender",
             icon: BiCalendar,
           },
           {
-            id: 'alarm',
+            id: "alarm",
             icon: BiAlarm,
           },
         ]}

@@ -1,11 +1,11 @@
-import type { Config, Responsive } from '../types';
+import type { Config, Responsive } from "../types";
 
 export type SpaceValue = 0 | 1 | 2 | 3 | 4 | 5;
 export type SpaceType<T> = Responsive<
   T | [T, T, T, T] | [T, T, T] | [T, T] | [T]
 >;
 
-export type MarginValue = SpaceValue | 'auto';
+export type MarginValue = SpaceValue | "auto";
 export type PaddingValue = SpaceValue;
 
 export type MarginType = Responsive<MarginValue>;
@@ -83,7 +83,7 @@ export interface SpaceProps {
   py?: PaddingType;
 }
 
-const suffixes = [[''], ['y', 'x'], ['t', 'x', 'b'], ['t', 'e', 'b', 's']];
+const suffixes = [[""], ["y", "x"], ["t", "x", "b"], ["t", "e", "b", "s"]];
 
 const space = (cls: string) => (value: any, breakpoint?: string) => {
   const className = breakpoint
@@ -99,23 +99,23 @@ const spaces = (cls: string) => (value: any, breakpoints?: string) => {
   const values = Array.isArray(value) ? value : [value];
   const names = suffixes[values.length - 1];
   return names
-    .map(x => cls + x)
+    .map((x) => cls + x)
     .map((x, i) => space(x)(values[i], breakpoints));
 };
 
 export const SpaceConfig: Config<SpaceProps> = {
-  m: spaces('m'),
-  mt: space('mt'),
-  mb: space('mb'),
-  ms: space('ms'),
-  me: space('me'),
-  mx: space('mx'),
-  my: space('my'),
-  p: spaces('p'),
-  pt: space('pt'),
-  pb: space('pb'),
-  ps: space('ps'),
-  pe: space('pe'),
-  px: space('px'),
-  py: space('py'),
+  m: spaces("m"),
+  mt: space("mt"),
+  mb: space("mb"),
+  ms: space("ms"),
+  me: space("me"),
+  mx: space("mx"),
+  my: space("my"),
+  p: spaces("p"),
+  pt: space("pt"),
+  pb: space("pb"),
+  ps: space("ps"),
+  pe: space("pe"),
+  px: space("px"),
+  py: space("py"),
 };

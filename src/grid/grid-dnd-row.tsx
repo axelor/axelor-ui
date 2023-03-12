@@ -1,28 +1,28 @@
 /**
  * @title Row Reorder
  */
-import React from 'react';
-import { Draggable, Droppable, DragDropContext } from 'react-beautiful-dnd';
-import { Box, Icon } from '../core';
-import { ReactComponent as BiList } from 'bootstrap-icons/icons/list.svg';
-import * as TYPES from './types';
+import React from "react";
+import { Draggable, Droppable, DragDropContext } from "react-beautiful-dnd";
+import { Box, Icon } from "../core";
+import { ReactComponent as BiList } from "bootstrap-icons/icons/list.svg";
+import * as TYPES from "./types";
 
 const GridDNDRowContext = React.createContext<any>(null);
 
-export interface GridDNDBodyProps extends Pick<TYPES.GridState, 'rows'> {
+export interface GridDNDBodyProps extends Pick<TYPES.GridState, "rows"> {
   children: React.ReactNode;
   style?: any;
   className?: string;
-  onRowMove?: TYPES.GridRowProps['onMove'];
-  onRowMoveStart?: TYPES.GridRowProps['onMoveStart'];
+  onRowMove?: TYPES.GridRowProps["onMove"];
+  onRowMoveStart?: TYPES.GridRowProps["onMoveStart"];
 }
 
 function getStyle(style: any) {
   const { transform } = style;
   if (transform) {
     const [, X] = transform
-      .slice('translate('.length, transform.length - 1)
-      .split(',')
+      .slice("translate(".length, transform.length - 1)
+      .split(",")
       .map((x: string) => x.trim());
     const axisLockX = `translate(0px, ${X})`;
     return {
@@ -57,11 +57,11 @@ export function GridDNDContainer(props: GridDNDBodyProps) {
   return (
     <DragDropContext onDragStart={onRowMoveStart} onDragEnd={handleDragEnd}>
       <Droppable
-        droppableId={'GRID_ROWS'}
-        type={'GRID_ROW'}
+        droppableId={"GRID_ROWS"}
+        type={"GRID_ROW"}
         direction="vertical"
       >
-        {provided => (
+        {(provided) => (
           <div
             className={className}
             style={style}
@@ -81,11 +81,11 @@ export function GridDNDRow(props: TYPES.GridRowProps) {
   const { index, className, children, data } = props;
   return (
     <Draggable draggableId={`${data.key}`} index={index}>
-      {provided => (
+      {(provided) => (
         <GridDNDRowContext.Provider value={provided.dragHandleProps}>
           <div
             {...provided.draggableProps}
-            ref={ref => provided.innerRef(ref)}
+            ref={(ref) => provided.innerRef(ref)}
             style={getStyle(provided.draggableProps.style)}
             {...{ className, children }}
           />
@@ -105,7 +105,7 @@ export function GridDNDColumn({
   return (
     <div
       {...props}
-      style={{ ...props?.style, cursor: 'move', ...style }}
+      style={{ ...props?.style, cursor: "move", ...style }}
       {...{ className, onClick }}
     >
       <Icon as={BiList} />

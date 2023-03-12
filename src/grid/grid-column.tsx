@@ -1,18 +1,18 @@
-import React from 'react';
-import { useClassNames } from '../core';
-import * as TYPES from './types';
-import styles from './grid.module.scss';
+import React from "react";
+import { useClassNames } from "../core";
+import * as TYPES from "./types";
+import styles from "./grid.module.scss";
 
 export interface GridColumnProps {
   data: TYPES.GridColumn;
   index: number;
   className?: string;
   value?: any;
-  type?: 'header' | 'footer' | 'body';
+  type?: "header" | "footer" | "body";
   selected?: boolean;
   focus?: boolean;
   renderer?: TYPES.Renderer;
-  onUpdate?: TYPES.GridRowProps['onUpdate'];
+  onUpdate?: TYPES.GridRowProps["onUpdate"];
   onClick?: (
     e: React.SyntheticEvent,
     column: TYPES.GridColumn,
@@ -25,7 +25,7 @@ export function GridColumn(props: GridColumnProps) {
   const { children, className, data, index, selected, renderer, onClick } =
     props;
   const { width, minWidth } = data;
-  const ColumnComponent = renderer || 'div';
+  const ColumnComponent = renderer || "div";
   const rendererProps = renderer ? props : {};
   const columnRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -49,14 +49,14 @@ export function GridColumn(props: GridColumnProps) {
     <ColumnComponent
       {...(renderer ? {} : { ref: columnRef })}
       {...rendererProps}
-      onClick={e => onClick && onClick(e, data, index)}
+      onClick={(e) => onClick && onClick(e, data, index)}
       className={classNames(styles.column, className, data.$css, {
-        [styles.center]: ['row-checked'].includes(data.type || ''),
+        [styles.center]: ["row-checked"].includes(data.type || ""),
         [styles.selected]: selected,
       })}
       style={{ minWidth: $width, width: $width }}
     >
-      {children && typeof children === 'object' ? (
+      {children && typeof children === "object" ? (
         children
       ) : (
         <span>{children}</span>

@@ -1,5 +1,5 @@
-@use 'sass:color';
-@import '~bootstrap/scss/root';
+@use "sass:color";
+@import "~bootstrap/scss/root";
 
 .accordion {
   --bs-accordion-color: #{color-contrast($accordion-bg)};
@@ -120,8 +120,8 @@
 }
 
 $buttons: (
-  'primary': #6a67ff,
-  'danger': #ff6767,
+  "primary": #6a67ff,
+  "danger": #ff6767,
 );
 
 @each $type, $color in $buttons {

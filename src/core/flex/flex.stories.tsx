@@ -1,8 +1,8 @@
-import { Box } from '../box/box';
+import { Box } from "../box/box";
 
 const config = {
   component: Box,
-  title: 'Layout/Flex',
+  title: "Layout/Flex",
 };
 
 const Container = (props: any) => (
@@ -14,10 +14,10 @@ const Cell = (props: any) => <Box {...props} border p={2} />;
 export const Basic = ({ t }: any) => {
   return (
     <Container>
-      <Cell>{t('Item')} 1</Cell>
-      <Cell>{t('Item')} 2</Cell>
-      <Cell>{t('Item')} 3</Cell>
-      <Cell>{t('Item')} 4</Cell>
+      <Cell>{t("Item")} 1</Cell>
+      <Cell>{t("Item")} 2</Cell>
+      <Cell>{t("Item")} 3</Cell>
+      <Cell>{t("Item")} 4</Cell>
     </Container>
   );
 };
@@ -26,28 +26,28 @@ export const Direction = ({ t }: any) => {
   return (
     <Container flexDirection="column">
       <Container flexDirection="row">
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
-        <Cell>{t('Item')} 4</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
+        <Cell>{t("Item")} 4</Cell>
       </Container>
       <Container flexDirection="row-reverse">
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
-        <Cell>{t('Item')} 4</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
+        <Cell>{t("Item")} 4</Cell>
       </Container>
       <Container flexDirection="column" alignItems="flex-start">
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
-        <Cell>{t('Item')} 4</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
+        <Cell>{t("Item")} 4</Cell>
       </Container>
       <Container flexDirection="column-reverse" alignItems="flex-start">
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
-        <Cell>{t('Item')} 4</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
+        <Cell>{t("Item")} 4</Cell>
       </Container>
     </Container>
   );
@@ -57,28 +57,28 @@ export const Wrap = ({ t }: any) => {
   return (
     <Container flexDirection="column" style={{ width: 300 }}>
       <Container flexWrap="nowrap">
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
-        <Cell>{t('Item')} 4</Cell>
-        <Cell>{t('Item')} 5</Cell>
-        <Cell>{t('Item')} 6</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
+        <Cell>{t("Item")} 4</Cell>
+        <Cell>{t("Item")} 5</Cell>
+        <Cell>{t("Item")} 6</Cell>
       </Container>
       <Container flexWrap="wrap">
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
-        <Cell>{t('Item')} 4</Cell>
-        <Cell>{t('Item')} 5</Cell>
-        <Cell>{t('Item')} 6</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
+        <Cell>{t("Item")} 4</Cell>
+        <Cell>{t("Item")} 5</Cell>
+        <Cell>{t("Item")} 6</Cell>
       </Container>
       <Container flexWrap="wrap-reverse">
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
-        <Cell>{t('Item')} 4</Cell>
-        <Cell>{t('Item')} 5</Cell>
-        <Cell>{t('Item')} 6</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
+        <Cell>{t("Item")} 4</Cell>
+        <Cell>{t("Item")} 5</Cell>
+        <Cell>{t("Item")} 6</Cell>
       </Container>
     </Container>
   );
@@ -88,34 +88,34 @@ export const JustifyContent = ({ t }: any) => {
   return (
     <Container flexDirection="column">
       <Container justifyContent="flex-start">
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
       </Container>
       <Container justifyContent="flex-end">
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
       </Container>
       <Container justifyContent="center">
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
       </Container>
       <Container justifyContent="space-between">
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
       </Container>
       <Container justifyContent="space-around">
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
       </Container>
       <Container justifyContent="space-evenly">
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
       </Container>
     </Container>
   );
@@ -125,29 +125,29 @@ export const AlignItems = ({ t }: any) => {
   return (
     <Container flexDirection="column">
       <Container alignItems="flex-start" style={{ height: 100 }}>
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
       </Container>
       <Container alignItems="flex-end" style={{ height: 100 }}>
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
       </Container>
       <Container alignItems="center" style={{ height: 100 }}>
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
       </Container>
       <Container alignItems="stretch" style={{ height: 100 }}>
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
       </Container>
       <Container alignItems="baseline" style={{ height: 100 }}>
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
       </Container>
     </Container>
   );
@@ -161,91 +161,91 @@ export const AlignContent = ({ t }: any) => {
         alignContent="flex-start"
         style={{ width: 380, height: 200 }}
       >
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
-        <Cell>{t('Item')} 4</Cell>
-        <Cell>{t('Item')} 5</Cell>
-        <Cell>{t('Item')} 6</Cell>
-        <Cell>{t('Item')} 7</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
+        <Cell>{t("Item")} 4</Cell>
+        <Cell>{t("Item")} 5</Cell>
+        <Cell>{t("Item")} 6</Cell>
+        <Cell>{t("Item")} 7</Cell>
       </Container>
       <Container
         flexWrap="wrap"
         alignContent="flex-end"
         style={{ width: 380, height: 200 }}
       >
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
-        <Cell>{t('Item')} 4</Cell>
-        <Cell>{t('Item')} 5</Cell>
-        <Cell>{t('Item')} 6</Cell>
-        <Cell>{t('Item')} 7</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
+        <Cell>{t("Item")} 4</Cell>
+        <Cell>{t("Item")} 5</Cell>
+        <Cell>{t("Item")} 6</Cell>
+        <Cell>{t("Item")} 7</Cell>
       </Container>
       <Container
         flexWrap="wrap"
         alignContent="center"
         style={{ width: 380, height: 200 }}
       >
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
-        <Cell>{t('Item')} 4</Cell>
-        <Cell>{t('Item')} 5</Cell>
-        <Cell>{t('Item')} 6</Cell>
-        <Cell>{t('Item')} 7</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
+        <Cell>{t("Item")} 4</Cell>
+        <Cell>{t("Item")} 5</Cell>
+        <Cell>{t("Item")} 6</Cell>
+        <Cell>{t("Item")} 7</Cell>
       </Container>
       <Container
         flexWrap="wrap"
         alignContent="space-between"
         style={{ width: 380, height: 200 }}
       >
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
-        <Cell>{t('Item')} 4</Cell>
-        <Cell>{t('Item')} 5</Cell>
-        <Cell>{t('Item')} 6</Cell>
-        <Cell>{t('Item')} 7</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
+        <Cell>{t("Item")} 4</Cell>
+        <Cell>{t("Item")} 5</Cell>
+        <Cell>{t("Item")} 6</Cell>
+        <Cell>{t("Item")} 7</Cell>
       </Container>
       <Container
         flexWrap="wrap"
         alignContent="space-around"
         style={{ width: 380, height: 200 }}
       >
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
-        <Cell>{t('Item')} 4</Cell>
-        <Cell>{t('Item')} 5</Cell>
-        <Cell>{t('Item')} 6</Cell>
-        <Cell>{t('Item')} 7</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
+        <Cell>{t("Item")} 4</Cell>
+        <Cell>{t("Item")} 5</Cell>
+        <Cell>{t("Item")} 6</Cell>
+        <Cell>{t("Item")} 7</Cell>
       </Container>
       <Container
         flexWrap="wrap"
         alignContent="space-evenly"
         style={{ width: 380, height: 200 }}
       >
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
-        <Cell>{t('Item')} 4</Cell>
-        <Cell>{t('Item')} 5</Cell>
-        <Cell>{t('Item')} 6</Cell>
-        <Cell>{t('Item')} 7</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
+        <Cell>{t("Item")} 4</Cell>
+        <Cell>{t("Item")} 5</Cell>
+        <Cell>{t("Item")} 6</Cell>
+        <Cell>{t("Item")} 7</Cell>
       </Container>
       <Container
         flexWrap="wrap"
         alignContent="stretch"
         style={{ width: 380, height: 200 }}
       >
-        <Cell>{t('Item')} 1</Cell>
-        <Cell>{t('Item')} 2</Cell>
-        <Cell>{t('Item')} 3</Cell>
-        <Cell>{t('Item')} 4</Cell>
-        <Cell>{t('Item')} 5</Cell>
-        <Cell>{t('Item')} 6</Cell>
-        <Cell>{t('Item')} 7</Cell>
+        <Cell>{t("Item")} 1</Cell>
+        <Cell>{t("Item")} 2</Cell>
+        <Cell>{t("Item")} 3</Cell>
+        <Cell>{t("Item")} 4</Cell>
+        <Cell>{t("Item")} 5</Cell>
+        <Cell>{t("Item")} 6</Cell>
+        <Cell>{t("Item")} 7</Cell>
       </Container>
     </Container>
   );
@@ -254,9 +254,9 @@ export const AlignContent = ({ t }: any) => {
 export const Order = ({ t }: any) => {
   return (
     <Container>
-      <Cell order={3}>{t('Item')} 1</Cell>
-      <Cell order={2}>{t('Item')} 2</Cell>
-      <Cell order={1}>{t('Item')} 3</Cell>
+      <Cell order={3}>{t("Item")} 1</Cell>
+      <Cell order={2}>{t("Item")} 2</Cell>
+      <Cell order={1}>{t("Item")} 3</Cell>
     </Container>
   );
 };
@@ -264,9 +264,9 @@ export const Order = ({ t }: any) => {
 export const Grow = ({ t }: any) => {
   return (
     <Container>
-      <Cell flexGrow={1}>{t('Item')} 1</Cell>
-      <Cell>{t('Item')} 2</Cell>
-      <Cell>{t('Item')} 3</Cell>
+      <Cell flexGrow={1}>{t("Item")} 1</Cell>
+      <Cell>{t("Item")} 2</Cell>
+      <Cell>{t("Item")} 3</Cell>
     </Container>
   );
 };
@@ -274,9 +274,9 @@ export const Grow = ({ t }: any) => {
 export const Shrink = ({ t }: any) => {
   return (
     <Container>
-      <Cell w={100}>{t('Item')} 1</Cell>
-      <Cell flexShrink={1}>{t('Item')} 2</Cell>
-      <Cell flexShrink={0}>{t('Item')} 3</Cell>
+      <Cell w={100}>{t("Item")} 1</Cell>
+      <Cell flexShrink={1}>{t("Item")} 2</Cell>
+      <Cell flexShrink={0}>{t("Item")} 3</Cell>
     </Container>
   );
 };
@@ -284,9 +284,9 @@ export const Shrink = ({ t }: any) => {
 export const AlignSelf = ({ t }: any) => {
   return (
     <Container alignItems="flex-start" style={{ height: 150 }}>
-      <Cell>{t('Item')} 1</Cell>
-      <Cell alignSelf="flex-end">{t('Item')} 2</Cell>
-      <Cell>{t('Item')} 3</Cell>
+      <Cell>{t("Item")} 1</Cell>
+      <Cell alignSelf="flex-end">{t("Item")} 2</Cell>
+      <Cell>{t("Item")} 3</Cell>
     </Container>
   );
 };

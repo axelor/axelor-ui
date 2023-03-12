@@ -1,14 +1,14 @@
-import React from 'react';
-import moment from 'moment';
-import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
-import { getEmptyImage } from 'react-dnd-html5-backend';
-import { Icon, useTheme } from '../core';
-import { useClassNames } from '../core';
-import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-down-fill.svg';
+import React from "react";
+import moment from "moment";
+import { DragSourceMonitor, useDrag, useDrop } from "react-dnd";
+import { getEmptyImage } from "react-dnd-html5-backend";
+import { Icon, useTheme } from "../core";
+import { useClassNames } from "../core";
+import { ReactComponent as BiCaretDownFill } from "bootstrap-icons/icons/caret-down-fill.svg";
 
-import { CONFIG, getDateFromOffset } from './utils';
-import * as TYPES from './types';
-import classes from './gantt.module.scss';
+import { CONFIG, getDateFromOffset } from "./utils";
+import * as TYPES from "./types";
+import classes from "./gantt.module.scss";
 
 function disablePreview(preview: (e: any, options: any) => void) {
   preview(getEmptyImage(), { captureDraggingState: true });
@@ -43,7 +43,7 @@ function VirtualLine({
   const xMid = (x1 + x2) / 2;
   const yMid = (y1 + y2) / 2;
   const degree = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
-  const leftSpace = type === 'start' ? 0 : 10;
+  const leftSpace = type === "start" ? 0 : 10;
 
   const left = xMid - distance / 2 + leftSpace;
   return (
@@ -69,8 +69,8 @@ export const GanttLine = React.memo(function GanttLine(props: {
   endDate: moment.Moment;
   view: TYPES.GanttType;
   data: TYPES.GanttRecord;
-  onUpdate?: TYPES.GanttProps['onRecordUpdate'];
-  onConnect?: TYPES.GanttProps['onRecordConnect'];
+  onUpdate?: TYPES.GanttProps["onRecordUpdate"];
+  onConnect?: TYPES.GanttProps["onRecordConnect"];
 }) {
   const dragLineRef = React.useRef<HTMLDivElement>(null);
   const leftConnectRef = React.useRef<HTMLDivElement>(null);
@@ -86,7 +86,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
   } | null>(null);
 
   const { dir } = useTheme();
-  const rtl = dir === 'rtl';
+  const rtl = dir === "rtl";
 
   const {
     startDate,
@@ -116,7 +116,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
   const setVirtualLineSource = (source: TYPES.GanttVirtualLinePoint) =>
     setVirtualLine({ source });
   const setVirtualLineTarget = (target: TYPES.GanttVirtualLinePoint) =>
-    setVirtualLine(line => ({ ...line, target }));
+    setVirtualLine((line) => ({ ...line, target }));
 
   const getDragProps = (type: string, options?: any) => ({
     type,
@@ -196,7 +196,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
         const source: TYPES.GanttVirtualLinePoint = {
           x: clientOffset.x - parentBound.left + 10,
           y: clientOffset.y - parentBound.top - 5,
-          type: 'start',
+          type: "start",
         };
         setVirtualLineSource(source);
       }
@@ -224,7 +224,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
         const source: TYPES.GanttVirtualLinePoint = {
           x: clientOffset.x - parentBound.left - 5,
           y: clientOffset.y - parentBound.top - 5,
-          type: 'finish',
+          type: "finish",
         };
         setVirtualLineSource(source);
       }
@@ -245,8 +245,8 @@ export const GanttLine = React.memo(function GanttLine(props: {
       const coords: TYPES.ConnectProps = {
         startId: dragItem.id,
         finishId: id,
-        source: dragItem.type === 'CONNECT_START' ? 'start' : 'finish',
-        target: 'start',
+        source: dragItem.type === "CONNECT_START" ? "start" : "finish",
+        target: "start",
       };
       !dragItem.connect && onConnect && onConnect(coords);
     },
@@ -254,7 +254,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
       const dragItem: TYPES.GanttDragItem = monitor.getItem();
       return dragItem.id !== data.id;
     },
-    collect: monitor => ({
+    collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
     }),
@@ -267,8 +267,8 @@ export const GanttLine = React.memo(function GanttLine(props: {
       const coords: TYPES.ConnectProps = {
         startId: dragItem.id,
         finishId: id,
-        source: dragItem.type === 'CONNECT_START' ? 'start' : 'finish',
-        target: 'start',
+        source: dragItem.type === "CONNECT_START" ? "start" : "finish",
+        target: "start",
       };
       dragItem.connect = true;
       onConnect && onConnect(coords);
@@ -277,7 +277,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
       const dragItem: TYPES.GanttDragItem = monitor.getItem();
       return dragItem.id !== data.id;
     },
-    collect: monitor => ({
+    collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
     }),
@@ -290,8 +290,8 @@ export const GanttLine = React.memo(function GanttLine(props: {
       const coords: TYPES.ConnectProps = {
         startId: dragItem.id,
         finishId: id,
-        source: dragItem.type === 'CONNECT_START' ? 'start' : 'finish',
-        target: 'finish',
+        source: dragItem.type === "CONNECT_START" ? "start" : "finish",
+        target: "finish",
       };
       dragItem.connect = true;
       onConnect && onConnect(coords);
@@ -300,7 +300,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
       const dragItem: TYPES.GanttDragItem = monitor.getItem();
       return dragItem.id !== data.id;
     },
-    collect: monitor => ({
+    collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
     }),
@@ -337,7 +337,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
   React.useEffect(() => {
     const dragLine = dragLineRef.current;
     if (dragLine) {
-      dragLine.style[rtl ? 'right' : 'left'] = `${x}px`;
+      dragLine.style[rtl ? "right" : "left"] = `${x}px`;
       dragLine.style.top = `${y}px`;
     }
   }, [x, y, data, rtl]);
@@ -353,14 +353,14 @@ export const GanttLine = React.memo(function GanttLine(props: {
         })}
         style={{
           top: y,
-          position: 'absolute',
+          position: "absolute",
           width,
           height: CONFIG.LINE_HEIGHT,
           ...(rtl ? { right: x } : { left: x }),
           ...($color
             ? {
-                '--gantt-line-bg': getRGBA($color, 0.75),
-                '--gantt-progress-color': getRGBA($color, 1),
+                "--gantt-line-bg": getRGBA($color, 0.75),
+                "--gantt-progress-color": getRGBA($color, 1),
               }
             : {}),
         }}
@@ -380,7 +380,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
             }}
           >
             <div className={classes.ganttLineProgressLabel}>
-              {`${progress > 0 ? Math.round(progress) : '0'}%`}
+              {`${progress > 0 ? Math.round(progress) : "0"}%`}
             </div>
           </div>
         </div>
@@ -392,7 +392,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
             [classes.show]:
               leftConnectProps.isOver ||
               dropProps.isOver ||
-              (virtualLine && virtualLine.source?.type === 'start'),
+              (virtualLine && virtualLine.source?.type === "start"),
             [classes.connect]: leftConnectProps.isOver,
           })}
         >
@@ -422,7 +422,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
             [classes.show]:
               rightConnectProps.isOver ||
               dropProps.isOver ||
-              (virtualLine && virtualLine.source?.type === 'finish'),
+              (virtualLine && virtualLine.source?.type === "finish"),
             [classes.connect]: rightConnectProps.isOver,
           })}
         >
@@ -452,7 +452,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
           ref={progressDrag}
           className={classes.ganttLineProgressIndicator}
           style={{
-            [rtl ? 'right' : 'left']: Math.min(
+            [rtl ? "right" : "left"]: Math.min(
               width - 10,
               Math.max(0, progressWidth - (progressWidth > 5 ? 5 : 0))
             ),

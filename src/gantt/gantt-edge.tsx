@@ -1,11 +1,11 @@
-import React, { useCallback } from 'react';
-import { Icon, useClassNames, useTheme } from '../core';
+import React, { useCallback } from "react";
+import { Icon, useClassNames, useTheme } from "../core";
 
-import { ReactComponent as BiCaretRightFill } from 'bootstrap-icons/icons/caret-right-fill.svg';
-import { ReactComponent as BiCaretLeftFill } from 'bootstrap-icons/icons/caret-left-fill.svg';
+import { ReactComponent as BiCaretRightFill } from "bootstrap-icons/icons/caret-right-fill.svg";
+import { ReactComponent as BiCaretLeftFill } from "bootstrap-icons/icons/caret-left-fill.svg";
 
-import classes from './gantt.module.scss';
-import * as TYPES from './types';
+import classes from "./gantt.module.scss";
+import * as TYPES from "./types";
 
 const Line = React.memo<{
   x1: number;
@@ -36,7 +36,7 @@ const Line = React.memo<{
   const height = y1 !== y2 ? Math.abs(y1 - y2) : 0;
 
   const { dir } = useTheme();
-  const rtl = dir === 'rtl';
+  const rtl = dir === "rtl";
 
   const classNames = useClassNames();
 
@@ -52,7 +52,7 @@ const Line = React.memo<{
     [source, target, targetEnd, sourceStart, onDeleteConnector]
   );
 
-  const isStartPointer = targetEnd === 'start';
+  const isStartPointer = targetEnd === "start";
 
   let pointerIcon;
 
@@ -91,10 +91,10 @@ const Line = React.memo<{
 
 export type GanttEdgeProps = {
   edge: TYPES.GanttEdge;
-  onDelete?: TYPES.GanttProps['onRecordDisconnect'];
+  onDelete?: TYPES.GanttProps["onRecordDisconnect"];
 };
 
-export const GanttEdge = React.memo<GanttEdgeProps>(props => {
+export const GanttEdge = React.memo<GanttEdgeProps>((props) => {
   const { edge, onDelete } = props;
   const {
     bendPoints,

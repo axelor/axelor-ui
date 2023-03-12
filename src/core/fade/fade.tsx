@@ -1,20 +1,20 @@
-import { cloneElement, forwardRef, isValidElement } from 'react';
-import { Transition } from 'react-transition-group';
-import { useForwardedRef } from '../hooks';
-import { TransitionProps } from '../transitions/types';
+import { cloneElement, forwardRef, isValidElement } from "react";
+import { Transition } from "react-transition-group";
+import { useForwardedRef } from "../hooks";
+import { TransitionProps } from "../transitions/types";
 import {
   getTransition,
   getTransitionProps,
   getTransitionStyle,
   reflow,
-} from '../transitions/utils';
+} from "../transitions/utils";
 
 export interface FadeProps extends TransitionProps {}
 
 const styles = {
   exited: {
     opacity: 0,
-    visibility: 'hidden',
+    visibility: "hidden",
   },
 };
 
@@ -27,16 +27,16 @@ export const Fade = forwardRef<HTMLElement, FadeProps>(
     const handleEnter = (isAppearing: boolean) => {
       const node: HTMLElement = nodeRef.current!;
       const style = node.style;
-      const options = getTransitionProps('enter', {
+      const options = getTransitionProps("enter", {
         timeout,
         style,
       });
 
       reflow(node);
 
-      style.opacity = '1';
-      style.visibility = '';
-      style.transition = getTransition('opacity', options);
+      style.opacity = "1";
+      style.visibility = "";
+      style.transition = getTransition("opacity", options);
 
       if (onEnter) {
         onEnter(node, isAppearing);
@@ -46,13 +46,13 @@ export const Fade = forwardRef<HTMLElement, FadeProps>(
     const handleExit = () => {
       const node: HTMLElement = nodeRef.current!;
       const style = node.style;
-      const options = getTransitionProps('exit', {
+      const options = getTransitionProps("exit", {
         timeout,
         style,
       });
 
-      style.opacity = '0';
-      style.transition = getTransition('opacity', options);
+      style.opacity = "0";
+      style.transition = getTransition("opacity", options);
 
       if (onExit) {
         onExit(node);
@@ -69,7 +69,7 @@ export const Fade = forwardRef<HTMLElement, FadeProps>(
         nodeRef={nodeRef}
         {...props}
       >
-        {state => {
+        {(state) => {
           if (isValidElement(children)) {
             const style = getTransitionStyle(state, styles as any, children);
             return cloneElement(children as React.ReactElement, {

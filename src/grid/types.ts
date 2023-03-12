@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react';
+import React, { SyntheticEvent } from "react";
 
 export interface GridColumn {
   name: string;
@@ -12,7 +12,7 @@ export interface GridColumn {
   sortable?: boolean;
   searchable?: boolean;
   action?: boolean;
-  aggregate?: 'sum' | 'min' | 'max' | 'avg' | 'count';
+  aggregate?: "sum" | "min" | "max" | "avg" | "count";
   formatter?: (column: GridColumn, value: any, record: any) => any;
   renderer?: (props: any) => any;
   $changed?: boolean;
@@ -21,7 +21,7 @@ export interface GridColumn {
 
 export interface GridSortColumn {
   name: string;
-  order: 'asc' | 'desc';
+  order: "asc" | "desc";
 }
 
 export interface GridGroup {
@@ -30,11 +30,11 @@ export interface GridGroup {
 
 export interface GridRow {
   key: any;
-  type: 'row' | 'group-row' | 'footer-row';
+  type: "row" | "group-row" | "footer-row";
   parent?: string | null;
   aggregate?: any;
   record?: any;
-  state?: 'open' | 'close';
+  state?: "open" | "close";
 }
 
 export interface GridState {
@@ -58,10 +58,10 @@ export interface GridProps {
   columns: any[];
   state: GridState;
   setState: (state: GridState | GridStateHandler) => void;
-  sortType?: 'live' | 'state';
-  resizeType?: 'live' | 'highlight';
-  selectionType?: 'single' | 'multiple';
-  aggregationType?: 'group' | 'all';
+  sortType?: "live" | "state";
+  resizeType?: "live" | "highlight";
+  selectionType?: "single" | "multiple";
+  aggregationType?: "group" | "all";
   editable?: boolean;
   allowGrouping?: boolean;
   allowSearch?: boolean;
@@ -138,11 +138,11 @@ export interface GridRowProps {
   editCell?: number | null;
   renderer?: Renderer;
   cellRenderer?: Renderer;
-  selectionType?: GridProps['selectionType'];
-  onSave?: GridProps['onRecordSave'];
-  onCancel?: GridProps['onRecordDiscard'];
-  onCellClick?: GridProps['onCellClick'];
-  onDoubleClick?: GridProps['onRowDoubleClick'];
+  selectionType?: GridProps["selectionType"];
+  onSave?: GridProps["onRecordSave"];
+  onCancel?: GridProps["onRecordDiscard"];
+  onCellClick?: GridProps["onCellClick"];
+  onDoubleClick?: GridProps["onRowDoubleClick"];
   onMove?: (dragRow: GridRow, hoverRow: GridRow, isFirstRow?: boolean) => void;
   onMoveStart?: (dragInfo: any) => void;
   onClick?: (

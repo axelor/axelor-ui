@@ -1,6 +1,6 @@
-import styled, { withStyled } from '../styled';
-import { clsx, useClassNames } from '../styles';
-import { TVariant } from '../system';
+import styled, { withStyled } from "../styled";
+import { clsx, useClassNames } from "../styles";
+import { TVariant } from "../system";
 
 export interface AlertProps {
   variant?: TVariant;
@@ -26,7 +26,7 @@ export const AlertHeader = withStyled(HeaderRoot)((props, ref) => {
   return (
     <HeaderRoot
       ref={ref}
-      className={clsx(className, classNames('alert-heading'))}
+      className={clsx(className, classNames("alert-heading"))}
       {...rest}
     >
       {children}
@@ -42,7 +42,7 @@ export const AlertLink = withStyled(StyledLink)((props, ref) => {
   return (
     <StyledLink
       ref={ref}
-      className={clsx(className, classNames('alert-link'))}
+      className={clsx(className, classNames("alert-link"))}
       {...rest}
     >
       {children}
@@ -53,12 +53,12 @@ export const AlertLink = withStyled(StyledLink)((props, ref) => {
 const AlertRoot = styled.div<AlertProps>();
 
 export const Alert = withStyled(AlertRoot)((props, ref) => {
-  const { className, children, variant = 'info', ...rest } = props;
+  const { className, children, variant = "info", ...rest } = props;
   const classNames = useClassNames();
   return (
     <AlertRoot
       ref={ref}
-      className={clsx(className, classNames('alert', `alert-${variant}`))}
+      className={clsx(className, classNames("alert", `alert-${variant}`))}
       {...rest}
     >
       {children}

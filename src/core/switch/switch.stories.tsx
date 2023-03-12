@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { Box } from '../box';
-import { Switch } from './switch';
+import { Box } from "../box";
+import { Switch } from "./switch";
 
 const config = {
   component: Switch,
-  title: 'Components/Switch',
+  title: "Components/Switch",
 };
 
 export const Basic = () => {

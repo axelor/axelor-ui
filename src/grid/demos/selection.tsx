@@ -1,11 +1,11 @@
 /**
  * @title Selection
  */
-import { Box } from '../../core';
-import { Grid } from '../grid';
-import { GridProvider } from '../grid-provider';
-import { columns, records } from './demo-data';
-import useGridState from './useGridState';
+import { Box } from "../../core";
+import { Grid } from "../grid";
+import { GridProvider } from "../grid-provider";
+import { columns, records } from "./demo-data";
+import useGridState from "./useGridState";
 
 export default function Selection({
   singleSelection,
@@ -21,7 +21,7 @@ export default function Selection({
           allowSelection
           allowCheckboxSelection
           allowCellSelection
-          selectionType={singleSelection ? 'single' : 'multiple'}
+          selectionType={singleSelection ? "single" : "multiple"}
           records={records}
           columns={columns}
           state={state}

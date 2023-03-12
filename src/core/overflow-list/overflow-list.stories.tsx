@@ -1,20 +1,20 @@
-import React from 'react';
-import { ReactComponent as BiChevronLeft } from 'bootstrap-icons/icons/chevron-left.svg';
-import { ReactComponent as BiChevronRight } from 'bootstrap-icons/icons/chevron-right.svg';
-import { ReactComponent as BiChevronUp } from 'bootstrap-icons/icons/chevron-up.svg';
-import { ReactComponent as BiChevronDown } from 'bootstrap-icons/icons/chevron-down.svg';
-import { ReactComponent as BiThreeDots } from 'bootstrap-icons/icons/three-dots.svg';
+import React from "react";
+import { ReactComponent as BiChevronLeft } from "bootstrap-icons/icons/chevron-left.svg";
+import { ReactComponent as BiChevronRight } from "bootstrap-icons/icons/chevron-right.svg";
+import { ReactComponent as BiChevronUp } from "bootstrap-icons/icons/chevron-up.svg";
+import { ReactComponent as BiChevronDown } from "bootstrap-icons/icons/chevron-down.svg";
+import { ReactComponent as BiThreeDots } from "bootstrap-icons/icons/three-dots.svg";
 
-import { Box } from '../box';
-import { Button } from '../button';
-import { ButtonGroup } from '../button-group';
-import { Icon } from '../icon';
-import { OverflowList } from './overflow-list';
-import { OverflowListItemProps, OverflowListButtonType } from './types';
+import { Box } from "../box";
+import { Button } from "../button";
+import { ButtonGroup } from "../button-group";
+import { Icon } from "../icon";
+import { OverflowList } from "./overflow-list";
+import { OverflowListItemProps, OverflowListButtonType } from "./types";
 
 const config = {
   component: OverflowList,
-  title: 'Core/OverflowList',
+  title: "Core/OverflowList",
 };
 
 function Tab({ title, ...rest }: { title: string }) {
@@ -24,7 +24,7 @@ function Tab({ title, ...rest }: { title: string }) {
       d="flex"
       justifyContent="center"
       border
-      style={{ minWidth: 120, cursor: 'pointer' }}
+      style={{ minWidth: 120, cursor: "pointer" }}
       {...rest}
     >
       {title}
@@ -48,7 +48,7 @@ export const Dropdown = ({ inverse = false, vertical = false }) => {
         <Button
           border
           variant="light"
-          style={{ minWidth: 120, whiteSpace: 'nowrap' }}
+          style={{ minWidth: 120, whiteSpace: "nowrap" }}
           key={index}
         >
           {item.title}
@@ -66,7 +66,7 @@ export const Dropdown = ({ inverse = false, vertical = false }) => {
         );
       }}
       renderButton={(type: OverflowListButtonType, props: any) => {
-        if (type === 'dropdown') {
+        if (type === "dropdown") {
           return (
             <Button
               variant="light"
@@ -91,7 +91,7 @@ export const Dropdown = ({ inverse = false, vertical = false }) => {
 
 export const DropdownVertical = () => {
   return (
-    <Box d="flex" p={1} style={{ height: '25vh' }}>
+    <Box d="flex" p={1} style={{ height: "25vh" }}>
       <Dropdown vertical />
     </Box>
   );
@@ -103,7 +103,7 @@ export const DropdownInverse = () => {
 
 export const DropdownVerticalInverse = () => {
   return (
-    <Box d="flex" style={{ height: '25vh' }}>
+    <Box d="flex" style={{ height: "25vh" }}>
       <Dropdown vertical inverse />
     </Box>
   );
@@ -114,7 +114,7 @@ export const Scroll = (arg: any, { globals: { direction } }: any) => {
     .fill(0)
     .map((_, ind) => ({ title: ` Tab ${ind + 1} ` }));
 
-  const rtl = direction === 'rtl';
+  const rtl = direction === "rtl";
 
   return (
     <OverflowList
@@ -125,7 +125,7 @@ export const Scroll = (arg: any, { globals: { direction } }: any) => {
         items.map((item, ind) => <Tab key={ind} title={item.title} />)
       }
       renderButton={(type: OverflowListButtonType, props: any) => {
-        if (type === 'scroll-left') {
+        if (type === "scroll-left") {
           return (
             <Box
               d="flex"
@@ -138,7 +138,7 @@ export const Scroll = (arg: any, { globals: { direction } }: any) => {
             </Box>
           );
         }
-        if (type === 'scroll-right') {
+        if (type === "scroll-right") {
           return (
             <Box
               d="flex"
@@ -175,7 +175,7 @@ export const ScrollVertical = () => {
           items.map((item, ind) => <Tab key={ind} title={item.title} />)
         }
         renderButton={(type: OverflowListButtonType, props: any) => {
-          if (type === 'scroll-left') {
+          if (type === "scroll-left") {
             return (
               <Box
                 d="flex"
@@ -188,7 +188,7 @@ export const ScrollVertical = () => {
               </Box>
             );
           }
-          if (type === 'scroll-right') {
+          if (type === "scroll-right") {
             return (
               <Box
                 d="flex"

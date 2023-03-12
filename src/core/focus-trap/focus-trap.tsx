@@ -1,6 +1,6 @@
-import * as React from 'react';
-import * as focusTrap from 'focus-trap';
-import { useRefs } from '../hooks';
+import * as React from "react";
+import * as focusTrap from "focus-trap";
+import { useRefs } from "../hooks";
 
 export interface FocusTrapProps {
   enabled?: boolean;

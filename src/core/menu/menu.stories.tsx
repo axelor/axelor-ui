@@ -1,16 +1,16 @@
-import { useCallback, useRef, useState } from 'react';
-import * as React from 'react';
+import { useCallback, useRef, useState } from "react";
+import * as React from "react";
 
-import { Box } from '../box';
-import { Button } from '../button';
-import { Menu, MenuProps } from './menu';
-import { MenuHeader } from './menu-header';
-import { MenuItem } from './menu-item';
-import styled from '../styled';
+import { Box } from "../box";
+import { Button } from "../button";
+import { Menu, MenuProps } from "./menu";
+import { MenuHeader } from "./menu-header";
+import { MenuItem } from "./menu-item";
+import styled from "../styled";
 
 const config = {
   component: Menu,
-  title: 'Components/Menu',
+  title: "Components/Menu",
 };
 
 export const Basic = () => {
@@ -77,7 +77,7 @@ export const Header = () => {
 };
 
 const MyButton = styled(Button)(
-  ({ m = 2, variant = 'primary', textTransform = 'capitalize' }) => ({
+  ({ m = 2, variant = "primary", textTransform = "capitalize" }) => ({
     m,
     variant,
     textTransform,
@@ -96,12 +96,12 @@ export const Positions = () => {
   });
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const placement = e.currentTarget?.textContent || 'buttom-start';
+    const placement = e.currentTarget?.textContent || "buttom-start";
     setOpen(true);
     setTargetEl(e.currentTarget);
     setMenuProps({
       target: e.currentTarget,
-      placement: placement as MenuProps['placement'],
+      placement: placement as MenuProps["placement"],
     });
     clearTimeout(refs.current.timer);
     refs.current.clicked = true;
@@ -140,7 +140,7 @@ export const Positions = () => {
           d="flex"
           flexDirection="column"
           alignItems="start"
-          style={{ width: '50%' }}
+          style={{ width: "50%" }}
         >
           <MyButton onClick={handleClick}>start-top</MyButton>
           <MyButton onClick={handleClick}>start</MyButton>
@@ -150,7 +150,7 @@ export const Positions = () => {
           d="flex"
           flexDirection="column"
           alignItems="end"
-          style={{ width: '50%' }}
+          style={{ width: "50%" }}
         >
           <MyButton onClick={handleClick}>end-top</MyButton>
           <MyButton onClick={handleClick}>end</MyButton>

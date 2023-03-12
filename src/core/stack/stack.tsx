@@ -1,4 +1,4 @@
-import styled from '../styled';
+import styled from "../styled";
 
 export interface StackProps {
   gap?: 0 | 1 | 2 | 3 | 4 | 5;
@@ -14,6 +14,6 @@ export const Stack = styled.div<StackProps>(
     },
   ],
   () => ({
-    display: 'flex',
+    display: "flex",
   })
 );

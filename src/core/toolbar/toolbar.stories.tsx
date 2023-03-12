@@ -1,33 +1,33 @@
-import React from 'react';
-import { ReactComponent as BiThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg';
-import { ReactComponent as BiPlus } from 'bootstrap-icons/icons/plus.svg';
-import { ReactComponent as BiPencil } from 'bootstrap-icons/icons/pencil.svg';
-import { ReactComponent as BiTrash } from 'bootstrap-icons/icons/trash.svg';
-import { ReactComponent as BiArchive } from 'bootstrap-icons/icons/archive.svg';
-import { ReactComponent as BiArchiveFill } from 'bootstrap-icons/icons/archive-fill.svg';
-import { ReactComponent as BiArrowRepeat } from 'bootstrap-icons/icons/arrow-repeat.svg';
+import React from "react";
+import { ReactComponent as BiThreeDotsVertical } from "bootstrap-icons/icons/three-dots-vertical.svg";
+import { ReactComponent as BiPlus } from "bootstrap-icons/icons/plus.svg";
+import { ReactComponent as BiPencil } from "bootstrap-icons/icons/pencil.svg";
+import { ReactComponent as BiTrash } from "bootstrap-icons/icons/trash.svg";
+import { ReactComponent as BiArchive } from "bootstrap-icons/icons/archive.svg";
+import { ReactComponent as BiArchiveFill } from "bootstrap-icons/icons/archive-fill.svg";
+import { ReactComponent as BiArrowRepeat } from "bootstrap-icons/icons/arrow-repeat.svg";
 
-import { Box } from '../box';
-import { Icon } from '../icon';
-import { ButtonGroup } from '../button-group';
-import { Button } from '../button';
+import { Box } from "../box";
+import { Icon } from "../icon";
+import { ButtonGroup } from "../button-group";
+import { Button } from "../button";
 import {
   OverflowList,
   OverflowListButtonType,
   OverflowListItemProps,
-} from '../overflow-list';
-import { withStyled } from '../styled';
-import { IconProps } from '../icon/icon';
-import { useTheme } from '../styles';
+} from "../overflow-list";
+import { withStyled } from "../styled";
+import { IconProps } from "../icon/icon";
+import { useTheme } from "../styles";
 
 const config = {
   component: OverflowList,
-  title: 'Components/Toolbar',
+  title: "Components/Toolbar",
 };
 
 type TToolbarItem = {
   title: string;
-  icon?: IconProps['as'];
+  icon?: IconProps["as"];
   renderer?: React.ReactNode;
 };
 
@@ -35,16 +35,16 @@ const toolbar: {
   items: TToolbarItem[];
 } = {
   items: [
-    { title: 'New', icon: BiPlus },
-    { title: 'Edit', icon: BiPencil },
-    { title: 'Delete', icon: BiTrash },
-    { title: 'Archive', icon: BiArchive },
-    { title: 'Unarchive', icon: BiArchiveFill },
-    { title: 'Refresh', icon: BiArrowRepeat },
+    { title: "New", icon: BiPlus },
+    { title: "Edit", icon: BiPencil },
+    { title: "Delete", icon: BiTrash },
+    { title: "Archive", icon: BiArchive },
+    { title: "Unarchive", icon: BiArchiveFill },
+    { title: "Refresh", icon: BiArrowRepeat },
     {
-      title: 'Advance Search',
+      title: "Advance Search",
       renderer: (
-        <Box as="label" style={{ whiteSpace: 'nowrap' }}>
+        <Box as="label" style={{ whiteSpace: "nowrap" }}>
           Advance Search
         </Box>
       ),
@@ -75,12 +75,12 @@ interface TOverflowToolbarItem extends TToolbarItem {
 
 function OverflowToolbarItem({ title, icon, onClick }: TOverflowToolbarItem) {
   const { dir } = useTheme();
-  const rtl = dir === 'rtl';
+  const rtl = dir === "rtl";
   return (
     <Box
       d="flex"
       alignItems="center"
-      style={{ minWidth: 100, cursor: 'pointer' }}
+      style={{ minWidth: 100, cursor: "pointer" }}
       title={title}
       onClick={onClick}
     >
@@ -111,7 +111,7 @@ function Toolbar() {
         closePopup?: () => void
       ) => <OverflowToolbarItem key={index} {...item} onClick={closePopup} />}
       renderButton={(type: OverflowListButtonType, props: any) => {
-        if (type === 'dropdown') {
+        if (type === "dropdown") {
           return <ToolbarItem {...props} icon={BiThreeDotsVertical} />;
         }
         return null;
@@ -131,10 +131,10 @@ export const Basic = () => {
 export const Multiple = () => {
   return (
     <Box d="flex">
-      <Box flex={1} style={{ maxWidth: '50%' }}>
+      <Box flex={1} style={{ maxWidth: "50%" }}>
         <Toolbar />
       </Box>
-      <Box flex={1} style={{ maxWidth: '50%' }}>
+      <Box flex={1} style={{ maxWidth: "50%" }}>
         <Toolbar />
       </Box>
     </Box>

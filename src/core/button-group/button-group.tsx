@@ -1,7 +1,7 @@
-import styled from '../styled';
+import styled from "../styled";
 
 export interface ButtonGroupProps {
-  size?: 'sm' | 'lg';
+  size?: "sm" | "lg";
   vertical?: boolean;
 }
 
@@ -13,5 +13,5 @@ export const ButtonGroup = styled.div<ButtonGroupProps>(
       [`btn-group-${size}`]: size,
     },
   ],
-  ({ role = 'group' }) => ({ role })
+  ({ role = "group" }) => ({ role })
 );

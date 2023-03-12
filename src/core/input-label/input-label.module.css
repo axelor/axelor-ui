@@ -7,6 +7,6 @@
 }
 
 .required::after {
-  content: ' *';
+  content: " *";
   color: inherit;
 }

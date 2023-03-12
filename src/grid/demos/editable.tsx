@@ -1,12 +1,12 @@
 /**
  * @title Editable
  */
-import React from 'react';
-import { Box, Button, FocusTrap, Input, useClassNames } from '../../core';
-import { Grid } from '../grid';
-import { GridProvider } from '../grid-provider';
-import { columns, records } from './demo-data';
-import useGridState from './useGridState';
+import React from "react";
+import { Box, Button, FocusTrap, Input, useClassNames } from "../../core";
+import { Grid } from "../grid";
+import { GridProvider } from "../grid-provider";
+import { columns, records } from "./demo-data";
+import useGridState from "./useGridState";
 
 const FormHandlers = React.createContext(React.createRef<any>());
 
@@ -18,7 +18,7 @@ const FormContext = React.createContext({
 });
 
 function saveRecordAPI(record: any) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       if (!record.name) {
         resolve(null);
@@ -51,7 +51,7 @@ function Form({
     };
   }, []);
 
-  const handleFocus = React.useCallback(fieldIndex => {
+  const handleFocus = React.useCallback((fieldIndex) => {
     currentFocus.current = fieldIndex;
   }, []);
 
@@ -60,7 +60,7 @@ function Form({
   }, [onCancel, index]);
 
   const handleSave = React.useCallback(
-    isSaveFromEdit => {
+    (isSaveFromEdit) => {
       const data = values.current;
       return (
         onSave &&
@@ -106,8 +106,8 @@ function Form({
 function FormField({ children, style, className, ...rest }: any) {
   const { data, focus, value: _value } = rest;
   const { onFocus, onSave, onChange, onCancel } = React.useContext(FormContext);
-  const { name = '', type = '', options } = data || {};
-  const [value, setValue] = React.useState(_value === undefined ? '' : _value);
+  const { name = "", type = "", options } = data || {};
+  const [value, setValue] = React.useState(_value === undefined ? "" : _value);
   const initRef = React.useRef(false);
   const classNames = useClassNames();
   function handleKeyDown(e: any) {
@@ -130,7 +130,7 @@ function FormField({ children, style, className, ...rest }: any) {
     };
     if (options) {
       return (
-        <select className={classNames('form-control')} {...props}>
+        <select className={classNames("form-control")} {...props}>
           <option value="">Select</option>
           {options.map((option: string) => (
             <option key={option} value={option}>
@@ -140,7 +140,7 @@ function FormField({ children, style, className, ...rest }: any) {
         </select>
       );
     }
-    if (type === 'String') {
+    if (type === "String") {
       return <Input type="text" {...props} />;
     }
     return null;
@@ -163,10 +163,10 @@ export default function Editable() {
   });
 
   const handleRecordAdd = React.useCallback(() => {
-    setRecords(records => [...records, {}] as any);
+    setRecords((records) => [...records, {}] as any);
   }, []);
 
-  const handleRecordEdit = React.useCallback(async record => {
+  const handleRecordEdit = React.useCallback(async (record) => {
     const { save } = handlers.current || {};
     if (save) {
       return await save(true);
@@ -174,10 +174,10 @@ export default function Editable() {
   }, []);
 
   const handleRecordSave = React.useCallback((record, index) => {
-    boxRef.current.style.opacity = '0.5';
+    boxRef.current.style.opacity = "0.5";
     return saveRecordAPI(record).then((record: any) => {
       if (record) {
-        setRecords(records =>
+        setRecords((records) =>
           records.map((_record, i) =>
             (_record.id ? _record.id === record.id : i === index)
               ? record
@@ -192,14 +192,14 @@ export default function Editable() {
 
   const handleRecordDiscard = React.useCallback((record, rowIndex) => {
     if (!record.id) {
-      setRecords(records => records.filter((record, i) => i !== rowIndex));
+      setRecords((records) => records.filter((record, i) => i !== rowIndex));
     }
   }, []);
 
   return (
     <GridProvider>
       <FormHandlers.Provider value={handlers}>
-        <Box ref={boxRef} style={{ display: 'flex', maxHeight: 500 }}>
+        <Box ref={boxRef} style={{ display: "flex", maxHeight: 500 }}>
           <Grid
             editable
             allowColumnResize

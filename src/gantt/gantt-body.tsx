@@ -1,11 +1,11 @@
-import React from 'react';
-import { useTheme, useClassNames } from '../core';
-import { useDrop } from 'react-dnd';
+import React from "react";
+import { useTheme, useClassNames } from "../core";
+import { useDrop } from "react-dnd";
 
-import * as TYPES from './types';
-import { CONFIG } from './utils';
-import { RenderList } from './gantt-header';
-import classes from './gantt.module.scss';
+import * as TYPES from "./types";
+import { CONFIG } from "./utils";
+import { RenderList } from "./gantt-header";
+import classes from "./gantt.module.scss";
 
 const { DND_TYPES } = CONFIG;
 
@@ -56,7 +56,7 @@ export function GanttBody({
 }) {
   const bodyRef = React.useRef<HTMLDivElement>(null);
   const { dir } = useTheme();
-  const rtl = dir === 'rtl';
+  const rtl = dir === "rtl";
 
   const [, drop] = useDrop({
     accept: [
@@ -110,7 +110,7 @@ export function GanttBody({
             }
 
             if (dragLine) {
-              dragLine.style[rtl ? 'right' : 'left'] = `${element.x}px`;
+              dragLine.style[rtl ? "right" : "left"] = `${element.x}px`;
               dragLine.style.width = `${element.width}px`;
             }
             refs.current.element = element;
@@ -140,7 +140,7 @@ export function GanttBody({
             ((progressElement as HTMLDivElement).style.width = `${value}px`);
           progressContentElement &&
             ((progressContentElement as HTMLDivElement).style[
-              rtl ? 'right' : 'left'
+              rtl ? "right" : "left"
             ] = `${value}px`);
 
           refs.current.progress = progressValue.toFixed(2);
@@ -161,7 +161,7 @@ export function GanttBody({
               y: clientOffset.y - parentBound.top,
             };
             dragLine.style[
-              rtl ? 'right' : 'left'
+              rtl ? "right" : "left"
             ] = `${refs.current.element.x}px`;
           }
           break;
@@ -171,7 +171,7 @@ export function GanttBody({
             const connectOffset: TYPES.GanttVirtualLinePoint = {
               x: clientOffset.x - parentBound.left,
               y: clientOffset.y - parentBound.top,
-              type: type === DND_TYPES.CONNECT_START ? 'start' : 'finish',
+              type: type === DND_TYPES.CONNECT_START ? "start" : "finish",
             };
             dragItem.setVirtualLineTarget &&
               dragItem.setVirtualLineTarget(connectOffset);
@@ -179,7 +179,7 @@ export function GanttBody({
           break;
       }
     },
-    collect: monitor => ({
+    collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
     }),

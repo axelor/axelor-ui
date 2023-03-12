@@ -1,38 +1,38 @@
-import React from 'react';
-import { GridGroupRow } from './grid-group-row';
-import { GridBodyRow } from './grid-body-row';
-import { GridFooterRow } from './grid-footer-row';
-import { GridDNDContainer } from './grid-dnd-row';
-import { isRowVisible } from './utils';
-import * as TYPES from './types';
-import styles from './grid.module.scss';
+import React from "react";
+import { GridGroupRow } from "./grid-group-row";
+import { GridBodyRow } from "./grid-body-row";
+import { GridFooterRow } from "./grid-footer-row";
+import { GridDNDContainer } from "./grid-dnd-row";
+import { isRowVisible } from "./utils";
+import * as TYPES from "./types";
+import styles from "./grid.module.scss";
 
 export interface GridBodyProps
   extends Pick<
       TYPES.GridState,
-      'rows' | 'columns' | 'selectedCell' | 'selectedRows' | 'editRow'
+      "rows" | "columns" | "selectedCell" | "selectedRows" | "editRow"
     >,
     Pick<
       TYPES.GridProps,
-      | 'selectionType'
-      | 'noRecordsText'
-      | 'addNewText'
-      | 'cellRenderer'
-      | 'rowGroupHeaderRenderer'
-      | 'rowGroupFooterRenderer'
-      | 'rowRenderer'
-      | 'editRowRenderer'
-      | 'editRowColumnRenderer'
-      | 'onRecordAdd'
-      | 'onRecordSave'
-      | 'onRecordDiscard'
-      | 'onRowDoubleClick'
-      | 'onCellClick'
+      | "selectionType"
+      | "noRecordsText"
+      | "addNewText"
+      | "cellRenderer"
+      | "rowGroupHeaderRenderer"
+      | "rowGroupFooterRenderer"
+      | "rowRenderer"
+      | "editRowRenderer"
+      | "editRowColumnRenderer"
+      | "onRecordAdd"
+      | "onRecordSave"
+      | "onRecordDiscard"
+      | "onRowDoubleClick"
+      | "onCellClick"
     > {
-  onRowMove?: TYPES.GridRowProps['onMove'];
-  onRowMoveStart?: TYPES.GridRowProps['onMoveStart'];
-  onRowClick?: TYPES.GridRowProps['onClick'];
-  onRecordUpdate?: TYPES.GridRowProps['onUpdate'];
+  onRowMove?: TYPES.GridRowProps["onMove"];
+  onRowMoveStart?: TYPES.GridRowProps["onMoveStart"];
+  onRowClick?: TYPES.GridRowProps["onClick"];
+  onRecordUpdate?: TYPES.GridRowProps["onUpdate"];
 }
 
 export function GridBody(props: GridBodyProps) {
@@ -64,7 +64,7 @@ export function GridBody(props: GridBodyProps) {
 
   const renderRows = React.useMemo(
     () =>
-      rows.map(row => ({
+      rows.map((row) => ({
         row,
         visible: isRowVisible(rows, row),
       })),
@@ -135,13 +135,13 @@ export function GridBody(props: GridBodyProps) {
           }
         }
 
-        if (row.type === 'group-row') {
+        if (row.type === "group-row") {
           return (
             <GridGroupRow renderer={rowGroupHeaderRenderer} {...rowProps} />
           );
         }
 
-        if (row.type === 'footer-row') {
+        if (row.type === "footer-row") {
           return (
             <GridFooterRow renderer={rowGroupFooterRenderer} {...rowProps} />
           );

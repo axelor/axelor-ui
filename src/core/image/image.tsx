@@ -1,4 +1,4 @@
-import styled from '../styled';
+import styled from "../styled";
 
 export interface ImageProps {
   alt: string;
@@ -10,11 +10,11 @@ export interface ImageProps {
 }
 
 const join = (values: Array<string> | string | undefined) =>
-  Array.isArray(values) ? values.join(',') : values;
+  Array.isArray(values) ? values.join(",") : values;
 
 export const Image = styled.img<ImageProps>(
   ({ responsive, thumbnail }) => [
-    { 'img-fluid': responsive, 'img-thumbnail': thumbnail },
+    { "img-fluid": responsive, "img-thumbnail": thumbnail },
   ],
   ({ srcSet, sizes }) => ({
     srcSet: join(srcSet),

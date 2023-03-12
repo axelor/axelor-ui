@@ -97,7 +97,7 @@ $layout-classes: (
 @mixin generate-local($key, $options, $infix) {
   $name: if(map-get($options, name) == null, $key, map-get($options, name));
   $prop: if(map-get($options, prop) == null, $key, map-get($options, prop));
-  $prefix: 'l-';
+  $prefix: "l-";
   .#{$prefix + $name + $infix} {
     #{$prop}: var(--#{$prefix + $name + $infix}) !important;
   }

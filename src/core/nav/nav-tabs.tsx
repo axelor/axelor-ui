@@ -1,24 +1,24 @@
-import { ReactComponent as BiChevronLeft } from 'bootstrap-icons/icons/chevron-left.svg';
-import { ReactComponent as BiChevronRight } from 'bootstrap-icons/icons/chevron-right.svg';
-import { ReactComponent as BiClose } from 'bootstrap-icons/icons/x-lg.svg';
-import React from 'react';
+import { ReactComponent as BiChevronLeft } from "bootstrap-icons/icons/chevron-left.svg";
+import { ReactComponent as BiChevronRight } from "bootstrap-icons/icons/chevron-right.svg";
+import { ReactComponent as BiClose } from "bootstrap-icons/icons/x-lg.svg";
+import React from "react";
 import {
   DragDropContext,
   Draggable,
   Droppable,
   DropResult,
-} from 'react-beautiful-dnd';
+} from "react-beautiful-dnd";
 
-import { Box } from '../box';
-import { Icon } from '../icon';
-import { OverflowList, OverflowListButtonType } from '../overflow-list';
-import { withStyled } from '../styled';
-import { useClassNames, useTheme } from '../styles';
-import { Nav } from './nav';
-import { NavItemProps, NavProps } from './types';
-import { getRGB } from './utils';
+import { Box } from "../box";
+import { Icon } from "../icon";
+import { OverflowList, OverflowListButtonType } from "../overflow-list";
+import { withStyled } from "../styled";
+import { useClassNames, useTheme } from "../styles";
+import { Nav } from "./nav";
+import { NavItemProps, NavProps } from "./types";
+import { getRGB } from "./utils";
 
-import classes from './nav-tabs.module.scss';
+import classes from "./nav-tabs.module.scss";
 
 const RESIZE_DELAY = 50;
 
@@ -26,8 +26,8 @@ function getStyle(style: any) {
   const { transform } = style;
   if (transform) {
     const [Y] = transform
-      .slice('translate('.length, transform.length - 1)
-      .split(',')
+      .slice("translate(".length, transform.length - 1)
+      .split(",")
       .map((x: string) => x.trim());
     const axisLockX = `translate(${Y}, 0px)`;
     return {
@@ -43,17 +43,17 @@ export interface NavTabProps {
   index: number;
   divider?: boolean;
   active?: boolean;
-  onRender?: NavProps['onItemRender'];
+  onRender?: NavProps["onItemRender"];
   onClick?: (e: React.SyntheticEvent, tab: NavItemProps) => void;
   onClose?: (tab: NavItemProps, index?: number) => void;
 }
 
-export interface NavTabsProps extends Pick<NavProps, 'items' | 'onItemRender'> {
-  value?: NavItemProps['id'];
+export interface NavTabsProps extends Pick<NavProps, "items" | "onItemRender"> {
+  value?: NavItemProps["id"];
   draggable?: boolean;
   onReorder?: (dragIndex?: number, hoverIndex?: number) => void;
-  onChange?: (id: NavItemProps['id'], tab: NavItemProps) => void;
-  onClose?: NavTabProps['onClose'];
+  onChange?: (id: NavItemProps["id"], tab: NavItemProps) => void;
+  onClose?: NavTabProps["onClose"];
 }
 
 const ScrollButton = withStyled(Box)((props, ref) => {
@@ -74,8 +74,8 @@ const NavTabIcon = React.memo(function NavTabIcon({
   color,
   bgColor,
 }: {
-  icon?: NavItemProps['icon'];
-  color?: NavItemProps['iconColor'];
+  icon?: NavItemProps["icon"];
+  color?: NavItemProps["iconColor"];
   bgColor: string;
 }) {
   return (
@@ -107,7 +107,7 @@ const NavTab = withStyled(Box)(
     }: NavTabProps,
     ref
   ) => {
-    const color = item.iconColor || 'blue';
+    const color = item.iconColor || "blue";
     const bgColor = getRGB(color, 0.15);
     const classNames = useClassNames();
 
@@ -121,7 +121,7 @@ const NavTab = withStyled(Box)(
         className={classNames(classes.tab, {
           [classes.active]: active,
         })}
-        onClick={e => onClick && onClick(e, item)}
+        onClick={(e) => onClick && onClick(e, item)}
         {...rest}
       >
         {item.icon && (
@@ -143,7 +143,7 @@ const NavTab = withStyled(Box)(
               <Box
                 ms={2}
                 className={classes.tabClose}
-                onClick={e => onClose(item, index)}
+                onClick={(e) => onClose(item, index)}
               >
                 <Icon as={BiClose} />
               </Box>
@@ -161,11 +161,11 @@ const DNDNavTab = (props: NavTabProps) => {
   const { item, index } = props;
   return (
     <Draggable draggableId={item.id} index={index}>
-      {provided => (
+      {(provided) => (
         <NavTab
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          ref={ref => provided.innerRef(ref)}
+          ref={(ref) => provided.innerRef(ref)}
           style={getStyle(provided.draggableProps.style)}
           {...props}
         />
@@ -174,12 +174,12 @@ const DNDNavTab = (props: NavTabProps) => {
   );
 };
 
-const RenderNavTabs: React.FC<NavTabsProps> = props => {
+const RenderNavTabs: React.FC<NavTabsProps> = (props) => {
   const { value, items, draggable, onItemRender, onChange, onClose } = props;
   const [overflowListRef, setOverflowListRef] =
     React.useState<HTMLElement | null>(null);
   const [scroll, setScroll] = React.useState(false);
-  const isRTL = useTheme().dir === 'rtl';
+  const isRTL = useTheme().dir === "rtl";
 
   const selectTab = React.useCallback(
     function selectTab(e: React.SyntheticEvent, tab: NavItemProps) {
@@ -189,7 +189,7 @@ const RenderNavTabs: React.FC<NavTabsProps> = props => {
   );
 
   const activeTabIndex = value
-    ? items?.findIndex(item => item.id === value)
+    ? items?.findIndex((item) => item.id === value)
     : -1;
 
   React.useEffect(() => {
@@ -255,13 +255,13 @@ const RenderNavTabs: React.FC<NavTabsProps> = props => {
   const TabComponent = draggable ? DNDNavTab : NavTab;
   return (
     <Box
-      className={classNames('nav-custom-tabs', classes.root, {
+      className={classNames("nav-custom-tabs", classes.root, {
         [classes.rtl]: isRTL,
       })}
     >
       <Nav
         {...props}
-        onRender={props => (
+        onRender={(props) => (
           <OverflowList
             ref={setOverflowListRef}
             d="flex"
@@ -287,14 +287,14 @@ const RenderNavTabs: React.FC<NavTabsProps> = props => {
                   [classes.hide]: !scroll,
                 }),
               };
-              if (type === 'scroll-left') {
+              if (type === "scroll-left") {
                 return (
                   <ScrollButton {...props} {...buttonProps}>
                     <Icon as={isRTL ? BiChevronRight : BiChevronLeft} />
                   </ScrollButton>
                 );
               }
-              if (type === 'scroll-right') {
+              if (type === "scroll-right") {
                 return (
                   <ScrollButton {...props} {...buttonProps}>
                     <Icon as={isRTL ? BiChevronLeft : BiChevronRight} />
@@ -306,7 +306,7 @@ const RenderNavTabs: React.FC<NavTabsProps> = props => {
           />
         )}
       />
-      {!props.draggable && <Box className={classes['tabs-divider']} />}
+      {!props.draggable && <Box className={classes["tabs-divider"]} />}
     </Box>
   );
 };
@@ -336,7 +336,7 @@ const DNDNavTabs: React.FC<NavTabsProps> = function (props) {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <Droppable droppableId={'NAVTABS'} type={'TAB'} direction="horizontal">
+      <Droppable droppableId={"NAVTABS"} type={"TAB"} direction="horizontal">
         {(provided, snapshot) => (
           <div {...provided.droppableProps}>
             <Box
@@ -347,7 +347,7 @@ const DNDNavTabs: React.FC<NavTabsProps> = function (props) {
               <RenderNavTabs {...props} />
               {provided.placeholder}
             </Box>
-            <Box className={classes['tabs-divider']} />
+            <Box className={classes["tabs-divider"]} />
           </div>
         )}
       </Droppable>
@@ -355,7 +355,7 @@ const DNDNavTabs: React.FC<NavTabsProps> = function (props) {
   );
 };
 
-export const NavTabs: React.FC<NavTabsProps> = props => {
+export const NavTabs: React.FC<NavTabsProps> = (props) => {
   const Component = props.draggable ? DNDNavTabs : RenderNavTabs;
   return <Component {...props} />;
 };

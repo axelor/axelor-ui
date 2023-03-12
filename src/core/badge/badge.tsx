@@ -1,3 +1,3 @@
-import styled from '../styled';
+import styled from "../styled";
 
-export const Badge = styled.span(() => ['badge']);
+export const Badge = styled.span(() => ["badge"]);

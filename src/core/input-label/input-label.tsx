@@ -1,5 +1,5 @@
-import styled from '../styled';
-import styles from './input-label.module.css';
+import styled from "../styled";
+import styles from "./input-label.module.css";
 
 export interface InputLabelProps {
   required?: boolean;
@@ -9,11 +9,11 @@ export interface InputLabelProps {
 
 export const InputLabel = styled.label<InputLabelProps>(
   ({ invalid, disabled, required }) => [
-    'form-label',
+    "form-label",
     styles.label,
     {
-      'text-danger': invalid,
-      'text-muted': disabled,
+      "text-danger": invalid,
+      "text-muted": disabled,
       [styles.required]: required,
     },
   ]

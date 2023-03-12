@@ -1,18 +1,18 @@
-import React from 'react';
-import { ReactComponent as BiChevronLeft } from 'bootstrap-icons/icons/caret-left-fill.svg';
+import React from "react";
+import { ReactComponent as BiChevronLeft } from "bootstrap-icons/icons/caret-left-fill.svg";
 
-import { ClickAwayListener } from '../click-away-listener';
-import { Popper } from '../popper';
-import { Collapse } from '../collapse';
-import { Badge } from '../badge';
-import { Box } from '../box';
-import { Icon } from '../icon';
-import { Nav } from './nav';
-import { NavItemProps, NavProps } from './types';
-import { useClassNames, useTheme } from '../styles';
-import { getRGB } from './utils';
+import { ClickAwayListener } from "../click-away-listener";
+import { Popper } from "../popper";
+import { Collapse } from "../collapse";
+import { Badge } from "../badge";
+import { Box } from "../box";
+import { Icon } from "../icon";
+import { Nav } from "./nav";
+import { NavItemProps, NavProps } from "./types";
+import { useClassNames, useTheme } from "../styles";
+import { getRGB } from "./utils";
 
-import classes from './nav-bar.module.scss';
+import classes from "./nav-bar.module.scss";
 
 export interface NavBarProps extends NavProps {
   float?: boolean;
@@ -22,8 +22,8 @@ export interface NavBarItemProps {
   float?: boolean;
   item: NavItemProps;
   active?: boolean;
-  onClick?: NavProps['onClick'];
-  onItemClick?: NavProps['onClick'];
+  onClick?: NavProps["onClick"];
+  onItemClick?: NavProps["onClick"];
 }
 
 const NavBarMenu = React.memo(function NavBarMenu({
@@ -53,7 +53,7 @@ const NavBarMenu = React.memo(function NavBarMenu({
 
   return (
     <Box className={classes.menu}>
-      {(items || []).map(item => (
+      {(items || []).map((item) => (
         <NavBarItem
           key={item.id}
           float={float}
@@ -77,7 +77,7 @@ const NavBarItem = React.memo(function NavBarItem({
   const [expand, setExpand] = React.useState(false);
   const [targetEl, setTargetEl] = React.useState<HTMLElement | null>(null);
   const classNames = useClassNames();
-  const rtl = useTheme().dir === 'rtl';
+  const rtl = useTheme().dir === "rtl";
 
   const { tag, tagStyle, icon, iconColor: color, title, items } = item;
   const bgColor = color && getRGB(color, 0.25);
@@ -110,10 +110,10 @@ const NavBarItem = React.memo(function NavBarItem({
         >
           <ClickAwayListener onClickAway={() => setExpand(false)}>
             <Box
-              className={classNames('nav-popper', {
+              className={classNames("nav-popper", {
                 [classes.rtl]: rtl,
               })}
-              {...(rtl ? { dir: 'rtl' } : {})}
+              {...(rtl ? { dir: "rtl" } : {})}
             >
               {children}
             </Box>
@@ -153,7 +153,7 @@ const NavBarItem = React.memo(function NavBarItem({
         className={classNames(classes.menuItem, {
           [classes.active]: active,
           [classes.float]: float,
-          [classes['has-children']]: hasChildren,
+          [classes["has-children"]]: hasChildren,
         })}
         onClick={handleClick}
       >
@@ -169,7 +169,9 @@ const NavBarItem = React.memo(function NavBarItem({
           {icon && icon({ color })}
         </Box>
 
-        <Box flex={1} className={classes.menuItemTitle}>{title}</Box>
+        <Box flex={1} className={classes.menuItemTitle}>
+          {title}
+        </Box>
 
         {tag && (
           <Badge
@@ -177,7 +179,7 @@ const NavBarItem = React.memo(function NavBarItem({
               [classes.hasMenuIcon]: hasChildren,
             })}
             data-tag-name={(item as any)?.name}
-            bg={(tagStyle || 'secondary') as any}
+            bg={(tagStyle || "secondary") as any}
           >
             {`${tag}`.toUpperCase()}
           </Badge>
@@ -198,17 +200,17 @@ const NavBarItem = React.memo(function NavBarItem({
   );
 });
 
-export const NavBar: React.FC<NavBarProps> = props => {
+export const NavBar: React.FC<NavBarProps> = (props) => {
   const classNames = useClassNames();
-  const rtl = useTheme().dir === 'rtl';
+  const rtl = useTheme().dir === "rtl";
 
   return (
     <Box
-      className={classNames('nav-bar', classes.root, {
+      className={classNames("nav-bar", classes.root, {
         [classes.rtl]: rtl,
       })}
     >
-      <Nav {...props} onRender={props => <NavBarMenu {...props} />} />
+      <Nav {...props} onRender={(props) => <NavBarMenu {...props} />} />
     </Box>
   );
 };

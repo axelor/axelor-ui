@@ -1,11 +1,11 @@
-import React from 'react';
-import { useClassNames } from '../core';
-import * as TYPES from './types';
+import React from "react";
+import { useClassNames } from "../core";
+import * as TYPES from "./types";
 
-import { GridColumn } from './grid-column';
-import { capitalizeWord } from './utils';
-import { useTranslation } from './translate';
-import styles from './grid.module.scss';
+import { GridColumn } from "./grid-column";
+import { capitalizeWord } from "./utils";
+import { useTranslation } from "./translate";
+import styles from "./grid.module.scss";
 
 export const GridFooterRow = React.memo(function GridFooterRow(
   props: TYPES.GridRowProps
@@ -19,7 +19,7 @@ export const GridFooterRow = React.memo(function GridFooterRow(
     data,
   } = props;
   const t = useTranslation();
-  const RowRenderer = renderer || 'div';
+  const RowRenderer = renderer || "div";
   const rendererProps = renderer ? props : {};
   const classNames = useClassNames();
   return (

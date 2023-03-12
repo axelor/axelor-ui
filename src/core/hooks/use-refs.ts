@@ -5,7 +5,7 @@ import {
   useCallback,
   useEffect,
   useRef,
-} from 'react';
+} from "react";
 
 /**
  * This hook can be used to combine multiple hooks.
@@ -19,9 +19,9 @@ import {
 export function useRefs<T>(...refs: ForwardedRef<T>[]): RefCallback<T> {
   return useCallback(
     (value: T) => {
-      refs.forEach(ref => {
-        if (ref && typeof ref === 'function') ref(value);
-        if (ref && typeof ref === 'object') ref.current = value;
+      refs.forEach((ref) => {
+        if (ref && typeof ref === "function") ref(value);
+        if (ref && typeof ref === "object") ref.current = value;
       });
     },
     [refs]
@@ -38,8 +38,8 @@ export function useRefs<T>(...refs: ForwardedRef<T>[]): RefCallback<T> {
 export function useForwardedRef<T>(ref: ForwardedRef<T>): RefObject<T> {
   const res = useRef<T>(null);
   useEffect(() => {
-    if (ref && typeof ref === 'function') ref(res.current);
-    if (ref && typeof ref === 'object') ref.current = res.current;
+    if (ref && typeof ref === "function") ref(res.current);
+    if (ref && typeof ref === "object") ref.current = res.current;
   }, [ref, res]);
   return res;
 }

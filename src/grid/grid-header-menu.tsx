@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Box,
   Input,
@@ -7,17 +7,17 @@ import {
   Icon,
   Divider,
   useClassNames,
-} from '../core';
-import { ReactComponent as BiThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg';
-import { ReactComponent as BiX } from 'bootstrap-icons/icons/x.svg';
+} from "../core";
+import { ReactComponent as BiThreeDotsVertical } from "bootstrap-icons/icons/three-dots-vertical.svg";
+import { ReactComponent as BiX } from "bootstrap-icons/icons/x.svg";
 
-import GridDragElement, { DropHandler } from './grid-drag-element';
-import * as TYPES from './types';
-import styles from './grid.module.scss';
-import { useTranslation } from './translate';
-import { useRTL } from './utils';
+import GridDragElement, { DropHandler } from "./grid-drag-element";
+import * as TYPES from "./types";
+import styles from "./grid.module.scss";
+import { useTranslation } from "./translate";
+import { useRTL } from "./utils";
 
-export interface GridHeaderMenuProps extends Pick<TYPES.GridState, 'groupBy'> {
+export interface GridHeaderMenuProps extends Pick<TYPES.GridState, "groupBy"> {
   columns?: TYPES.GridColumn[];
   onColumnShow?: (e: React.SyntheticEvent, column: TYPES.GridColumn) => void;
   onColumnHide?: (e: React.SyntheticEvent, column: TYPES.GridColumn) => void;
@@ -40,8 +40,8 @@ const GridGroupTag = ({
 }: {
   name: string;
   title?: string;
-  onDrop?: GridHeaderMenuProps['onColumnDrop'];
-  onRemove?: GridHeaderMenuProps['onColumnGroupRemove'];
+  onDrop?: GridHeaderMenuProps["onColumnDrop"];
+  onRemove?: GridHeaderMenuProps["onColumnGroupRemove"];
 }) => {
   const data = React.useMemo(
     () => ({ name, title, $group: true }),
@@ -56,7 +56,7 @@ const GridGroupTag = ({
       <div className={styles.groupTag}>
         <label className={styles.groupTagTitle}>{data.title}</label>
         <span
-          onClick={e => {
+          onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
             onRemove && onRemove(e, data);
@@ -76,9 +76,9 @@ const CustomMenuItem = ({ onEnter, onClick, ...props }: any) => {
       className={styles.headerMenuItem}
       p={0}
       onClick={onClick}
-      onKeyDown={e => {
+      onKeyDown={(e) => {
         e.preventDefault();
-        if (e.key === 'Enter') {
+        if (e.key === "Enter") {
           onClick && onClick(e);
         }
       }}
@@ -112,16 +112,16 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
         <Icon as={BiThreeDotsVertical} />
       </Box>
       <Menu
-        className={classNames('table-popover', styles.columnOptionsMenu)}
+        className={classNames("table-popover", styles.columnOptionsMenu)}
         navigation
-        placement={`bottom-${rtl ? 'start' : 'end'}`}
+        placement={`bottom-${rtl ? "start" : "end"}`}
         target={columnOptionsTarget}
         show={showColumnOptions}
         onHide={() => setColumnOptions(false)}
       >
         {columns
-          .filter(c => c.title)
-          .map(column => {
+          .filter((c) => c.title)
+          .map((column) => {
             const { visible = true } = column;
             function toggle(e: React.SyntheticEvent) {
               visible && onColumnHide && onColumnHide(e, column);
@@ -173,10 +173,10 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
             >
               <Box className={styles.groupTagContainer}>
                 {(groupBy || []).length === 0 && (
-                  <Box className={styles.groupPlaceholder}>{t('Groups')}</Box>
+                  <Box className={styles.groupPlaceholder}>{t("Groups")}</Box>
                 )}
-                {(groupBy || []).map(group => {
-                  const column = columns.find(x => x.name === group.name);
+                {(groupBy || []).map((group) => {
+                  const column = columns.find((x) => x.name === group.name);
                   return (
                     <GridGroupTag
                       key={group.name}
@@ -201,7 +201,7 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
               }}
             >
               <Box as="span" ms={2}>
-                {t('Customize...')}
+                {t("Customize...")}
               </Box>
             </CustomMenuItem>
           </>

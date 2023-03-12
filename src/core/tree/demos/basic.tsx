@@ -1,17 +1,17 @@
 /**
  * @title Basic
  */
-import React from 'react';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DndProvider } from 'react-dnd';
-import { ReactComponent as BiRemoveIcon } from 'bootstrap-icons/icons/x.svg';
-import { Tree } from '../tree';
-import records from './data';
+import React from "react";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
+import { ReactComponent as BiRemoveIcon } from "bootstrap-icons/icons/x.svg";
+import { Tree } from "../tree";
+import records from "./data";
 
 const columns = [
-  { name: 'title', title: 'Title', type: 'String' },
-  { name: 'progress', title: 'Progress' },
-  { name: 'removeBtn', title: '', width: 50 },
+  { name: "title", title: "Title", type: "String" },
+  { name: "progress", title: "Progress" },
+  { name: "removeBtn", title: "", width: 50 },
 ];
 
 function TextRenderer(props: any) {
@@ -19,20 +19,20 @@ function TextRenderer(props: any) {
     data: { data },
     column,
   } = props;
-  if (column.name === 'removeBtn') {
+  if (column.name === "removeBtn") {
     return (
       <span>
         <BiRemoveIcon />
       </span>
     );
   }
-  return (data && data[column.name]) || '--';
+  return (data && data[column.name]) || "--";
 }
 
 export default function Basic() {
   const onLoad = React.useCallback(async (record: any) => {
-    return new Promise(resolve => {
-      const project = records.find(p => p.id === record.id);
+    return new Promise((resolve) => {
+      const project = records.find((p) => p.id === record.id);
 
       setTimeout(() => {
         resolve(project?.tasks || []);

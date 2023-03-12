@@ -1,12 +1,12 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from "react";
 
-import { Box } from '../box';
-import { Button } from '../button';
-import { Portal } from './portal';
+import { Box } from "../box";
+import { Button } from "../button";
+import { Portal } from "./portal";
 
 const config = {
   component: Portal,
-  title: 'Core/Portal',
+  title: "Core/Portal",
 };
 
 export const Basic = () => {
@@ -14,7 +14,7 @@ export const Basic = () => {
   const container = useRef(null);
 
   const toggle = () => {
-    setShow(prev => !prev);
+    setShow((prev) => !prev);
   };
 
   return (

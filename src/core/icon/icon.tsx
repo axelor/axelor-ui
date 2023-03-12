@@ -1,4 +1,4 @@
-import { SvgIcon, SvgIconProps } from '../../icons/svg-icon';
+import { SvgIcon, SvgIconProps } from "../../icons/svg-icon";
 
 /**
  *

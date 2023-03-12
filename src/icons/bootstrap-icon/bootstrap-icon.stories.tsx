@@ -1,9 +1,9 @@
-import { Box } from '../../core';
-import { BootstrapIcon, BootstrapIconProps } from './bootstrap-icon';
+import { Box } from "../../core";
+import { BootstrapIcon, BootstrapIconProps } from "./bootstrap-icon";
 
 const config = {
   component: BootstrapIcon,
-  title: 'Icons/Bootstrap',
+  title: "Icons/Bootstrap",
 };
 
 const IconBox = (props: BootstrapIconProps) => {

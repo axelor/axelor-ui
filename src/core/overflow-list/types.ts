@@ -1,5 +1,5 @@
-import { IconProps } from '../icon/icon';
-import { MenuProps } from '../menu/menu';
+import { IconProps } from "../icon/icon";
+import { MenuProps } from "../menu/menu";
 
 export type OverflowState = {
   measure: boolean;
@@ -8,16 +8,16 @@ export type OverflowState = {
   compute: number;
 };
 
-export type Mode = 'shrink' | 'grow';
-export type Action = Mode | 'measure' | 'compute';
+export type Mode = "shrink" | "grow";
+export type Action = Mode | "measure" | "compute";
 export type OverflowListButtonType =
-  | 'scroll-left'
-  | 'scroll-right'
-  | 'dropdown';
+  | "scroll-left"
+  | "scroll-right"
+  | "dropdown";
 
 export interface OverflowListItemProps {
   title: string;
-  icon?: IconProps['as'];
+  icon?: IconProps["as"];
   [propertyName: string]: any;
 }
 
@@ -58,21 +58,21 @@ export interface OverflowListProps {
 export interface OverflowDropdownProps
   extends Pick<
     OverflowListProps,
-    | 'items'
-    | 'inverse'
-    | 'vertical'
-    | 'renderOverflow'
-    | 'renderOverflowItem'
-    | 'renderButton'
-    | 'dropdownMenuProps'
-    | 'onOverflowChange'
+    | "items"
+    | "inverse"
+    | "vertical"
+    | "renderOverflow"
+    | "renderOverflowItem"
+    | "renderButton"
+    | "dropdownMenuProps"
+    | "onOverflowChange"
   > {
   className?: string;
   children: React.ReactElement;
 }
 
 export interface OverflowScrollListProps
-  extends Pick<OverflowListProps, 'inverse' | 'vertical' | 'renderButton'> {
+  extends Pick<OverflowListProps, "inverse" | "vertical" | "renderButton"> {
   className?: string;
   children?: React.ReactNode;
 }

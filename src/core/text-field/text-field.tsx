@@ -1,15 +1,15 @@
-import React from 'react';
-import { Icon, IconProps } from '../icon';
-import { Input, type InputProps } from '../input';
-import { InputFeedback } from '../input-feedback';
-import { InputLabel } from '../input-label';
-import { withStyled } from '../styled';
-import { useClassNames, useTheme } from '../styles';
-import styles from './text-field.module.scss';
+import React from "react";
+import { Icon, IconProps } from "../icon";
+import { Input, type InputProps } from "../input";
+import { InputFeedback } from "../input-feedback";
+import { InputLabel } from "../input-label";
+import { withStyled } from "../styled";
+import { useClassNames, useTheme } from "../styles";
+import styles from "./text-field.module.scss";
 
 export interface TextFieldIcon {
   id: string;
-  icon: IconProps['as'];
+  icon: IconProps["as"];
   className?: string;
   onClick?: React.MouseEventHandler<SVGSVGElement>;
 }
@@ -34,7 +34,7 @@ export const TextField = withStyled(Input)<TextFieldProps>(
     },
     ref
   ) => {
-    const { dir = '' } = useTheme();
+    const { dir = "" } = useTheme();
     const classNames = useClassNames();
     return (
       <div
@@ -67,7 +67,7 @@ export const TextField = withStyled(Input)<TextFieldProps>(
           />
           {icons.length > 0 && (
             <div className={styles.icons}>
-              {icons.map(icon => (
+              {icons.map((icon) => (
                 <Icon
                   key={icon.id}
                   className={icon.className}

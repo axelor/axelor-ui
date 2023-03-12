@@ -1,10 +1,10 @@
-import styled from '../styled';
-import { TVariant } from '../system';
+import styled from "../styled";
+import { TVariant } from "../system";
 
 export interface ButtonProps {
   outline?: boolean;
-  size?: 'sm' | 'lg';
-  variant?: TVariant | 'link';
+  size?: "sm" | "lg";
+  variant?: TVariant | "link";
 }
 
 export const Button = styled.button<ButtonProps>(
@@ -17,6 +17,6 @@ export const Button = styled.button<ButtonProps>(
       [`btn-${size}`]: size,
     },
   ],
-  ({ as = 'button', type = 'button', role = 'button', disabled }) =>
-    as !== 'button' ? { role } : { disabled, type }
+  ({ as = "button", type = "button", role = "button", disabled }) =>
+    as !== "button" ? { role } : { disabled, type }
 );

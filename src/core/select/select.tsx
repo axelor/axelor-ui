@@ -1,23 +1,23 @@
-import React from 'react';
-import { Icon, IconProps } from '../icon';
+import React from "react";
+import { Icon, IconProps } from "../icon";
 import ReactSelect, {
   components,
   ControlProps,
   IndicatorsContainerProps,
   MenuListProps,
   createFilter,
-} from 'react-select';
-import CreatableSelect from 'react-select/creatable';
-import { Box } from '../box';
+} from "react-select";
+import CreatableSelect from "react-select/creatable";
+import { Box } from "../box";
 
-import selectStyles from './select.module.scss';
-import { useTheme } from '../styles';
+import selectStyles from "./select.module.scss";
+import { useTheme } from "../styles";
 
 export type SelectOption = unknown;
 
 export interface SelectIcon {
   id: string;
-  icon: IconProps['as'];
+  icon: IconProps["as"];
   onClick?: React.MouseEventHandler<SVGSVGElement>;
 }
 
@@ -48,7 +48,7 @@ export interface SelectProps {
   optionValue?: string | ((option: SelectOption) => string);
   icons?: Array<SelectIcon>;
   createOption?: (inputString: string) => React.ReactNode;
-  createOptionPosition?: 'first' | 'last';
+  createOptionPosition?: "first" | "last";
   onCreate?: (value: SelectOption) => void;
   isValidNewOption?: (
     inputValue: string,
@@ -81,7 +81,7 @@ const MenuList = ({ innerProps, ...rest }: MenuListProps) => {
   return (
     <components.MenuList
       {...rest}
-      innerProps={{ ...innerProps, ...(rest.isRtl ? { dir: 'rtl' } : {}) }}
+      innerProps={{ ...innerProps, ...(rest.isRtl ? { dir: "rtl" } : {}) }}
     />
   );
 };
@@ -101,12 +101,12 @@ const IndicatorsContainer = (
       <Box
         d="flex"
         className={selectStyles.icons}
-        {...(icons.some(icon => icon.onClick)
+        {...(icons.some((icon) => icon.onClick)
           ? { onMouseDown: handleMouseDown }
           : {})}
         me={1}
       >
-        {icons.map(icon => (
+        {icons.map((icon) => (
           <Icon key={icon.id} as={icon.icon} onClick={icon.onClick} />
         ))}
       </Box>
@@ -150,17 +150,17 @@ export function Select({
   noOptionsMessage,
   fetchOptions,
   icons,
-  optionLabel = 'label',
-  optionValue = 'value',
+  optionLabel = "label",
+  optionValue = "value",
   createOption,
-  createOptionPosition = 'last',
+  createOptionPosition = "last",
   onCreate,
   isValidNewOption,
   components,
   ...props
 }: SelectProps) {
   const [options, setOptions] = React.useState(_options);
-  const [inputText, setInputText] = React.useState('');
+  const [inputText, setInputText] = React.useState("");
   const [isMenuOpen, setMenuOpen] = React.useState(false);
   const [optionsState, setOptionsState] = React.useState(
     OptionsState.FetchNeeded
@@ -170,7 +170,7 @@ export function Select({
 
   const { dir } = useTheme();
   const { isClearOnDelete = !isMulti } = props;
-  const rtl = typeof isRtl !== 'undefined' ? isRtl : dir === 'rtl';
+  const rtl = typeof isRtl !== "undefined" ? isRtl : dir === "rtl";
 
   const setTimer = React.useCallback((callback: any, interval = 500) => {
     setOptionsState(OptionsState.Scheduled);
@@ -187,7 +187,7 @@ export function Select({
       if (option.__isNew__) {
         return option.label;
       }
-      return typeof optionLabel === 'function'
+      return typeof optionLabel === "function"
         ? optionLabel(option)
         : option[optionLabel];
     },
@@ -195,7 +195,7 @@ export function Select({
   );
   const getOptionValue = React.useCallback(
     (option: any) =>
-      typeof optionValue === 'function'
+      typeof optionValue === "function"
         ? optionValue(option)
         : option[optionValue],
     [optionValue]
@@ -248,7 +248,7 @@ export function Select({
 
   React.useEffect(() => {
     if (isMenuOpen && optionsState === OptionsState.FetchNeeded) {
-      loadOptionsNow('');
+      loadOptionsNow("");
     }
   }, [isMenuOpen, optionsState, loadOptionsNow]);
 
@@ -263,17 +263,17 @@ export function Select({
   const handleMenuOpen = () => setMenuOpen(true);
   const handleMenuClose = () => setMenuOpen(false);
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const isDelete = isClearOnDelete && e.key === 'Delete';
+    const isDelete = isClearOnDelete && e.key === "Delete";
     if (
-      (isDelete || (!isMulti && isMenuOpen && e.key === 'Backspace')) &&
+      (isDelete || (!isMulti && isMenuOpen && e.key === "Backspace")) &&
       value
     ) {
       handleChange(null);
     }
     if (isDelete) {
-      setInputText('');
+      setInputText("");
     }
-    if (!(isMenuOpen && e.key === 'Enter')) {
+    if (!(isMenuOpen && e.key === "Enter")) {
       onKeyDown && onKeyDown(e);
     }
   };
@@ -315,8 +315,8 @@ export function Select({
   }, [options, addOnOptions, optionsState, inputText]);
 
   const hasOption = inputText
-    ? ($options || []).some(opt =>
-        (getOptionLabel(opt) || '')
+    ? ($options || []).some((opt) =>
+        (getOptionLabel(opt) || "")
           .toLowerCase()
           .includes(inputText.toLowerCase())
       )
@@ -336,9 +336,9 @@ export function Select({
       data?.__isAddOn || data?.__isNew__
         ? {
             ...styles,
-            fontStyle: 'italic',
-            paddingLeft: '1.5em',
-            width: 'auto',
+            fontStyle: "italic",
+            paddingLeft: "1.5em",
+            width: "auto",
           }
         : styles,
   };
@@ -375,7 +375,7 @@ export function Select({
         openMenuOnClick: true,
         onMenuOpen: handleMenuOpen,
         onMenuClose: handleMenuClose,
-        noOptionsMessage: noOptionsMessage || (() => ''),
+        noOptionsMessage: noOptionsMessage || (() => ""),
         components: {
           Control: ControlContainer,
           IndicatorsContainer,

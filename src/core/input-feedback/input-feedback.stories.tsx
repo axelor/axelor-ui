@@ -1,10 +1,10 @@
-import { Box } from '../box';
-import { Input } from '../input';
-import { InputFeedback } from './input-feedback';
+import { Box } from "../box";
+import { Input } from "../input";
+import { InputFeedback } from "./input-feedback";
 
 const config = {
   component: InputFeedback,
-  title: 'Components/InputFeedback',
+  title: "Components/InputFeedback",
 };
 
 export const Basic = () => {

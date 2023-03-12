@@ -1,28 +1,28 @@
-import { createPopper, Instance, Placement } from '@popperjs/core';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { createPopper, Instance, Placement } from "@popperjs/core";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-import { Box } from '../box';
-import { Fade } from '../fade';
-import { Portal } from '../portal';
+import { Box } from "../box";
+import { Fade } from "../fade";
+import { Portal } from "../portal";
 
-import { useClassNames, useTheme } from '../styles';
-import { TBackground, TForeground } from '../system';
+import { useClassNames, useTheme } from "../styles";
+import { TBackground, TForeground } from "../system";
 
-import styles from './popper.module.css';
+import styles from "./popper.module.css";
 
 export type PopperPlacement =
-  | 'top'
-  | 'top-start'
-  | 'top-end'
-  | 'bottom'
-  | 'bottom-start'
-  | 'bottom-end'
-  | 'start'
-  | 'start-top'
-  | 'start-bottom'
-  | 'end'
-  | 'end-top'
-  | 'end-bottom';
+  | "top"
+  | "top-start"
+  | "top-end"
+  | "bottom"
+  | "bottom-start"
+  | "bottom-end"
+  | "start"
+  | "start-top"
+  | "start-bottom"
+  | "end"
+  | "end-top"
+  | "end-bottom";
 
 export interface PopperProps {
   open?: boolean;
@@ -30,7 +30,7 @@ export interface PopperProps {
   container?: Element | null | (() => Element | null);
   children?: React.ReactNode;
   placement?: PopperPlacement;
-  strategy?: 'absolute' | 'fixed';
+  strategy?: "absolute" | "fixed";
   offset?: [number, number];
   arrow?: boolean;
   shadow?: boolean;
@@ -49,25 +49,25 @@ export interface PopperProps {
 }
 
 const PlacementMapping: Record<PopperPlacement, Placement> = {
-  start: 'left',
-  'start-top': 'left-start',
-  'start-bottom': 'left-end',
-  end: 'right',
-  'end-top': 'right-start',
-  'end-bottom': 'right-end',
-  top: 'top',
-  'top-start': 'top-start',
-  'top-end': 'top-end',
-  bottom: 'bottom',
-  'bottom-start': 'bottom-start',
-  'bottom-end': 'bottom-end',
+  start: "left",
+  "start-top": "left-start",
+  "start-bottom": "left-end",
+  end: "right",
+  "end-top": "right-start",
+  "end-bottom": "right-end",
+  top: "top",
+  "top-start": "top-start",
+  "top-end": "top-end",
+  bottom: "bottom",
+  "bottom-start": "bottom-start",
+  "bottom-end": "bottom-end",
 };
 
 const PopperWrapper = ({
   open,
   target,
-  placement: popperPlacement = 'bottom',
-  strategy = 'absolute',
+  placement: popperPlacement = "bottom",
+  strategy = "absolute",
   offset,
   arrow,
   shadow,
@@ -87,17 +87,17 @@ const PopperWrapper = ({
   const modifiers = useMemo(() => {
     const arrowPadding = arrowEnabled ? 6 : 0; // match with .arrow css
     return [
-      { name: 'preventOverflow' },
-      { name: 'flip' },
+      { name: "preventOverflow" },
+      { name: "flip" },
       {
-        name: 'offset',
+        name: "offset",
         enabled,
         options: {
           offset: [skidding, distance + arrowPadding],
         },
       },
       {
-        name: 'arrow',
+        name: "arrow",
         enabled: arrowEnabled,
       },
     ];
@@ -129,10 +129,10 @@ const PopperWrapper = ({
   return (
     <div
       ref={setWrapperEl}
-      className={classNames(styles.popper, { 'drop-shadow-md': shadow })}
-      {...(dir === 'rtl' ? { dir: 'rtl' } : {})}
+      className={classNames(styles.popper, { "drop-shadow-md": shadow })}
+      {...(dir === "rtl" ? { dir: "rtl" } : {})}
       {...props}
-      style={{ position: 'fixed' }}
+      style={{ position: "fixed" }}
     >
       {children}
     </div>
@@ -141,13 +141,13 @@ const PopperWrapper = ({
 
 export const Popper = ({
   open,
-  placement = 'bottom',
+  placement = "bottom",
   arrow,
   rounded = true,
   shadow = true,
-  role = 'tooltip',
-  bg = 'light',
-  color = 'body',
+  role = "tooltip",
+  bg = "light",
+  color = "body",
   container,
   transition: Transition = Fade,
   children,
@@ -191,16 +191,18 @@ export const Popper = ({
       open={open || !exited}
       {...props}
     >
-      {Transition
-        ? <Transition
-            in={open}
-            appear
-            onEnter={handleEnter}
-            onExited={handleExited}
-          >
-            {render()}
-          </Transition>
-        : render()}
+      {Transition ? (
+        <Transition
+          in={open}
+          appear
+          onEnter={handleEnter}
+          onExited={handleExited}
+        >
+          {render()}
+        </Transition>
+      ) : (
+        render()
+      )}
     </PopperWrapper>
   );
 

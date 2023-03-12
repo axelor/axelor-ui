@@ -1,12 +1,12 @@
-import { Box } from '../box';
-import styled from '../styled';
+import { Box } from "../box";
+import styled from "../styled";
 
 const config = {
   component: Box,
-  title: 'Layout/Grid',
+  title: "Layout/Grid",
 };
 
-const Container = styled(Box)(({ display = 'grid' }) => ({ display }));
+const Container = styled(Box)(({ display = "grid" }) => ({ display }));
 const Cell = styled(Box)(({ border = true, p = 2 }) => ({ border, p }));
 
 export const Basic = () => {

@@ -1,13 +1,13 @@
-import { Box } from '../box';
-import { Icon } from '../icon';
-import { Alert, AlertHeader, AlertLink } from './alert';
+import { Box } from "../box";
+import { Icon } from "../icon";
+import { Alert, AlertHeader, AlertLink } from "./alert";
 
-import { ReactComponent as BiExclamation } from 'bootstrap-icons/icons/exclamation-circle-fill.svg';
-import { ReactComponent as BiClose } from 'bootstrap-icons/icons/x.svg';
+import { ReactComponent as BiExclamation } from "bootstrap-icons/icons/exclamation-circle-fill.svg";
+import { ReactComponent as BiClose } from "bootstrap-icons/icons/x.svg";
 
 const config = {
   component: Alert,
-  title: 'Components/Alert',
+  title: "Components/Alert",
 };
 
 export const Basic = () => {

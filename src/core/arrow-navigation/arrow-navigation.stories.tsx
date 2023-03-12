@@ -1,17 +1,17 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
-import { Box } from '../box';
-import { Button } from '../button';
-import { ArrowNavigation } from './arrow-navigation';
-import styled from '../styled';
+import { Box } from "../box";
+import { Button } from "../button";
+import { ArrowNavigation } from "./arrow-navigation";
+import styled from "../styled";
 
 const config = {
   component: ArrowNavigation,
-  title: 'Core/ArrowNavigation',
+  title: "Core/ArrowNavigation",
 };
 
 const CustomButton = styled(Button)(
-  ({ m = 1, variant = 'primary', style }) => ({
+  ({ m = 1, variant = "primary", style }) => ({
     m,
     variant,
     style: { width: 75, ...style },
@@ -24,10 +24,10 @@ export const Basic = function () {
   const selector: any = useCallback(() => {
     if (box) {
       return [
-        box.querySelectorAll('div:nth-child(1) > button'),
-        box.querySelectorAll('div:nth-child(2) > button'),
-        box.querySelectorAll('div:nth-child(3) > button'),
-        box.querySelectorAll('div:nth-child(4) > button'),
+        box.querySelectorAll("div:nth-child(1) > button"),
+        box.querySelectorAll("div:nth-child(2) > button"),
+        box.querySelectorAll("div:nth-child(3) > button"),
+        box.querySelectorAll("div:nth-child(4) > button"),
       ];
     }
     return [];
@@ -58,8 +58,8 @@ export const Basic = function () {
         </Box>
         <Box d="flex">
           <CustomButton>0</CustomButton>
-          <CustomButton style={{ visibility: 'hidden' }}>0</CustomButton>
-          <CustomButton style={{ visibility: 'hidden' }}>0</CustomButton>
+          <CustomButton style={{ visibility: "hidden" }}>0</CustomButton>
+          <CustomButton style={{ visibility: "hidden" }}>0</CustomButton>
           <CustomButton>(</CustomButton>
           <CustomButton>)</CustomButton>
         </Box>
@@ -70,15 +70,15 @@ export const Basic = function () {
 
 export const Horizontal = function () {
   return (
-    <ArrowNavigation selector={'auto-horizontal'}>
+    <ArrowNavigation selector={"auto-horizontal"}>
       <Box d="flex" flexDirection="row">
         <CustomButton>Item 1</CustomButton>
         <CustomButton>Item 2</CustomButton>
         <CustomButton>Item 3</CustomButton>
-        <CustomButton style={{ visibility: 'hidden' }}>Item 4</CustomButton>
+        <CustomButton style={{ visibility: "hidden" }}>Item 4</CustomButton>
         <CustomButton>Item 5</CustomButton>
         <CustomButton>Item 6</CustomButton>
-        <CustomButton style={{ display: 'none' }}>Item 7</CustomButton>
+        <CustomButton style={{ display: "none" }}>Item 7</CustomButton>
       </Box>
     </ArrowNavigation>
   );
@@ -86,7 +86,7 @@ export const Horizontal = function () {
 
 export const Vertical = function () {
   return (
-    <ArrowNavigation selector={'auto-vertical'}>
+    <ArrowNavigation selector={"auto-vertical"}>
       <Box d="flex" flexDirection="column">
         <CustomButton>Item 1</CustomButton>
         <CustomButton>Item 2</CustomButton>

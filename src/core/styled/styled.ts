@@ -1,7 +1,7 @@
-import isPropValid from '@emotion/is-prop-valid';
-import { createElement, forwardRef, useMemo } from 'react';
-import { StyleName, useClassNames } from '../styles';
-import { StyleProps, useStyleProps } from '../system';
+import isPropValid from "@emotion/is-prop-valid";
+import { createElement, forwardRef, useMemo } from "react";
+import { StyleName, useClassNames } from "../styles";
+import { StyleProps, useStyleProps } from "../system";
 
 export type Merge<P, O> = O extends Array<any>
   ? P
@@ -48,7 +48,7 @@ export type StyledOptions = {
   shouldForwardProp?: (
     name: string,
     isValid: (name: string) => boolean,
-    component: React.ElementType | 'string'
+    component: React.ElementType | "string"
   ) => boolean;
 };
 
@@ -82,7 +82,7 @@ const createStyled: CreateStyled =
 
         const className = [computed.className, classNames(classes)]
           .filter(Boolean)
-          .join(' ');
+          .join(" ");
 
         return {
           ...computed,
@@ -95,17 +95,17 @@ const createStyled: CreateStyled =
       return useMemo(() => {
         let { as, ...props } = inProps;
         let Component = component;
-        if (typeof component === 'string') {
+        if (typeof component === "string") {
           Component = as || component;
           as = undefined;
         }
         const shouldForward = shouldForwardProp
           ? shouldForwardProp
           : (prop: string) =>
-              typeof Component !== 'string' || isPropValid(prop);
+              typeof Component !== "string" || isPropValid(prop);
 
         const result = Object.keys(props)
-          .filter(prop => shouldForward(prop, isPropValid, component))
+          .filter((prop) => shouldForward(prop, isPropValid, component))
           .reduce((prev, prop) => {
             prev[prop] = props[prop];
             return prev;
@@ -127,9 +127,9 @@ const createStyled: CreateStyled =
     Styled.displayName = displayName
       ? displayName
       : `Styled(${
-          typeof component === 'string'
+          typeof component === "string"
             ? component
-            : component.displayName || component.name || 'Component'
+            : component.displayName || component.name || "Component"
         })`;
 
     return Styled as unknown as StyledComponent<any, any>;
@@ -175,7 +175,7 @@ const styled = new Proxy(createStyled, {
   get: (target, prop, receiver) =>
     Reflect.has(target, prop)
       ? Reflect.get(target, prop, receiver)
-      : typeof prop === 'string'
+      : typeof prop === "string"
       ? target(prop as any)
       : null,
 }) as Styled;

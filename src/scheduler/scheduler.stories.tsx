@@ -1,34 +1,34 @@
-import moment from 'moment';
-import { useState } from 'react';
+import moment from "moment";
+import { useState } from "react";
 
-import { SchedulerEvent } from './types';
-import { Scheduler, SchedulerProps } from './scheduler';
+import { SchedulerEvent } from "./types";
+import { Scheduler, SchedulerProps } from "./scheduler";
 
 const config = {
   component: Scheduler,
-  title: 'Advance/Scheduler',
+  title: "Advance/Scheduler",
 };
 
 let id = 0;
 
-const now = moment().startOf('day').toDate();
+const now = moment().startOf("day").toDate();
 
 const _events = [
   {
     id: 1,
-    title: 'Point in Time Event',
+    title: "Point in Time Event",
     start: now,
     end: now,
   },
   {
     id: 2,
-    title: 'Record dance',
+    title: "Record dance",
     start: now,
     end: now,
   },
   {
     id: 3,
-    title: 'Edit Music',
+    title: "Edit Music",
     start: now,
     end: now,
   },
@@ -37,21 +37,21 @@ const _events = [
 function SchedulerContainer(props: SchedulerProps) {
   const [events, setEvents] = useState<any[]>(_events);
 
-  const handleEventCreate: SchedulerProps['onEventCreate'] = ({
+  const handleEventCreate: SchedulerProps["onEventCreate"] = ({
     start,
     end,
   }) => {
-    const title = window.prompt('New Event Name');
+    const title = window.prompt("New Event Name");
 
     if (title) {
-      setEvents(events => [
+      setEvents((events) => [
         ...events,
         { id: id++, start, end, title } as SchedulerEvent,
       ]);
     }
   };
 
-  const handleEventDrop: SchedulerProps['onEventDrop'] = ({
+  const handleEventDrop: SchedulerProps["onEventDrop"] = ({
     event,
     start,
     end,
@@ -65,8 +65,8 @@ function SchedulerContainer(props: SchedulerProps) {
       allDay = false;
     }
 
-    setEvents(events =>
-      events.map(existingEvent =>
+    setEvents((events) =>
+      events.map((existingEvent) =>
         existingEvent.id === event.id
           ? ({ ...existingEvent, start, end, allDay } as SchedulerEvent)
           : existingEvent
@@ -74,13 +74,13 @@ function SchedulerContainer(props: SchedulerProps) {
     );
   };
 
-  const handleResizeEvent: SchedulerProps['onEventResize'] = ({
+  const handleResizeEvent: SchedulerProps["onEventResize"] = ({
     event,
     start,
     end,
   }) => {
-    setEvents(events =>
-      events.map(existingEvent =>
+    setEvents((events) =>
+      events.map((existingEvent) =>
         existingEvent.id === event.id
           ? ({ ...existingEvent, start, end } as SchedulerEvent)
           : existingEvent
@@ -110,7 +110,7 @@ export const Component = () => (
   <SchedulerContainer
     components={{
       event: ({ event }: { event: SchedulerEvent }) => (
-        <span style={{ fontStyle: 'italic' }}>
+        <span style={{ fontStyle: "italic" }}>
           <strong>{event.title}</strong>
         </span>
       ),
@@ -120,7 +120,7 @@ export const Component = () => (
 
 export const EventStyler = () => (
   <SchedulerContainer
-    eventStyler={() => ({ style: { backgroundColor: 'green' } })}
+    eventStyler={() => ({ style: { backgroundColor: "green" } })}
   />
 );
 

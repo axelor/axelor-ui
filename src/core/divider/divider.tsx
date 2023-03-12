@@ -1,5 +1,5 @@
-import styled from '../styled';
-import styles from './divider.module.css';
+import styled from "../styled";
+import styles from "./divider.module.css";
 
 export interface DividerProps {
   vertical?: boolean;

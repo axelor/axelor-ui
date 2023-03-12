@@ -1,5 +1,5 @@
-import styled from '../styled';
-import styles from './input.module.scss';
+import styled from "../styled";
+import styles from "./input.module.scss";
 
 export interface InputProps {
   intermediate?: boolean;
@@ -10,30 +10,30 @@ export interface InputProps {
 
 const formClass = (type: string) => {
   switch (type) {
-    case 'checkbox':
-    case 'radio':
-      return 'form-check-input';
-    case 'range':
-      return 'form-range';
-    case 'color':
-      return 'form-control-color';
+    case "checkbox":
+    case "radio":
+      return "form-check-input";
+    case "range":
+      return "form-range";
+    case "color":
+      return "form-control-color";
     default:
-      return 'form-control';
+      return "form-control";
   }
 };
 
 export const Input = styled.input<InputProps>(
-  ({ type = 'text', invalid, large, small }) => [
+  ({ type = "text", invalid, large, small }) => [
     styles.input,
     formClass(type),
     {
       [styles.invalid]: invalid,
-      [styles['input-sm']]: small,
-      [styles['input-lg']]: large,
-      'form-control-sm': small,
-      'form-control-lg': large,
-      'is-invalid': invalid,
+      [styles["input-sm"]]: small,
+      [styles["input-lg"]]: large,
+      "form-control-sm": small,
+      "form-control-lg": large,
+      "is-invalid": invalid,
     },
   ],
-  ({ type = 'text' }) => ({ type })
+  ({ type = "text" }) => ({ type })
 );

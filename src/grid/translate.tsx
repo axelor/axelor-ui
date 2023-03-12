@@ -1,7 +1,7 @@
-import React from 'react';
-import * as TYPES from './types';
+import React from "react";
+import * as TYPES from "./types";
 
-const TranslateContext = React.createContext<TYPES.GridProps['translate']>(
+const TranslateContext = React.createContext<TYPES.GridProps["translate"]>(
   (str: string) => str
 );
 
@@ -10,7 +10,7 @@ export function TranslateProvider({
   children,
 }: {
   children: React.ReactChild;
-  t: TYPES.GridProps['translate'];
+  t: TYPES.GridProps["translate"];
 }) {
   return (
     <TranslateContext.Provider value={t}>{children}</TranslateContext.Provider>

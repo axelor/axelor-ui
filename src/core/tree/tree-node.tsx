@@ -1,18 +1,18 @@
-import React, { useRef } from 'react';
-import { useDrag, useDrop } from 'react-dnd';
-import { ReactComponent as BiChevronDown } from 'bootstrap-icons/icons/chevron-down.svg';
-import { ReactComponent as BiChevronRight } from 'bootstrap-icons/icons/chevron-right.svg';
-import { ReactComponent as BiChevronLeft } from 'bootstrap-icons/icons/chevron-left.svg';
+import React, { useRef } from "react";
+import { useDrag, useDrop } from "react-dnd";
+import { ReactComponent as BiChevronDown } from "bootstrap-icons/icons/chevron-down.svg";
+import { ReactComponent as BiChevronRight } from "bootstrap-icons/icons/chevron-right.svg";
+import { ReactComponent as BiChevronLeft } from "bootstrap-icons/icons/chevron-left.svg";
 
-import { Box } from '../box';
-import { TreeColumn } from './tree-column';
-import styles from './tree.module.css';
-import { useClassNames, useTheme } from '../styles';
-import { Icon } from '../icon';
-import * as TYPES from './types';
+import { Box } from "../box";
+import { TreeColumn } from "./tree-column";
+import styles from "./tree.module.css";
+import { useClassNames, useTheme } from "../styles";
+import { Icon } from "../icon";
+import * as TYPES from "./types";
 
 const hasChildren = (node: TYPES.TreeNode) => Boolean(node.children);
-const NODE_TYPE = 'TREE_NODE';
+const NODE_TYPE = "TREE_NODE";
 
 const TreeNodeContent = React.forwardRef<
   HTMLDivElement,
@@ -20,7 +20,7 @@ const TreeNodeContent = React.forwardRef<
 >((props, ref) => {
   const { columns, data, textRenderer } = props;
   const { dir } = useTheme();
-  const rtl = dir === 'rtl';
+  const rtl = dir === "rtl";
 
   function render(column: TYPES.TreeColumn) {
     if (textRenderer) {

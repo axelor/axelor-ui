@@ -1,15 +1,15 @@
-import React from 'react';
-import { ReactComponent as BiPencil } from 'bootstrap-icons/icons/pencil.svg';
-import { ReactComponent as BiPlusSquare } from 'bootstrap-icons/icons/plus-square.svg';
-import { ReactComponent as BiFileEarmark } from 'bootstrap-icons/icons/file-earmark-text.svg';
+import React from "react";
+import { ReactComponent as BiPencil } from "bootstrap-icons/icons/pencil.svg";
+import { ReactComponent as BiPlusSquare } from "bootstrap-icons/icons/plus-square.svg";
+import { ReactComponent as BiFileEarmark } from "bootstrap-icons/icons/file-earmark-text.svg";
 
-import { Input } from '../input';
-import { Box } from '../box';
-import { Select } from '../select';
+import { Input } from "../input";
+import { Box } from "../box";
+import { Select } from "../select";
 
 const SelectStories = {
   component: Select,
-  title: 'Components/Select',
+  title: "Components/Select",
 };
 
 function FormControl({ label, children }: any) {
@@ -22,20 +22,20 @@ function FormControl({ label, children }: any) {
 }
 
 const colors = [
-  { title: 'Green', code: 'green' },
-  { title: 'Red', code: 'red' },
-  { title: 'Blue', code: 'blue' },
-  { title: 'Orange', code: 'orange' },
-  { title: 'White', code: 'white' },
-  { title: 'Black', code: 'black' },
-  { title: 'Grey', code: 'grey' },
-  { title: 'Olive', code: 'olive' },
-  { title: 'Purple', code: 'purple' },
-  { title: 'Brown', code: 'brown' },
-  { title: 'Pink', code: 'pink' },
-  { title: 'Yellow', code: 'yellow' },
-  { title: 'Sky', code: 'sky' },
-  { title: 'Navy', code: 'navy' },
+  { title: "Green", code: "green" },
+  { title: "Red", code: "red" },
+  { title: "Blue", code: "blue" },
+  { title: "Orange", code: "orange" },
+  { title: "White", code: "white" },
+  { title: "Black", code: "black" },
+  { title: "Grey", code: "grey" },
+  { title: "Olive", code: "olive" },
+  { title: "Purple", code: "purple" },
+  { title: "Brown", code: "brown" },
+  { title: "Pink", code: "pink" },
+  { title: "Yellow", code: "yellow" },
+  { title: "Sky", code: "sky" },
+  { title: "Navy", code: "navy" },
 ];
 
 export const Basic = () => {
@@ -48,19 +48,19 @@ export const Basic = () => {
         options={colors}
         optionLabel="title"
         optionValue="code"
-        noOptionsMessage={() => 'No results'}
+        noOptionsMessage={() => "No results"}
       />
     </FormControl>
   );
 };
 
 const fetchColors = (colorStr: string) => {
-  console.log('fetch colors');
-  return new Promise(resolve => {
+  console.log("fetch colors");
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve(
         colorStr
-          ? colors.filter(color =>
+          ? colors.filter((color) =>
               color.title.toLowerCase().includes(colorStr.toLowerCase())
             )
           : colors
@@ -124,7 +124,7 @@ export const Creatable = () => {
       title: value,
       code: value.toLowerCase(),
     };
-    setMultiValue(values => (values || []).concat(newColor));
+    setMultiValue((values) => (values || []).concat(newColor));
     colors.push(newColor);
   }, []);
 
@@ -133,8 +133,8 @@ export const Creatable = () => {
   };
 
   const selectProps = isAsync
-    ? { key: 'async-select', fetchOptions: fetchColors }
-    : { key: 'static-select', options: colors };
+    ? { key: "async-select", fetchOptions: fetchColors }
+    : { key: "static-select", options: colors };
 
   return (
     <Box>
@@ -186,7 +186,7 @@ export const Actions = () => {
           <Input
             type="checkbox"
             checked={canCreate}
-            onChange={e => setCreate((e.target as HTMLInputElement).checked)}
+            onChange={(e) => setCreate((e.target as HTMLInputElement).checked)}
           />
           <Box as="label" ms={2}>
             Create
@@ -196,7 +196,7 @@ export const Actions = () => {
           <Input
             type="checkbox"
             checked={canRead}
-            onChange={e => setRead((e.target as HTMLInputElement).checked)}
+            onChange={(e) => setRead((e.target as HTMLInputElement).checked)}
           />
           <Box as="label" ms={2}>
             Read
@@ -206,7 +206,7 @@ export const Actions = () => {
           <Input
             type="checkbox"
             checked={canEdit}
-            onChange={e => setEdit((e.target as HTMLInputElement).checked)}
+            onChange={(e) => setEdit((e.target as HTMLInputElement).checked)}
           />
           <Box as="label" ms={2}>
             Edit
@@ -216,9 +216,9 @@ export const Actions = () => {
       <FormControl label="Colors">
         <Select
           icons={[
-            ...(value && canEdit ? [{ id: 'search', icon: BiPencil }] : []),
-            ...(canCreate ? [{ id: 'new', icon: BiPlusSquare }] : []),
-            ...(canRead && value ? [{ id: 'edit', icon: BiFileEarmark }] : []),
+            ...(value && canEdit ? [{ id: "search", icon: BiPencil }] : []),
+            ...(canCreate ? [{ id: "new", icon: BiPlusSquare }] : []),
+            ...(canRead && value ? [{ id: "edit", icon: BiFileEarmark }] : []),
           ]}
           value={value}
           onChange={setValue}

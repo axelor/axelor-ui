@@ -1,23 +1,23 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { Box } from '../box';
-import { Button } from '../button';
-import { Input } from '../input';
-import { InputLabel } from '../input-label';
+import { Box } from "../box";
+import { Button } from "../button";
+import { Input } from "../input";
+import { InputLabel } from "../input-label";
 
-import { Slide } from './slide';
+import { Slide } from "./slide";
 
 const config = {
   component: Slide,
-  title: 'Animation/Slide',
+  title: "Animation/Slide",
 };
 
 export const Basic = function () {
   const [show, setShow] = useState(false);
-  const [direction, setDirection] = useState<any>('start');
+  const [direction, setDirection] = useState<any>("start");
 
   const toggle = function () {
-    setShow(prev => !prev);
+    setShow((prev) => !prev);
   };
 
   return (
@@ -31,8 +31,8 @@ export const Basic = function () {
             me={1}
             type="checkbox"
             value="start"
-            checked={direction === 'start'}
-            onChange={e => setDirection('start')}
+            checked={direction === "start"}
+            onChange={(e) => setDirection("start")}
           />
           Start
         </InputLabel>
@@ -41,8 +41,8 @@ export const Basic = function () {
             me={1}
             type="checkbox"
             value="end"
-            checked={direction === 'end'}
-            onChange={e => setDirection('end')}
+            checked={direction === "end"}
+            onChange={(e) => setDirection("end")}
           />
           End
         </InputLabel>
@@ -51,8 +51,8 @@ export const Basic = function () {
             me={1}
             type="checkbox"
             value="up"
-            checked={direction === 'up'}
-            onChange={e => setDirection('up')}
+            checked={direction === "up"}
+            onChange={(e) => setDirection("up")}
           />
           Up
         </InputLabel>
@@ -61,8 +61,8 @@ export const Basic = function () {
             me={1}
             type="checkbox"
             value="down"
-            checked={direction === 'down'}
-            onChange={e => setDirection('down')}
+            checked={direction === "down"}
+            onChange={(e) => setDirection("down")}
           />
           Down
         </InputLabel>

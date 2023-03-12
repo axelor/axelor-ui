@@ -1,23 +1,23 @@
-import React from 'react';
-import { ReactComponent as BiArrowCounterclockwise } from 'bootstrap-icons/icons/arrow-counterclockwise.svg';
-import { ReactComponent as BiArrowClockwise } from 'bootstrap-icons/icons/arrow-clockwise.svg';
-import { ReactComponent as BiScissors } from 'bootstrap-icons/icons/scissors.svg';
-import { ReactComponent as BiClipboard } from 'bootstrap-icons/icons/clipboard.svg';
-import { ReactComponent as BiClipboardCheck } from 'bootstrap-icons/icons/clipboard-check.svg';
-import { ReactComponent as BiThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg';
+import React from "react";
+import { ReactComponent as BiArrowCounterclockwise } from "bootstrap-icons/icons/arrow-counterclockwise.svg";
+import { ReactComponent as BiArrowClockwise } from "bootstrap-icons/icons/arrow-clockwise.svg";
+import { ReactComponent as BiScissors } from "bootstrap-icons/icons/scissors.svg";
+import { ReactComponent as BiClipboard } from "bootstrap-icons/icons/clipboard.svg";
+import { ReactComponent as BiClipboardCheck } from "bootstrap-icons/icons/clipboard-check.svg";
+import { ReactComponent as BiThreeDotsVertical } from "bootstrap-icons/icons/three-dots-vertical.svg";
 
-import { Menu as AxMenu } from '../menu/menu';
-import { MenuItem } from '../menu/menu-item';
-import { MenuDivider } from '../menu/menu-divider';
-import { Menubar } from './menubar';
-import { Button } from '../button';
-import { Icon } from '../icon';
-import { OverflowList, OverflowListButtonType } from '../overflow-list';
-import { Box } from '../box';
+import { Menu as AxMenu } from "../menu/menu";
+import { MenuItem } from "../menu/menu-item";
+import { MenuDivider } from "../menu/menu-divider";
+import { Menubar } from "./menubar";
+import { Button } from "../button";
+import { Icon } from "../icon";
+import { OverflowList, OverflowListButtonType } from "../overflow-list";
+import { Box } from "../box";
 
 const config = {
   component: Menubar,
-  title: 'Components/Menubar',
+  title: "Components/Menubar",
 };
 
 const Menu: any = AxMenu;
@@ -149,7 +149,7 @@ export const Responsive = () => {
           ] as any
         }
         renderButton={(type: OverflowListButtonType, props: any) => {
-          if (type === 'dropdown') {
+          if (type === "dropdown") {
             return (
               <Button {...props}>
                 <Icon as={BiThreeDotsVertical} />

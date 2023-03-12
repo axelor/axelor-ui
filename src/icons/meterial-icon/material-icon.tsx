@@ -1,14 +1,14 @@
-import { MaterialSymbol } from 'material-symbols';
-import { forwardRef } from 'react';
-import { Box } from '../../core';
-import { clsx } from '../../core/styles';
-import { TForeground } from '../../core/system';
+import { MaterialSymbol } from "material-symbols";
+import { forwardRef } from "react";
+import { Box } from "../../core";
+import { clsx } from "../../core/styles";
+import { TForeground } from "../../core/system";
 
-import styles from './material-icon.module.scss';
+import styles from "./material-icon.module.scss";
 
 export interface MaterialIconProps {
   icon: MaterialSymbol;
-  variant?: 'outlined' | 'rounded' | 'sharp';
+  variant?: "outlined" | "rounded" | "sharp";
   fill?: 0 | 1;
   weight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
   grade?: -25 | 0 | 200;
@@ -22,7 +22,7 @@ export const MaterialIcon = forwardRef<HTMLSpanElement, MaterialIconProps>(
     const {
       className,
       icon,
-      variant = 'outlined',
+      variant = "outlined",
       fill = 0,
       weight = 400,
       grade = 0,

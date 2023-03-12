@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { useRefs } from '../hooks';
-import { useTheme } from '../styles';
+import * as React from "react";
+import { useRefs } from "../hooks";
+import { useTheme } from "../styles";
 import {
   ownerDocument,
   getNextElement,
@@ -8,17 +8,17 @@ import {
   navigate,
   isElementDisabled,
   isElementHidden,
-} from './utils';
+} from "./utils";
 
 export interface ArrowNavigationProps {
   children: React.ReactElement;
   enabled?: boolean;
-  selector: 'auto-horizontal' | 'auto-vertical' | (() => HTMLElement[][]);
+  selector: "auto-horizontal" | "auto-vertical" | (() => HTMLElement[][]);
 }
 
 const LAYOUT = {
-  HORIZONTAL: 'auto-horizontal',
-  VERTICAL: 'auto-vertical',
+  HORIZONTAL: "auto-horizontal",
+  VERTICAL: "auto-vertical",
 };
 
 export const ArrowNavigation = React.forwardRef(
@@ -29,27 +29,27 @@ export const ArrowNavigation = React.forwardRef(
     );
 
     const { dir } = useTheme();
-    const rtl = dir === 'rtl';
+    const rtl = dir === "rtl";
 
     function handleKeyDown(e: KeyboardEvent) {
       // get selector elements
       const elements =
-        !isAutoLayout && typeof selector === 'function' && selector();
+        !isAutoLayout && typeof selector === "function" && selector();
       const list = nodeRef.current || null;
 
       if (isAutoLayout) {
         const prevKey =
           selector === LAYOUT.HORIZONTAL
             ? rtl
-              ? 'ArrowRight'
-              : 'ArrowLeft'
-            : 'ArrowUp';
+              ? "ArrowRight"
+              : "ArrowLeft"
+            : "ArrowUp";
         const nextKey =
           selector === LAYOUT.HORIZONTAL
             ? rtl
-              ? 'ArrowLeft'
-              : 'ArrowRight'
-            : 'ArrowDown';
+              ? "ArrowLeft"
+              : "ArrowRight"
+            : "ArrowDown";
         const activeElement = ownerDocument(list).activeElement as HTMLElement;
 
         if (

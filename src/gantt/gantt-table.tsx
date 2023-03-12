@@ -1,15 +1,15 @@
-import React from 'react';
-import { Box } from '../core';
-import { useClassNames } from '../core';
-import * as TYPES from './types';
-import classes from './gantt.module.scss';
+import React from "react";
+import { Box } from "../core";
+import { useClassNames } from "../core";
+import * as TYPES from "./types";
+import classes from "./gantt.module.scss";
 
 const GanttTableHeader = React.memo(function GanttTableHeader({
   items,
-}: Pick<TYPES.GanttProps, 'items'>) {
+}: Pick<TYPES.GanttProps, "items">) {
   return (
     <div className={classes.tableHeader}>
-      {items.map(item => (
+      {items.map((item) => (
         <div key={item.name} className={classes.tableHeaderCell}>
           {item.title}
         </div>
@@ -29,7 +29,7 @@ const GanttTableBodyRow = React.memo(function GanttTableBodyRow({
   index: number;
   onClick: (index: number) => void;
   data: TYPES.GanttRecord;
-  items: TYPES.GanttProps['items'];
+  items: TYPES.GanttProps["items"];
 }) {
   const classNames = useClassNames();
   return (
@@ -37,9 +37,9 @@ const GanttTableBodyRow = React.memo(function GanttTableBodyRow({
       className={classNames(classes.tableBodyRow, {
         [classes.active]: active,
       })}
-      onClick={e => onClick(index)}
+      onClick={(e) => onClick(index)}
     >
-      {items.map(item => {
+      {items.map((item) => {
         const value: any = (data as any)[item.name];
         const $value = item.formatter
           ? item.formatter(item, (data as any)[item.name], data)
@@ -63,13 +63,13 @@ const GanttTableBodyRow = React.memo(function GanttTableBodyRow({
 export function GanttTable(props: {
   activeRowIndex: number;
   setActiveRowIndex: (index: number) => void;
-  items: TYPES.GanttProps['items'];
-  records: TYPES.GanttProps['records'];
+  items: TYPES.GanttProps["items"];
+  records: TYPES.GanttProps["records"];
 }) {
   const { items, records, activeRowIndex, setActiveRowIndex } = props;
   const classNames = useClassNames();
   return (
-    <Box className={classNames('table-grid', classes.table)}>
+    <Box className={classNames("table-grid", classes.table)}>
       <GanttTableHeader items={items} />
       <div className={classes.tableBody}>
         {records.map((record, ind) => (

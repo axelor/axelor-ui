@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { useRefs } from '../hooks';
+import * as React from "react";
+import { useRefs } from "../hooks";
 
 export interface ClickAwayListenerProps {
   children: React.ReactElement;
@@ -51,7 +51,7 @@ export const ClickAwayListener = ({
       if (
         !node ||
         !activatedRef.current ||
-        ('clientX' in event && clickedRootScrollbar(event, document))
+        ("clientX" in event && clickedRootScrollbar(event, document))
       )
         return;
 
@@ -95,12 +95,12 @@ export const ClickAwayListener = ({
     const document = getDoc();
     const handleTouchMove = () => (movedRef.current = true);
 
-    document.addEventListener('touchend', handleClickAway);
-    document.addEventListener('touchmove', handleTouchMove);
+    document.addEventListener("touchend", handleClickAway);
+    document.addEventListener("touchmove", handleTouchMove);
 
     return () => {
-      document.removeEventListener('touchend', handleClickAway);
-      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener("touchend", handleClickAway);
+      document.removeEventListener("touchmove", handleTouchMove);
     };
   }, [handleClickAway, getDoc]);
 
@@ -108,15 +108,15 @@ export const ClickAwayListener = ({
   React.useEffect(() => {
     const document = getDoc();
 
-    document.addEventListener('click', handleClickAway);
+    document.addEventListener("click", handleClickAway);
     return () => {
-      document.removeEventListener('click', handleClickAway);
+      document.removeEventListener("click", handleClickAway);
     };
   }, [handleClickAway, getDoc]);
 
   return React.cloneElement(children, {
-    onTouchEnd: createHandleSynthetic('onTouchEnd'),
-    onClick: createHandleSynthetic('onClick'),
+    onTouchEnd: createHandleSynthetic("onTouchEnd"),
+    onClick: createHandleSynthetic("onClick"),
     ref: handleRef,
   });
 };

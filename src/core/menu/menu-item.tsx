@@ -1,26 +1,26 @@
-import { Box } from '../box';
-import { Icon } from '../icon';
-import { IconProps } from '../icon/icon';
-import styled, { withStyled } from '../styled';
-import styles from './menu.module.css';
+import { Box } from "../box";
+import { Icon } from "../icon";
+import { IconProps } from "../icon/icon";
+import styled, { withStyled } from "../styled";
+import styles from "./menu.module.css";
 
 export interface MenuItemProps {
   text?: string;
   label?: string;
-  startIcon?: IconProps['as'];
-  endIcon?: IconProps['as'];
+  startIcon?: IconProps["as"];
+  endIcon?: IconProps["as"];
   active?: boolean;
   disabled?: boolean;
 }
 
 const MenuItemBase = styled.a<MenuItemProps>(
   ({ active, disabled }) => [
-    'dropdown-item',
+    "dropdown-item",
     styles.menuItem,
     { active, disabled },
   ],
   ({ disabled, tabIndex = 1 }) =>
-    disabled ? { tabIndex: -1, 'aria-disabled': true } : { tabIndex }
+    disabled ? { tabIndex: -1, "aria-disabled": true } : { tabIndex }
 );
 
 export const MenuItem = withStyled(MenuItemBase)(

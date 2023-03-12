@@ -1,7 +1,7 @@
-import React from 'react';
-import * as TYPES from './types';
-import { useClassNames } from '../core';
-import classes from './gantt.module.scss';
+import React from "react";
+import * as TYPES from "./types";
+import { useClassNames } from "../core";
+import classes from "./gantt.module.scss";
 
 export const RenderList = React.memo(function RenderList({
   items,

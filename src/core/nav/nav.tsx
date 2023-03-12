@@ -1,6 +1,6 @@
-import React from 'react';
-import { Box } from '../box';
-import { NavProps } from './types';
+import React from "react";
+import { Box } from "../box";
+import { NavProps } from "./types";
 
 export function Nav(props: NavProps) {
   const { items, onRender, onItemRender } = props;
@@ -10,7 +10,7 @@ export function Nav(props: NavProps) {
 
   return (
     <Box d="flex">
-      {items?.map(item => (
+      {items?.map((item) => (
         <React.Fragment key={item.id}>
           {onItemRender && onItemRender(item)}
         </React.Fragment>

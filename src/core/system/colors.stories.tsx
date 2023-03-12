@@ -1,28 +1,28 @@
-import { Box } from '../box/box';
+import { Box } from "../box/box";
 
 const config = {
   component: Box,
-  title: 'System/Colors',
+  title: "System/Colors",
 };
 
 const colors: any = {
-  primary: 'white',
-  secondary: 'white',
-  success: 'white',
-  danger: 'white',
-  warning: 'dark',
-  info: 'dark',
-  light: 'dark',
-  dark: 'white',
-  body: 'dark',
-  white: 'dark',
-  transparent: 'dark',
+  primary: "white",
+  secondary: "white",
+  success: "white",
+  danger: "white",
+  warning: "dark",
+  info: "dark",
+  light: "dark",
+  dark: "white",
+  body: "dark",
+  white: "dark",
+  transparent: "dark",
 };
 
 export const Theme = ({ t }: any) => {
   return (
     <Box style={{ width: 400 }}>
-      {(Object.keys(colors) as Array<any>).map(c => (
+      {(Object.keys(colors) as Array<any>).map((c) => (
         <Box key={c} p={2} m={2} bgColor={c} color={colors[c]}>
           {t(c)}
         </Box>
@@ -32,38 +32,38 @@ export const Theme = ({ t }: any) => {
 };
 
 const palette: any = {
-  blue: 'white',
-  indigo: 'white',
-  purple: 'white',
-  pink: 'white',
-  red: 'white',
-  orange: 'dark',
-  yellow: 'dark',
-  green: 'white',
-  teal: 'dark',
-  cyan: 'dark',
-  black: 'white',
-  white: 'dark',
+  blue: "white",
+  indigo: "white",
+  purple: "white",
+  pink: "white",
+  red: "white",
+  orange: "dark",
+  yellow: "dark",
+  green: "white",
+  teal: "dark",
+  cyan: "dark",
+  black: "white",
+  white: "dark",
 };
 
 const gray: any = {
-  gray: 'white',
-  'gray-100': 'dark',
-  'gray-200': 'dark',
-  'gray-300': 'dark',
-  'gray-400': 'dark',
-  'gray-500': 'dark',
-  'gray-600': 'white',
-  'gray-700': 'white',
-  'gray-800': 'white',
-  'gray-900': 'white',
+  gray: "white",
+  "gray-100": "dark",
+  "gray-200": "dark",
+  "gray-300": "dark",
+  "gray-400": "dark",
+  "gray-500": "dark",
+  "gray-600": "white",
+  "gray-700": "white",
+  "gray-800": "white",
+  "gray-900": "white",
 };
 
 export const Palette = ({ t }: any) => {
   return (
     <Box display="flex">
       <Box style={{ width: 400 }}>
-        {(Object.keys(palette) as Array<any>).map(c => (
+        {(Object.keys(palette) as Array<any>).map((c) => (
           <Box
             key={c}
             p={2}
@@ -76,7 +76,7 @@ export const Palette = ({ t }: any) => {
         ))}
       </Box>
       <Box style={{ width: 400 }}>
-        {(Object.keys(gray) as Array<any>).map(c => (
+        {(Object.keys(gray) as Array<any>).map((c) => (
           <Box
             key={c}
             p={2}

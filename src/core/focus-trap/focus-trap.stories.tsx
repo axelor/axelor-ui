@@ -1,11 +1,11 @@
-import { Box } from '../box';
-import { Button } from '../button';
-import { Input } from '../input';
-import { FocusTrap } from './focus-trap';
+import { Box } from "../box";
+import { Button } from "../button";
+import { Input } from "../input";
+import { FocusTrap } from "./focus-trap";
 
 const config = {
   component: FocusTrap,
-  title: 'Core/FocusTrap',
+  title: "Core/FocusTrap",
 };
 
 export const Basic = function () {

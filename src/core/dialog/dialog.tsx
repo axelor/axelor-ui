@@ -1,11 +1,11 @@
-import { useCallback } from 'react';
-import { Box } from '../box';
-import { Fade } from '../fade';
-import { FocusTrap } from '../focus-trap';
-import { Portal } from '../portal';
-import styled, { withStyled } from '../styled';
-import { clsx, useClassNames } from '../styles';
-import styles from './dialog.module.scss';
+import { useCallback } from "react";
+import { Box } from "../box";
+import { Fade } from "../fade";
+import { FocusTrap } from "../focus-trap";
+import { Portal } from "../portal";
+import styled, { withStyled } from "../styled";
+import { clsx, useClassNames } from "../styles";
+import styles from "./dialog.module.scss";
 
 export interface DialogProps {
   open: boolean;
@@ -15,7 +15,7 @@ export interface DialogProps {
   scrollable?: boolean;
   fullscreen?: boolean;
   centered?: boolean;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: "sm" | "md" | "lg" | "xl";
   onShow?: () => void;
   onHide?: () => void;
 }
@@ -49,7 +49,7 @@ export const DialogTitle = withStyled(TitleRoot)((props, ref) => {
   return (
     <TitleRoot
       fontSize={5}
-      className={clsx(className, classNames('modal-title'))}
+      className={clsx(className, classNames("modal-title"))}
       ref={ref}
       {...rest}
     >
@@ -66,7 +66,7 @@ export const DialogHeader = withStyled(HeaderRoot)((props, ref) => {
   return (
     <HeaderRoot
       ref={ref}
-      className={clsx(className, classNames('modal-header'))}
+      className={clsx(className, classNames("modal-header"))}
       {...rest}
     >
       <Box>{children}</Box>
@@ -74,7 +74,7 @@ export const DialogHeader = withStyled(HeaderRoot)((props, ref) => {
         <Box>
           <Box
             as="button"
-            className={classNames('btn-close')}
+            className={classNames("btn-close")}
             onClick={onCloseClick}
           />
         </Box>
@@ -91,7 +91,7 @@ export const DialogFooter = withStyled(FooterRoot)((props, ref) => {
   return (
     <Box
       ref={ref}
-      className={clsx(className, classNames('modal-footer'))}
+      className={clsx(className, classNames("modal-footer"))}
       {...props}
     >
       {children}
@@ -107,7 +107,7 @@ export const DialogContent = withStyled(ContentRoot)((props, ref) => {
   return (
     <ContentRoot
       ref={ref}
-      className={clsx(className, classNames('modal-body'))}
+      className={clsx(className, classNames("modal-body"))}
       {...props}
     >
       {children}
@@ -143,27 +143,27 @@ export const Dialog = withStyled(Box)<DialogProps>((props, ref) => {
     <Portal>
       {backdrop && (
         <Fade in={open}>
-          <Box className={classNames('modal-backdrop', 'show', 'fade')} />
+          <Box className={classNames("modal-backdrop", "show", "fade")} />
         </Fade>
       )}
       <Fade in={open} onEntered={onEntered} onExited={onExited}>
         <Box
-          className={clsx(className, styles.dialogRoot, classNames('modal'))}
+          className={clsx(className, styles.dialogRoot, classNames("modal"))}
           {...rest}
         >
           <Box
-            className={classNames('modal-dialog', {
-              'modal-dialog-centered': centered,
-              'modal-dialog-scrollable': scrollable,
-              'modal-fullscreen': fullscreen,
-              'modal-sm': size === 'sm',
-              'modal-lg': size === 'lg',
-              'modal-xl': size === 'xl',
+            className={classNames("modal-dialog", {
+              "modal-dialog-centered": centered,
+              "modal-dialog-scrollable": scrollable,
+              "modal-fullscreen": fullscreen,
+              "modal-sm": size === "sm",
+              "modal-lg": size === "lg",
+              "modal-xl": size === "xl",
             })}
             ref={ref}
           >
             <FocusTrap enabled={open}>
-              <Box className={classNames('modal-content')}>{children}</Box>
+              <Box className={classNames("modal-content")}>{children}</Box>
             </FocusTrap>
           </Box>
         </Box>

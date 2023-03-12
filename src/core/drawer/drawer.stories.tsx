@@ -1,15 +1,15 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Box } from '../box';
-import { Button } from '../button';
-import { Input } from '../input';
-import { InputLabel } from '../input-label';
-import { ClickAwayListener } from '../click-away-listener';
-import { Drawer } from './drawer';
+import { Box } from "../box";
+import { Button } from "../button";
+import { Input } from "../input";
+import { InputLabel } from "../input-label";
+import { ClickAwayListener } from "../click-away-listener";
+import { Drawer } from "./drawer";
 
 const config = {
   component: Drawer,
-  title: 'Components/Drawer',
+  title: "Components/Drawer",
 };
 
 export const Backdrop = () => {
@@ -99,7 +99,7 @@ function DrawerDemo({
   placement,
   clickAway,
 }: {
-  placement: 'start' | 'top' | 'end' | 'bottom';
+  placement: "start" | "top" | "end" | "bottom";
   clickAway?: boolean;
 }) {
   const [show, setShow] = React.useState<boolean>(false);
@@ -164,15 +164,15 @@ export const Positions = () => {
         <Input
           type="checkbox"
           checked={clickAway}
-          onChange={() => setClickAway(clickAway => !clickAway)}
-        />{' '}
+          onChange={() => setClickAway((clickAway) => !clickAway)}
+        />{" "}
         Close on click away
       </InputLabel>
       <br />
-      <DrawerDemo placement={'start'} clickAway={clickAway} />
-      <DrawerDemo placement={'top'} clickAway={clickAway} />
-      <DrawerDemo placement={'end'} clickAway={clickAway} />
-      <DrawerDemo placement={'bottom'} clickAway={clickAway} />
+      <DrawerDemo placement={"start"} clickAway={clickAway} />
+      <DrawerDemo placement={"top"} clickAway={clickAway} />
+      <DrawerDemo placement={"end"} clickAway={clickAway} />
+      <DrawerDemo placement={"bottom"} clickAway={clickAway} />
     </Box>
   );
 };

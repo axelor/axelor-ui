@@ -1,9 +1,9 @@
-import styled from '../styled';
+import styled from "../styled";
 
 export interface TableCaptionProps {
-  placement?: 'top' | 'bottom';
+  placement?: "top" | "bottom";
 }
 
 export const TableCaption = styled.caption<TableCaptionProps>(
-  ({ placement }) => [{ 'caption-top': placement === 'top' }]
+  ({ placement }) => [{ "caption-top": placement === "top" }]
 );

@@ -1,4 +1,4 @@
-import { Box } from '../box';
+import { Box } from "../box";
 import {
   Table,
   TableBody,
@@ -7,11 +7,11 @@ import {
   TableFoot,
   TableHead,
   TableRow,
-} from '../table';
+} from "../table";
 
 const config = {
   component: Table,
-  title: 'Components/Table',
+  title: "Components/Table",
 };
 
 export const Active = () => {

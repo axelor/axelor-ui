@@ -1,17 +1,17 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { Box } from '../box';
-import { Button } from './button';
+import { Box } from "../box";
+import { Button } from "./button";
 
 const config = {
   component: Button,
-  title: 'Components/Button',
+  title: "Components/Button",
 };
 
 export const Basic = () => {
-  const [text, setText] = useState('Click me...');
+  const [text, setText] = useState("Click me...");
   const onClick = () => {
-    setText('Clicked!!!');
+    setText("Clicked!!!");
   };
   return (
     <Box display="flex" alignItems="center" g={2}>

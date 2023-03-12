@@ -1,14 +1,14 @@
-import { forwardRef, useRef } from 'react';
-import { Transition } from 'react-transition-group';
-import { useForwardedRef } from '../hooks';
-import { useClassNames } from '../styles';
-import { TransitionProps } from '../transitions/types';
+import { forwardRef, useRef } from "react";
+import { Transition } from "react-transition-group";
+import { useForwardedRef } from "../hooks";
+import { useClassNames } from "../styles";
+import { TransitionProps } from "../transitions/types";
 import {
   getTransition,
   getTransitionProps,
   reflow,
-} from '../transitions/utils';
-import styles from './collapse.module.css';
+} from "../transitions/utils";
+import styles from "./collapse.module.css";
 
 export interface CollapseProps extends TransitionProps {
   horizontal?: boolean;
@@ -34,16 +34,16 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
   ) => {
     const forwardRef = useForwardedRef(ref);
     const wrapperRef = useRef<HTMLDivElement | null>(null);
-    const size = horizontal ? 'width' : 'height';
+    const size = horizontal ? "width" : "height";
 
     const getWrapperSize = () => {
       const wrapper = wrapperRef.current;
       if (wrapper && horizontal) {
-        wrapper.style.position = 'absolute';
+        wrapper.style.position = "absolute";
         try {
           return wrapper.clientWidth;
         } finally {
-          wrapper.style.position = '';
+          wrapper.style.position = "";
         }
       }
       if (wrapper) {
@@ -54,7 +54,7 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
 
     function handleEnter(isAppearing: boolean) {
       const node = forwardRef.current!;
-      node.style[size] = '0';
+      node.style[size] = "0";
       if (onEnter) {
         onEnter(node, isAppearing);
       }
@@ -64,7 +64,7 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
       const node = forwardRef.current!;
       const style = node.style;
       const wrapperSize = getWrapperSize();
-      const options = getTransitionProps('enter', { timeout, style });
+      const options = getTransitionProps("enter", { timeout, style });
 
       node.style[size] = `${wrapperSize}px`;
       node.style.transition = getTransition(size, options);
@@ -76,7 +76,7 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
 
     const handleEntered = (isAppearing: boolean) => {
       const node = forwardRef.current!;
-      node.style[size] = 'auto';
+      node.style[size] = "auto";
 
       if (onEntered) {
         onEntered(node, isAppearing);
@@ -98,9 +98,9 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
     const handleExiting = () => {
       const node = forwardRef.current!;
       const style = node.style;
-      const options = getTransitionProps('exit', { timeout, style });
+      const options = getTransitionProps("exit", { timeout, style });
 
-      node.style[size] = '0';
+      node.style[size] = "0";
       node.style.transition = getTransition(size, options);
 
       if (onExiting) {
@@ -130,23 +130,23 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
         nodeRef={forwardRef}
         {...props}
       >
-        {state => {
+        {(state) => {
           const cls = classNames([
             className,
             styles.collapse,
             {
               [styles.collapseH]: !horizontal,
               [styles.collapseW]: !!horizontal,
-              [styles.collapseEntered]: state === 'entered',
-              [styles.collapseExited]: state === 'exited',
+              [styles.collapseEntered]: state === "entered",
+              [styles.collapseExited]: state === "exited",
             },
           ]);
           return (
             <div className={cls} ref={forwardRef}>
               <div ref={wrapperRef} className={styles.collapseWrapper}>
                 <div className={styles.collapseWrapperInner}>
-                  {typeof children === 'function' && children(state)}
-                  {typeof children !== 'function' && children}
+                  {typeof children === "function" && children(state)}
+                  {typeof children !== "function" && children}
                 </div>
               </div>
             </div>

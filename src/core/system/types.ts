@@ -1,6 +1,6 @@
-import { CSSProperties } from 'react';
+import { CSSProperties } from "react";
 
-export const Breakpoints = ['base', 'sm', 'md', 'lg', 'xl', 'xxl'] as const;
+export const Breakpoints = ["base", "sm", "md", "lg", "xl", "xxl"] as const;
 
 export type ResponsiveObject<T> = {
   base?: T;

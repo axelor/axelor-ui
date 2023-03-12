@@ -1,4 +1,4 @@
-import { RecordList } from './kanban-column';
+import { RecordList } from "./kanban-column";
 
 export type ID = string | number;
 

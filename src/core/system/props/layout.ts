@@ -1,7 +1,7 @@
-import CSS from 'csstype';
-import { SpaceValue } from '.';
-import { Config } from '../types';
-import { toPixel } from '../utils';
+import CSS from "csstype";
+import { SpaceValue } from ".";
+import { Config } from "../types";
+import { toPixel } from "../utils";
 
 const convert = (value: any) => value;
 
@@ -50,23 +50,23 @@ export interface FlexProps {
 }
 
 export const FlexConfig: Config<FlexProps> = {
-  flex: computeVar('flex'),
-  flexBasis: computeVar('flex-basis'),
-  flexDirection: computeVar('flex-direction'),
-  flexFlow: computeVar('flex-flow'),
-  flexGrow: computeVar('flex-grow'),
-  flexShrink: computeVar('flex-shrink'),
-  flexWrap: computeVar('flex-wrap'),
-  order: computeVar('order'),
-  justifyContent: computeVar('justify-content'),
-  alignContent: computeVar('align-content'),
-  alignItems: computeVar('align-items'),
-  alignSelf: computeVar('align-self'),
-  placeContent: computeVar('place-content'),
-  placeItems: computeVar('place-items'),
-  rowGap: computeVar('row-gap', toPixel),
-  columnGap: computeVar('column-gap', toPixel),
-  gap: computeVar('gap', toPixel),
+  flex: computeVar("flex"),
+  flexBasis: computeVar("flex-basis"),
+  flexDirection: computeVar("flex-direction"),
+  flexFlow: computeVar("flex-flow"),
+  flexGrow: computeVar("flex-grow"),
+  flexShrink: computeVar("flex-shrink"),
+  flexWrap: computeVar("flex-wrap"),
+  order: computeVar("order"),
+  justifyContent: computeVar("justify-content"),
+  alignContent: computeVar("align-content"),
+  alignItems: computeVar("align-items"),
+  alignSelf: computeVar("align-self"),
+  placeContent: computeVar("place-content"),
+  placeItems: computeVar("place-items"),
+  rowGap: computeVar("row-gap", toPixel),
+  columnGap: computeVar("column-gap", toPixel),
+  gap: computeVar("gap", toPixel),
   g: computeGap,
 };
 
@@ -91,20 +91,20 @@ export interface GridProps {
 }
 
 export const GridConfig: Config<GridProps> = {
-  gridGap: computeVar('grid-gap', toPixel),
-  gridRowGap: computeVar('grid-row-gap', toPixel),
-  gridColumnGap: computeVar('grid-column-gap', toPixel),
-  gridRow: computeVar('grid-row'),
-  gridColumn: computeVar('grid-column'),
-  gridRowEnd: computeVar('grid-row-end'),
-  gridColumnEnd: computeVar('grid-column-end'),
-  gridAutoRows: computeVar('grid-auto-rows'),
-  gridAutoColumns: computeVar('grid-auto-columns'),
-  gridAutoFlow: computeVar('grid-auto-flow'),
-  gridTemplateRows: computeVar('grid-template-rows'),
-  gridTemplateColumns: computeVar('grid-template-columns'),
-  gridTemplateAreas: computeVar('grid-template-areas'),
-  gridArea: computeVar('grid-area'),
-  gap: computeVar('gap', toPixel),
+  gridGap: computeVar("grid-gap", toPixel),
+  gridRowGap: computeVar("grid-row-gap", toPixel),
+  gridColumnGap: computeVar("grid-column-gap", toPixel),
+  gridRow: computeVar("grid-row"),
+  gridColumn: computeVar("grid-column"),
+  gridRowEnd: computeVar("grid-row-end"),
+  gridColumnEnd: computeVar("grid-column-end"),
+  gridAutoRows: computeVar("grid-auto-rows"),
+  gridAutoColumns: computeVar("grid-auto-columns"),
+  gridAutoFlow: computeVar("grid-auto-flow"),
+  gridTemplateRows: computeVar("grid-template-rows"),
+  gridTemplateColumns: computeVar("grid-template-columns"),
+  gridTemplateAreas: computeVar("grid-template-areas"),
+  gridArea: computeVar("grid-area"),
+  gap: computeVar("gap", toPixel),
   g: computeGap,
 };

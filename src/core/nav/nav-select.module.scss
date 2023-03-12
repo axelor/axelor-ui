@@ -1,4 +1,4 @@
-@use 'sass:math';
+@use "sass:math";
 
 $height: 28px;
 $spacing: 0.25rem;
@@ -78,7 +78,7 @@ $borderWidth: 2px;
 
   & a:after,
   & a:before {
-    content: '';
+    content: "";
     width: $height;
     height: $height;
     position: absolute;

@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { Box, Button, Input, InputLabel } from '../../core';
-import { MaterialIcon, MaterialIconProps } from './material-icon';
+import { useState } from "react";
+import { Box, Button, Input, InputLabel } from "../../core";
+import { MaterialIcon, MaterialIconProps } from "./material-icon";
 
 const config = {
   component: MaterialIcon,
-  title: 'Icons/Material',
+  title: "Icons/Material",
 };
 
 const IconBox = (props: MaterialIconProps) => {

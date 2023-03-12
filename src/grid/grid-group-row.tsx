@@ -1,14 +1,14 @@
-import React from 'react';
-import { Icon } from '../core';
-import { useClassNames } from '../core';
-import { ReactComponent as BiCaretRightFill } from 'bootstrap-icons/icons/caret-right-fill.svg';
-import { ReactComponent as BiCaretLeftFill } from 'bootstrap-icons/icons/caret-left-fill.svg';
-import { ReactComponent as BiCaretDownFill } from 'bootstrap-icons/icons/caret-down-fill.svg';
+import React from "react";
+import { Icon } from "../core";
+import { useClassNames } from "../core";
+import { ReactComponent as BiCaretRightFill } from "bootstrap-icons/icons/caret-right-fill.svg";
+import { ReactComponent as BiCaretLeftFill } from "bootstrap-icons/icons/caret-left-fill.svg";
+import { ReactComponent as BiCaretDownFill } from "bootstrap-icons/icons/caret-down-fill.svg";
 
-import * as TYPES from './types';
-import { useRTL } from './utils';
-import styles from './grid.module.scss';
-import { useTranslation } from './translate';
+import * as TYPES from "./types";
+import { useRTL } from "./utils";
+import styles from "./grid.module.scss";
+import { useTranslation } from "./translate";
 
 export const GridGroupRow = React.memo(function GridGroupRow(
   props: TYPES.GridRowProps
@@ -16,7 +16,7 @@ export const GridGroupRow = React.memo(function GridGroupRow(
   const { className, selected, data, index, renderer, onClick } = props;
   const { state, record } = data;
   const { level, value, total } = record;
-  const RowRenderer = renderer || 'div';
+  const RowRenderer = renderer || "div";
   const rendererProps = renderer ? props : {};
   const classNames = useClassNames();
   const isRTL = useRTL();
@@ -35,22 +35,22 @@ export const GridGroupRow = React.memo(function GridGroupRow(
           ind !== 0 ? <div key={ind} className={styles.groupSpacer} /> : null
         )}
       <div
-        onClick={e => onClick && data && onClick(e as any, data, index)}
+        onClick={(e) => onClick && data && onClick(e as any, data, index)}
         className={styles.groupRowContent}
       >
         <Icon
           className={styles.groupRowIcon}
           as={
-            state === 'close'
+            state === "close"
               ? isRTL
                 ? BiCaretLeftFill
                 : BiCaretRightFill
               : BiCaretDownFill
           }
           size={1}
-          title={state === 'close' ? 'Collapse' : 'Expand'}
+          title={state === "close" ? "Collapse" : "Expand"}
         />
-        {value} ({total} {t('items')})
+        {value} ({total} {t("items")})
       </div>
     </RowRenderer>
   );

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import * as React from 'react';
-import { createPortal } from 'react-dom';
+import { useEffect, useState } from "react";
+import * as React from "react";
+import { createPortal } from "react-dom";
 
 export interface PortalProps {
   container?: Element | null | (() => Element | null);
@@ -14,7 +14,7 @@ export const Portal = ({
   const [mountNode, setMountNode] = useState<Element | null>(null);
   useEffect(() => {
     let node = container;
-    if (typeof container === 'function') {
+    if (typeof container === "function") {
       node = (container as Function)();
     }
     setMountNode(node);

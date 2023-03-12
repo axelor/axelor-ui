@@ -1,28 +1,28 @@
-import * as React from 'react';
-import { ReactComponent as BiThreeDots } from 'bootstrap-icons/icons/three-dots.svg';
+import * as React from "react";
+import { ReactComponent as BiThreeDots } from "bootstrap-icons/icons/three-dots.svg";
 
-import { Fade } from '../fade';
-import { Box } from '../box';
-import { Icon } from '../icon';
-import { Menu } from '../menu/menu';
-import { MenuItem } from '../menu/menu-item';
-import { useClassNames } from '../styles';
-import { OverflowListItemProps, OverflowDropdownProps } from './types';
-import * as TYPES from './types';
-import styled, { withStyled } from '../styled';
-import cssStyles from './overflow-list.module.css';
+import { Fade } from "../fade";
+import { Box } from "../box";
+import { Icon } from "../icon";
+import { Menu } from "../menu/menu";
+import { MenuItem } from "../menu/menu-item";
+import { useClassNames } from "../styles";
+import { OverflowListItemProps, OverflowDropdownProps } from "./types";
+import * as TYPES from "./types";
+import styled, { withStyled } from "../styled";
+import cssStyles from "./overflow-list.module.css";
 
 const RESIZE_DELAY = 16;
 
 const MODE: Record<string, TYPES.Mode> = {
-  SHRINK: 'shrink',
-  GROW: 'grow',
+  SHRINK: "shrink",
+  GROW: "grow",
 };
 
 const ACTIONS: Record<string, TYPES.Action> = {
   ...MODE,
-  MEASURE: 'measure',
-  COMPUTE: 'compute',
+  MEASURE: "measure",
+  COMPUTE: "compute",
 };
 
 const DropdownButton = withStyled(Box)((props, ref) => {
@@ -54,9 +54,9 @@ function DropdownMenuItem({
   );
 }
 
-const DropdownList = styled('div', {
+const DropdownList = styled("div", {
   shouldForwardProp: (prop, isValid) =>
-    prop !== 'onOverflowChange' && isValid(prop),
+    prop !== "onOverflowChange" && isValid(prop),
 })<OverflowDropdownProps>(({ vertical }) => [
   cssStyles.dropdownList,
   {
@@ -83,7 +83,7 @@ export const OverflowDropdown = withStyled(DropdownList)((props, ref) => {
   const mode = React.useRef<TYPES.Mode>(MODE.SHRINK);
   const maxOffset = items.length;
 
-  const [popover, setPopover] = React.useState<Record<'target', any> | null>(
+  const [popover, setPopover] = React.useState<Record<"target", any> | null>(
     null
   );
   const [{ measure, compute, offset, listOffset }, dispatch] = React.useReducer(
@@ -116,7 +116,7 @@ export const OverflowDropdown = withStyled(DropdownList)((props, ref) => {
     (offset: number) => {
       const _container = container.current;
       const _listContainer = listContainer.current;
-      const prop = vertical ? 'offsetHeight' : 'offsetWidth';
+      const prop = vertical ? "offsetHeight" : "offsetWidth";
       if (_container && _listContainer) {
         const size = _container[prop];
         const innerSize = _listContainer[prop];
@@ -187,7 +187,7 @@ export const OverflowDropdown = withStyled(DropdownList)((props, ref) => {
             let size = vertical ? height : width;
             mode.current = size > _size ? MODE.GROW : MODE.SHRINK;
             _size = size;
-            dispatch('compute');
+            dispatch("compute");
           }, RESIZE_DELAY);
         });
 
@@ -232,11 +232,11 @@ export const OverflowDropdown = withStyled(DropdownList)((props, ref) => {
         <Menu
           show
           arrow
-          bg={'light'}
-          color={'dark'}
+          bg={"light"}
+          color={"dark"}
           transition={Fade}
           container={document.body}
-          placement={vertical ? 'end' : 'bottom'}
+          placement={vertical ? "end" : "bottom"}
           navigation
           {...dropdownMenuProps}
           target={popover.target}
@@ -258,7 +258,7 @@ export const OverflowDropdown = withStyled(DropdownList)((props, ref) => {
     };
 
     return renderButton ? (
-      renderButton('dropdown', props)
+      renderButton("dropdown", props)
     ) : (
       <DropdownButton {...props} />
     );

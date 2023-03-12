@@ -1,34 +1,34 @@
-import { Box } from '../box';
+import { Box } from "../box";
 import {
   Accordion,
   AccordionHeader,
   AccordionItem,
   AccordionBody,
-} from './accordion';
+} from "./accordion";
 
 const config = {
   component: Accordion,
-  title: 'Components/Accordion',
+  title: "Components/Accordion",
 };
 
 const items = [
   {
     id: 1,
-    title: 'Accordion Item #1',
+    title: "Accordion Item #1",
     content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sed 
     sapien vel metus feugiat consectetur vitae eu sem. Nam ut tincidunt
     sapien, lobortis consequat enim.`,
   },
   {
     id: 2,
-    title: 'Accordion Item #2',
+    title: "Accordion Item #2",
     content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sed 
     sapien vel metus feugiat consectetur vitae eu sem. Nam ut tincidunt
     sapien, lobortis consequat enim.`,
   },
   {
     id: 3,
-    title: 'Accordion Item #3',
+    title: "Accordion Item #3",
     content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sed 
     sapien vel metus feugiat consectetur vitae eu sem. Nam ut tincidunt
     sapien, lobortis consequat enim.`,

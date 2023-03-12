@@ -1,23 +1,23 @@
-import styled from '../styled';
-import { TVariant } from '../system';
+import styled from "../styled";
+import { TVariant } from "../system";
 
 export interface TableProps {
   color?: TVariant;
   striped?: boolean;
   bordered?: boolean;
   hover?: boolean;
-  size?: 'sm' | 'md';
+  size?: "sm" | "md";
 }
 
 export const Table = styled.table<TableProps>(
-  ({ color, striped, bordered, hover, size = 'md' }) => [
-    'table',
+  ({ color, striped, bordered, hover, size = "md" }) => [
+    "table",
     {
       [`table-${color}`]: color,
-      'table-striped': striped,
-      'table-bordered': bordered,
-      'table-hover': hover,
-      [`table-${size}`]: size !== 'md',
+      "table-striped": striped,
+      "table-bordered": bordered,
+      "table-hover": hover,
+      [`table-${size}`]: size !== "md",
     },
   ]
 );

@@ -1,11 +1,11 @@
-import React from 'react';
-import { GridFooterRow } from './grid-footer-row';
-import { doAggregate } from './utils';
-import * as TYPES from './types';
+import React from "react";
+import { GridFooterRow } from "./grid-footer-row";
+import { doAggregate } from "./utils";
+import * as TYPES from "./types";
 
 export interface GridFooterProps
-  extends Pick<TYPES.GridState, 'columns'>,
-    Pick<TYPES.GridProps, 'records' | 'className'> {
+  extends Pick<TYPES.GridState, "columns">,
+    Pick<TYPES.GridProps, "records" | "className"> {
   rowRenderer?: TYPES.Renderer;
 }
 
@@ -14,7 +14,7 @@ export function GridFooter(props: GridFooterProps) {
   const data = React.useMemo(
     () => ({
       aggregate: columns
-        .filter(x => x.aggregate)
+        .filter((x) => x.aggregate)
         .reduce(
           (data, column) => ({
             ...data,

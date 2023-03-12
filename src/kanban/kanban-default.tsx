@@ -1,7 +1,7 @@
-import { Box } from '../core';
+import { Box } from "../core";
 
-import styles from './kanban.module.css';
-import { ColumnRenderer, RecordRenderer } from './types';
+import styles from "./kanban.module.css";
+import { ColumnRenderer, RecordRenderer } from "./types";
 
 export const DefaultColumn: ColumnRenderer = ({
   column,
@@ -16,7 +16,7 @@ export const DefaultColumn: ColumnRenderer = ({
       <RecordList
         column={column}
         readonly={readonly}
-        className={styles['record-list']}
+        className={styles["record-list"]}
       />
     </Box>
   );

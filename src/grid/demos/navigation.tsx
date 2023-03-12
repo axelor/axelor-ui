@@ -1,11 +1,11 @@
 /**
  * @title Navigation
  */
-import { Box } from '../../core';
-import { Grid } from '../grid';
-import { GridProvider } from '../grid-provider';
-import { columns, records } from './demo-data';
-import useGridState from './useGridState';
+import { Box } from "../../core";
+import { Grid } from "../grid";
+import { GridProvider } from "../grid-provider";
+import { columns, records } from "./demo-data";
+import useGridState from "./useGridState";
 
 export default function Navigation() {
   const [state, setState] = useGridState();

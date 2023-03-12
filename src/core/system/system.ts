@@ -1,5 +1,5 @@
-import React, { CSSProperties, useMemo } from 'react';
-import { clsx, useClassNames } from '../styles';
+import React, { CSSProperties, useMemo } from "react";
+import { clsx, useClassNames } from "../styles";
 import {
   BackgroundConfig,
   BackgroundProps,
@@ -24,9 +24,9 @@ import {
   SpaceProps,
   TextConfig,
   TextProps,
-} from './props';
-import { ComputeResult } from './types';
-import { isReponsive } from './utils';
+} from "./props";
+import { ComputeResult } from "./types";
+import { isReponsive } from "./utils";
 
 export interface StyleProps
   extends BackgroundProps,
@@ -94,9 +94,9 @@ const extractStyle = <T extends StyleProps>(props: T) => {
       return {} as ComputeResult;
     })
     .flat()
-    .forEach(result => {
-      if (typeof result === 'string') classes.push(result);
-      if (typeof result === 'object') {
+    .forEach((result) => {
+      if (typeof result === "string") classes.push(result);
+      if (typeof result === "object") {
         if (result.classes) classes.push(result.classes);
         if (result.styles) Object.assign(styles, result.styles);
       }
@@ -155,8 +155,8 @@ export const useStyleProps = <T extends CSSStyleProps>(props: T) => {
 export const omitStyles = (props: Record<string, any>) => {
   const keys = Object.keys(SystemConfig);
   const result: any = { ...props };
-  keys.forEach(k => delete result[k]);
-  ['sm', 'md', 'lg', 'xl', 'xxl'].forEach(k => delete result[k]);
+  keys.forEach((k) => delete result[k]);
+  ["sm", "md", "lg", "xl", "xxl"].forEach((k) => delete result[k]);
   return result;
 };
 

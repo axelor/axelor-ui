@@ -1,10 +1,10 @@
-import * as React from 'react';
-import { Box } from '../core';
-import { Draggable, Droppable } from 'react-beautiful-dnd';
+import * as React from "react";
+import { Box } from "../core";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 
-import KanbanRecord from './kanban-record';
-import { DefaultColumn } from './kanban-default';
-import { Column } from './types';
+import KanbanRecord from "./kanban-record";
+import { DefaultColumn } from "./kanban-default";
+import { Column } from "./types";
 
 export type RecordListProps = {
   column: Column;

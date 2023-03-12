@@ -1,15 +1,15 @@
-import { Box } from '../box';
-import { Link } from './link';
+import { Box } from "../box";
+import { Link } from "./link";
 
 const config = {
   component: Link,
-  title: 'Components/Link',
+  title: "Components/Link",
 };
 
 export const Basic = () => {
   return (
     <Box>
-      <Link href="#" onClick={() => console.log('Link Clicked')}>
+      <Link href="#" onClick={() => console.log("Link Clicked")}>
         Link
       </Link>
     </Box>
@@ -21,25 +21,25 @@ export const Colored = () => {
     <Box>
       <Link href="#" color="primary">
         Primary link
-      </Link>{' '}
+      </Link>{" "}
       <Link href="#" color="secondary">
         Secondary link
-      </Link>{' '}
+      </Link>{" "}
       <Link href="#" color="success">
         Success link
-      </Link>{' '}
+      </Link>{" "}
       <Link href="#" color="danger">
         Danger link
-      </Link>{' '}
+      </Link>{" "}
       <Link href="#" color="warning">
         Warning link
-      </Link>{' '}
+      </Link>{" "}
       <Link href="#" color="info">
         Info link
-      </Link>{' '}
+      </Link>{" "}
       <Link href="#" color="light">
         Light link
-      </Link>{' '}
+      </Link>{" "}
       <Link href="#" color="dark">
         Dark link
       </Link>

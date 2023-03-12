@@ -1,15 +1,15 @@
-import { cloneElement, isValidElement, useRef } from 'react';
-import { Transition } from 'react-transition-group';
-import { useTheme } from '../styles';
-import { TransitionProps } from '../transitions/types';
+import { cloneElement, isValidElement, useRef } from "react";
+import { Transition } from "react-transition-group";
+import { useTheme } from "../styles";
+import { TransitionProps } from "../transitions/types";
 import {
   getTransition,
   getTransitionProps,
   getTransitionStyle,
   reflow,
-} from '../transitions/utils';
+} from "../transitions/utils";
 
-type Direction = 'start' | 'end' | 'up' | 'down';
+type Direction = "start" | "end" | "up" | "down";
 
 export interface SlideProps extends TransitionProps {
   direction?: Direction;
@@ -17,9 +17,9 @@ export interface SlideProps extends TransitionProps {
 
 const styles = {
   exited: {
-    translate: 'translateX(-100000px)',
-    transform: 'none',
-    visibility: 'hidden',
+    translate: "translateX(-100000px)",
+    transform: "none",
+    visibility: "hidden",
   },
 };
 
@@ -28,9 +28,9 @@ const ownerWindow = (node: HTMLElement) => {
 };
 
 const getDirection = (direction: Direction, dir?: string) => {
-  if (dir === 'rtl') {
-    if (direction === 'start') return 'end';
-    if (direction === 'end') return 'start';
+  if (dir === "rtl") {
+    if (direction === "start") return "end";
+    if (direction === "end") return "start";
   }
   return direction;
 };
@@ -46,29 +46,29 @@ const getTranslateValue = (
 
   const computedStyle = view.getComputedStyle(node);
   const transform =
-    computedStyle.getPropertyValue('-webkit-transform') ||
-    computedStyle.getPropertyValue('transform');
+    computedStyle.getPropertyValue("-webkit-transform") ||
+    computedStyle.getPropertyValue("transform");
 
   let offsetX = 0;
   let offsetY = 0;
 
-  if (typeof transform === 'string' && transform !== 'none' && transform) {
-    const transformValues = transform.split('(')[1].split(')')[0].split(',');
+  if (typeof transform === "string" && transform !== "none" && transform) {
+    const transformValues = transform.split("(")[1].split(")")[0].split(",");
     offsetX = parseInt(transformValues[4], 10);
     offsetY = parseInt(transformValues[5], 10);
   }
 
-  if (direction === 'start') {
+  if (direction === "start") {
     return `translateX(${view.innerWidth}px) translateX(${
       offsetX - rect.left
     }px)`;
   }
 
-  if (direction === 'end') {
+  if (direction === "end") {
     return `translateX(-${rect.left + rect.width - offsetX}px)`;
   }
 
-  if (direction === 'up') {
+  if (direction === "up") {
     return `translateY(${view.innerHeight}px) translateY(${
       offsetY - rect.top
     }px)`;
@@ -80,7 +80,7 @@ const getTranslateValue = (
 
 export function Slide({
   timeout = 300,
-  direction = 'end',
+  direction = "end",
   children,
   onEnter,
   onEntering,
@@ -106,11 +106,11 @@ export function Slide({
   const handleEntering = (isAppearing: boolean) => {
     const node: HTMLElement = nodeRef.current!;
     const style = node.style;
-    const options = getTransitionProps('enter', { timeout, style });
+    const options = getTransitionProps("enter", { timeout, style });
 
-    style.visibility = '';
-    style.transform = '';
-    style.transition = getTransition('transform', options);
+    style.visibility = "";
+    style.transform = "";
+    style.transition = getTransition("transform", options);
 
     if (onEntering) {
       onEntering(node, isAppearing);
@@ -135,9 +135,9 @@ export function Slide({
   const handleExiting = () => {
     const node: HTMLElement = nodeRef.current!;
     const style = node.style;
-    const options = getTransitionProps('enter', { timeout, style });
+    const options = getTransitionProps("enter", { timeout, style });
 
-    style.transition = getTransition('transform', options);
+    style.transition = getTransition("transform", options);
 
     if (onExiting) {
       onExiting(node);
@@ -146,9 +146,9 @@ export function Slide({
 
   const handleExited = () => {
     const node: HTMLElement = nodeRef.current!;
-    node.style.transform = 'translateX(-100000px)';
-    node.style.transition = '';
-    node.style.visibility = 'hidden';
+    node.style.transform = "translateX(-100000px)";
+    node.style.transition = "";
+    node.style.visibility = "hidden";
     if (onExited) {
       onExited(node);
     }
@@ -166,7 +166,7 @@ export function Slide({
       nodeRef={nodeRef}
       {...props}
     >
-      {state => {
+      {(state) => {
         if (isValidElement(children)) {
           const style = getTransitionStyle(state, styles as any, children);
           return cloneElement(children as React.ReactElement, {
