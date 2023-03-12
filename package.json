@@ -18,7 +18,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./*": "./src/*/index.ts",
-    "./core/*": "./src/core/*/index.ts"
+    "./core/*": "./src/core/*/index.ts",
+    "./icons/*": "./src/icons/*/index.ts"
   },
   "scripts": {
     "preinstall": "node scripts/check-pnpm.js",
@@ -43,6 +44,7 @@
     "csstype": "^3.1.1",
     "focus-trap": "^7.3.1",
     "immer": "^9.0.18",
+    "material-symbols": "^0.5.0",
     "moment": "^2.29.4",
     "react-beautiful-dnd": "^13.1.1",
     "react-big-calendar": "^1.6.8",

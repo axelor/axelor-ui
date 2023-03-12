@@ -15,6 +15,7 @@ export const parameters = {
         'Layout',
         'Animation',
         'Core',
+        'Icons',
         'Components',
         'Advanced',
       ],

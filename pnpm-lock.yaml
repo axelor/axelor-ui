@@ -30,6 +30,7 @@ specifiers:
   fs-extra: ^11.1.0
   i18next: ^22.4.9
   immer: ^9.0.18
+  material-symbols: ^0.5.0
   moment: ^2.29.4
   prettier: ^2.8.4
   react: ^18.2.0
@@ -56,6 +57,7 @@ dependencies:
   csstype: 3.1.1
   focus-trap: 7.3.1
   immer: 9.0.19
+  material-symbols: 0.5.0
   moment: 2.29.4
   react-beautiful-dnd: 13.1.1_biqbaboplfbrettd7655fr4n2y
   react-big-calendar: 1.6.8_biqbaboplfbrettd7655fr4n2y
@@ -6625,6 +6627,10 @@ packages:
     dependencies:
       object-visit: 1.0.1
     dev: true
+
+  /material-symbols/0.5.0:
+    resolution: {integrity: sha512-FdoEPlDLmIGAFnhWte8I9FU6+vwjqvAfHkIBn/KrgBKTYhbzBVvDS+JB/SzLPUXs4ZT5ZClLATc1a8kdNfTJEA==}
+    dev: false
 
   /media-typer/0.3.0:
     resolution: {integrity: sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==}
