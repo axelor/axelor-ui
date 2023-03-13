@@ -180,6 +180,7 @@ function Menu({
     <>
       {text && (
         <Button
+          variant="light"
           ref={setButtonRef}
           onClick={onShow}
           className={classNames(styles.btn, {
@@ -285,7 +286,6 @@ function Menu({
           const common = {
             ...props,
             rtl,
-            as: "button",
             className: classNames(styles.item, {
               [styles.active]: isActiveItem,
             }),

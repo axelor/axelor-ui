@@ -1,28 +1,24 @@
-$bg-light: #f8f9fa;
+.btn {
+  outline: transparent;
+  border: 0;
+  border-radius: 0;
+  user-select: none;
+  box-shadow: none;
+}
 
 .active {
-  color: #1e2125 !important;
-  background-color: #e9ecef !important;
+  color: var(--bs-dropdown-link-hover-color);
+  background-color: var(--bs-dropdown-link-hover-bg);
 }
 
-.item:hover {
-  color: unset;
-  background-color: unset;
+.active-btn {
+  color: var(--bs-btn-hover-color);
+  background-color: var(--bs-btn-hover-bg);
+  border-color: var(--bs-btn-hover-border-color);
 }
 
-.menu:focus {
-  outline: 0px solid transparent;
-}
-
-.btn.active-btn {
-  background-color: $bg-light;
-}
-
-.btn:hover {
-  background-color: $bg-light;
-  border-color: transparent;
-}
-
-.btn:active {
-  border-color: transparent;
+.menu {
+  outline: transparent;
+  border-radius: 0;
+  border-color: rgba(0, 0, 0, 0.1);
 }
