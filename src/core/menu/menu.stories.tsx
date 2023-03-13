@@ -1,12 +1,14 @@
-import { useCallback, useRef, useState } from "react";
 import * as React from "react";
+import { useCallback, useRef, useState } from "react";
 
+import { BootstrapIcon } from "../../icons/bootstrap-icon";
 import { Box } from "../box";
 import { Button } from "../button";
+import { ButtonGroup } from "../button-group";
+import styled from "../styled";
 import { Menu, MenuProps } from "./menu";
 import { MenuHeader } from "./menu-header";
 import { MenuItem } from "./menu-item";
-import styled from "../styled";
 
 const config = {
   component: Menu,
@@ -35,6 +37,41 @@ export const Basic = () => {
       >
         Menu
       </Button>
+      <Menu navigation target={target} show={show} onHide={hideMenu}>
+        <MenuItem onClick={hideMenu}>Option 1</MenuItem>
+        <MenuItem onClick={hideMenu}>Option 2</MenuItem>
+        <MenuItem onClick={hideMenu}>Option 3</MenuItem>
+      </Menu>
+    </Box>
+  );
+};
+
+export const SplitButton = () => {
+  const [show, setShow] = React.useState(false);
+  const [target, setTarget] = React.useState<HTMLElement | null>(null);
+
+  function showMenu() {
+    setShow(true);
+  }
+
+  function hideMenu() {
+    setShow(false);
+  }
+
+  return (
+    <Box>
+      <ButtonGroup>
+        <Button variant="primary">Action</Button>
+        <Button
+          ref={setTarget}
+          onClick={showMenu}
+          variant="primary"
+          style={{ fontSize: "0.5rem" }}
+          p={2}
+        >
+          <BootstrapIcon icon="caret-down-fill" />
+        </Button>
+      </ButtonGroup>
       <Menu navigation target={target} show={show} onHide={hideMenu}>
         <MenuItem onClick={hideMenu}>Option 1</MenuItem>
         <MenuItem onClick={hideMenu}>Option 2</MenuItem>
