@@ -29,13 +29,13 @@ const getStyles = ({
   weight,
   opticalSize: size,
 }: Partial<MaterialIconProps>) => {
-  const FILL = fill ?? "var(--ax-material-icon-fill)";
-  const GRAD = grade ?? "var(--ax-material-icon-grad)";
-  const wght = weight ?? "var(--ax-material-icon-wght)";
-  const opsz = size ?? "var(--ax-material-icon-opsz)";
+  const FILL = fill ?? "var(--ax-material-icon-fill, 0)";
+  const GRAD = grade ?? "var(--ax-material-icon-grad, 0)";
+  const wght = weight ?? "var(--ax-material-icon-wght, 400)";
+  const opsz = size ?? "var(--ax-material-icon-opsz, 24)";
 
   const fontVariationSettings = `"FILL" ${FILL}, "GRAD" ${GRAD}, "wght" ${wght}, "opsz" ${opsz}`;
-  const fontSize = size ? `${size}px` : "var(--ax-material-icon-fnsz)";
+  const fontSize = size ? `${size}px` : "var(--ax-material-icon-fnsz, 24px)";
 
   return {
     fontVariationSettings,
