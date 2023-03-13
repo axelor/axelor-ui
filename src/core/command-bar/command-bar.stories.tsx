@@ -9,6 +9,9 @@ export const Basic = () => {
   return (
     <div>
       <CommandBar
+        iconProps={{
+          weight: 300,
+        }}
         items={[
           {
             id: "new",
@@ -20,11 +23,23 @@ export const Basic = () => {
           {
             id: "edit",
             title: "Edit",
+            iconProps: {
+              icon: "edit",
+            },
           },
-
+          {
+            id: "save",
+            title: "Save",
+            iconProps: {
+              icon: "save",
+            },
+          },
           {
             id: "delete",
             title: "Delete",
+            iconProps: {
+              icon: "delete",
+            },
             onClick: () => {},
             items: [
               {
@@ -34,6 +49,18 @@ export const Basic = () => {
               {
                 id: "deleteAll",
                 title: "Delete all...",
+              },
+            ],
+          },
+          {
+            id: "more",
+            iconProps: {
+              icon: "more_vert",
+            },
+            items: [
+              {
+                id: "about",
+                title: "About",
               },
             ],
           },

@@ -1,9 +1,10 @@
 import { useCallback, useState } from "react";
 import { MaterialIcon, MaterialIconProps } from "../../icons/meterial-icon";
+import { Box } from "../box";
 import { Button } from "../button";
 import { ButtonGroup } from "../button-group";
 import { Menu, MenuItem } from "../menu";
-import { clsx } from "../styles";
+import { clsx, useClassNames } from "../styles";
 
 import styles from "./command-bar.module.scss";
 
@@ -11,6 +12,8 @@ export interface CommandItemProps {
   id: string;
   title?: string;
   iconProps?: MaterialIconProps;
+  disabled?: boolean;
+  checked?: boolean;
   onClick?: React.EventHandler<
     React.MouseEvent<HTMLElement, MouseEvent> | React.KeyboardEvent<HTMLElement>
   >;
@@ -20,11 +23,12 @@ export interface CommandItemProps {
 export interface CommandBarProps {
   items: CommandItemProps[];
   className?: string;
+  iconProps?: Omit<MaterialIconProps, "icon">;
 }
 
 function CommandItem(props: CommandItemProps) {
-  const { title, iconProps, onClick, items = [] } = props;
-
+  const { title, iconProps, checked, disabled, onClick, items = [] } = props;
+  const classNames = useClassNames();
   const [show, setShow] = useState(false);
   const [target, setTarget] = useState<HTMLElement | null>(null);
 
@@ -43,26 +47,49 @@ function CommandItem(props: CommandItemProps) {
     setShow(false);
   }, []);
 
-  // split button
-  if (onClick && items.length) {
-    return (
-      <ButtonGroup>
-        <Button variant="light" className={styles.item} onClick={handleClick}>
-          <span>
-            {iconProps && (
-              <MaterialIcon {...iconProps} className={styles.icon} />
-            )}
-            {title && <span className={styles.title}>{title}</span>}
-          </span>
-        </Button>
+  const isSplit = onClick && items.length > 0;
+  const Wrapper = isSplit ? ButtonGroup : Box;
+
+  const moreProps = { ref: setTarget, onClick: showMenu };
+
+  const buttonProps = isSplit ? {} : moreProps;
+  const splitProps = isSplit ? moreProps : {};
+
+  return (
+    <Wrapper>
+      <Button
+        variant="light"
+        className={clsx(
+          styles.item,
+          {
+            [styles.open]: show && !isSplit && items.length > 0,
+          },
+          classNames({
+            active: checked,
+          })
+        )}
+        disabled={disabled}
+        onClick={handleClick}
+        {...buttonProps}
+      >
+        <span>
+          {iconProps && <MaterialIcon {...iconProps} className={styles.icon} />}
+          {title && <span className={styles.title}>{title}</span>}
+        </span>
+      </Button>
+      {isSplit && (
         <Button
           variant="light"
           className={clsx(styles.item, styles.split, { [styles.open]: show })}
           ref={setTarget}
+          disabled={disabled}
           onClick={showMenu}
+          {...splitProps}
         >
           <MaterialIcon icon="arrow_drop_down" className={styles.icon} />
         </Button>
+      )}
+      {items.length > 0 && (
         <Menu
           target={target}
           show={show}
@@ -70,28 +97,29 @@ function CommandItem(props: CommandItemProps) {
           rounded={false}
           className={styles.menu}
         >
-          {items.map((x) => (
-            <MenuItem key={x.id}>{x.title}</MenuItem>
+          {items.map((item) => (
+            <MenuItem key={item.id}>{item.title}</MenuItem>
           ))}
         </Menu>
-      </ButtonGroup>
-    );
-  }
-
-  return (
-    <Button variant="light" className={styles.item} onClick={handleClick}>
-      <span>
-        {iconProps && <MaterialIcon {...iconProps} className={styles.icon} />}
-        {title && <span className={styles.title}>{title}</span>}
-      </span>
-    </Button>
+      )}
+    </Wrapper>
   );
 }
 
 export function CommandBar(props: CommandBarProps) {
-  const { items = [] } = props;
+  const { iconProps = {}, items = [] } = props;
+  const { weight, grade, fill, opticalSize } = iconProps;
+
+  const style = {
+    "--ax-material-icon-fill": fill,
+    "--ax-material-icon-wght": weight,
+    "--ax-material-icon-grad": grade,
+    "--ax-material-icon-opsz": opticalSize,
+    "--ax-material-icon-fnsz": opticalSize ? `${opticalSize}px` : undefined,
+  };
+
   return (
-    <div className={styles.bar}>
+    <div className={styles.bar} style={style as any}>
       {items.map((item) => (
         <CommandItem key={item.id} {...item} />
       ))}
