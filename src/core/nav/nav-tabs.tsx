@@ -110,7 +110,6 @@ const NavTab = withStyled(Box)(
       <Box
         ref={ref}
         d="flex"
-        g={2}
         alignItems="center"
         className={classNames(classes.tab, {
           [classes.active]: active,
@@ -127,11 +126,10 @@ const NavTab = withStyled(Box)(
           <Box
             d="flex"
             flex={1}
-            g={2}
             alignItems="center"
             className={classes.tabTitle}
           >
-            <Box flex={1}>{item.title}</Box>
+            <Box flex={1} mx={2}>{item.title}</Box>
             {onClose && (
               <Box
                 className={classes.tabClose}
