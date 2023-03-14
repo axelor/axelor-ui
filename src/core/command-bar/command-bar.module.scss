@@ -2,6 +2,10 @@
   display: flex;
 }
 
+.itemWrapper {
+  display: flex;
+}
+
 .item {
   outline: transparent;
   border: 0;
@@ -14,9 +18,9 @@
   box-shadow: none;
 }
 
-.item > span {
+.item > .title {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.25rem;
   align-items: center;
 }
 
@@ -33,12 +37,22 @@
 
 .bar > .divider {
   width: 1px;
-  border-left: 1px solid rgba(0, 0, 0, 0.15);
+  border-left: 1px solid rgba(0, 0, 0, 0.175);
   margin: 0 0.25rem;
+  opacity: 1;
 }
 
 .icon {
   line-height: inherit;
+}
+
+.image {
+  width: 24px;
+  height: 24px;
+}
+
+.iconCircle {
+  display: flex;
 }
 
 .menu {
@@ -47,6 +61,15 @@
 
 .iconEnd {
   flex-direction: row-reverse;
+}
+
+.menuTexts {
+  display: flex;
+  flex-direction: column;
+  .menuSub {
+    font-size: smaller;
+    color: rgba(0, 0, 0, 0.5);
+  }
 }
 
 .item {

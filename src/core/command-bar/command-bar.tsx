@@ -3,7 +3,8 @@ import { MaterialIcon, MaterialIconProps } from "../../icons/meterial-icon";
 import { Box } from "../box";
 import { Button } from "../button";
 import { ButtonGroup } from "../button-group";
-import { Menu, MenuItem } from "../menu";
+import { Image } from "../image";
+import { Menu, MenuDivider, MenuItem } from "../menu";
 import { clsx, useClassNames } from "../styles";
 
 import styles from "./command-bar.module.scss";
@@ -11,16 +12,23 @@ import styles from "./command-bar.module.scss";
 export interface CommandItemProps {
   id: string;
   title?: string;
+  subtitle?: string;
   help?: string;
+  imageProps?: {
+    src: string;
+    alt: string;
+  };
   iconProps?: MaterialIconProps;
   iconOnly?: boolean;
   iconSide?: "start" | "end";
   disabled?: boolean;
   checked?: boolean;
+  divider?: boolean;
   onClick?: React.EventHandler<
     React.MouseEvent<HTMLElement, MouseEvent> | React.KeyboardEvent<HTMLElement>
   >;
   items?: CommandItemProps[];
+  showDownArrow?: boolean;
 }
 
 export interface CommandBarProps {
@@ -33,13 +41,16 @@ function CommandItem(props: CommandItemProps) {
   const {
     title,
     help,
+    imageProps,
     iconProps,
     iconSide,
     iconOnly,
     checked,
     disabled,
+    divider,
     onClick,
     items = [],
+    showDownArrow = false,
   } = props;
   const classNames = useClassNames();
   const [show, setShow] = useState(false);
@@ -60,16 +71,40 @@ function CommandItem(props: CommandItemProps) {
     setShow(false);
   }, []);
 
+  const handleMenuClick = useCallback(
+    (e: any, menu: CommandItemProps) => {
+      hideMenu();
+      if (menu.onClick) menu.onClick(e);
+    },
+    [hideMenu]
+  );
+
+  if (divider) {
+    return <hr className={styles.divider} />;
+  }
+
   const isSplit = onClick && items.length > 0;
   const Wrapper = isSplit ? ButtonGroup : Box;
 
-  const moreProps = { ref: setTarget, onClick: showMenu };
+  const showArrow = showDownArrow && !isSplit && items.length > 0;
 
-  const buttonProps = isSplit ? {} : moreProps;
-  const splitProps = isSplit ? moreProps : {};
+  const buttonProps =
+    isSplit || items.length === 0
+      ? {
+          onClick: handleClick,
+        }
+      : {
+          ref: setTarget,
+          onClick: showMenu,
+        };
+
+  const splitProps = {
+    ref: setTarget,
+    onClick: showMenu,
+  };
 
   return (
-    <Wrapper>
+    <Wrapper className={styles.itemWrapper}>
       <Button
         variant="light"
         title={help}
@@ -83,7 +118,6 @@ function CommandItem(props: CommandItemProps) {
           })
         )}
         disabled={disabled}
-        onClick={handleClick}
         {...buttonProps}
       >
         <span
@@ -91,17 +125,17 @@ function CommandItem(props: CommandItemProps) {
             [styles.iconEnd]: iconSide === "end",
           })}
         >
+          {imageProps && <Image className={styles.image} {...imageProps} />}
           {iconProps && <MaterialIcon {...iconProps} className={styles.icon} />}
           {title && !iconOnly && <span className={styles.title}>{title}</span>}
+          {showArrow && <MaterialIcon icon="arrow_drop_down" />}
         </span>
       </Button>
       {isSplit && (
         <Button
           variant="light"
           className={clsx(styles.item, styles.split, { [styles.open]: show })}
-          ref={setTarget}
           disabled={disabled}
-          onClick={showMenu}
           {...splitProps}
         >
           <MaterialIcon icon="arrow_drop_down" className={styles.icon} />
@@ -115,9 +149,26 @@ function CommandItem(props: CommandItemProps) {
           rounded={false}
           className={styles.menu}
         >
-          {items.map((item) => (
-            <MenuItem key={item.id}>{item.title}</MenuItem>
-          ))}
+          {items.map((item) => {
+            const { id, divider, title, subtitle } = item;
+
+            if (divider) {
+              return <MenuDivider key={id} />;
+            }
+
+            return (
+              <MenuItem key={id} onClick={(e) => handleMenuClick(e, item)}>
+                {subtitle ? (
+                  <div className={styles.menuTexts}>
+                    <span className={styles.menuTitle}>{title}</span>
+                    <span className={styles.menuSub}>{subtitle}</span>
+                  </div>
+                ) : (
+                  <span className={styles.menuTitle}>{title}</span>
+                )}
+              </MenuItem>
+            );
+          })}
         </Menu>
       )}
     </Wrapper>
