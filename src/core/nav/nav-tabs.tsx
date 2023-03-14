@@ -1,6 +1,3 @@
-import { ReactComponent as BiChevronLeft } from "bootstrap-icons/icons/chevron-left.svg";
-import { ReactComponent as BiChevronRight } from "bootstrap-icons/icons/chevron-right.svg";
-import { ReactComponent as BiClose } from "bootstrap-icons/icons/x-lg.svg";
 import React from "react";
 import {
   DragDropContext,
@@ -10,14 +7,14 @@ import {
 } from "react-beautiful-dnd";
 
 import { Box } from "../box";
-import { Icon } from "../icon";
 import { OverflowList, OverflowListButtonType } from "../overflow-list";
 import { withStyled } from "../styled";
-import { useClassNames, useTheme } from "../styles";
+import { clsx, useClassNames, useTheme } from "../styles";
 import { Nav } from "./nav";
 import { NavItemProps, NavProps } from "./types";
 import { getRGB } from "./utils";
 
+import { MaterialIcon } from "../../icons/meterial-icon";
 import classes from "./nav-tabs.module.scss";
 
 const RESIZE_DELAY = 50;
@@ -84,8 +81,6 @@ const NavTabIcon = React.memo(function NavTabIcon({
       justifyContent="center"
       alignItems="center"
       className={classes.tabIcon}
-      ms={2}
-      me={1}
       style={{ backgroundColor: bgColor }}
     >
       {icon ? icon({ color }) : null}
@@ -115,9 +110,8 @@ const NavTab = withStyled(Box)(
       <Box
         ref={ref}
         d="flex"
+        g={2}
         alignItems="center"
-        ps={item.icon ? 1 : 2}
-        pe={1}
         className={classNames(classes.tab, {
           [classes.active]: active,
         })}
@@ -133,19 +127,17 @@ const NavTab = withStyled(Box)(
           <Box
             d="flex"
             flex={1}
-            justifyContent="space-between"
+            g={2}
             alignItems="center"
             className={classes.tabTitle}
-            mx={1}
           >
-            <Box as="span">{item.title}</Box>
+            <Box flex={1}>{item.title}</Box>
             {onClose && (
               <Box
-                ms={2}
                 className={classes.tabClose}
                 onClick={(e) => onClose(item, index)}
               >
-                <Icon as={BiClose} />
+                <MaterialIcon icon="close" weight={300} opticalSize={20} />
               </Box>
             )}
           </Box>
@@ -265,6 +257,9 @@ const RenderNavTabs: React.FC<NavTabsProps> = (props) => {
           <OverflowList
             ref={setOverflowListRef}
             d="flex"
+            className={clsx(classes.tabList, {
+              [classes.hasScroll]: scroll,
+            })}
             scrollable
             items={props.items as any}
             renderListItem={(item, index) => (
@@ -290,14 +285,18 @@ const RenderNavTabs: React.FC<NavTabsProps> = (props) => {
               if (type === "scroll-left") {
                 return (
                   <ScrollButton {...props} {...buttonProps}>
-                    <Icon as={isRTL ? BiChevronRight : BiChevronLeft} />
+                    <MaterialIcon
+                      icon={isRTL ? "navigate_next" : "navigate_before"}
+                    />
                   </ScrollButton>
                 );
               }
               if (type === "scroll-right") {
                 return (
                   <ScrollButton {...props} {...buttonProps}>
-                    <Icon as={isRTL ? BiChevronLeft : BiChevronRight} />
+                    <MaterialIcon
+                      icon={isRTL ? "navigate_before" : "navigate_next"}
+                    />
                   </ScrollButton>
                 );
               }
