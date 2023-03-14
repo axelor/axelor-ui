@@ -125,7 +125,7 @@ function CommandItem(props: CommandItemProps) {
 }
 
 export function CommandBar(props: CommandBarProps) {
-  const { iconProps = {}, items = [] } = props;
+  const { className, iconProps = {}, items = [] } = props;
   const { weight, grade, fill, opticalSize } = iconProps;
 
   const style = {
@@ -137,7 +137,7 @@ export function CommandBar(props: CommandBarProps) {
   };
 
   return (
-    <div className={styles.bar} style={style as any}>
+    <div className={clsx(className, styles.bar)} style={style as any}>
       {items.map((item) => (
         <CommandItem key={item.id} {...item} />
       ))}
