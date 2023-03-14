@@ -13,13 +13,13 @@ export interface MenuItemProps {
   disabled?: boolean;
 }
 
-const MenuItemBase = styled.a<MenuItemProps>(
+const MenuItemBase = styled.button<MenuItemProps>(
   ({ active, disabled }) => [
     "dropdown-item",
     styles.menuItem,
     { active, disabled },
   ],
-  ({ disabled, tabIndex = 1 }) =>
+  ({ disabled, tabIndex }) =>
     disabled ? { tabIndex: -1, "aria-disabled": true } : { tabIndex }
 );
 

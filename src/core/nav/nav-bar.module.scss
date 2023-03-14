@@ -6,12 +6,15 @@
 .root > .menu {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+}
+
+.menu {
+  padding-bottom: 0.5rem;
 }
 
 .menuItem {
   gap: 0.5rem;
-  margin: 0 0.5rem;
+  padding: 0.5rem;
 }
 
 .root > .menu > .menuItemWrapper {
@@ -38,8 +41,6 @@
   font-size: 1rem;
   cursor: pointer;
   position: relative;
-
-  line-height: 2rem;
 
   &.active .menuItemTitle,
   &.active .menuIcon,
@@ -69,6 +70,9 @@
   &:hover {
     color: var(--bs-nav-link-hover-color);
   }
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .menuItemChildren {
