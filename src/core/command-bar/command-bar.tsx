@@ -11,7 +11,10 @@ import styles from "./command-bar.module.scss";
 export interface CommandItemProps {
   id: string;
   title?: string;
+  help?: string;
   iconProps?: MaterialIconProps;
+  iconOnly?: boolean;
+  iconSide?: "start" | "end";
   disabled?: boolean;
   checked?: boolean;
   onClick?: React.EventHandler<
@@ -27,7 +30,17 @@ export interface CommandBarProps {
 }
 
 function CommandItem(props: CommandItemProps) {
-  const { title, iconProps, checked, disabled, onClick, items = [] } = props;
+  const {
+    title,
+    help,
+    iconProps,
+    iconSide,
+    iconOnly,
+    checked,
+    disabled,
+    onClick,
+    items = [],
+  } = props;
   const classNames = useClassNames();
   const [show, setShow] = useState(false);
   const [target, setTarget] = useState<HTMLElement | null>(null);
@@ -59,6 +72,7 @@ function CommandItem(props: CommandItemProps) {
     <Wrapper>
       <Button
         variant="light"
+        title={help}
         className={clsx(
           styles.item,
           {
@@ -72,9 +86,13 @@ function CommandItem(props: CommandItemProps) {
         onClick={handleClick}
         {...buttonProps}
       >
-        <span>
+        <span
+          className={clsx(styles.title, {
+            [styles.iconEnd]: iconSide === "end",
+          })}
+        >
           {iconProps && <MaterialIcon {...iconProps} className={styles.icon} />}
-          {title && <span className={styles.title}>{title}</span>}
+          {title && !iconOnly && <span className={styles.title}>{title}</span>}
         </span>
       </Button>
       {isSplit && (
