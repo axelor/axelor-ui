@@ -7,6 +7,7 @@ import { Portal } from "../portal";
 
 import { useClassNames, useTheme } from "../styles";
 import { TBackground, TForeground } from "../system";
+import { TransitionProps } from "../transitions";
 
 import styles from "./popper.module.css";
 
@@ -38,13 +39,10 @@ export interface PopperProps {
   role?: string;
   bg?: TBackground;
   color?: TForeground;
-  transition?: null | React.FunctionComponent<{
-    children?: React.ReactNode;
-    in: boolean | undefined;
-    appear: boolean;
-    onEnter: () => void;
-    onExited: () => void;
-  }>;
+  transition?:
+    | null
+    | React.ExoticComponent<TransitionProps>
+    | React.FunctionComponent<TransitionProps>;
   disablePortal?: boolean;
 }
 
