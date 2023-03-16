@@ -1,5 +1,13 @@
 import React from "react";
-import { Box, Divider, Input, Menu, MenuItem, useClassNames } from "../core";
+import {
+  Badge,
+  Box,
+  Divider,
+  Input,
+  Menu,
+  MenuItem,
+  useClassNames,
+} from "../core";
 
 import { MaterialIcon } from "../icons/meterial-icon";
 import GridDragElement, { DropHandler } from "./grid-drag-element";
@@ -44,18 +52,20 @@ const GridGroupTag = ({
       column={data}
       onDrop={onDrop}
     >
-      <div className={styles.groupTag}>
+      <Badge className={styles.groupTag} bg="primary">
         <label className={styles.groupTagTitle}>{data.title}</label>
-        <span
+        <Box
+          as="span"
+          d="flex"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
             onRemove && onRemove(e, data);
           }}
         >
-          <MaterialIcon icon="close" />
-        </span>
-      </div>
+          <MaterialIcon icon="close" opticalSize={20} />
+        </Box>
+      </Badge>
     </GridDragElement>
   );
 };
