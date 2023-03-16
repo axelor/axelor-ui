@@ -63,6 +63,9 @@ export const Basic = (props: any) => {
             becomes longer than the height of the viewport, scrolling will move
             the modal as needed.
           </p>
+          <p>
+            <input type="text" autoFocus/>
+          </p>
           <p style={{ height: 500 }}></p>
         </DialogContent>
         <DialogFooter>

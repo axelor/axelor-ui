@@ -20,7 +20,15 @@ const styles = {
 
 export const Fade = forwardRef<HTMLElement, FadeProps>(
   (
-    { appear = true, timeout = 350, children, onEnter, onExit, ...props },
+    {
+      appear = true,
+      timeout = 350,
+      children,
+      onEnter,
+      onExit,
+      unmountOnExit,
+      ...props
+    },
     ref
   ) => {
     const nodeRef = useForwardedRef<any>(ref);
@@ -67,11 +75,16 @@ export const Fade = forwardRef<HTMLElement, FadeProps>(
         onEnter={handleEnter}
         onExit={handleExit}
         nodeRef={nodeRef}
+        unmountOnExit={unmountOnExit}
         {...props}
       >
         {(state) => {
           if (isValidElement(children)) {
-            const style = getTransitionStyle(state, styles as any, children);
+            let style = getTransitionStyle(state, styles as any, children);
+            if (unmountOnExit && state === "exited") {
+              const { visibility, display, ...rest } = style;
+              style = rest;
+            }
             return cloneElement(children as React.ReactElement, {
               style,
               ref: nodeRef,

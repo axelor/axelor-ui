@@ -142,11 +142,17 @@ export const Dialog = withStyled(Box)<DialogProps>((props, ref) => {
   return (
     <Portal>
       {backdrop && (
-        <Fade in={open}>
+        <Fade in={open} mountOnEnter unmountOnExit>
           <Box className={classNames("modal-backdrop", "show", "fade")} />
         </Fade>
       )}
-      <Fade in={open} onEntered={onEntered} onExited={onExited}>
+      <Fade
+        in={open}
+        onEntered={onEntered}
+        onExited={onExited}
+        mountOnEnter
+        unmountOnExit
+      >
         <Box
           className={clsx(className, styles.dialogRoot, classNames("modal"))}
           {...rest}
