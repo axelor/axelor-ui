@@ -1,9 +1,9 @@
-import { Divider } from "../core";
 import React from "react";
 import { useDrag } from "react-dnd";
+import { Divider } from "../core";
 
 export function GridColumResizer(props: React.HTMLAttributes<HTMLSpanElement>) {
-  const [{ isDragging }, drag, preview] = useDrag(
+  const [, drag, preview] = useDrag(
     () => ({
       type: "COLUMN_RESIZER",
       item: {},
@@ -14,11 +14,7 @@ export function GridColumResizer(props: React.HTMLAttributes<HTMLSpanElement>) {
     []
   );
   return (
-    <span
-      ref={drag}
-      {...props}
-      style={{ ...props.style, visibility: isDragging ? "hidden" : "visible" }}
-    >
+    <span ref={drag} {...props}>
       {preview && <span ref={preview} />}
       <Divider vertical />
     </span>

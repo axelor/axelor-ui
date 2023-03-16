@@ -7,6 +7,9 @@
 .table-popover {
   --bs-table-color: #{$table-color};
   --bs-table-bg: #{$table-bg};
+  --bs-table-th-color: #{$table-color};
+  --bs-table-th-bg: #{$table-bg};
+  --bs-table-th-font-weight: bold;
   --bs-table-border-color: #{$table-border-color};
   --bs-table-accent-bg: #{$table-accent-bg};
   --bs-table-striped-color: #{$table-striped-color};
@@ -18,11 +21,8 @@
   --bs-table-hover-color: #{$table-hover-color};
   --bs-table-hover-bg: #{$table-hover-bg};
   --bs-table-sm-cell-padding: #{$table-cell-padding-y-sm} #{$table-cell-padding-x-sm};
+  --bs-table-edit-cell-padding: #{$table-cell-padding-y} #{$table-cell-padding-x-sm};
   --bs-table-cell-padding: #{$table-cell-padding-y} #{$table-cell-padding-x};
-}
-.table-grid,
-.table-tree {
-  --bs-table-bg: #fbfbff;
 }
 
 .nav-custom-tabs,

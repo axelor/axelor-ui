@@ -1,14 +1,12 @@
 import React from "react";
-import { Divider, Box, Input, Icon } from "../core";
-import { useClassNames } from "../core";
-import { ReactComponent as BiSortUpAlt } from "bootstrap-icons/icons/sort-up-alt.svg";
-import { ReactComponent as BiSortDownAlt } from "bootstrap-icons/icons/sort-down-alt.svg";
+import { Box, Divider, Input, useClassNames } from "../core";
 
+import { MaterialIcon } from "../icons/meterial-icon";
 import { GridColumn, GridColumnProps } from "./grid-column";
 import { GridColumResizer } from "./grid-column-resizer";
-import { isRowCheck } from "./utils";
-import * as TYPES from "./types";
 import styles from "./grid.module.scss";
+import * as TYPES from "./types";
+import { isRowCheck } from "./utils";
 
 export type ResizeHandler = (
   e: React.DragEvent<HTMLElement>,
@@ -106,11 +104,14 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
             {column.title}
           </Box>
           {canSort && sort && (
-            <Icon
-              size={1}
-              as={sort === "asc" ? BiSortUpAlt : BiSortDownAlt}
-              title="Sort Icon"
-            />
+            <span
+              style={{
+                display: "inline-flex",
+                transform: sort === "asc" ? "scaleY(-1)" : "",
+              }}
+            >
+              <MaterialIcon icon="sort" />
+            </span>
           )}
         </span>
 

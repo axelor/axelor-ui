@@ -1,14 +1,11 @@
 import React from "react";
-import { Icon } from "../core";
 import { useClassNames } from "../core";
-import { ReactComponent as BiCaretRightFill } from "bootstrap-icons/icons/caret-right-fill.svg";
-import { ReactComponent as BiCaretLeftFill } from "bootstrap-icons/icons/caret-left-fill.svg";
-import { ReactComponent as BiCaretDownFill } from "bootstrap-icons/icons/caret-down-fill.svg";
 
-import * as TYPES from "./types";
-import { useRTL } from "./utils";
+import { MaterialIcon } from "../icons/meterial-icon";
 import styles from "./grid.module.scss";
 import { useTranslation } from "./translate";
+import * as TYPES from "./types";
+import { useRTL } from "./utils";
 
 export const GridGroupRow = React.memo(function GridGroupRow(
   props: TYPES.GridRowProps
@@ -38,17 +35,15 @@ export const GridGroupRow = React.memo(function GridGroupRow(
         onClick={(e) => onClick && data && onClick(e as any, data, index)}
         className={styles.groupRowContent}
       >
-        <Icon
+        <MaterialIcon
           className={styles.groupRowIcon}
-          as={
+          icon={
             state === "close"
               ? isRTL
-                ? BiCaretLeftFill
-                : BiCaretRightFill
-              : BiCaretDownFill
+                ? "chevron_right"
+                : "chevron_right"
+              : "expand_more"
           }
-          size={1}
-          title={state === "close" ? "Collapse" : "Expand"}
         />
         {value} ({total} {t("items")})
       </div>

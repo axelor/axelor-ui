@@ -131,6 +131,7 @@ export function GridBody(props: GridBodyProps) {
               cellRenderer: editRowColumnRenderer,
               onSave: onRecordSave,
               onCancel: onRecordDiscard,
+              className: styles.editRow,
             };
           }
         }

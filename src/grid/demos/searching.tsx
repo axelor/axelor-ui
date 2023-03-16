@@ -27,7 +27,7 @@ function SearchColumn({ column }: { column: GridColumn }) {
   }
 
   return !isRowCheck(column) ? (
-    <Input placeholder={column.title} onKeyDown={handleKeyDown} />
+    <Input placeholder={column.title} onKeyDown={handleKeyDown} rounded={false}/>
   ) : null;
 }
 

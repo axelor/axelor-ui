@@ -144,7 +144,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             computed: true,
             sortable: false,
             searchable: false,
-            width: 30,
+            width: 32,
           });
         }
         if (
@@ -153,7 +153,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         ) {
           columns.push({
             name: "__reorder__",
-            width: 30,
+            width: 32,
             computed: true,
             title: "",
             sortable: false,

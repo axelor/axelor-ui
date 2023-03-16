@@ -1,20 +1,11 @@
 import React from "react";
-import {
-  Box,
-  Input,
-  Menu,
-  MenuItem,
-  Icon,
-  Divider,
-  useClassNames,
-} from "../core";
-import { ReactComponent as BiThreeDotsVertical } from "bootstrap-icons/icons/three-dots-vertical.svg";
-import { ReactComponent as BiX } from "bootstrap-icons/icons/x.svg";
+import { Box, Divider, Input, Menu, MenuItem, useClassNames } from "../core";
 
+import { MaterialIcon } from "../icons/meterial-icon";
 import GridDragElement, { DropHandler } from "./grid-drag-element";
-import * as TYPES from "./types";
 import styles from "./grid.module.scss";
 import { useTranslation } from "./translate";
+import * as TYPES from "./types";
 import { useRTL } from "./utils";
 
 export interface GridHeaderMenuProps extends Pick<TYPES.GridState, "groupBy"> {
@@ -62,7 +53,7 @@ const GridGroupTag = ({
             onRemove && onRemove(e, data);
           }}
         >
-          <Icon size={2} as={BiX} />
+          <MaterialIcon icon="close" />
         </span>
       </div>
     </GridDragElement>
@@ -109,7 +100,7 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
         className={styles.columnOptions}
         onClick={() => setColumnOptions(true)}
       >
-        <Icon as={BiThreeDotsVertical} />
+        <MaterialIcon icon="more_vert" />
       </Box>
       <Menu
         className={classNames("table-popover", styles.columnOptionsMenu)}

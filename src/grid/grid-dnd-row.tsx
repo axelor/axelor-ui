@@ -2,9 +2,9 @@
  * @title Row Reorder
  */
 import React from "react";
-import { Draggable, Droppable, DragDropContext } from "react-beautiful-dnd";
-import { Box, Icon } from "../core";
-import { ReactComponent as BiList } from "bootstrap-icons/icons/list.svg";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { Box } from "../core";
+import { MaterialIcon } from "../icons/meterial-icon";
 import * as TYPES from "./types";
 
 const GridDNDRowContext = React.createContext<any>(null);
@@ -103,12 +103,14 @@ export function GridDNDColumn({
 }: React.HTMLAttributes<HTMLDivElement>) {
   const props = React.useContext(GridDNDRowContext);
   return (
-    <div
+    <Box
+      d="flex"
+      className={className}
+      onClick={onClick}
+      style={{ ...props?.style, ...style }}
       {...props}
-      style={{ ...props?.style, cursor: "move", ...style }}
-      {...{ className, onClick }}
     >
-      <Icon as={BiList} />
-    </div>
+      <MaterialIcon icon="drag_handle" />
+    </Box>
   );
 }

@@ -199,7 +199,7 @@ export default function Editable() {
   return (
     <GridProvider>
       <FormHandlers.Provider value={handlers}>
-        <Box ref={boxRef} style={{ display: "flex", maxHeight: 500 }}>
+        <Box ref={boxRef} style={{ display: "flex"}}>
           <Grid
             editable
             allowColumnResize
