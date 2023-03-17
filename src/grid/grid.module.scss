@@ -79,7 +79,7 @@
 .header .column {
   display: flex;
   align-items: center;
-  padding: var(--bs-table-cell-padding);
+  position: relative;
 }
 .header .column,
 .footerRow .column {
@@ -149,20 +149,46 @@
   background: transparent;
 }
 
+.header .row:first-child .column::before {
+  content: ' ';
+  width: 2px;
+  height: 100%;
+  background-color: var(--bs-table-border-color);
+  position: absolute;
+  left: -1px;
+  opacity: 0.5;
+}
+
 .columnResizer {
   width: 0.5rem;
   height: 100%;
   cursor: col-resize;
   display: flex;
   justify-content: flex-end;
+  position: absolute;
+
+  right: 0;
+
   & hr {
     border-left: 1px solid var(--bs-table-border-color) !important;
     margin: 0 !important;
     opacity: 0.5;
   }
+
+  &.fixed {
+    cursor: pointer;
+  }
 }
-.columnResizer.fixed {
-  cursor: pointer;
+
+.container.rtl {
+  .columnResizer {
+    right: unset;
+    left: 0;
+  }
+  .header .row:first-child .column::before {
+    left: unset;
+    right: -1px;
+  }
 }
 
 .groupRow {
