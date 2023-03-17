@@ -1119,9 +1119,17 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     React.useEffect(() => {
       if (!containerRef.current) return;
 
+      let lastWidth = containerRef.current.offsetWidth;
+
       // observe resize for grid container
       const observeGrid = new ResizeObserver(
-        debounce(() => sizingColumns(), 300)
+        debounce(() => {
+          const currentWidth = containerRef.current.offsetWidth;
+          if (currentWidth !== lastWidth) {
+            lastWidth = currentWidth;
+            sizingColumns();
+          }
+        }, 300)
       );
       observeGrid.observe(containerRef.current);
       return () => {
