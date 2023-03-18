@@ -10,10 +10,10 @@ import { clsx, useClassNames } from "../styles";
 import styles from "./command-bar.module.scss";
 
 export interface CommandItemProps {
-  id: string;
-  title?: string;
-  subtitle?: string;
-  help?: string;
+  key: string;
+  text?: string;
+  subtext?: string;
+  description?: string;
   imageProps?: {
     src: string;
     alt: string;
@@ -39,8 +39,8 @@ export interface CommandBarProps {
 
 function CommandItem(props: CommandItemProps) {
   const {
-    title,
-    help,
+    text,
+    description,
     imageProps,
     iconProps,
     iconSide,
@@ -107,7 +107,7 @@ function CommandItem(props: CommandItemProps) {
     <Wrapper className={styles.itemWrapper}>
       <Button
         variant="light"
-        title={help}
+        title={description}
         className={clsx(
           styles.item,
           {
@@ -127,7 +127,7 @@ function CommandItem(props: CommandItemProps) {
         >
           {imageProps && <Image className={styles.image} {...imageProps} />}
           {iconProps && <MaterialIcon {...iconProps} className={styles.icon} />}
-          {title && !iconOnly && <span className={styles.title}>{title}</span>}
+          {text && !iconOnly && <span className={styles.title}>{text}</span>}
           {showArrow && <MaterialIcon icon="arrow_drop_down" />}
         </span>
       </Button>
@@ -150,21 +150,21 @@ function CommandItem(props: CommandItemProps) {
           className={styles.menu}
         >
           {items.map((item) => {
-            const { id, divider, title, subtitle } = item;
+            const { key, divider, text, subtext } = item;
 
             if (divider) {
-              return <MenuDivider key={id} />;
+              return <MenuDivider key={key} />;
             }
 
             return (
-              <MenuItem key={id} onClick={(e) => handleMenuClick(e, item)}>
-                {subtitle ? (
+              <MenuItem key={key} onClick={(e) => handleMenuClick(e, item)}>
+                {subtext ? (
                   <div className={styles.menuTexts}>
-                    <span className={styles.menuTitle}>{title}</span>
-                    <span className={styles.menuSub}>{subtitle}</span>
+                    <span className={styles.menuTitle}>{text}</span>
+                    <span className={styles.menuSub}>{subtext}</span>
                   </div>
                 ) : (
-                  <span className={styles.menuTitle}>{title}</span>
+                  <span className={styles.menuTitle}>{text}</span>
                 )}
               </MenuItem>
             );
@@ -190,7 +190,7 @@ export function CommandBar(props: CommandBarProps) {
   return (
     <div className={clsx(className, styles.bar)} style={style as any}>
       {items.map((item) => (
-        <CommandItem key={item.id} {...item} />
+        <CommandItem {...item} />
       ))}
     </div>
   );

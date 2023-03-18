@@ -14,53 +14,53 @@ export const Basic = () => {
         }}
         items={[
           {
-            id: "new",
-            title: "New",
+            key: "new",
+            text: "New",
             iconProps: {
               icon: "add",
             },
           },
           {
-            id: "edit",
-            title: "Edit",
+            key: "edit",
+            text: "Edit",
             iconProps: {
               icon: "edit",
             },
           },
           {
-            id: "save",
-            title: "Save",
+            key: "save",
+            text: "Save",
             iconProps: {
               icon: "save",
             },
           },
           {
-            id: "delete",
-            title: "Delete",
+            key: "delete",
+            text: "Delete",
             iconProps: {
               icon: "delete",
             },
             onClick: () => {},
             items: [
               {
-                id: "archive",
-                title: "Archive",
+                key: "archive",
+                text: "Archive",
               },
               {
-                id: "deleteAll",
-                title: "Delete all...",
+                key: "deleteAll",
+                text: "Delete all...",
               },
             ],
           },
           {
-            id: "more",
+            key: "more",
             iconProps: {
               icon: "more_vert",
             },
             items: [
               {
-                id: "about",
-                title: "About",
+                key: "about",
+                text: "About",
               },
             ],
           },
