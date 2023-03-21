@@ -24,6 +24,7 @@ export interface CommandItemProps {
   disabled?: boolean;
   checked?: boolean;
   divider?: boolean;
+  hidden?: boolean;
   onClick?: React.EventHandler<
     React.MouseEvent<HTMLElement, MouseEvent> | React.KeyboardEvent<HTMLElement>
   >;
@@ -49,6 +50,7 @@ function CommandItem(props: CommandItemProps) {
     checked,
     disabled,
     divider,
+    hidden,
     onClick,
     items = [],
     showDownArrow = false,
@@ -79,6 +81,10 @@ function CommandItem(props: CommandItemProps) {
     },
     [hideMenu]
   );
+
+  if (hidden) {
+    return null;
+  }
 
   if (divider) {
     return <hr className={styles.divider} />;
@@ -151,7 +157,11 @@ function CommandItem(props: CommandItemProps) {
           className={styles.menu}
         >
           {items.map((item) => {
-            const { key, divider, text, subtext } = item;
+            const { key, divider, hidden, text, subtext } = item;
+
+            if (hidden) {
+              return null;
+            }
 
             if (divider) {
               return <MenuDivider key={key} />;
