@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { Box } from "../box";
 import { Fade } from "../fade";
-import { FocusTrap } from "../focus-trap";
+import { FocusTarget, FocusTrap } from "../focus-trap";
 import { Portal } from "../portal";
 import styled, { withStyled } from "../styled";
 import { clsx, useClassNames } from "../styles";
@@ -16,6 +16,7 @@ export interface DialogProps {
   fullscreen?: boolean;
   centered?: boolean;
   size?: "sm" | "md" | "lg" | "xl";
+  initialFocus?: FocusTarget;
   onShow?: () => void;
   onHide?: () => void;
 }
@@ -71,13 +72,12 @@ export const DialogHeader = withStyled(HeaderRoot)((props, ref) => {
     >
       <Box>{children}</Box>
       {onCloseClick && (
-        <Box>
-          <Box
-            as="button"
-            className={classNames("btn-close")}
-            onClick={onCloseClick}
-          />
-        </Box>
+        <Box
+          as="button"
+          tabIndex={0}
+          className={classNames("btn-close")}
+          onClick={onCloseClick}
+        />
       )}
     </HeaderRoot>
   );
@@ -127,6 +127,7 @@ export const Dialog = withStyled(Box)<DialogProps>((props, ref) => {
     onHide,
     className,
     children,
+    initialFocus = false,
     ...rest
   } = props;
   const classNames = useClassNames();
@@ -143,7 +144,10 @@ export const Dialog = withStyled(Box)<DialogProps>((props, ref) => {
     <Portal>
       {backdrop && (
         <Fade in={open} mountOnEnter unmountOnExit>
-          <Box className={classNames("modal-backdrop", "show", "fade")} />
+          <Box
+            className={classNames("modal-backdrop", "show", "fade")}
+            tabIndex={-1}
+          />
         </Fade>
       )}
       <Fade
@@ -154,10 +158,12 @@ export const Dialog = withStyled(Box)<DialogProps>((props, ref) => {
         unmountOnExit
       >
         <Box
+          tabIndex={-1}
           className={clsx(className, styles.dialogRoot, classNames("modal"))}
           {...rest}
         >
           <Box
+            tabIndex={-1}
             className={classNames("modal-dialog", {
               "modal-dialog-centered": centered,
               "modal-dialog-scrollable": scrollable,
@@ -168,7 +174,7 @@ export const Dialog = withStyled(Box)<DialogProps>((props, ref) => {
             })}
             ref={ref}
           >
-            <FocusTrap enabled={open}>
+            <FocusTrap enabled={open} initialFocus={initialFocus}>
               <Box className={classNames("modal-content")}>{children}</Box>
             </FocusTrap>
           </Box>
