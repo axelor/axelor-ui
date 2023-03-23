@@ -8,6 +8,7 @@ export interface GridColumnProps {
   index: number;
   className?: string;
   value?: any;
+  record?: TYPES.GridRow['record'];
   type?: "header" | "footer" | "body";
   selected?: boolean;
   focus?: boolean;
