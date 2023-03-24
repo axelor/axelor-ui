@@ -20,6 +20,7 @@ specifiers:
   bootstrap-icons: ^1.10.3
   commander: ^10.0.0
   csstype: ^3.1.1
+  dayjs: ^1.11.7
   eslint: ^8.35.0
   eslint-config-prettier: ^8.6.0
   eslint-config-react-app: ^7.0.1
@@ -54,6 +55,7 @@ dependencies:
   bootstrap: 5.2.3_@popperjs+core@2.11.6
   bootstrap-icons: 1.10.3
   csstype: 3.1.1
+  dayjs: 1.11.7
   focus-trap: 7.3.1
   immer: 9.0.19
   material-symbols: 0.5.0

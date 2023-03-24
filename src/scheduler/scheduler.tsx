@@ -2,12 +2,12 @@ import { useCallback } from "react";
 import * as React from "react";
 import {
   Calendar,
-  momentLocalizer,
+  dayjsLocalizer,
   View as CalendarView,
   NavigateAction as CalendarNavigateAction,
 } from "react-big-calendar";
 import { useTheme } from "../core";
-import moment from "moment";
+import dayjs from "dayjs";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 
 import { Event, Component, View, SchedulerEvent } from "./types";
@@ -15,7 +15,11 @@ import { Event, Component, View, SchedulerEvent } from "./types";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 
-const localizer = momentLocalizer(moment);
+declare module "react-big-calendar" {
+  export function dayjsLocalizer(dayjsInstance: object): DateLocalizer;
+}
+
+const localizer = dayjsLocalizer(dayjs);
 const DragAndDropCalendar = withDragAndDrop(Calendar as any);
 
 export type NavigationAction = "NEXT" | "PREV" | "TODAY";
