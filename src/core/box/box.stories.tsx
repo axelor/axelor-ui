@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { useTranslation } from "react-i18next";
 
 import { Box } from "./box";
 
@@ -19,7 +20,8 @@ export const Basic: Story = {
   },
 };
 
-export const Border = ({ t }: any) => {
+export const Border = () => {
+  const { t } = useTranslation();
   return (
     <Box display="flex">
       <Box p={5} m={2} border>
@@ -63,7 +65,8 @@ const colors: any = {
 
 const gradientIgnore = ["body", "white", "transparent"];
 
-export const Background = ({ t }: any) => {
+export const Background = () => {
+  const { t } = useTranslation();
   return (
     <Box style={{ width: 400 }}>
       {(Object.keys(colors) as Array<any>).map((c) => (
@@ -75,7 +78,8 @@ export const Background = ({ t }: any) => {
   );
 };
 
-export const Gradient = ({ t }: any) => {
+export const Gradient = () => {
+  const { t } = useTranslation();
   return (
     <Box style={{ width: 400 }}>
       {(Object.keys(colors) as Array<any>)
@@ -89,7 +93,8 @@ export const Gradient = ({ t }: any) => {
   );
 };
 
-export const BoxShadow = ({ t }: any) => {
+export const BoxShadow = () => {
+  const { t } = useTranslation();
   return (
     <Box style={{ width: 400 }} bgColor="light" p={4}>
       <Box shadow={false} p={3} mb={5} bgColor="body" rounded={2}>
@@ -120,7 +125,8 @@ export const BoxShadow = ({ t }: any) => {
   );
 };
 
-export const DropShadow = ({ t }: any) => {
+export const DropShadow = () => {
+  const { t } = useTranslation();
   return (
     <Box style={{ width: 400 }} bgColor="light" p={4}>
       <Box dropShadow={false} p={3} mb={5} bgColor="body" rounded={2}>
@@ -148,7 +154,8 @@ export const DropShadow = ({ t }: any) => {
   );
 };
 
-export const Display = ({ t }: any) => {
+export const Display = () => {
+  const { t } = useTranslation();
   return (
     <Box style={{ width: 400 }}>
       <Box mb={2}>
@@ -171,7 +178,8 @@ export const Display = ({ t }: any) => {
   );
 };
 
-export const Float = ({ t }: any) => {
+export const Float = () => {
+  const { t } = useTranslation();
   return (
     <Box>
       <Box float="start">{t("Float start on all viewport sizes")}</Box>
@@ -183,7 +191,8 @@ export const Float = ({ t }: any) => {
   );
 };
 
-export const Link = ({ t }: any) => {
+export const Link = () => {
+  const { t } = useTranslation();
   return (
     <Box>
       <Box as="a" href="#" p={1} mb={1} linkColor="primary">
@@ -214,7 +223,8 @@ export const Link = ({ t }: any) => {
   );
 };
 
-export const PointerEvents = ({ t }: any) => {
+export const PointerEvents = () => {
+  const { t } = useTranslation();
   return (
     <Box>
       <Box as="p">
@@ -245,7 +255,8 @@ export const PointerEvents = ({ t }: any) => {
   );
 };
 
-export const Text = ({ t }: any) => {
+export const Text = () => {
+  const { t } = useTranslation();
   return (
     <Box style={{ width: 400 }}>
       <Box p={1} mb={1} color="primary">
@@ -291,7 +302,8 @@ export const Text = ({ t }: any) => {
   );
 };
 
-export const TextAlign = ({ t }: any) => {
+export const TextAlign = () => {
+  const { t } = useTranslation();
   return (
     <Box>
       <Box as="p" textAlign="start">
@@ -319,7 +331,8 @@ export const TextAlign = ({ t }: any) => {
   );
 };
 
-export const FontSize = ({ t }: any) => {
+export const FontSize = () => {
+  const { t } = useTranslation();
   return (
     <Box>
       <Box as="p" fontSize={1}>
@@ -344,7 +357,8 @@ export const FontSize = ({ t }: any) => {
   );
 };
 
-export const FontWeight = ({ t }: any) => {
+export const FontWeight = () => {
+  const { t } = useTranslation();
   return (
     <Box>
       <Box as="p" fontWeight="bold">
@@ -372,7 +386,8 @@ export const FontWeight = ({ t }: any) => {
   );
 };
 
-export const Overflow = ({ t }: any) => {
+export const Overflow = () => {
+  const { t } = useTranslation();
   return (
     <Box display="flex">
       <Box

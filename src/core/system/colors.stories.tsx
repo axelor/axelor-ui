@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Box } from "../box/box";
 
 const config = {
@@ -19,7 +20,8 @@ const colors: any = {
   transparent: "dark",
 };
 
-export const Theme = ({ t }: any) => {
+export const Theme = () => {
+  const { t } = useTranslation();
   return (
     <Box style={{ width: 400 }}>
       {(Object.keys(colors) as Array<any>).map((c) => (
@@ -59,7 +61,8 @@ const gray: any = {
   "gray-900": "white",
 };
 
-export const Palette = ({ t }: any) => {
+export const Palette = () => {
+  const { t } = useTranslation();
   return (
     <Box display="flex">
       <Box style={{ width: 400 }}>

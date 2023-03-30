@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Box } from "../box/box";
 
 const config = {
@@ -11,7 +12,8 @@ const Container = (props: any) => (
 
 const Cell = (props: any) => <Box {...props} border p={2} />;
 
-export const Basic = ({ t }: any) => {
+export const Basic = () => {
+  const { t } = useTranslation();
   return (
     <Container>
       <Cell>{t("Item")} 1</Cell>
@@ -22,7 +24,8 @@ export const Basic = ({ t }: any) => {
   );
 };
 
-export const Direction = ({ t }: any) => {
+export const Direction = () => {
+  const { t } = useTranslation();
   return (
     <Container flexDirection="column">
       <Container flexDirection="row">
@@ -53,7 +56,8 @@ export const Direction = ({ t }: any) => {
   );
 };
 
-export const Wrap = ({ t }: any) => {
+export const Wrap = () => {
+  const { t } = useTranslation();
   return (
     <Container flexDirection="column" style={{ width: 300 }}>
       <Container flexWrap="nowrap">
@@ -84,7 +88,8 @@ export const Wrap = ({ t }: any) => {
   );
 };
 
-export const JustifyContent = ({ t }: any) => {
+export const JustifyContent = () => {
+  const { t } = useTranslation();
   return (
     <Container flexDirection="column">
       <Container justifyContent="flex-start">
@@ -121,7 +126,8 @@ export const JustifyContent = ({ t }: any) => {
   );
 };
 
-export const AlignItems = ({ t }: any) => {
+export const AlignItems = () => {
+  const { t } = useTranslation();
   return (
     <Container flexDirection="column">
       <Container alignItems="flex-start" style={{ height: 100 }}>
@@ -153,7 +159,8 @@ export const AlignItems = ({ t }: any) => {
   );
 };
 
-export const AlignContent = ({ t }: any) => {
+export const AlignContent = () => {
+  const { t } = useTranslation();
   return (
     <Container flexDirection="column">
       <Container
@@ -251,7 +258,8 @@ export const AlignContent = ({ t }: any) => {
   );
 };
 
-export const Order = ({ t }: any) => {
+export const Order = () => {
+  const { t } = useTranslation();
   return (
     <Container>
       <Cell order={3}>{t("Item")} 1</Cell>
@@ -261,7 +269,8 @@ export const Order = ({ t }: any) => {
   );
 };
 
-export const Grow = ({ t }: any) => {
+export const Grow = () => {
+  const { t } = useTranslation();
   return (
     <Container>
       <Cell flexGrow={1}>{t("Item")} 1</Cell>
@@ -271,7 +280,8 @@ export const Grow = ({ t }: any) => {
   );
 };
 
-export const Shrink = ({ t }: any) => {
+export const Shrink = () => {
+  const { t } = useTranslation();
   return (
     <Container>
       <Cell w={100}>{t("Item")} 1</Cell>
@@ -281,7 +291,8 @@ export const Shrink = ({ t }: any) => {
   );
 };
 
-export const AlignSelf = ({ t }: any) => {
+export const AlignSelf = () => {
+  const { t } = useTranslation();
   return (
     <Container alignItems="flex-start" style={{ height: 150 }}>
       <Cell>{t("Item")} 1</Cell>

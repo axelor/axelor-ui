@@ -1,13 +1,10 @@
 import i18next from "i18next";
 import React, { useEffect } from "react";
-import {
-  I18nextProvider,
-  initReactI18next,
-  useTranslation,
-} from "react-i18next";
+import { I18nextProvider, initReactI18next } from "react-i18next";
 
 import { ThemeProvider } from "../../../src/core";
 
+import { Decorator } from "@storybook/react";
 import ar_MA from "./locales/ar_MA/translations.json";
 import en_US from "./locales/en_US/translations.json";
 
@@ -29,9 +26,8 @@ i18n.use(initReactI18next).init({
   },
 });
 
-export const WithTheme = (Story, context) => {
+export const WithTheme: Decorator = (Story, context) => {
   const { locale } = context.globals;
-  const { t } = useTranslation();
   const dir = locale && locale === "ar_MA" ? "rtl" : "ltr";
 
   useEffect(() => {
@@ -40,11 +36,7 @@ export const WithTheme = (Story, context) => {
 
   return (
     <I18nextProvider i18n={i18n}>
-      <ThemeProvider dir={dir}>
-        <div>
-          <Story {...{ ...context, args: { ...context.args, t } }} />
-        </div>
-      </ThemeProvider>
+      <ThemeProvider dir={dir}>{Story(context)}</ThemeProvider>
     </I18nextProvider>
   );
 };
