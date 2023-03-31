@@ -1118,14 +1118,15 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     React.useEffect(() => {
       if (!containerRef.current) return;
-
-      let lastWidth = containerRef.current.offsetWidth;
+      let cancelled = false;
+      let lastWidth = getContainerWidth();
 
       // observe resize for grid container
       const observeGrid = new ResizeObserver(
         debounce(() => {
-          const currentWidth = containerRef.current?.offsetWidth;
-          if (containerRef.current && currentWidth !== lastWidth) {
+          if (cancelled) return;
+          const currentWidth = getContainerWidth();
+          if (currentWidth !== lastWidth) {
             lastWidth = currentWidth;
             sizingColumns();
           }
@@ -1133,9 +1134,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       );
       observeGrid.observe(containerRef.current);
       return () => {
+        cancelled = true;
         observeGrid.disconnect();
       };
-    }, [sizingColumns]);
+    }, [getContainerWidth, sizingColumns]);
 
     React.useEffect(() => {
       // exclude hide columns
