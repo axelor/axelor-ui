@@ -1,10 +1,7 @@
 import React from "react";
-import { ReactComponent as BiPencil } from "bootstrap-icons/icons/pencil.svg";
-import { ReactComponent as BiPlusSquare } from "bootstrap-icons/icons/plus-square.svg";
-import { ReactComponent as BiFileEarmark } from "bootstrap-icons/icons/file-earmark-text.svg";
 
-import { Input } from "../input";
 import { Box } from "../box";
+import { Input } from "../input";
 import { Select } from "../select";
 
 const SelectStories = {
@@ -216,9 +213,9 @@ export const Actions = () => {
       <FormControl label="Colors">
         <Select
           icons={[
-            ...(value && canEdit ? [{ id: "search", icon: BiPencil }] : []),
-            ...(canCreate ? [{ id: "new", icon: BiPlusSquare }] : []),
-            ...(canRead && value ? [{ id: "edit", icon: BiFileEarmark }] : []),
+            ...(canCreate ? [{ icon: "add" }] : []),
+            ...(value && canEdit ? [{ icon: "edit" }] : []),
+            ...(canRead && value ? [{ icon: "edit_document" }] : []),
           ]}
           value={value}
           onChange={setValue}

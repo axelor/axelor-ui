@@ -1,5 +1,4 @@
 import React from "react";
-import { Icon, IconProps } from "../icon";
 import ReactSelect, {
   components,
   ControlProps,
@@ -12,13 +11,13 @@ import { Box } from "../box";
 
 import selectStyles from "./select.module.scss";
 import { useTheme } from "../styles";
+import { MaterialIcon, MaterialIconProps } from "../../icons/meterial-icon";
 
 export type SelectOption = unknown;
 
 export interface SelectIcon {
-  id: string;
-  icon: IconProps["as"];
-  onClick?: React.MouseEventHandler<SVGSVGElement>;
+  icon: MaterialIconProps["icon"];
+  onClick?: React.MouseEventHandler<HTMLElement>;
 }
 
 export interface SelectProps {
@@ -107,7 +106,11 @@ const IndicatorsContainer = (
         me={1}
       >
         {icons.map((icon) => (
-          <Icon key={icon.id} as={icon.icon} onClick={icon.onClick} />
+          <MaterialIcon
+            key={icon.icon}
+            icon={icon.icon}
+            onClick={icon.onClick}
+          />
         ))}
       </Box>
     )
@@ -284,7 +287,7 @@ export function Select({
 
   React.useEffect(() => {
     mounted.current && isMenuOpen && loadOptions(inputText);
-  }, [inputText, loadOptions]);
+  }, [inputText, isMenuOpen, loadOptions]);
 
   React.useEffect(() => {
     mounted.current = true;
