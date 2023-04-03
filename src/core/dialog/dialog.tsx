@@ -86,13 +86,13 @@ export const DialogHeader = withStyled(HeaderRoot)((props, ref) => {
 const FooterRoot = styled.div<DialogFooterProps>();
 
 export const DialogFooter = withStyled(FooterRoot)((props, ref) => {
-  const { className, children } = props;
+  const { className, children, ...rest } = props;
   const classNames = useClassNames();
   return (
     <Box
       ref={ref}
       className={clsx(className, classNames("modal-footer"))}
-      {...props}
+      {...rest}
     >
       {children}
     </Box>
@@ -102,13 +102,13 @@ export const DialogFooter = withStyled(FooterRoot)((props, ref) => {
 const ContentRoot = styled.div<DialogContentProps>();
 
 export const DialogContent = withStyled(ContentRoot)((props, ref) => {
-  const { className, children } = props;
+  const { className, children, ...rest } = props;
   const classNames = useClassNames();
   return (
     <ContentRoot
       ref={ref}
       className={clsx(className, classNames("modal-body"))}
-      {...props}
+      {...rest}
     >
       {children}
     </ContentRoot>
