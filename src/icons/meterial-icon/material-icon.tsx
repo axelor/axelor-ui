@@ -15,6 +15,7 @@ export interface MaterialIconProps {
   opticalSize?: 20 | 24 | 40 | 48;
   color?: TForeground;
   className?: string;
+  onClick?: React.MouseEventHandler<HTMLSpanElement>;
 }
 
 const styleNames = ["fill", "grade", "weight", "opticalSize"] as const;
@@ -54,6 +55,7 @@ export const MaterialIcon = forwardRef<HTMLSpanElement, MaterialIconProps>(
       grade,
       opticalSize,
       color,
+      onClick,
     } = props;
 
     const cls = `material-symbols-${variant}`;
@@ -64,7 +66,14 @@ export const MaterialIcon = forwardRef<HTMLSpanElement, MaterialIconProps>(
     }, [fill, weight, grade, opticalSize]);
 
     return (
-      <Box as="span" className={clsName} color={color} style={style} ref={ref}>
+      <Box
+        as="span"
+        className={clsName}
+        color={color}
+        onClick={onClick}
+        style={style}
+        ref={ref}
+      >
         {icon}
       </Box>
     );
