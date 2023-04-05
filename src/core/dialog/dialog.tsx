@@ -70,7 +70,9 @@ export const DialogHeader = withStyled(HeaderRoot)((props, ref) => {
       className={clsx(className, classNames("modal-header"))}
       {...rest}
     >
-      <Box>{children}</Box>
+      <Box d="flex" flex={1} alignItems="center" g={2}>
+        {children}
+      </Box>
       {onCloseClick && (
         <Box
           as="button"
