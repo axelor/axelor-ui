@@ -249,12 +249,6 @@ export function Select({
     [onChange]
   );
 
-  React.useEffect(() => {
-    if (isMenuOpen && optionsState === OptionsState.FetchNeeded) {
-      loadOptionsNow("");
-    }
-  }, [isMenuOpen, optionsState, loadOptionsNow]);
-
   const handleInputChange = React.useCallback((value: any) => {
     setInputText(value);
   }, []);
