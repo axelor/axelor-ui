@@ -26,6 +26,7 @@
 
 .body {
   flex: 1;
+  width: fit-content;
 }
 
 .row {
@@ -43,6 +44,7 @@
 }
 
 .header {
+  width: fit-content;
   color: var(--bs-table-th-color);
   background-color: var(--bs-table-th-bg);
   &.sticky {
@@ -321,11 +323,10 @@
   cursor: pointer;
   position: absolute;
   right: 0;
-  top: 0;
+  top: 0.5rem;
   z-index: 1;
   display: flex;
   align-items: center;
-  height: 100%;
   .rtl & {
     right: unset;
     left: 0;
