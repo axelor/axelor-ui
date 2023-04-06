@@ -8,10 +8,9 @@ import ReactSelect, {
 } from "react-select";
 import CreatableSelect from "react-select/creatable";
 import { Box } from "../box";
-
-import selectStyles from "./select.module.scss";
 import { useTheme } from "../styles";
 import { MaterialIcon, MaterialIconProps } from "../../icons/meterial-icon";
+import selectStyles from "./select.module.scss";
 
 export type SelectOption = unknown;
 
@@ -60,8 +59,10 @@ export interface SelectProps {
 
 const ControlContainer = (props: ControlProps<SelectOption, true>) => {
   const { onMouseDown, onTouchEnd } = props.innerProps;
+  const { onControlClick } = props.selectProps as any;
   function handleMouseDown(e: React.MouseEvent<HTMLDivElement>) {
     if (!e.defaultPrevented) {
+      onControlClick(e);
       onMouseDown && onMouseDown(e);
     }
   }
@@ -168,6 +169,7 @@ export function Select({
   const [optionsState, setOptionsState] = React.useState(
     OptionsState.FetchNeeded
   );
+  const refs = React.useRef<Record<string, boolean>>({});
   const mounted = React.useRef(false);
   const timer = React.useRef<any>(null);
 
@@ -228,6 +230,7 @@ export function Select({
 
   const handleFocus = React.useCallback(
     (e: React.SyntheticEvent) => {
+      setMenuOpen(true);
       return onFocus && onFocus(e);
     },
     [onFocus]
@@ -258,7 +261,15 @@ export function Select({
   }, [onInputChange, inputText]);
 
   const handleMenuOpen = () => setMenuOpen(true);
-  const handleMenuClose = () => setMenuOpen(false);
+
+  const handleMenuClose = () => {
+    if (refs.current.controlClicked) {
+      refs.current.controlClicked = false;
+    } else {
+      setMenuOpen(false);
+    }
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const isDelete = isClearOnDelete && e.key === "Delete";
     if (
@@ -340,10 +351,20 @@ export function Select({
         : styles,
   };
 
+  const handleControlClick = (e: React.MouseEventHandler<HTMLElement>) => {
+    if (menuIsOpen) {
+      refs.current.controlClicked = true;
+    }
+  };
+
   return (
     <SelectComponent
       className={className}
       classNamePrefix={classNamePrefix}
+      classNames={{
+        control: () => selectStyles.control,
+        menu: () => selectStyles.menu,
+      }}
       menuPortalTarget={document.body}
       menuIsOpen={menuIsOpen}
       menuPlacement="auto"
@@ -372,6 +393,7 @@ export function Select({
         openMenuOnClick: true,
         onMenuOpen: handleMenuOpen,
         onMenuClose: handleMenuClose,
+        onControlClick: handleControlClick,
         noOptionsMessage: noOptionsMessage || (() => ""),
         components: {
           Control: ControlContainer,
@@ -385,7 +407,7 @@ export function Select({
               formatCreateLabel: createOption,
               createOptionPosition,
               onCreateOption: onCreate,
-              isValidNewOption: isValidNewOption || undefined,
+              isValidNewOption,
             }
           : {}),
       }}

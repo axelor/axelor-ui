@@ -4,6 +4,14 @@ $size: 1rem;
 $wrapperSpacing: $spacing * 2;
 $iconSpacing: $spacing;
 
+.menu {
+  margin-top: 4px !important;
+}
+
+.control {
+  border-color: var(--bs-border-color) !important;
+}
+
 .icons {
   & > span {
     cursor: pointer;
