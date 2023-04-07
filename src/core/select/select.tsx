@@ -131,6 +131,8 @@ function filterOption(candidate: any, input: any) {
   return candidate.data.__isAddOn || defaultFilter(candidate, input);
 }
 
+export const SelectComponents = components;
+
 export function Select({
   className,
   classNamePrefix,
@@ -163,11 +165,12 @@ export function Select({
   components,
   ...props
 }: SelectProps) {
+  const isStaticSelect = !fetchOptions;
   const [options, setOptions] = React.useState(_options);
   const [inputText, setInputText] = React.useState("");
   const [isMenuOpen, setMenuOpen] = React.useState(false);
   const [optionsState, setOptionsState] = React.useState(
-    OptionsState.FetchNeeded
+    isStaticSelect ? OptionsState.Ready : OptionsState.FetchNeeded
   );
   const refs = React.useRef<Record<string, boolean>>({});
   const mounted = React.useRef(false);
@@ -223,7 +226,7 @@ export function Select({
   const loadOptions = React.useCallback(
     (searchString: string) => {
       clearTimer();
-      setTimer(() => loadOptionsNow(searchString), 500);
+      setTimer(() => loadOptionsNow(searchString), searchString ? 300 : 0);
     },
     [loadOptionsNow, setTimer, clearTimer]
   );
@@ -238,18 +241,18 @@ export function Select({
 
   const handleBlur = React.useCallback(
     (e: React.SyntheticEvent) => {
-      setOptionsState(OptionsState.FetchNeeded);
+      !isStaticSelect && setOptionsState(OptionsState.FetchNeeded);
       return onBlur && onBlur(e);
     },
-    [onBlur]
+    [isStaticSelect, onBlur]
   );
 
   const handleChange = React.useCallback(
     (e: any) => {
-      setOptionsState(OptionsState.FetchNeeded);
+      !isStaticSelect && setOptionsState(OptionsState.FetchNeeded);
       return onChange && onChange(e);
     },
-    [onChange]
+    [isStaticSelect, onChange]
   );
 
   const handleInputChange = React.useCallback((value: any) => {
@@ -310,7 +313,7 @@ export function Select({
   );
 
   const $options = React.useMemo(() => {
-    if (optionsState !== OptionsState.Ready) {
+    if (!isStaticSelect && optionsState !== OptionsState.Ready) {
       return inputText ? options || [] : [];
     }
     return [
@@ -320,7 +323,7 @@ export function Select({
         __isAddOn: true,
       })),
     ];
-  }, [options, addOnOptions, optionsState, inputText]);
+  }, [isStaticSelect, options, addOnOptions, optionsState, inputText]);
 
   const hasOption = inputText
     ? ($options || []).some((opt) =>
