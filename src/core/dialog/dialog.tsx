@@ -177,7 +177,9 @@ export const Dialog = withStyled(Box)<DialogProps>((props, ref) => {
             ref={ref}
           >
             <FocusTrap enabled={open} initialFocus={initialFocus}>
-              <Box className={classNames("modal-content")}>{children}</Box>
+              <Box className={classNames("modal-content")} tabIndex={-1}>
+                {children}
+              </Box>
             </FocusTrap>
           </Box>
         </Box>
