@@ -157,7 +157,7 @@ function CommandItem(props: CommandItemProps) {
           className={styles.menu}
         >
           {items.map((item) => {
-            const { key, divider, hidden, text, subtext } = item;
+            const { key, divider, hidden, disabled, text, subtext } = item;
 
             if (hidden) {
               return null;
@@ -168,7 +168,11 @@ function CommandItem(props: CommandItemProps) {
             }
 
             return (
-              <MenuItem key={key} onClick={(e) => handleMenuClick(e, item)}>
+              <MenuItem
+                key={key}
+                disabled={disabled}
+                onClick={(e) => handleMenuClick(e, item)}
+              >
                 {subtext ? (
                   <div className={styles.menuTexts}>
                     <span className={styles.menuTitle}>{text}</span>
