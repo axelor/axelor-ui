@@ -391,6 +391,7 @@ export function Select({
         onKeyDown: handleKeyDown,
         getOptionLabel,
         getOptionValue,
+        tabSelectsValue: false,
         allowCreateWhileLoading: false,
         closeMenuOnScroll: true,
         openMenuOnClick: true,
