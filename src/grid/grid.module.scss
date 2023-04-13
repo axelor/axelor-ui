@@ -216,7 +216,7 @@
   white-space: nowrap;
   overflow: hidden;
 }
-.header .row,
+.header .row:not(.searchRow),
 .body .row {
   margin-top: -1px;
   border-top: 1px solid var(--bs-table-border-color);
