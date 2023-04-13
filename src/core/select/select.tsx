@@ -175,6 +175,7 @@ export function Select({
   const refs = React.useRef<Record<string, boolean>>({});
   const mounted = React.useRef(false);
   const timer = React.useRef<any>(null);
+  const menuTimer = React.useRef<any>(null);
 
   const { dir } = useTheme();
   const { isClearOnDelete = !isMulti } = props;
@@ -231,20 +232,35 @@ export function Select({
     [loadOptionsNow, setTimer, clearTimer]
   );
 
+  const clearMenuTimer = React.useCallback(() => {
+    clearTimeout(menuTimer.current);
+  }, []);
+
+  const openMenu = React.useCallback(
+    (interval: number) => {
+      clearMenuTimer();
+      menuTimer.current = setTimeout(() => {
+        setMenuOpen(true);
+      }, interval);
+    },
+    [clearMenuTimer]
+  );
+
   const handleFocus = React.useCallback(
     (e: React.SyntheticEvent) => {
-      setMenuOpen(true);
+      openMenu(refs.current.menuClicked ? 0 : 500);
       return onFocus && onFocus(e);
     },
-    [onFocus]
+    [onFocus, openMenu]
   );
 
   const handleBlur = React.useCallback(
     (e: React.SyntheticEvent) => {
       !isStaticSelect && setOptionsState(OptionsState.FetchNeeded);
+      clearMenuTimer();
       return onBlur && onBlur(e);
     },
-    [isStaticSelect, onBlur]
+    [isStaticSelect, clearMenuTimer, onBlur]
   );
 
   const handleChange = React.useCallback(
@@ -266,9 +282,11 @@ export function Select({
   const handleMenuOpen = () => setMenuOpen(true);
 
   const handleMenuClose = () => {
+    refs.current.menuClicked = false;
     if (refs.current.controlClicked) {
       refs.current.controlClicked = false;
     } else {
+      clearMenuTimer();
       setMenuOpen(false);
     }
   };
@@ -302,8 +320,9 @@ export function Select({
     return () => {
       mounted.current = false;
       clearTimer();
+      clearMenuTimer();
     };
-  }, [clearTimer]);
+  }, [clearTimer, clearMenuTimer]);
 
   const SelectComponent = (isCreatable ? CreatableSelect : ReactSelect) as any;
 
@@ -313,8 +332,23 @@ export function Select({
   );
 
   const $options = React.useMemo(() => {
-    if (!isStaticSelect && optionsState !== OptionsState.Ready) {
-      return inputText ? options || [] : [];
+    if (!isStaticSelect) {
+      return inputText
+        ? (options || []).filter((opt) =>
+            (getOptionLabel(opt) || "")
+              .toLowerCase()
+              .includes(inputText.toLowerCase())
+          )
+        : value
+        ? (options || []).filter(
+            (opt) =>
+              !(isMulti
+                ? value.some(
+                    (x: any) => getOptionValue(x) === getOptionValue(opt)
+                  )
+                : getOptionValue(opt) === getOptionValue(value))
+          )
+        : options || [];
     }
     return [
       ...(options || []),
@@ -323,15 +357,18 @@ export function Select({
         __isAddOn: true,
       })),
     ];
-  }, [isStaticSelect, options, addOnOptions, optionsState, inputText]);
+  }, [
+    isStaticSelect,
+    options,
+    addOnOptions,
+    inputText,
+    value,
+    isMulti,
+    getOptionLabel,
+    getOptionValue,
+  ]);
 
-  const hasOption = inputText
-    ? ($options || []).some((opt) =>
-        (getOptionLabel(opt) || "")
-          .toLowerCase()
-          .includes(inputText.toLowerCase())
-      )
-    : ($options || []).length > 0;
+  const hasOption = ($options || []).length > 0;
 
   const canShowCreate = React.useMemo(
     () => isCreatable && inputText,
@@ -355,6 +392,7 @@ export function Select({
   };
 
   const handleControlClick = (e: React.MouseEventHandler<HTMLElement>) => {
+    refs.current.menuClicked = true;
     if (menuIsOpen) {
       refs.current.controlClicked = true;
     }
@@ -375,7 +413,7 @@ export function Select({
       filterOption={filterOption}
       {...{
         options: $options,
-        placeholder,
+        placeholder: placeholder ?? "",
         isMulti,
         isDisabled,
         isRtl: rtl,
