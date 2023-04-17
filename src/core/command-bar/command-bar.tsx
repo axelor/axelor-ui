@@ -110,34 +110,39 @@ function CommandItem(props: CommandItemProps) {
     onClick: showMenu,
   };
 
+  const hasContent = imageProps || iconProps || text || showArrow;
   return (
     <Wrapper className={styles.itemWrapper}>
-      <Button
-        variant="light"
-        title={description}
-        className={clsx(
-          styles.item,
-          {
-            [styles.open]: show && !isSplit && items.length > 0,
-          },
-          classNames({
-            active: checked,
-          })
-        )}
-        disabled={disabled}
-        {...buttonProps}
-      >
-        <span
-          className={clsx(styles.title, {
-            [styles.iconEnd]: iconSide === "end",
-          })}
+      {hasContent && (
+        <Button
+          variant="light"
+          title={description}
+          className={clsx(
+            styles.item,
+            {
+              [styles.open]: show && !isSplit && items.length > 0,
+            },
+            classNames({
+              active: checked,
+            })
+          )}
+          disabled={disabled}
+          {...buttonProps}
         >
-          {imageProps && <Image className={styles.image} {...imageProps} />}
-          {iconProps && <MaterialIcon {...iconProps} className={styles.icon} />}
-          {text && !iconOnly && <span className={styles.title}>{text}</span>}
-          {showArrow && <MaterialIcon icon="arrow_drop_down" />}
-        </span>
-      </Button>
+          <span
+            className={clsx(styles.title, {
+              [styles.iconEnd]: iconSide === "end",
+            })}
+          >
+            {imageProps && <Image className={styles.image} {...imageProps} />}
+            {iconProps && (
+              <MaterialIcon {...iconProps} className={styles.icon} />
+            )}
+            {text && !iconOnly && <span className={styles.title}>{text}</span>}
+            {showArrow && <MaterialIcon icon="arrow_drop_down" />}
+          </span>
+        </Button>
+      )}
       {isSplit && (
         <Button
           variant="light"
