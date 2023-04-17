@@ -1,6 +1,6 @@
 @use "sass:math";
 
-$height: 28px;
+$height: 32px;
 $spacing: 0.25rem;
 $borderWidth: 2px;
 
@@ -54,12 +54,17 @@ $borderWidth: 2px;
     position: relative;
     line-height: $height;
     padding-right: $spacing * 2.5;
-    padding-left: $spacing * 5;
+    padding-left: $spacing * 7.5;
     white-space: nowrap;
     .rtl & {
       padding-right: $spacing * 5;
       padding-left: $spacing * 2.5;
     }
+  }
+
+  &:first-child a {
+    padding-left: $spacing * 5;
+    padding-right: $spacing * 2.5;
   }
 
   &:first-child a {
@@ -85,7 +90,7 @@ $borderWidth: 2px;
     z-index: 1;
     background: transparent;
     border: $borderWidth solid var(--bs-nav-link-color);
-    transform: scale(0.77) rotate(45deg);
+    transform: rotate(45deg);
 
     .root:not(.rtl) & {
       border-left: none;
@@ -99,19 +104,19 @@ $borderWidth: 2px;
 
   & a:after {
     .root:not(.rtl) & {
-      right: $offset;
+      right: calc($offset + $borderWidth * 2);
     }
     .root.rtl & {
-      left: $offset;
+      left: calc($offset + $borderWidth * 2);
     }
   }
 
   & a:before {
     .root:not(.rtl) & {
-      left: $offset;
+      left: calc($offset - $borderWidth * 2);
     }
     .root.rtl & {
-      right: $offset;
+      right: calc($offset - $borderWidth * 2);
     }
   }
   &:first-child a::before {
