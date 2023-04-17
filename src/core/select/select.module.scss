@@ -12,6 +12,12 @@ $iconSpacing: $spacing;
   border-color: var(--bs-border-color) !important;
 }
 
+.placeholder {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .icons {
   & > span {
     cursor: pointer;

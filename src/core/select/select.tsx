@@ -405,6 +405,7 @@ export function Select({
       classNames={{
         control: () => selectStyles.control,
         menu: () => selectStyles.menu,
+        placeholder: () => selectStyles.placeholder,
       }}
       menuPortalTarget={document.body}
       menuIsOpen={menuIsOpen}
