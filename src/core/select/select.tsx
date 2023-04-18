@@ -16,6 +16,7 @@ export type SelectOption = unknown;
 
 export interface SelectIcon {
   icon: MaterialIconProps["icon"];
+  hidden?: boolean;
   onClick?: React.MouseEventHandler<HTMLElement>;
 }
 
@@ -106,13 +107,16 @@ const IndicatorsContainer = (
           : {})}
         me={1}
       >
-        {icons.map((icon) => (
-          <MaterialIcon
-            key={icon.icon}
-            icon={icon.icon}
-            onClick={icon.onClick}
-          />
-        ))}
+        {icons.map(
+          (icon) =>
+            !icon.hidden && (
+              <MaterialIcon
+                key={icon.icon}
+                icon={icon.icon}
+                onClick={icon.onClick}
+              />
+            )
+        )}
       </Box>
     )
   );
