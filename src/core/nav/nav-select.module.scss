@@ -30,7 +30,7 @@ $borderWidth: 2px;
 .listItem {
   $offset: calc(-1 * math.div($height, 2));
 
-  color: var(--bs-nav-link-color);
+  color: var(--bs-secondary);
   cursor: pointer;
   display: flex;
   user-select: none;
@@ -47,7 +47,7 @@ $borderWidth: 2px;
     }
   }
   & a {
-    border: $borderWidth solid var(--bs-nav-link-color);
+    border: $borderWidth solid var(--bs-secondary);
     border-right: none;
     border-left: none;
     display: inline;
@@ -68,7 +68,7 @@ $borderWidth: 2px;
   }
 
   &:first-child a {
-    border-color: var(--bs-nav-link-color);
+    border-color: var(--bs-secondary);
     .root:not(.rtl) & {
       border-left: $borderWidth solid;
       border-top-left-radius: $spacing;
@@ -89,7 +89,7 @@ $borderWidth: 2px;
     position: absolute;
     z-index: 1;
     background: transparent;
-    border: $borderWidth solid var(--bs-nav-link-color);
+    border: $borderWidth solid var(--bs-secondary);
     transform: rotate(45deg);
 
     .root:not(.rtl) & {
@@ -166,7 +166,7 @@ $borderWidth: 2px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: var(--bs-nav-link-color);
+  color: var(--bs-secondary);
   font-size: 1em;
   &.active {
     color: var(--bs-primary);
