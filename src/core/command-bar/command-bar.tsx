@@ -18,6 +18,7 @@ export interface CommandItemProps {
     src: string;
     alt: string;
   };
+  icon?: (props?: { className?: string }) => JSX.Element | null;
   iconProps?: MaterialIconProps;
   iconOnly?: boolean;
   iconSide?: "start" | "end";
@@ -44,6 +45,7 @@ function CommandItem(props: CommandItemProps) {
     text,
     description,
     imageProps,
+    icon: Icon,
     iconProps,
     iconSide,
     iconOnly,
@@ -110,7 +112,7 @@ function CommandItem(props: CommandItemProps) {
     onClick: showMenu,
   };
 
-  const hasContent = imageProps || iconProps || text || showArrow;
+  const hasContent = imageProps || Icon || iconProps || text || showArrow;
   return (
     <Wrapper className={styles.itemWrapper}>
       {hasContent && (
@@ -135,8 +137,12 @@ function CommandItem(props: CommandItemProps) {
             })}
           >
             {imageProps && <Image className={styles.image} {...imageProps} />}
-            {iconProps && (
-              <MaterialIcon {...iconProps} className={styles.icon} />
+            {Icon ? (
+              <Icon className={styles.icon} />
+            ) : (
+              iconProps && (
+                <MaterialIcon {...iconProps} className={styles.icon} />
+              )
             )}
             {text && !iconOnly && <span className={styles.title}>{text}</span>}
             {showArrow && <MaterialIcon icon="arrow_drop_down" />}
