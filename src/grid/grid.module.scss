@@ -71,6 +71,7 @@
   border: 1px solid var(--bs-table-border-color);
   border-left: none;
   border-right: none;
+  background-color: var(--bs-table-th-bg);
   &.sticky {
     position: sticky;
     bottom: 0;
