@@ -31,6 +31,7 @@ export interface CommandItemProps {
   >;
   items?: CommandItemProps[];
   showDownArrow?: boolean;
+  render?: (props: CommandItemProps) => JSX.Element | null;
 }
 
 export interface CommandBarProps {
@@ -40,7 +41,7 @@ export interface CommandBarProps {
   iconOnly?: boolean;
 }
 
-function CommandItem(props: CommandItemProps) {
+export function CommandItem(props: CommandItemProps) {
   const {
     text,
     description,
@@ -53,6 +54,7 @@ function CommandItem(props: CommandItemProps) {
     disabled,
     divider,
     hidden,
+    render,
     onClick,
     items = [],
     showDownArrow = false,
@@ -86,6 +88,10 @@ function CommandItem(props: CommandItemProps) {
 
   if (hidden) {
     return null;
+  }
+
+  if (render) {
+    return render({ ...props, render: undefined });
   }
 
   if (divider) {
