@@ -31,6 +31,7 @@ const preview: Preview = {
       defaultValue: "en_US",
       toolbar: {
         icon: "globe",
+        title: "Locale",
         items: [
           { value: "en_US", title: "English" },
           { value: "ar_MA", title: "العربية" },
