@@ -222,13 +222,15 @@ const RenderNavTabs: React.FC<NavTabsProps> = (props) => {
               total + (tab ? (tab as HTMLElement).offsetWidth : 0) || 0,
             0
           );
-          const show =
-            tabsWidth +
-              (((scrollLeft as HTMLElement).offsetWidth || 0) +
-                ((scrollRight as HTMLElement).offsetWidth || 0)) >=
-            overflowListRef.offsetWidth;
-
-          setScroll(show);
+          if (tabsWidth > 0) {
+            const show =
+              tabsWidth +
+                (((scrollLeft as HTMLElement).offsetWidth || 0) +
+                  ((scrollRight as HTMLElement).offsetWidth || 0)) >=
+              overflowListRef.offsetWidth;
+  
+            setScroll(show);
+          }
         }, RESIZE_DELAY);
       });
 
