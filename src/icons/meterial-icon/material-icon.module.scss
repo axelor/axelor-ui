@@ -4,6 +4,7 @@ $material-symbols-font-path: "~material-symbols/";
 .material-symbols-outlined,
 .material-symbols-rounded,
 .material-symbols-sharp {
+  overflow: hidden;
   font-size: var(--ax-material-icon-fnsz, 24px);
   font-variation-settings: "FILL" var(--ax-material-icon-fill, 0),
     "wght" var(--ax-material-icon-wght, 400),
