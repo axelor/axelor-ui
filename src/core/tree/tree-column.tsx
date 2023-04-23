@@ -1,11 +1,8 @@
-import React from "react";
-import { ReactComponent as BiSortUpAlt } from "bootstrap-icons/icons/sort-up-alt.svg";
-import { ReactComponent as BiSortDownAlt } from "bootstrap-icons/icons/sort-down-alt.svg";
-
 import * as TYPES from "./types";
 import { useClassNames } from "../styles";
-import styles from "./tree.module.css";
-import { Icon } from "../icon";
+import { MaterialIcon } from "../../icons/meterial-icon";
+import { Box } from "../box";
+import styles from "./tree.module.scss";
 
 export function TreeColumn({
   className,
@@ -33,12 +30,28 @@ export function TreeHeaderColumn({
   onSort,
 }: TYPES.TreeHeaderColumnProps) {
   const { title } = data;
+  const classNames = useClassNames();
   return (
-    <TreeColumn data={data} className={styles.headerColumn} onClick={onSort}>
-      {title}
+    <TreeColumn
+      data={data}
+      className={classNames(styles.headerColumn, {
+        [styles.sortable]: Boolean(onSort),
+      })}
+      onClick={onSort}
+    >
+      <Box as="span" flex={1}>
+        {title}
+      </Box>
       {sort && (
         <span className={styles.columnSortIcon}>
-          <Icon as={sort === "asc" ? BiSortUpAlt : BiSortDownAlt} size={1} />
+          <span
+            style={{
+              display: "inline-flex",
+              transform: sort === "asc" ? "scaleY(-1)" : "",
+            }}
+          >
+            <MaterialIcon icon="sort" />
+          </span>
         </span>
       )}
     </TreeColumn>

@@ -5,9 +5,9 @@
   outline: none;
   overflow: hidden;
   max-height: 100%;
-}
-.tree.loading {
-  opacity: 0.5;
+  .loading {
+    opacity: 0.5;
+  }
 }
 
 .header {
@@ -20,9 +20,12 @@
 .headerColumn {
   font-weight: 600;
   border-right: thin solid rgba(0, 0, 0, 0.15);
-}
-.headerColumn:last-child {
-  border-right: none;
+  &:last-child {
+    border-right: none;
+  }
+  &.sortable {
+    cursor: pointer;
+  }
 }
 
 .body {
@@ -36,15 +39,14 @@
   flex: 1;
   display: flex;
   align-items: center;
-  padding: 0.35rem;
+  padding: var(--bs-table-cell-padding, 0.35rem);
   overflow: hidden;
-  font-size: 0.875rem;
-}
-.column.edit {
-  z-index: 1;
-}
-.column .indent {
-  line-height: normal;
+  &.edit {
+    z-index: 1;
+  }
+  .indent {
+    line-height: normal;
+  }
 }
 
 .columnSortIcon {
@@ -57,31 +59,32 @@
   display: flex;
   min-height: 1rem;
   align-items: center;
+
+  &.selected {
+    background: var(--bs-table-active-bg);
+    color: var(--bs-table-active-color);
+  }
+  &.hover {
+    background: var(--bs-table-hover-bg);
+    color: var(--bs-table-hover-color);
+  }
+  &.edit {
+    z-index: 1;
+  }
 }
+
 .nodeText {
   overflow: hidden;
   text-overflow: ellipsis;
   display: inline-block;
 }
-.node.selected {
-  background: var(--bs-table-active-bg);
-  color: var(--bs-table-active-color);
-}
-.node.hover {
-  background: var(--bs-table-hover-bg);
-  color: var(--bs-table-hover-color);
-}
-.node.edit {
-  z-index: 1;
-}
+
 
 .nodeContent {
   display: flex;
   flex: 1;
 }
+
 .icon {
   cursor: pointer;
-  font-size: 1rem;
-  margin: 0 0.24rem;
-  display: inline-flex;
 }

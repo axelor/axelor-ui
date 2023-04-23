@@ -36,7 +36,10 @@ export interface TreeProps {
   textRenderer?: TreeNodeProps["renderer"];
   nodeRenderer?: TreeNodeProps["renderer"];
   editNodeRenderer?: TreeNodeProps["editRenderer"];
-  onNodeMove?: (data: TreeNode, parent: TreeNode) => TreeNode;
+  onNodeMove?: (
+    data: TreeNode,
+    parent: TreeNode
+  ) => TreeNode | Promise<TreeNode>;
   onNodeEdit?: (record: any, recordIndex?: number) => void;
   onNodeSave?: (record: any, recordIndex?: number) => any;
   onNodeDiscard?: (record: any, recordIndex?: number) => void;

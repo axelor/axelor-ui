@@ -4,16 +4,21 @@ import { TreeHeaderColumn } from "./tree-column";
 import { TreeNode } from "./tree-node";
 import { useClassNames } from "../styles";
 import * as TYPES from "./types";
-import styles from "./tree.module.css";
+import styles from "./tree.module.scss";
 
-function toNode(record: any): TYPES.TreeNode {
+function toNode({
+  $key,
+  _draggable,
+  _droppable,
+  ...record
+}: any): TYPES.TreeNode {
   return {
-    $key: record.$key,
+    $key: $key,
     id: record.id,
     data: record,
     children: record._children,
-    draggable: record._draggable,
-    droppable: record._droppable,
+    draggable: _draggable,
+    droppable: _droppable,
     level: 0,
   };
 }
@@ -118,21 +123,17 @@ export function Tree(props: TYPES.TreeProps) {
     async function handleToggle(record: any, index: number, isHover = false) {
       if (!record.loaded && record.children && onLoad) {
         record.loaded = true;
-
-        setLoading(true);
         try {
+          setLoading(true);
           const children = await onLoad(record, sortColumns || []);
-          setData((data) => {
-            data.splice(
-              index + 1,
-              0,
-              ...children.map((item: any) => ({
-                ...toNode(item),
-                parent: record.$key,
-              }))
-            );
-            return [...data];
-          });
+          setData((data) => [
+            ...data.slice(0, index + 1),
+            ...children.map((item: any) => ({
+              ...toNode(item),
+              parent: record.$key,
+            })),
+            ...data.slice(index + 1),
+          ]);
         } finally {
           setLoading(false);
         }

@@ -1,15 +1,12 @@
 import React, { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import { ReactComponent as BiChevronDown } from "bootstrap-icons/icons/chevron-down.svg";
-import { ReactComponent as BiChevronRight } from "bootstrap-icons/icons/chevron-right.svg";
-import { ReactComponent as BiChevronLeft } from "bootstrap-icons/icons/chevron-left.svg";
 
 import { Box } from "../box";
 import { TreeColumn } from "./tree-column";
-import styles from "./tree.module.css";
 import { useClassNames, useTheme } from "../styles";
-import { Icon } from "../icon";
+import { MaterialIcon } from "../../icons/meterial-icon";
 import * as TYPES from "./types";
+import styles from "./tree.module.scss";
 
 const hasChildren = (node: TYPES.TreeNode) => Boolean(node.children);
 const NODE_TYPE = "TREE_NODE";
@@ -38,21 +35,21 @@ const TreeNodeContent = React.forwardRef<
               <Box
                 as="span"
                 d="flex"
-                className="indent"
+                me={1}
+                className={styles.indent}
                 style={{
-                  marginLeft: `${data.level || 0}rem`,
+                  [rtl ? "marginRight" : "marginLeft"]: `${data.level ?? 0}rem`,
                   width: 20,
                 }}
               >
                 {hasChildren(data) && (
-                  <Icon
-                    size={1}
-                    as={
+                  <MaterialIcon
+                    icon={
                       data.expanded
-                        ? BiChevronDown
+                        ? "arrow_drop_down"
                         : rtl
-                        ? BiChevronLeft
-                        : BiChevronRight
+                        ? "arrow_left"
+                        : "arrow_right"
                     }
                     className={styles.icon}
                   />
