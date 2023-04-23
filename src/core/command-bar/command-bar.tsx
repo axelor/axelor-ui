@@ -162,7 +162,9 @@ export function CommandItem(props: CommandItemProps) {
           disabled={disabled}
           {...splitProps}
         >
-          <MaterialIcon icon="arrow_drop_down" className={styles.icon} />
+          <span className={styles.title}>
+            <MaterialIcon icon="arrow_drop_down" className={styles.icon} />
+          </span>
         </Button>
       )}
       {items.length > 0 && (
@@ -209,20 +211,14 @@ export function CommandItem(props: CommandItemProps) {
 
 export function CommandBar(props: CommandBarProps) {
   const { className, iconOnly, iconProps = {}, items = [] } = props;
-  const { weight, grade, fill, opticalSize } = iconProps;
-
-  const style = {
-    "--ax-material-icon-fill": fill,
-    "--ax-material-icon-wght": weight,
-    "--ax-material-icon-grad": grade,
-    "--ax-material-icon-opsz": opticalSize,
-    "--ax-material-icon-fnsz": opticalSize ? `${opticalSize}px` : undefined,
-  };
-
   return (
-    <div className={clsx(className, styles.bar)} style={style as any}>
-      {items.map((item) => (
-        <CommandItem iconOnly={iconOnly} {...item} />
+    <div className={clsx(className, styles.bar)}>
+      {items.map(({ iconProps: icon, ...item }) => (
+        <CommandItem
+          iconOnly={iconOnly}
+          iconProps={{ ...iconProps, ...icon } as MaterialIconProps}
+          {...item}
+        />
       ))}
     </div>
   );

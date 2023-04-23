@@ -1,13 +1,8 @@
-$material-symbols-font-path: "~material-symbols/";
-@import "~material-symbols";
+$material-symbols-font-path: "@material-symbols/font-400/";
+@import "@material-symbols/font-400";
 
 .material-symbols-outlined,
 .material-symbols-rounded,
 .material-symbols-sharp {
   overflow: hidden;
-  font-size: var(--ax-material-icon-fnsz, 24px);
-  font-variation-settings: "FILL" var(--ax-material-icon-fill, 0),
-    "wght" var(--ax-material-icon-wght, 400),
-    "GRAD" var(--ax-material-icon-grad, 0),
-    "opsz" var(--ax-material-icon-opsz, 24);
 }

@@ -63,7 +63,7 @@ const GridGroupTag = ({
             onRemove && onRemove(e, data);
           }}
         >
-          <MaterialIcon icon="close" opticalSize={20} />
+          <MaterialIcon icon="close" fontSize={20} />
         </Box>
       </Badge>
     </GridDragElement>

@@ -9,9 +9,6 @@ export const Basic = () => {
   return (
     <div>
       <CommandBar
-        iconProps={{
-          weight: 300,
-        }}
         items={[
           {
             key: "new",

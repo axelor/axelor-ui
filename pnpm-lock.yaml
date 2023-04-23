@@ -4,6 +4,9 @@ dependencies:
   '@emotion/is-prop-valid':
     specifier: ^1.2.0
     version: 1.2.0
+  '@material-symbols/font-400':
+    specifier: ^0.5.5
+    version: 0.5.5
   '@popperjs/core':
     specifier: ^2.11.6
     version: 2.11.6
@@ -25,9 +28,6 @@ dependencies:
   immer:
     specifier: ^9.0.18
     version: 9.0.19
-  material-symbols:
-    specifier: ^0.5.0
-    version: 0.5.0
   moment:
     specifier: ^2.29.4
     version: 2.29.4
@@ -3886,6 +3886,10 @@ packages:
   /@juggle/resize-observer@3.4.0:
     resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
     dev: true
+
+  /@material-symbols/font-400@0.5.5:
+    resolution: {integrity: sha512-ykFcuNbilkAPCYpLpLNCqHdfmaqiGPUmbBJHIDy+L6aHTgPCt5H9oHBdD0Kr/njV9Dy/cGMYW9C0dq6w2N3fTQ==}
+    dev: false
 
   /@mdx-js/react@2.3.0(react@18.2.0):
     resolution: {integrity: sha512-zQH//gdOmuu7nt2oJR29vFhDv88oGPmVw6BggmrHeMI+xgEkp1B2dX9/bMBSYtK0dyLX/aOmesKS09g222K1/g==}
@@ -8590,10 +8594,6 @@ packages:
     dependencies:
       react: 18.2.0
     dev: true
-
-  /material-symbols@0.5.0:
-    resolution: {integrity: sha512-FdoEPlDLmIGAFnhWte8I9FU6+vwjqvAfHkIBn/KrgBKTYhbzBVvDS+JB/SzLPUXs4ZT5ZClLATc1a8kdNfTJEA==}
-    dev: false
 
   /mdast-util-definitions@4.0.0:
     resolution: {integrity: sha512-k8AJ6aNnUkB7IE+5azR9h81O5EQ/cTDXtWdMq9Kk5KcEW/8ritU5CeLg/9HhOC++nALHBlaogJ5jz0Ybk3kPMQ==}

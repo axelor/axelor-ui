@@ -135,7 +135,7 @@ const NavTab = withStyled(Box)(
                 className={classes.tabClose}
                 onClick={(e) => onClose(item, index)}
               >
-                <MaterialIcon icon="close" weight={300} opticalSize={20} />
+                <MaterialIcon icon="close" fontSize={20} />
               </Box>
             )}
           </Box>
