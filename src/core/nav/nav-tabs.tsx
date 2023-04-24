@@ -106,6 +106,11 @@ const NavTab = withStyled(Box)(
     const bgColor = getRGB(color, 0.15);
     const classNames = useClassNames();
 
+    const content = onRender ? onRender(item) : undefined;
+    if (content === null) {
+      return null;
+    }
+
     return (
       <Box
         ref={ref}
@@ -120,8 +125,8 @@ const NavTab = withStyled(Box)(
         {item.icon && (
           <NavTabIcon icon={item.icon} color={color} bgColor={bgColor} />
         )}
-        {onRender ? (
-          onRender(item)
+        {content ? (
+          content
         ) : (
           <Box
             d="flex"
