@@ -176,7 +176,8 @@ export function CommandItem(props: CommandItemProps) {
           className={styles.menu}
         >
           {items.map((item) => {
-            const { key, divider, hidden, disabled, text, subtext } = item;
+            const { key, divider, hidden, disabled, text, subtext, render } =
+              item;
 
             if (hidden) {
               return null;
@@ -186,12 +187,16 @@ export function CommandItem(props: CommandItemProps) {
               return <MenuDivider key={key} />;
             }
 
+            const itemProps = {
+              onClick: (e: any) => handleMenuClick(e, item),
+            };
+
+            if (render) {
+              return render({ ...itemProps, ...item, render: undefined });
+            }
+
             return (
-              <MenuItem
-                key={key}
-                disabled={disabled}
-                onClick={(e) => handleMenuClick(e, item)}
-              >
+              <MenuItem key={key} disabled={disabled} {...itemProps}>
                 {subtext ? (
                   <div className={styles.menuTexts}>
                     <span className={styles.menuTitle}>{text}</span>
