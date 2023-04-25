@@ -1,12 +1,11 @@
 import React from "react";
-import { ReactComponent as BiChevronLeft } from "bootstrap-icons/icons/caret-left-fill.svg";
 
 import { ClickAwayListener } from "../click-away-listener";
 import { Popper } from "../popper";
 import { Collapse } from "../collapse";
 import { Badge } from "../badge";
 import { Box } from "../box";
-import { Icon } from "../icon";
+import { MaterialIcon } from "../../icons/meterial-icon";
 import { Nav } from "./nav";
 import { NavItemProps, NavProps } from "./types";
 import { useClassNames, useTheme } from "../styles";
@@ -178,19 +177,21 @@ const NavBarItem = React.memo(function NavBarItem({
             className={classNames(classes.menuTag, {
               [classes.hasMenuIcon]: hasChildren,
             })}
-            data-tag-name={(item as any)?.name}
+            data-tag-name={item.id}
             bg={(tagStyle || "secondary") as any}
           >
             {`${tag}`.toUpperCase()}
           </Badge>
         )}
+
         {hasChildren && (
           <Box
+            d="flex"
             className={classNames(classes.menuIcon, {
               [classes.expand]: expand,
             })}
           >
-            <Icon as={BiChevronLeft} />
+            <MaterialIcon icon="arrow_left" variant="sharp" />
           </Box>
         )}
       </Box>
