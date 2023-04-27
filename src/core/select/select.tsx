@@ -12,6 +12,8 @@ import { useTheme } from "../styles";
 import { MaterialIcon, MaterialIconProps } from "../../icons/meterial-icon";
 import selectStyles from "./select.module.scss";
 
+export { components as SelectComponents } from "react-select";
+
 export type SelectOption = unknown;
 
 export interface SelectIcon {
@@ -134,8 +136,6 @@ const defaultFilter = createFilter();
 function filterOption(candidate: any, input: any) {
   return candidate.data.__isAddOn || defaultFilter(candidate, input);
 }
-
-export const SelectComponents = components;
 
 export function Select({
   className,
