@@ -46,7 +46,7 @@ function restoreGridSelection(
   function getRowNewIndex(oldIndex: number) {
     const key = oldRows[oldIndex]?.key;
     const ind = rows.findIndex((row) => row.key === key);
-    return ind === -1 ? null : ind;
+    return ind === -1 ? (oldRows.length ? null : oldIndex) : ind;
   }
 
   if (selectedRows) {
