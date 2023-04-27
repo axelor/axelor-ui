@@ -1,12 +1,9 @@
-import { useState } from "react";
 import { Meta } from "@storybook/react";
+import { useState } from "react";
 
+import { MaterialIcon } from "../../icons/meterial-icon";
 import { Box } from "../box";
 import { TextField } from "./text-field";
-
-import { ReactComponent as BiCalendar } from "bootstrap-icons/icons/calendar.svg";
-import { ReactComponent as BiAlarm } from "bootstrap-icons/icons/alarm.svg";
-import { ReactComponent as BiTranslate } from "bootstrap-icons/icons/translate.svg";
 
 const config = {
   component: TextField,
@@ -28,19 +25,17 @@ export const Basic = () => {
         label={
           <Box display="flex" alignItems="center">
             <Box pe={2}>Field Label</Box>
-            <BiTranslate />
+            <MaterialIcon icon="translate" />
           </Box>
         }
         value={value}
         onChange={(e: any) => setValue(e.target.value)}
         icons={[
           {
-            id: "calender",
-            icon: BiCalendar,
+            icon: "calendar_month",
           },
           {
-            id: "alarm",
-            icon: BiAlarm,
+            icon: "alarm",
           },
         ]}
       />
@@ -51,12 +46,10 @@ export const Basic = () => {
         onChange={(e: any) => setValue(e.target.value)}
         icons={[
           {
-            id: "calender",
-            icon: BiCalendar,
+            icon: "calendar_month",
           },
           {
-            id: "alarm",
-            icon: BiAlarm,
+            icon: "alarm",
           },
         ]}
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -68,12 +61,10 @@ export const Basic = () => {
         onChange={(e: any) => setValue(e.target.value)}
         icons={[
           {
-            id: "calender",
-            icon: BiCalendar,
+            icon: "calendar_month",
           },
           {
-            id: "alarm",
-            icon: BiAlarm,
+            icon: "alarm",
           },
         ]}
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."

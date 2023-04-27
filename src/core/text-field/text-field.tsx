@@ -1,5 +1,4 @@
-import React from "react";
-import { Icon, IconProps } from "../icon";
+import { MaterialIcon, MaterialIconProps } from "../../icons/meterial-icon";
 import { Input, type InputProps } from "../input";
 import { InputFeedback } from "../input-feedback";
 import { InputLabel } from "../input-label";
@@ -7,16 +6,9 @@ import { withStyled } from "../styled";
 import { useClassNames, useTheme } from "../styles";
 import styles from "./text-field.module.scss";
 
-export interface TextFieldIcon {
-  id: string;
-  icon: IconProps["as"];
-  className?: string;
-  onClick?: React.MouseEventHandler<SVGSVGElement>;
-}
-
 export interface TextFieldProps extends InputProps {
   label?: string | JSX.Element;
-  icons?: Array<TextFieldIcon>;
+  icons?: MaterialIconProps[];
   description?: string | JSX.Element;
 }
 
@@ -68,12 +60,7 @@ export const TextField = withStyled(Input)<TextFieldProps>(
           {icons.length > 0 && (
             <div className={styles.icons}>
               {icons.map((icon) => (
-                <Icon
-                  key={icon.id}
-                  className={icon.className}
-                  as={icon.icon}
-                  onClick={icon.onClick}
-                />
+                <MaterialIcon key={icon.icon} {...icon} />
               ))}
             </div>
           )}
