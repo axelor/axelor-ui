@@ -336,7 +336,12 @@ export function Select({
   );
 
   const $options = React.useMemo(() => {
-    if (!isStaticSelect) {
+    const addOptions = (addOnOptions || []).map((option: any) => ({
+      ...option,
+      __isAddOn: true,
+    }));
+    function getOptions() {
+      if (isStaticSelect) return options;
       return inputText
         ? (options || []).filter((opt) =>
             (getOptionLabel(opt) || "")
@@ -352,15 +357,9 @@ export function Select({
                   )
                 : getOptionValue(opt) === getOptionValue(value))
           )
-        : options || [];
+        : options;
     }
-    return [
-      ...(options || []),
-      ...(addOnOptions || []).map((option: any) => ({
-        ...option,
-        __isAddOn: true,
-      })),
-    ];
+    return [...(getOptions() || []), ...addOptions];
   }, [
     isStaticSelect,
     options,
