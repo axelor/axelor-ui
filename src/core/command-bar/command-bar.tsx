@@ -32,6 +32,7 @@ export interface CommandItemProps {
   >;
   items?: CommandItemProps[];
   showDownArrow?: boolean;
+  className?: string;
   render?: (props: CommandItemProps) => JSX.Element | null;
 }
 
@@ -59,6 +60,7 @@ export function CommandItem(props: CommandItemProps) {
     onClick,
     items = [],
     showDownArrow = false,
+    className,
   } = props;
   const classNames = useClassNames();
   const [show, setShow] = useState(false);
@@ -121,7 +123,7 @@ export function CommandItem(props: CommandItemProps) {
 
   const hasContent = imageProps || Icon || iconProps || text || showArrow;
   return (
-    <Wrapper className={styles.itemWrapper}>
+    <Wrapper className={clsx(styles.itemWrapper, className)}>
       {hasContent && (
         <Button
           variant="light"
