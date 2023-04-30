@@ -2,8 +2,8 @@ import { MaterialSymbol } from "@material-symbols/font-400";
 import { forwardRef, useMemo } from "react";
 
 import { Box } from "../../core";
-import { clsx } from "../../core/styles";
 import { TForeground } from "../../core/system";
+import { clsx } from "../../core/clsx";
 
 import styles from "./material-icon.module.scss";
 

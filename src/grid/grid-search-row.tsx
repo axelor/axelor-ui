@@ -2,7 +2,7 @@ import React from "react";
 import { GridColumn } from "./grid-column";
 import * as TYPES from "./types";
 import styles from "./grid.module.scss";
-import { clsx } from "../core";
+import { clsx } from "../core/clsx";
 
 interface GridSearchRowProps
   extends Pick<TYPES.GridRowProps, "columns">,

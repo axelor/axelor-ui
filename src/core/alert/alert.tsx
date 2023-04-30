@@ -1,5 +1,6 @@
+import { clsx } from "../clsx";
 import styled, { withStyled } from "../styled";
-import { clsx, useClassNames } from "../styles";
+import { useClassNames } from "../styles";
 import { TVariant } from "../system";
 
 export interface AlertProps {

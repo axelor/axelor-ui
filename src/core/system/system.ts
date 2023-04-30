@@ -1,5 +1,6 @@
 import React, { CSSProperties, useMemo } from "react";
-import { clsx, useClassNames } from "../styles";
+import { clsx } from "../clsx";
+import { useClassNames } from "../styles";
 import {
   BackgroundConfig,
   BackgroundProps,

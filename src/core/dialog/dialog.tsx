@@ -1,10 +1,11 @@
 import { useCallback } from "react";
 import { Box } from "../box";
+import { clsx } from "../clsx";
 import { Fade } from "../fade";
 import { FocusTarget, FocusTrap } from "../focus-trap";
 import { Portal } from "../portal";
 import styled, { withStyled } from "../styled";
-import { clsx, useClassNames } from "../styles";
+import { useClassNames } from "../styles";
 import styles from "./dialog.module.scss";
 
 export interface DialogProps {

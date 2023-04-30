@@ -7,9 +7,10 @@ import {
 } from "react-beautiful-dnd";
 
 import { Box } from "../box";
+import { clsx } from "../clsx";
 import { OverflowList, OverflowListButtonType } from "../overflow-list";
 import { withStyled } from "../styled";
-import { clsx, useClassNames, useTheme } from "../styles";
+import { useClassNames, useTheme } from "../styles";
 import { Nav } from "./nav";
 import { NavItemProps, NavProps } from "./types";
 import { getRGB } from "./utils";

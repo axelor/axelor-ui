@@ -1,4 +1,5 @@
 import { cloneElement, createContext, useCallback, useContext } from "react";
+import { ClassValue, cssx } from "../clsx";
 import stylesLtr from "./styles.module.scss";
 import stylesRtl from "./styles.rtl.module.scss";
 
@@ -7,33 +8,6 @@ type CSSModuleClasses = { readonly [key: string]: string };
 const STYLES: Record<string, CSSModuleClasses> = {
   ltr: stylesLtr,
   rtl: stylesRtl,
-};
-
-export type StyleNameValue = string | number | boolean | undefined | null;
-export type StyleName =
-  | StyleNameValue
-  | Record<string, StyleNameValue>
-  | StyleName[];
-
-const clean = (names: string[]) =>
-  names.flatMap((n) => n.trim().split(/\s+/)).filter(Boolean);
-
-export const clsx = (...args: StyleName[]): string => {
-  return names(args).flat().filter(Boolean).join(" ");
-};
-
-const names = (item: StyleName): string[] => {
-  if (Array.isArray(item)) return item.flatMap(names);
-  if (typeof item === "object") {
-    let items: string[] = [];
-    for (let k in item) {
-      if (item[k]) {
-        items.push(k);
-      }
-    }
-    return clean(items);
-  }
-  return item ? clean([item.toString()]) : [];
 };
 
 export interface ThemeContextValue {
@@ -75,14 +49,8 @@ export function useStyles() {
 
 export function useClassNames() {
   const styles = useStyles();
-  const cls = useCallback(
-    (...args: StyleName[]) => {
-      return names(args)
-        .flatMap((name) => styles[name] ?? name)
-        .filter(Boolean)
-        .join(" ");
-    },
+  return useCallback(
+    (...args: ClassValue[]) => cssx(styles, ...args),
     [styles]
   );
-  return cls;
 }

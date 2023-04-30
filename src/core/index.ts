@@ -7,6 +7,7 @@ export * from "./button";
 export * from "./button-group";
 export * from "./circular-progress";
 export * from "./click-away-listener";
+export * from "./clsx";
 export * from "./collapse";
 export * from "./command-bar";
 export * from "./dialog";

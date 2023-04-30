@@ -1,6 +1,7 @@
 import isPropValid from "@emotion/is-prop-valid";
 import { createElement, forwardRef, useMemo } from "react";
-import { StyleName, useClassNames } from "../styles";
+import { ClassValue } from "../clsx";
+import { useClassNames } from "../styles";
 import { StyleProps, useStyleProps } from "../system";
 
 export type Merge<P, O> = O extends Array<any>
@@ -28,7 +29,7 @@ export interface StyledComponent<C extends React.ElementType, P extends {}>
   ): JSX.Element | null;
 }
 
-export type StyledConfig<P> = (props: P) => StyleName[] | Partial<P>;
+export type StyledConfig<P> = (props: P) => ClassValue[] | Partial<P>;
 
 export interface StyledComponentFactory<
   C extends React.ElementType,

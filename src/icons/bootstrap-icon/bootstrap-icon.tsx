@@ -2,7 +2,7 @@ import styles from "./bootstrap-icon.module.scss";
 
 import iconNames from "bootstrap-icons/font/bootstrap-icons.json";
 import { forwardRef } from "react";
-import { clsx } from "../../core";
+import { clsx } from "../../core/clsx";
 
 export type BootstrapIconName = keyof typeof iconNames;
 

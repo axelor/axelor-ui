@@ -3,9 +3,10 @@ import { MaterialIcon, MaterialIconProps } from "../../icons/meterial-icon";
 import { Box } from "../box";
 import { Button } from "../button";
 import { ButtonGroup } from "../button-group";
+import { clsx } from "../clsx";
 import { Image } from "../image";
 import { Menu, MenuDivider, MenuItem } from "../menu";
-import { clsx, useClassNames } from "../styles";
+import { useClassNames } from "../styles";
 
 import styles from "./command-bar.module.scss";
 
