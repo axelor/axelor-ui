@@ -11,6 +11,7 @@ import { Box } from "../box";
 import { useTheme } from "../styles";
 import { MaterialIcon, MaterialIconProps } from "../../icons/meterial-icon";
 import selectStyles from "./select.module.scss";
+import { clsx } from "../clsx";
 
 export { components as SelectComponents } from "react-select";
 
@@ -58,6 +59,7 @@ export interface SelectProps {
     accessors: any
   ) => boolean;
   components?: any;
+  invalid?: boolean;
 }
 
 const ControlContainer = (props: ControlProps<SelectOption, true>) => {
@@ -167,6 +169,7 @@ export function Select({
   onCreate,
   isValidNewOption,
   components,
+  invalid,
   ...props
 }: SelectProps) {
   const isStaticSelect = !fetchOptions;
@@ -406,7 +409,11 @@ export function Select({
       className={className}
       classNamePrefix={classNamePrefix}
       classNames={{
-        control: () => selectStyles.control,
+        control: (state: any) =>
+          clsx(selectStyles.control, {
+            [selectStyles.invalid]: invalid,
+            [selectStyles.invalidFocus]: invalid && state.isFocused,
+          }),
         menu: () => selectStyles.menu,
         placeholder: () => selectStyles.placeholder,
       }}

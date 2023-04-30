@@ -29,6 +29,15 @@ $iconSpacing: $spacing;
   }
 }
 
+.invalid {
+  border-color: var(--bs-danger) !important;
+}
+
+.invalid:focus,
+.invalidFocus {
+  box-shadow: 0 0 0 0.25rem rgb(var(--bs-danger-rgb), 0.25) !important;
+}
+
 @for $i from 1 through 4 {
   .icons-#{$i} {
     input {
