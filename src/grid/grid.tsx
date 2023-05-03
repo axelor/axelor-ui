@@ -290,6 +290,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         onRowClick && onRowClick(e, row, rowIndex);
         if (!isSelectBox && editable && !e.ctrlKey) {
           if (onRecordEdit) {
+            e.preventDefault();
             const result = await onRecordEdit(
               row,
               rowIndex,
@@ -732,21 +733,14 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         // is last record save, then add new record
         const isLast = !saveFromEdit && rowIndex === totalRows - 1;
         let result: any = row;
-        let saved = false;
         if (dirty && onRecordSave) {
           result = await onRecordSave(row, rowIndex, 0);
-          // if record is null, current edit record is invalidate
-          if (result && result.record === null) {
-            result = null;
-          } else if (result && result.record) {
-            saved = true;
-          }
         }
         // record is validated
         if (result) {
           if (isLast && onRecordAdd) {
             // add new record
-            handleRecordAdd(!saved);
+            handleRecordAdd(false);
           } else {
             // complete record edit state
             handleRecordComplete(
