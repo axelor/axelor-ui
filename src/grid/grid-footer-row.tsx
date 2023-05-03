@@ -12,6 +12,7 @@ export const GridFooterRow = React.memo(function GridFooterRow(
 ) {
   const {
     className,
+    width,
     selected,
     selectedCell,
     columns = [],
@@ -27,6 +28,9 @@ export const GridFooterRow = React.memo(function GridFooterRow(
       {...rendererProps}
       className={classNames(styles.row, styles.footerRow, className, {
         [styles.selected]: selected,
+      })}
+      {...(width && {
+        style: { minWidth: width },
       })}
     >
       {columns.map((column, index) => {

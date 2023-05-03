@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { GridGroupRow } from "./grid-group-row";
 import { GridBodyRow } from "./grid-body-row";
 import { GridFooterRow } from "./grid-footer-row";
@@ -70,14 +70,16 @@ export function GridBody(props: GridBodyProps) {
       })),
     [rows]
   );
-  const getTotalWidth = () =>
-    columns.reduce((total, c) => total + (c.width || 0), 0);
+  const totalWidth = useMemo(
+    () => columns.reduce((total, c) => total + (c.width || 0), 0),
+    [columns]
+  );
 
   const showNoRecords = noRecordsText && !addNewText;
 
   function render(children: React.ReactNode) {
     const props = {
-      ...(showNoRecords ? { style: { width: getTotalWidth() + 2 } } : {}),
+      ...(showNoRecords ? { style: { width: totalWidth + 2 } } : {}),
       className: styles.body,
     };
     if (onRowMove) {
@@ -138,13 +140,21 @@ export function GridBody(props: GridBodyProps) {
 
         if (row.type === "group-row") {
           return (
-            <GridGroupRow renderer={rowGroupHeaderRenderer} {...rowProps} />
+            <GridGroupRow
+              width={totalWidth}
+              renderer={rowGroupHeaderRenderer}
+              {...rowProps}
+            />
           );
         }
 
         if (row.type === "footer-row") {
           return (
-            <GridFooterRow renderer={rowGroupFooterRenderer} {...rowProps} />
+            <GridFooterRow
+              width={totalWidth}
+              renderer={rowGroupFooterRenderer}
+              {...rowProps}
+            />
           );
         }
 
