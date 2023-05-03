@@ -288,7 +288,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         }
 
         onRowClick && onRowClick(e, row, rowIndex);
-        if (!isSelectBox && editable && !e.ctrlKey) {
+        if (!isSelectBox && editable && !e.ctrlKey && !(cell as any).readonly) {
           if (onRecordEdit) {
             e.preventDefault();
             const result = await onRecordEdit(
@@ -741,7 +741,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           if (isLast && onRecordAdd) {
             // add new record
             handleRecordAdd(false);
-          } else {
+          } else if (dirty) {
             // complete record edit state
             handleRecordComplete(
               row,
@@ -750,6 +750,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
               false,
               !saveFromEdit
             );
+          } else if (!dirty) {
+            handleRecordDiscard(row, rowIndex, columnIndex);
           }
         }
         return result;
