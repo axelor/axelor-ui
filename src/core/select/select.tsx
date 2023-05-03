@@ -299,6 +299,7 @@ export function Select({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    !isMenuOpen && (e.detail = 1);
     const isDelete = isClearOnDelete && e.key === "Delete";
     if (
       (isDelete || (!isMulti && isMenuOpen && e.key === "Backspace")) &&
