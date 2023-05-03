@@ -44,6 +44,7 @@ export interface NavTabProps {
   onRender?: NavProps["onItemRender"];
   onClick?: (e: React.SyntheticEvent, tab: NavItemProps) => void;
   onClose?: (tab: NavItemProps, index?: number) => void;
+  onContextMenu?: React.MouseEventHandler<HTMLElement>;
 }
 
 export interface NavTabsProps extends Pick<NavProps, "items" | "onItemRender"> {
@@ -52,6 +53,7 @@ export interface NavTabsProps extends Pick<NavProps, "items" | "onItemRender"> {
   onReorder?: (dragIndex?: number, hoverIndex?: number) => void;
   onChange?: (id: NavItemProps["id"], tab: NavItemProps) => void;
   onClose?: NavTabProps["onClose"];
+  onContextMenu?: React.MouseEventHandler<HTMLElement>;
 }
 
 const ScrollButton = withStyled(Box)((props, ref) => {
@@ -171,7 +173,15 @@ const DNDNavTab = (props: NavTabProps) => {
 };
 
 const RenderNavTabs: React.FC<NavTabsProps> = (props) => {
-  const { value, items, draggable, onItemRender, onChange, onClose } = props;
+  const {
+    value,
+    items,
+    draggable,
+    onItemRender,
+    onChange,
+    onClose,
+    onContextMenu,
+  } = props;
   const [overflowListRef, setOverflowListRef] =
     React.useState<HTMLElement | null>(null);
   const [scroll, setScroll] = React.useState(false);
@@ -280,6 +290,7 @@ const RenderNavTabs: React.FC<NavTabsProps> = (props) => {
                 onClick={selectTab}
                 onClose={onClose}
                 onRender={onItemRender}
+                onContextMenu={onContextMenu}
               />
             )}
             renderButton={(type: OverflowListButtonType, props: any) => {
