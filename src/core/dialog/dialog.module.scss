@@ -1,3 +1,12 @@
 .dialogRoot {
   display: unset;
 }
+
+.dialog {
+  transition: transform 0.35s ease-out;
+  transform: translate(0, -50px);
+}
+
+.dialog.show {
+  transform: none;
+}

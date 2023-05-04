@@ -1,7 +1,7 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Box } from "../box";
 import { clsx } from "../clsx";
-import { Fade } from "../fade";
+import { Fade, FadeProps } from "../fade";
 import { FocusTarget, FocusTrap } from "../focus-trap";
 import { Portal } from "../portal";
 import styled, { withStyled } from "../styled";
@@ -18,6 +18,7 @@ export interface DialogProps {
   centered?: boolean;
   size?: "sm" | "md" | "lg" | "xl";
   initialFocus?: FocusTarget;
+  timeout?: FadeProps["timeout"];
   onShow?: () => void;
   onHide?: () => void;
 }
@@ -134,6 +135,15 @@ export const Dialog = withStyled(Box)<DialogProps>((props, ref) => {
     ...rest
   } = props;
   const classNames = useClassNames();
+  const [entered, setEntered] = useState(false);
+
+  const onEntering = useCallback(() => {
+    setEntered(true);
+  }, []);
+
+  const onExiting = useCallback(() => {
+    setEntered(false);
+  }, []);
 
   const onEntered = useCallback(() => {
     if (onShow) onShow();
@@ -155,8 +165,10 @@ export const Dialog = withStyled(Box)<DialogProps>((props, ref) => {
       )}
       <Fade
         in={open}
+        onEntering={onEntering}
         onEntered={onEntered}
         onExited={onExited}
+        onExiting={onExiting}
         mountOnEnter
         unmountOnExit
       >
@@ -167,14 +179,18 @@ export const Dialog = withStyled(Box)<DialogProps>((props, ref) => {
         >
           <Box
             tabIndex={-1}
-            className={classNames("modal-dialog", {
-              "modal-dialog-centered": centered,
-              "modal-dialog-scrollable": scrollable,
-              "modal-fullscreen": fullscreen,
-              "modal-sm": size === "sm",
-              "modal-lg": size === "lg",
-              "modal-xl": size === "xl",
-            })}
+            className={clsx(
+              styles.dialog,
+              { [styles.show]: entered },
+              classNames("modal-dialog", {
+                "modal-dialog-centered": centered,
+                "modal-dialog-scrollable": scrollable,
+                "modal-fullscreen": fullscreen,
+                "modal-sm": size === "sm",
+                "modal-lg": size === "lg",
+                "modal-xl": size === "xl",
+              })
+            )}
             ref={ref}
           >
             <FocusTrap enabled={open} initialFocus={initialFocus}>
