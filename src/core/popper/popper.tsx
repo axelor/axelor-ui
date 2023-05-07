@@ -36,6 +36,7 @@ export interface PopperProps {
   arrow?: boolean;
   shadow?: boolean;
   rounded?: boolean;
+  border?: boolean;
   role?: string;
   bg?: TBackground;
   color?: TForeground;
@@ -69,6 +70,7 @@ const PopperWrapper = ({
   offset,
   arrow,
   shadow,
+  border,
   children,
   ...props
 }: PopperProps) => {
@@ -127,7 +129,10 @@ const PopperWrapper = ({
   return (
     <div
       ref={setWrapperEl}
-      className={classNames(styles.popper, { "drop-shadow-md": shadow })}
+      className={classNames(styles.popper, {
+        "drop-shadow-md": shadow,
+        [styles.border]: border,
+      })}
       {...(dir === "rtl" ? { dir: "rtl" } : {})}
       {...props}
       style={{ position: "fixed" }}
@@ -143,6 +148,7 @@ export const Popper = ({
   arrow,
   rounded = true,
   shadow = true,
+  border = true,
   role = "tooltip",
   bg = "light",
   color = "body",
@@ -186,6 +192,7 @@ export const Popper = ({
       placement={placement}
       arrow={arrow}
       shadow={shadow}
+      border={border}
       open={open || !exited}
       {...props}
     >
