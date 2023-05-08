@@ -57,7 +57,7 @@ function restoreGridSelection(
   if (selectedCell) {
     const [row, col] = selectedCell;
     const newInd = getRowNewIndex(row);
-    selectedCell = newInd ? [newInd as number, col] : null;
+    selectedCell = newInd !== null ? [newInd as number, col] : newInd;
   }
 
   return { selectedCell, selectedRows };
