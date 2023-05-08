@@ -30,7 +30,7 @@ export const GridFooterRow = React.memo(function GridFooterRow(
         [styles.selected]: selected,
       })}
       {...(width && {
-        style: { minWidth: width },
+        style: { width, maxWidth: width },
       })}
     >
       {columns.map((column, index) => {

@@ -25,9 +25,7 @@ export const GridGroupRow = React.memo(function GridGroupRow(
       className={classNames(styles.row, styles.groupRow, className, {
         [styles.selected]: selected,
       })}
-      {...(width && {
-        style: { minWidth: width },
-      })}
+      {...(width && { style: { width } })}
     >
       {new Array(level)
         .fill(0)

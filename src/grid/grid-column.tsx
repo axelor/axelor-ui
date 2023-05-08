@@ -55,7 +55,7 @@ export function GridColumn(props: GridColumnProps) {
         [styles.center]: ["row-checked"].includes(data.type || ""),
         [styles.selected]: selected,
       })}
-      style={{ minWidth: $width, width: $width }}
+      style={{ maxWidth: $width, width: $width }}
     >
       {children && typeof children === "object" ? (
         children
