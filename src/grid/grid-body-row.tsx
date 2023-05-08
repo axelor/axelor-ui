@@ -42,7 +42,9 @@ export const GridBodyRow = React.memo(function GridBodyRow(
       cell: TYPES.GridColumn,
       cellIndex: number
     ) {
-      onCellClick && onCellClick(e, cell, cellIndex, data, rowIndex);
+      setTimeout(() => {
+        onCellClick && onCellClick(e, cell, cellIndex, data, rowIndex);
+      }, 50);
       onClick && onClick(e, data, rowIndex, cellIndex, cell);
     },
     [data, rowIndex, onCellClick, onClick]
