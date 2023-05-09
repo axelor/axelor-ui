@@ -1,17 +1,17 @@
 import React from "react";
 import ReactSelect, {
-  components,
   ControlProps,
   IndicatorsContainerProps,
   MenuListProps,
+  components,
   createFilter,
 } from "react-select";
 import CreatableSelect from "react-select/creatable";
-import { Box } from "../box";
-import { useTheme } from "../styles";
 import { MaterialIcon, MaterialIconProps } from "../../icons/meterial-icon";
-import selectStyles from "./select.module.scss";
+import { Box } from "../box";
 import { clsx } from "../clsx";
+import { useTheme } from "../styles";
+import selectStyles from "./select.module.scss";
 
 export { components as SelectComponents } from "react-select";
 
@@ -42,6 +42,8 @@ export interface SelectProps {
   onFocus?: (e: React.SyntheticEvent) => void;
   onBlur?: (e: React.SyntheticEvent) => void;
   onKeyDown?: (e: React.SyntheticEvent) => void;
+  onMenuOpen?: () => void;
+  onMenuClose?: () => void;
   options?: SelectOption[];
   addOnOptions?: SelectOption[];
   noOptionsMessage?: () => string;
@@ -157,6 +159,8 @@ export function Select({
   onFocus,
   onBlur,
   onKeyDown,
+  onMenuOpen,
+  onMenuClose,
   options: _options,
   addOnOptions,
   noOptionsMessage,
@@ -286,7 +290,10 @@ export function Select({
     onInputChange && onInputChange(inputText);
   }, [onInputChange, inputText]);
 
-  const handleMenuOpen = () => setMenuOpen(true);
+  const handleMenuOpen = () => {
+    setMenuOpen(true);
+    onMenuOpen?.();
+  };
 
   const handleMenuClose = () => {
     refs.current.menuClicked = false;
@@ -295,6 +302,7 @@ export function Select({
     } else {
       clearMenuTimer();
       setMenuOpen(false);
+      onMenuClose?.();
     }
   };
 
