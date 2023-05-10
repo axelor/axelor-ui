@@ -468,13 +468,28 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         const { width = 0 } = column;
         const { clientX, clientY } = e;
         const container = containerRef.current;
-
-        refs.current.style = document.createElement("style");
-        refs.current.event = {
+        const event = {
+          clientX,
+          clientY,
           x: clientX,
           y: clientY,
           current: width,
+          unsubscribe: () => {},
         };
+
+        refs.current.style = document.createElement("style");
+        refs.current.event = event;
+        const element = e.target as HTMLElement;
+        if (element) {
+          // firefox support
+          function updateEvent(e: DragEvent) {
+            event.clientX = e.clientX;
+            event.clientY = e.clientY;
+          }
+          document.addEventListener("dragover", updateEvent);
+          event.unsubscribe = () =>
+            document.removeEventListener("dragover", updateEvent);
+        }
         const body = container.querySelector(getCssSelector(`.${styles.body}`));
         body &&
           (body.style.minWidth = `${body.getBoundingClientRect().width}px`);
@@ -492,7 +507,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         index: number
       ) {
         const dataTransfer = Object.assign({}, refs.current.event);
-        const clientX = e.clientX || (dataTransfer || {}).clientX || 0;
+        const clientX =
+          (e.clientX > 0 ? e.clientX : 0) || (dataTransfer || {}).clientX || 0;
         if (!dataTransfer || clientX <= 0) return;
 
         e.preventDefault();
@@ -544,6 +560,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
         container.classList.remove(styles.resizingColumns);
         container.removeChild(refs.current.style);
+        refs.current.event?.unsubscribe?.();
         refs.current.event = {};
       },
       [setState, sizingColumns]
@@ -722,6 +739,15 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       [setState]
     );
 
+    const handleRecordDiscard = React.useCallback(
+      (row: TYPES.GridRow, rowIndex: number, columnIndex: number) => {
+        // reset record state
+        handleRecordComplete(row, rowIndex, columnIndex, true);
+        onRecordDiscard && onRecordDiscard(row, rowIndex, 0);
+      },
+      [handleRecordComplete, onRecordDiscard]
+    );
+
     const handleRecordSave = React.useCallback(
       async (
         row: any,
@@ -760,18 +786,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         totalRows,
         handleRecordComplete,
         handleRecordAdd,
+        handleRecordDiscard,
         onRecordAdd,
         onRecordSave,
       ]
-    );
-
-    const handleRecordDiscard = React.useCallback(
-      (row: TYPES.GridRow, rowIndex: number, columnIndex: number) => {
-        // reset record state
-        handleRecordComplete(row, rowIndex, columnIndex, true);
-        onRecordDiscard && onRecordDiscard(row, rowIndex, 0);
-      },
-      [handleRecordComplete, onRecordDiscard]
     );
 
     const handleNavigation = (event: React.KeyboardEvent<HTMLElement>) => {
