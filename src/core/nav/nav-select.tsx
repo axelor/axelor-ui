@@ -28,7 +28,6 @@ export interface NavSelectProps {
 
 const menuConfig: Partial<MenuProps> = {
   offset: [0, 4],
-  disablePortal: true,
 };
 
 export interface NavSelectItemProps {
