@@ -4,15 +4,36 @@ import { useClassNames } from "../core";
 import * as TYPES from "./types";
 import classes from "./gantt.module.scss";
 
+function Column({
+  field,
+  ...props
+}: { field: TYPES.GanttField } & React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      {...(field.width && {
+        style: {
+          minWidth: field.width,
+          maxWidth: field.width,
+        },
+      })}
+      {...props}
+    />
+  );
+}
+
 const GanttTableHeader = React.memo(function GanttTableHeader({
   items,
 }: Pick<TYPES.GanttProps, "items">) {
   return (
     <div className={classes.tableHeader}>
       {items.map((item) => (
-        <div key={item.name} className={classes.tableHeaderCell}>
+        <Column
+          key={item.name}
+          field={item}
+          className={classes.tableHeaderCell}
+        >
           {item.title}
-        </div>
+        </Column>
       ))}
     </div>
   );
@@ -21,6 +42,7 @@ const GanttTableHeader = React.memo(function GanttTableHeader({
 const GanttTableBodyRow = React.memo(function GanttTableBodyRow({
   active,
   onClick,
+  onView,
   index,
   items,
   data,
@@ -30,6 +52,7 @@ const GanttTableBodyRow = React.memo(function GanttTableBodyRow({
   onClick: (index: number) => void;
   data: TYPES.GanttRecord;
   items: TYPES.GanttProps["items"];
+  onView?: TYPES.GanttProps["onRecordView"];
 }) {
   const classNames = useClassNames();
   return (
@@ -37,7 +60,8 @@ const GanttTableBodyRow = React.memo(function GanttTableBodyRow({
       className={classNames(classes.tableBodyRow, {
         [classes.active]: active,
       })}
-      onClick={(e) => onClick(index)}
+      onClick={(e) => onClick(data.id)}
+      onDoubleClick={() => onView?.(data, index)}
     >
       {items.map((item) => {
         const value: any = (data as any)[item.name];
@@ -49,11 +73,15 @@ const GanttTableBodyRow = React.memo(function GanttTableBodyRow({
           return <Component field={item} data={data} value={$value} />;
         }
         return (
-          <div key={item.name} className={classes.tableBodyRowCell}>
+          <Column
+            key={item.name}
+            field={item}
+            className={classes.tableBodyRowCell}
+          >
             <div className={classes.tableBodyRowCellContent}>
               {item.renderer ? renderer() : $value}
             </div>
-          </div>
+          </Column>
         );
       })}
     </div>
@@ -61,12 +89,13 @@ const GanttTableBodyRow = React.memo(function GanttTableBodyRow({
 });
 
 export function GanttTable(props: {
-  activeRowIndex: number;
-  setActiveRowIndex: (index: number) => void;
+  activeRow: null | number;
+  setActiveRow: (index: number) => void;
   items: TYPES.GanttProps["items"];
   records: TYPES.GanttProps["records"];
+  onView?: TYPES.GanttProps["onRecordView"];
 }) {
-  const { items, records, activeRowIndex, setActiveRowIndex } = props;
+  const { items, records, activeRow, setActiveRow, onView } = props;
   const classNames = useClassNames();
   return (
     <Box className={classNames("table-grid", classes.table)}>
@@ -78,8 +107,9 @@ export function GanttTable(props: {
             index={ind}
             items={items}
             data={record}
-            active={activeRowIndex === ind}
-            onClick={setActiveRowIndex}
+            active={String(activeRow) === String(record.id)}
+            onView={onView}
+            onClick={setActiveRow}
           />
         ))}
       </div>

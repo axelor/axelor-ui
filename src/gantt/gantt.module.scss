@@ -55,10 +55,13 @@ $border: 1px;
 .ganttRow {
   height: 2.25rem;
   display: flex;
-  &.active,
-  &.active .highlight {
+  &.active {
     color: var(--gantt-row-active-color);
     background-color: var(--gantt-row-active-bg);
+  }
+  &.active .highlight {
+    color: var(--gantt-cell-active-color);
+    background-color: var(--gantt-cell-active-bg);
   }
 }
 
@@ -326,6 +329,3 @@ $border: 1px;
   text-overflow: ellipsis;
 }
 
-.highlight {
-  background-color: var(--bs-table-active-bg);
-}

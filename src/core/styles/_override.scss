@@ -53,6 +53,8 @@
   --gantt-line-color: #fff;
   --gantt-row-active-bg: #{$table-hover-bg};
   --gantt-row-active-color: #{$table-hover-color};
+  --gantt-cell-active-bg: #{$table-active-bg};
+  --gantt-cell-active-color: #{$table-active-color};
   --gantt-connector-bg: #{$gray-200};
   --gantt-connector-border-color: #{$gray-300};
 }

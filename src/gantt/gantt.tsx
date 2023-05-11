@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import moment from "moment";
 import { Box, useTheme, useClassNames } from "../core";
 
@@ -80,15 +80,17 @@ function GanttView(props: {
 }
 
 export function Gantt({
+  className,
   records,
   view,
   items,
+  onRecordView,
   onRecordUpdate,
   onRecordConnect,
   onRecordDisconnect,
 }: TYPES.GanttProps) {
   const [container, setContainer] = React.useState<HTMLDivElement | null>(null);
-  const [activeRowIndex, setActiveRowIndex] = React.useState(-1);
+  const [activeRow, setActiveRow] = React.useState<number | null>(null);
 
   const { dir } = useTheme();
   const rtl = dir === "rtl";
@@ -119,14 +121,22 @@ export function Gantt({
     }
   }
 
+  const activeRowIndex = useMemo(
+    () => records.findIndex((r) => r.id === activeRow),
+    [records, activeRow]
+  );
+
   return (
     <Box
       d="flex"
-      className={classNames("gantt", classes.root, {
+      className={classNames("gantt", className, classes.root, {
         [classes.rtl]: rtl,
       })}
     >
-      <GanttTable {...{ items, records, activeRowIndex, setActiveRowIndex }} />
+      <GanttTable
+        {...{ items, records, activeRow, setActiveRow }}
+        onView={onRecordView}
+      />
       <Box
         ref={setContainer}
         flex="1"

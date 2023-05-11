@@ -1,6 +1,6 @@
 import React from "react";
 import * as TYPES from "./types";
-import { useClassNames } from "../core";
+import { Box, useClassNames } from "../core";
 import classes from "./gantt.module.scss";
 
 export const RenderList = React.memo(function RenderList({
@@ -16,17 +16,18 @@ export const RenderList = React.memo(function RenderList({
   return (
     <>
       {items.map((item, i: number) => (
-        <div
+        <Box
           className={classNames(classes.block, itemClassName, {
             [classes.highlight]: item.highlight,
           })}
+          color="muted"
           key={i}
           style={{
             width: item.width,
           }}
         >
           {itemRenderer ? itemRenderer(item) : item.title}
-        </div>
+        </Box>
       ))}
     </>
   );

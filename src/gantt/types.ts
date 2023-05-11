@@ -7,6 +7,7 @@ export type GanttType = "year" | "month" | "week" | "day";
 export type GanttField = {
   name: string;
   title?: string;
+  width?: number;
   formatter?: (field: GanttField, value: any, data: GanttRecord) => any;
   renderer?: React.FC<{
     data: GanttRecord;
@@ -79,9 +80,11 @@ export interface ConnectProps {
 }
 
 export interface GanttProps {
+  className?: string;
   view: GanttType;
   items: GanttField[];
   records: GanttRecord[];
+  onRecordView?: (record: GanttRecord, index?: number) => any;
   onRecordUpdate?: (record: GanttRecord, changes?: any) => any;
   onRecordConnect?: (connectProps: ConnectProps) => any;
   onRecordDisconnect?: (connectProps: ConnectProps) => any;
