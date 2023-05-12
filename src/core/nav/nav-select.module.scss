@@ -61,6 +61,13 @@ $borderWidth: 2px;
       padding-left: $spacing * 2.5;
     }
   }
+  &.last {
+    padding-right: $spacing * 3;
+    .rtl & {
+      padding-right: unset;
+      padding-left: $spacing * 3;
+    }
+  }
 
   &:first-child a {
     padding-left: $spacing * 5;
