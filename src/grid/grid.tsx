@@ -1167,8 +1167,11 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     React.useEffect(() => {
       if (state.selectedCell) {
         scrollToCell(state.selectedCell);
+      } else if (state.selectedRows?.length === 1) {
+        const [ind] = state.selectedRows;
+        scrollToCell([ind, 0]);
       }
-    }, [state.selectedCell, scrollToCell]);
+    }, [state.selectedCell, state.selectedRows, scrollToCell]);
 
     const hasAggregation = React.useMemo(
       () => columns.some((column) => column.aggregate),
