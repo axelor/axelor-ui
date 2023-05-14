@@ -1,17 +1,16 @@
 import React from "react";
-import { ReactComponent as BiCaretDownFill } from "bootstrap-icons/icons/caret-down-fill.svg";
 
+import { MaterialIcon } from "../../icons/meterial-icon";
 import { Box } from "../box/box";
-import { Icon } from "../icon";
+import { MenuProps } from "../menu/menu";
+import { MenuItem } from "../menu/menu-item";
 import {
   OverflowList,
   OverflowListButtonType,
   OverflowListItemProps,
 } from "../overflow-list";
-import { MenuItem } from "../menu/menu-item";
-import { MenuProps } from "../menu/menu";
-import { useClassNames, useTheme } from "../styles";
 import { withStyled } from "../styled";
+import { useClassNames, useTheme } from "../styles";
 import classes from "./nav-select.module.scss";
 
 export interface TNavSelectItem {
@@ -124,9 +123,13 @@ export function NavSelect({
                 as="button"
                 d="flex"
                 justifyContent="center"
-                className={classNames(classes.overflowListItem, {
-                  [classes.active]: item.value === selected?.value,
-                })}
+                className={classNames(
+                  classes.overflowMenuItem,
+                  classes.overflowListItem,
+                  {
+                    [classes.active]: item.value === selected?.value,
+                  }
+                )}
                 onClick={() => {
                   closeDropdown && closeDropdown();
                   handleItemClick(item);
@@ -146,7 +149,7 @@ export function NavSelect({
                 active={Boolean(selectedInDropdown)}
                 className={classNames(props.className, classes.dropdown)}
               >
-                <Icon as={BiCaretDownFill} />
+                <MaterialIcon icon="arrow_drop_down" />
               </NavSelectItem>
             );
           }

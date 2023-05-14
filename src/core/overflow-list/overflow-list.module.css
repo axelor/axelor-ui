@@ -43,6 +43,9 @@
   cursor: pointer;
   position: relative;
 }
+.dropdownIcon > a {
+  display: inline-flex;
+}
 .dropdownIcon > * {
   pointer-events: none;
 }

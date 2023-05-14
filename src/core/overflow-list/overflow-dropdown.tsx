@@ -233,10 +233,12 @@ export const OverflowDropdown = withStyled(DropdownList)((props, ref) => {
           show
           arrow
           bg={"light"}
-          color={"dark"}
+          color={"body"}
+          border={false}
           transition={Fade}
           container={document.body}
           placement={vertical ? "end" : "bottom"}
+          offset={[0, 2]}
           navigation
           {...dropdownMenuProps}
           target={popover.target}

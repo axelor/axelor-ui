@@ -16,7 +16,7 @@ $borderWidth: 2px;
   max-width: 100%;
 }
 
-.overflowListItem {
+.overflowListItem:not(.overflowMenuItem) {
   min-width: 120px;
   cursor: pointer;
   &:hover {
