@@ -1215,7 +1215,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         <Box
           ref={handleRef}
           className={classNames("table-grid", styles.container, className, {
-            [styles["no-records"]]: records.length === 0,
+            [styles["no-records"]]:
+              records.length === 0 && state?.rows?.length === 0,
             [styles["no-columns"]]: noColumns,
             [styles["has-add-new"]]: Boolean(props.addNewText),
             [styles["has-footer"]]: hasFooter,
