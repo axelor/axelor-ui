@@ -90,7 +90,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
             value={data.record[column.name]}
             focus={editCell === index}
             selected={selectedCell === index}
-            renderer={cellRenderer || column.renderer}
+            renderer={column.renderer || cellRenderer}
             onClick={handleCellClick}
             onUpdate={handleUpdate}
           >
