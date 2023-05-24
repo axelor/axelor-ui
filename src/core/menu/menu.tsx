@@ -17,6 +17,7 @@ export interface MenuProps
   onHide?: any;
   disablePortal?: boolean;
   navigation?: boolean;
+  rounded?: boolean;
 }
 
 const MenuContent = styled.div<MenuProps>(({ show, placement }) => [
@@ -41,7 +42,10 @@ export const Menu = withStyled(MenuContent)(
       offset,
       navigation,
       arrow,
+      border,
+      rounded,
       transition,
+      bg = "body",
       ...props
     },
     ref
@@ -54,7 +58,11 @@ export const Menu = withStyled(MenuContent)(
         offset={offset}
         disablePortal={disablePortal}
         arrow={arrow}
+        border={border}
+        rounded={rounded}
         transition={transition}
+        role="menu"
+        bg={bg}
       >
         <ClickAwayListener onClickAway={onHide}>
           {navigation ? (
@@ -71,8 +79,11 @@ export const Menu = withStyled(MenuContent)(
           ) : (
             <MenuContent
               {...props}
-              show={show}
+              show
+              border={false}
+              rounded={rounded}
               placement={placement}
+              bg="transparent"
               ref={ref}
             />
           )}
