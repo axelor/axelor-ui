@@ -15,6 +15,8 @@ import selectStyles from "./select.module.scss";
 
 export { components as SelectComponents } from "react-select";
 
+export { ReactSelect };
+
 export type SelectOption = unknown;
 
 export interface SelectIcon {
