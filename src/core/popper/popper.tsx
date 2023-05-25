@@ -130,6 +130,8 @@ const PopperWrapper = ({
 
   const classNames = useClassNames();
 
+  if (target === null) return null;
+
   return (
     <div
       ref={setWrapperEl}
