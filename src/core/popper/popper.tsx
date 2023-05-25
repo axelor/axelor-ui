@@ -85,7 +85,7 @@ const PopperWrapper = ({
   const arrowEnabled = Boolean(arrow);
 
   const modifiers = useMemo(() => {
-    const arrowPadding = arrowEnabled ? 8.5 : 0; // match with .arrow css (12 * Math.sqrt(2) / 2)
+    const arrowPadding = arrowEnabled ? 8.5 : 0; // match with .arrow diagonal (12 * Math.sqrt(2) / 2)
     return [
       { name: "preventOverflow" },
       { name: "flip" },

@@ -15,6 +15,7 @@ export interface CommandItemProps {
   text?: string;
   subtext?: string;
   description?: string;
+  menuProps?: { arrow?: boolean; rounded?: boolean };
   imageProps?: {
     src: string;
     alt: string;
@@ -39,6 +40,7 @@ export interface CommandItemProps {
 export interface CommandBarProps {
   items: CommandItemProps[];
   className?: string;
+  menuProps?: { arrow?: boolean; rounded?: boolean };
   iconProps?: Omit<MaterialIconProps, "icon">;
   iconOnly?: boolean;
 }
@@ -47,6 +49,7 @@ export function CommandItem(props: CommandItemProps) {
   const {
     text,
     description,
+    menuProps,
     imageProps,
     icon: Icon,
     iconProps,
@@ -177,6 +180,7 @@ export function CommandItem(props: CommandItemProps) {
           onHide={hideMenu}
           rounded={false}
           className={styles.menu}
+          {...menuProps}
         >
           {items.map((item) => {
             const { key, divider, hidden, disabled, text, subtext, render } =
@@ -221,10 +225,14 @@ export function CommandBar(props: CommandBarProps) {
   const { className, iconOnly, iconProps = {}, items = [] } = props;
   return (
     <div className={clsx(className, styles.bar)}>
-      {items.map(({ iconProps: icon, ...item }) => (
+      {items.map(({ iconProps: icon, menuProps, ...item }) => (
         <CommandItem
           iconOnly={iconOnly}
           iconProps={{ ...iconProps, ...icon } as MaterialIconProps}
+          menuProps={{
+            ...props.menuProps,
+            ...menuProps,
+          }}
           {...item}
         />
       ))}
