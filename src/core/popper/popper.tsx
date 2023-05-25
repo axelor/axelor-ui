@@ -85,20 +85,24 @@ const PopperWrapper = ({
   const arrowEnabled = Boolean(arrow);
 
   const modifiers = useMemo(() => {
-    const arrowPadding = arrowEnabled ? 6 : 0; // match with .arrow css
+    const arrowPadding = arrowEnabled ? 8.5 : 0; // match with .arrow css (12 * Math.sqrt(2) / 2)
     return [
       { name: "preventOverflow" },
       { name: "flip" },
+      { name: "hide" },
       {
         name: "offset",
         enabled,
         options: {
-          offset: [skidding, distance + arrowPadding],
+          offset: [skidding - arrowPadding, distance + arrowPadding],
         },
       },
       {
         name: "arrow",
         enabled: arrowEnabled,
+        options: {
+          padding: arrowPadding,
+        },
       },
     ];
   }, [skidding, distance, enabled, arrowEnabled]);

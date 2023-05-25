@@ -59,3 +59,8 @@
   border-bottom: 1px solid var(--bs-border-color);
   border-left: 1px solid var(--bs-border-color);
 }
+
+.popper[data-popper-reference-hidden] {
+  visibility: hidden;
+  pointer-events: none;
+}
