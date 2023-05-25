@@ -71,6 +71,9 @@ export const Menu = withStyled(MenuContent)(
                 <MenuContent
                   {...props}
                   show={show}
+                  bg="transparent"
+                  border={false}
+                  rounded={rounded}
                   placement={placement}
                   ref={ref}
                 />
