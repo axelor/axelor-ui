@@ -1032,7 +1032,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     };
 
     const scrollToCell = React.useCallback(
-      function scrollToCell([row, col]: number[]) {
+      function scrollToCell([row, col]: number[], focusGrid = true) {
         if (!allowCellFocus || isNull(row) || isNull(col)) return;
         const container = containerRef.current;
         const rowNode =
@@ -1044,7 +1044,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           if (!rowNode) return;
           let selector = `.${styles.column}:nth-child(${col + 1})`;
           if (rowNode.classList.contains(styles.groupRow)) {
-            selector = `.${styles.groupRowContent}`;
+            return rowNode;
           }
           return rowNode.querySelector(getCssSelector(selector));
         };
@@ -1108,7 +1108,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           coords.scrollTop >= 0 && (container.scrollTop = coords.scrollTop);
         }
         refs.current.selectedCell = { row, col };
-        container && container.focus();
+        focusGrid && container && container.focus();
       },
       [allowCellFocus, stickyHeader, stickyFooter]
     );
@@ -1169,7 +1169,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         scrollToCell(state.selectedCell);
       } else if (state.selectedRows?.length === 1) {
         const [ind] = state.selectedRows;
-        scrollToCell([ind, 0]);
+        scrollToCell([ind, 0], false);
       }
     }, [state.selectedCell, state.selectedRows, scrollToCell]);
 
