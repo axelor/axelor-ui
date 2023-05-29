@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import moment from "moment";
+import moment, { Dayjs } from "dayjs";
 import { Box, useTheme, useClassNames } from "../core";
 
 import * as TYPES from "./types";
@@ -15,8 +15,8 @@ function GanttView(props: {
   view: TYPES.GanttType;
   activeRowIndex: number;
   records: TYPES.GanttRecord[];
-  startDate: moment.Moment;
-  endDate: moment.Moment;
+  startDate: Dayjs;
+  endDate: Dayjs;
   hourSize: number;
   cellSize: number;
   onRecordUpdate?: TYPES.GanttProps["onRecordUpdate"];

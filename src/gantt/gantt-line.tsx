@@ -1,5 +1,5 @@
 import React from "react";
-import moment from "moment";
+import moment, { Dayjs } from "dayjs";
 import { DragSourceMonitor, useDrag, useDrop } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import { Icon, useTheme } from "../core";
@@ -65,8 +65,8 @@ export const GanttLine = React.memo(function GanttLine(props: {
   hourSize: number;
   cellSize: number;
   index: number;
-  startDate: moment.Moment;
-  endDate: moment.Moment;
+  startDate: Dayjs;
+  endDate: Dayjs;
   view: TYPES.GanttType;
   data: TYPES.GanttRecord;
   onUpdate?: TYPES.GanttProps["onRecordUpdate"];

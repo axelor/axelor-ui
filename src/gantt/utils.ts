@@ -1,5 +1,18 @@
-import moment from "moment";
+import moment, { Dayjs, OpUnitType } from "dayjs";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import duration from "dayjs/plugin/duration";
+import minMax from "dayjs/plugin/minMax";
+import utc from "dayjs/plugin/utc";
+import isoWeek from "dayjs/plugin/isoWeek";
 import * as TYPES from "./types";
+
+moment.extend(advancedFormat);
+moment.extend(isSameOrAfter);
+moment.extend(duration);
+moment.extend(minMax);
+moment.extend(utc);
+moment.extend(isoWeek);
 
 const CONNECT_FINISH = "finish";
 const CONNECT_START = "start";
@@ -33,15 +46,9 @@ const viewConfig: Record<TYPES.GanttType, any> = {
 
 function getMomentList(
   type: "hour" | "month" | "day" | "week" | "year",
-  format:
-    | string
-    | ((
-        current: moment.Moment,
-        start: moment.Moment,
-        end: moment.Moment
-      ) => string),
-  startDate: moment.Moment,
-  endDate: moment.Moment,
+  format: string | ((current: Dayjs, start: Dayjs, end: Dayjs) => string),
+  startDate: Dayjs,
+  endDate: Dayjs,
   hourSize: number,
   compareType?: "hour" | "month" | "day" | "week" | "year",
   startOfType?: "isoWeek"
@@ -52,10 +59,10 @@ function getMomentList(
   let current = startDate.clone();
 
   while (endDate.isSameOrAfter(current)) {
-    const _start = current.startOf(startOfType || type).clone();
+    const _start = current.startOf((startOfType || type) as OpUnitType).clone();
     const start = _start.isBefore(startDate) ? startDate : _start;
 
-    const _end = current.endOf(startOfType || type).clone();
+    const _end = current.endOf((startOfType || type) as OpUnitType).clone();
     const end = _end.isAfter(endDate) ? endDate : _end;
 
     const hours = moment.duration(end.diff(start)).asHours();
@@ -67,8 +74,7 @@ function getMomentList(
         ? format(current, start, end)
         : `${current.format(format)}`;
 
-    current = start.clone();
-    current.add(1, `${type}s`);
+    current = start.clone().add(1, `${type}s`);
 
     list.push({
       title,
@@ -96,8 +102,8 @@ export function getGraphConfig(
       : moment(item.startDate).add(Number(item.duration || 0), "h")
   );
 
-  const minDate = moment.min(startDates);
-  const maxDate = moment.max(endDates);
+  const minDate = moment.min(startDates) ?? moment();
+  const maxDate = moment.max(endDates) ?? moment();
 
   const startDate = minDate.startOf(config.type).subtract(2, config.type);
   const endDate = maxDate.endOf(config.type).add(2, config.type);
@@ -184,8 +190,8 @@ function getBendingPoints(coordinates: any) {
 
 export function getGraphEdges(
   data: TYPES.GanttRecord[],
-  startDate: moment.Moment,
-  endDate: moment.Moment,
+  startDate: Dayjs,
+  endDate: Dayjs,
   hourSize: number
 ): TYPES.GanttEdge[] {
   const computedData = data.map((record, i) => {
@@ -264,8 +270,8 @@ export function getGraphEdges(
 
 export function getHeader(
   type: TYPES.GanttType,
-  startDate: moment.Moment,
-  endDate: moment.Moment,
+  startDate: Dayjs,
+  endDate: Dayjs,
   hourSize: number
 ) {
   switch (type) {
@@ -346,7 +352,7 @@ export function getHeader(
 
 export function getDateFromOffset(
   offsetX: number,
-  startDate: moment.Moment,
+  startDate: Dayjs,
   view: TYPES.GanttType,
   cellSize: number
 ) {
