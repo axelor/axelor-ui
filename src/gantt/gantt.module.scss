@@ -2,6 +2,7 @@
 
 $spacing: 0.25rem;
 $border: 1px;
+$blockHeight: 30px;
 
 .root {
   flex: 1;
@@ -15,34 +16,23 @@ $border: 1px;
 .header {
   display: flex;
   font-size: 1rem;
+  height: 3.8rem;
+  border-top: $border solid var(--gantt-border-color);
+  border-bottom: $border solid var(--gantt-border-color);
   & > * {
     padding: $spacing 0;
+    border-right: $border solid var(--gantt-border-color);
+    display: flex;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: calc(100% - $blockHeight + 1px);
   }
-}
-
-.subHeader {
-  display: flex;
-  font-size: 0.9rem;
-  & > * {
-    padding: math.div($spacing, 2) 0;
-  }
-}
-
-.block {
-  border-top: $border solid var(--gantt-border-color);
-  border-right: $border solid var(--gantt-border-color);
-  display: flex;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .gantt {
-  border: $border solid var(--gantt-border-color);
-  border-top: none;
-  border-left: none;
   min-width: 100%;
 }
 
@@ -55,6 +45,7 @@ $border: 1px;
 .ganttRow {
   height: 2.25rem;
   display: flex;
+  border-bottom: $border solid var(--gantt-border-color);
   &.active {
     color: var(--gantt-row-active-color);
     background-color: var(--gantt-row-active-bg);
@@ -65,10 +56,24 @@ $border: 1px;
   }
 }
 
-.ganttCell {
+.ganttColumn {
+  position: absolute;
+  top: 0;
   height: 100%;
+  border-right: $border solid var(--gantt-border-color);
 }
 
+.ganttColumnTitle {
+  position: absolute;
+  top: -$blockHeight;
+  height: $blockHeight;
+  width: calc(100% + 1px);
+  border-top: $border solid var(--gantt-border-color);
+  border-right: $border solid var(--gantt-border-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 /* gantt edge styles */
 
 .ganttEdgeLines {
@@ -270,6 +275,7 @@ $border: 1px;
 .table {
   overflow: hidden;
   min-width: 400px;
+  border-left: $border solid var(--bs-table-border-color);
   border-right: $border solid var(--bs-table-border-color);
   display: flex;
   flex-direction: column;
@@ -277,8 +283,9 @@ $border: 1px;
 }
 
 .tableHeader {
-  min-height: 3.8rem;
+  height: 3.8rem;
   border: $border solid var(--bs-table-border-color);
+  border-left: none;
   border-right: none;
   display: flex;
 }
@@ -300,7 +307,6 @@ $border: 1px;
   display: flex;
   height: 2.25rem;
   border-bottom: $border solid var(--bs-table-border-color);
-  border-left: $border solid var(--bs-table-border-color);
   cursor: pointer;
 
   &:hover,
@@ -328,4 +334,3 @@ $border: 1px;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import moment, { Dayjs } from "dayjs";
 import { Box, useTheme, useClassNames } from "../core";
 
@@ -36,18 +36,29 @@ function GanttView(props: {
     onRecordDisconnect,
   } = props;
 
-  const [list, items] = React.useMemo(
-    () => getHeader(view, startDate, endDate, hourSize),
-    [view, startDate, endDate, hourSize]
-  );
+  const [list, setList] = useState<TYPES.GanttHeaderItem[]>([]);
+  const [items, setItems] = useState<TYPES.GanttHeaderItem[]>([]);
+
   const edges = React.useMemo(
     () => getGraphEdges(records, startDate, endDate, hourSize),
     [records, startDate, endDate, hourSize]
   );
 
+  useEffect(() => {
+    const animationId = window.requestIdleCallback(() => {
+      const [list, items] = getHeader(view, startDate, endDate, hourSize);
+      setList(list);
+      setItems(items);
+    });
+
+    return () => {
+      window.cancelIdleCallback(animationId);
+    };
+  }, [view, startDate, endDate, hourSize]);
+
   return (
     <div className={classes.body}>
-      <GanttHeader list={list} subList={items} />
+      <GanttHeader items={list} />
       <div className={classes.ganttRows}>
         <GanttBody
           items={items}

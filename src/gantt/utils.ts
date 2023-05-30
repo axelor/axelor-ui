@@ -66,8 +66,6 @@ function getMomentList(
     const end = _end.isAfter(endDate) ? endDate : _end;
 
     const hours = moment.duration(end.diff(start)).asHours();
-    const highlight =
-      format === "ddd DD" && ["Sat", "Sun"].includes(current.format("ddd"));
 
     const title =
       typeof format === "function"
@@ -80,7 +78,6 @@ function getMomentList(
       title,
       hours,
       width: Math.round(hours * hourSize),
-      highlight,
     });
   }
 

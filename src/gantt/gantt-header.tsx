@@ -1,50 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as TYPES from "./types";
 import { Box, useClassNames } from "../core";
 import classes from "./gantt.module.scss";
 
-export const RenderList = React.memo(function RenderList({
-  items,
-  itemClassName,
-  itemRenderer,
-}: {
-  items: TYPES.GanttHeaderItem[];
-  itemClassName?: string;
-  itemRenderer?: (item: TYPES.GanttHeaderItem) => any;
-}) {
-  const classNames = useClassNames();
-  return (
-    <>
-      {items.map((item, i: number) => (
-        <Box
-          className={classNames(classes.block, itemClassName, {
-            [classes.highlight]: item.highlight,
-          })}
-          color="muted"
-          key={i}
-          style={{
-            width: item.width,
-          }}
-        >
-          {itemRenderer ? itemRenderer(item) : item.title}
-        </Box>
-      ))}
-    </>
-  );
-});
-
 export const GanttHeader = React.memo(function GanttHeader(props: {
-  list: TYPES.GanttHeaderItem[];
-  subList: TYPES.GanttHeaderItem[];
+  items: TYPES.GanttHeaderItem[];
 }) {
-  const { list, subList } = props;
+  const { items } = props;
+  const [renderItems, setRenderItems] = useState<TYPES.GanttHeaderItem[]>([]);
+  const classNames = useClassNames();
+
+  useEffect(() => {
+    const id = window.requestIdleCallback(() => {
+      setRenderItems(items);
+    });
+    return () => window.cancelIdleCallback(id);
+  }, [items]);
+
   return (
     <div>
       <div className={classes.header}>
-        <RenderList items={list} />
-      </div>
-      <div className={classes.subHeader}>
-        <RenderList items={subList} />
+        {renderItems.map((item, i: number) => (
+          <Box
+            key={i}
+            className={classNames(classes.block, {
+              [classes.highlight]: item.highlight,
+            })}
+            color="muted"
+            style={{
+              minWidth: item.width,
+              maxWidth: item.width,
+            }}
+          >
+            {item.title}
+          </Box>
+        ))}
       </div>
     </div>
   );

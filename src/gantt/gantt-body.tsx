@@ -1,17 +1,12 @@
-import React from "react";
-import { useTheme, useClassNames } from "../core";
+import React, { useEffect, useState } from "react";
+import { useTheme, useClassNames, Box } from "../core";
 import { useDrop } from "react-dnd";
 
 import * as TYPES from "./types";
 import { CONFIG } from "./utils";
-import { RenderList } from "./gantt-header";
 import classes from "./gantt.module.scss";
 
 const { DND_TYPES } = CONFIG;
-
-function EmptyCell() {
-  return null;
-}
 
 const GanttRows = React.memo(function GanttRows({
   totalRecords,
@@ -23,22 +18,42 @@ const GanttRows = React.memo(function GanttRows({
   items: TYPES.GanttHeaderItem[];
 }) {
   const classNames = useClassNames();
+  const [columns, setColumns] = useState<TYPES.GanttHeaderItem[]>([]);
+
+  useEffect(() => {
+    const animationId = window.requestIdleCallback(() => {
+      setColumns(items);
+    });
+    return () => {
+      window.cancelIdleCallback(animationId);
+    };
+  }, [items]);
+
+  let left = 0;
+
   return (
     <>
-      {new Array(totalRecords).fill(0).map((_, i) => (
-        <div
-          key={i}
-          className={classNames(classes.ganttRow, {
-            [classes.active]: activeRowIndex === i,
-          })}
-        >
-          <RenderList
-            items={items}
-            itemClassName={classes.ganttCell}
-            itemRenderer={EmptyCell}
+      {columns.map((item, ind) => {
+        const style = { left, width: item.width };
+        left += item.width;
+        return (
+          <div key={ind} className={classes["ganttColumn"]} style={style}>
+            <Box color="muted" className={classes["ganttColumnTitle"]}>
+              {item.title}
+            </Box>
+          </div>
+        );
+      })}
+      <div>
+        {new Array(totalRecords).fill(0).map((_, i) => (
+          <div
+            key={i}
+            className={classNames(classes.ganttRow, {
+              [classes.active]: activeRowIndex === i,
+            })}
           />
-        </div>
-      ))}
+        ))}
+      </div>
     </>
   );
 });
