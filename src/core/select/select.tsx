@@ -143,6 +143,32 @@ function filterOption(candidate: any, input: any) {
   return candidate.data.__isAddOn || defaultFilter(candidate, input);
 }
 
+function unaccent(value: string) {
+  if (typeof value === "string") {
+    return value
+      .normalize("NFKD")
+      .replace(/\p{Diacritic}/gu, "")
+      .replace(/./g, function (c) {
+        return (
+          {
+            "’": "'",
+            æ: "ae",
+            Æ: "AE",
+            œ: "oe",
+            Œ: "OE",
+            ð: "d",
+            Ð: "D",
+            ł: "l",
+            Ł: "L",
+            ø: "o",
+            Ø: "O",
+          }[c] || c
+        );
+      });
+  }
+  return value;
+}
+
 export function Select({
   className,
   classNamePrefix,
@@ -358,9 +384,9 @@ export function Select({
       if (isStaticSelect) return options;
       return inputText
         ? (options || []).filter((opt) =>
-            (getOptionLabel(opt) || "")
+            unaccent(getOptionLabel(opt) || "")
               .toLowerCase()
-              .includes(inputText.toLowerCase())
+              .includes(unaccent(inputText).toLowerCase())
           )
         : value
         ? (options || []).filter(
