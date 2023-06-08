@@ -1,11 +1,15 @@
 import {
   ForwardedRef,
+  MutableRefObject,
+  Ref,
   RefCallback,
   RefObject,
   useCallback,
   useEffect,
   useRef,
 } from "react";
+
+type PossibleRef<T> = Ref<T> | ForwardedRef<T> | undefined;
 
 /**
  * This hook can be used to combine multiple hooks.
@@ -16,12 +20,13 @@ import {
  * @param refs refs to use
  * @returns RefCallback<T>
  */
-export function useRefs<T>(...refs: ForwardedRef<T>[]): RefCallback<T> {
+export function useRefs<T>(...refs: PossibleRef<T>[]): RefCallback<T> {
   return useCallback(
     (value: T) => {
       refs.forEach((ref) => {
         if (ref && typeof ref === "function") ref(value);
-        if (ref && typeof ref === "object") ref.current = value;
+        if (ref && typeof ref === "object")
+          (ref as MutableRefObject<T>).current = value;
       });
     },
     [refs]
