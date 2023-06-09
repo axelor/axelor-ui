@@ -1,4 +1,10 @@
-import { cloneElement, createContext, useCallback, useContext } from "react";
+import {
+  cloneElement,
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+} from "react";
 import { ClassValue, cssx } from "../clsx";
 import stylesLtr from "./styles.module.scss";
 import stylesRtl from "./styles.rtl.module.scss";
@@ -53,4 +59,14 @@ export function useClassNames() {
     (...args: ClassValue[]) => cssx(styles, ...args),
     [styles]
   );
+}
+
+export function useClasses(...args: ClassValue[]) {
+  const styles = useStyles();
+  const className = useMemo(() => {
+    const res = cssx(styles, ...args);
+    return res.trim().length ? res : undefined;
+  }, [args, styles]);
+
+  return className;
 }
