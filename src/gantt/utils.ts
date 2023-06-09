@@ -1,10 +1,10 @@
 import moment, { Dayjs, OpUnitType } from "dayjs";
-import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import duration from "dayjs/plugin/duration";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+import isoWeek from "dayjs/plugin/isoWeek";
 import minMax from "dayjs/plugin/minMax";
 import utc from "dayjs/plugin/utc";
-import isoWeek from "dayjs/plugin/isoWeek";
 import * as TYPES from "./types";
 
 moment.extend(advancedFormat);
@@ -59,20 +59,23 @@ function getMomentList(
   let current = startDate.clone();
 
   while (endDate.isSameOrAfter(current)) {
-    const _start = current.startOf((startOfType || type) as OpUnitType).clone();
-    const start = _start.isBefore(startDate) ? startDate : _start;
+    let start = current.startOf((startOfType || type) as OpUnitType);
+    let end = current.endOf((startOfType || type) as OpUnitType);
 
-    const _end = current.endOf((startOfType || type) as OpUnitType).clone();
-    const end = _end.isAfter(endDate) ? endDate : _end;
+    start = start.isBefore(startDate) ? startDate : start;
+    end = end.isAfter(endDate) ? endDate : end;
 
     const hours = moment.duration(end.diff(start)).asHours();
-
     const title =
       typeof format === "function"
         ? format(current, start, end)
         : `${current.format(format)}`;
 
-    current = start.clone().add(1, `${type}s`);
+    let next = start.add(1, type);
+    while (current.isSame(next)) {
+      next = next.add(1, type);
+    }
+    current = next;
 
     list.push({
       title,
