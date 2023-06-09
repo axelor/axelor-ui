@@ -168,18 +168,18 @@ function Block({ label, children }: any) {
 export const Caption = () => {
   return (
     <Box>
-      <Block label="Bottom Placement">
-        <Table>
+      <Box border rounded p={4} mb={4}>
+        <Table caption="top">
           {content}
           <TableCaption>List of users</TableCaption>
         </Table>
-      </Block>
-      <Block label="Top Placement">
-        <Table>
+      </Box>
+      <Box border rounded p={4}>
+        <Table caption="bottom">
           {content}
-          <TableCaption placement="top">List of users</TableCaption>
+          <TableCaption>List of users</TableCaption>
         </Table>
-      </Block>
+      </Box>
     </Box>
   );
 };

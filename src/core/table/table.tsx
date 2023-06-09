@@ -7,10 +7,11 @@ export interface TableProps {
   bordered?: boolean;
   hover?: boolean;
   size?: "sm" | "md";
+  caption?: "top" | "bottom";
 }
 
 export const Table = styled.table<TableProps>(
-  ({ color, striped, bordered, hover, size = "md" }) => [
+  ({ color, striped, bordered, hover, caption, size = "md" }) => [
     "table",
     {
       [`table-${color}`]: color,
@@ -18,6 +19,7 @@ export const Table = styled.table<TableProps>(
       "table-bordered": bordered,
       "table-hover": hover,
       [`table-${size}`]: size !== "md",
+      [`caption-${caption}`]: caption,
     },
   ]
 );
