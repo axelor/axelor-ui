@@ -26,7 +26,7 @@ export const GanttHeader = React.memo(function GanttHeader(props: {
             className={classNames(classes.block, {
               [classes.highlight]: item.highlight,
             })}
-            color="muted"
+            color="secondary"
             style={{
               minWidth: item.width,
               maxWidth: item.width,

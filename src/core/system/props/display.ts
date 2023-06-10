@@ -6,6 +6,7 @@ export type TDisplay =
   | "inline-block"
   | "block"
   | "grid"
+  | "inline-grid"
   | "table"
   | "table-cell"
   | "table-row"

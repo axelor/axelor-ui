@@ -13,7 +13,7 @@ export const InputLabel = styled.label<InputLabelProps>(
     styles.label,
     {
       "text-danger": invalid,
-      "text-muted": disabled,
+      "text-secondary": disabled,
       [styles.required]: required,
     },
   ]

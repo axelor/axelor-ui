@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { useTranslation } from "react-i18next";
 
 import { Box } from "./box";
 
@@ -21,29 +20,28 @@ export const Basic: Story = {
 };
 
 export const Border = () => {
-  const { t } = useTranslation();
   return (
     <Box display="flex">
-      <Box p={5} m={2} border>
-        {t("square")}
+      <Box p={5} m={2} border bg="body-tertiary">
+        square
       </Box>
-      <Box p={5} m={2} border rounded={2} borderWidth={2}>
-        {t("rounded")}
+      <Box p={5} m={2} border rounded={2} borderWidth={2} bg="body-tertiary">
+        rounded
       </Box>
-      <Box p={5} m={2} border borderColor="primary">
-        {t("primary")}
+      <Box p={5} m={2} border borderColor="primary" bg="body-tertiary">
+        primary
       </Box>
-      <Box p={5} m={2} borderTop bgColor="light">
-        {t("top")}
+      <Box p={5} m={2} borderTop bg="body-tertiary">
+        top
       </Box>
-      <Box p={5} m={2} borderEnd bgColor="light">
-        {t("end")}
+      <Box p={5} m={2} borderEnd bg="body-tertiary">
+        end
       </Box>
-      <Box p={5} m={2} borderBottom bgColor="light">
-        {t("bottom")}
+      <Box p={5} m={2} borderBottom bg="body-tertiary">
+        bottom
       </Box>
-      <Box p={5} m={2} borderStart bgColor="light">
-        {t("start")}
+      <Box p={5} m={2} borderStart bg="body-tertiary">
+        start
       </Box>
     </Box>
   );
@@ -51,27 +49,42 @@ export const Border = () => {
 
 const colors: any = {
   primary: "white",
+  "primary-subtle": "primary-emphasis",
   secondary: "white",
+  "secondary-subtle": "secondary-emphasis",
   success: "white",
+  "success-subtle": "success-emphasis",
   danger: "white",
+  "danger-subtle": "danger-emphasis",
   warning: "dark",
+  "warning-subtle": "warning-emphasis",
   info: "dark",
+  "info-subtle": "info-emphasis",
   light: "dark",
+  "light-subtle": "light-emphasis",
   dark: "white",
-  body: "dark",
+  "dark-subtle": "dark-emphasis",
+  body: "body",
+  "body-secondary": "body",
+  "body-tertiary": "body",
   white: "dark",
-  transparent: "dark",
+  transparent: "body",
 };
 
-const gradientIgnore = ["body", "white", "transparent"];
+const gradientIgnore = [
+  "body",
+  "body-secondary",
+  "body-tertiary",
+  "white",
+  "transparent",
+];
 
 export const Background = () => {
-  const { t } = useTranslation();
   return (
     <Box style={{ width: 400 }}>
       {(Object.keys(colors) as Array<any>).map((c) => (
         <Box key={c} p={3} m={2} bgColor={c} color={colors[c]}>
-          {t(c)}
+          {c}
         </Box>
       ))}
     </Box>
@@ -79,14 +92,13 @@ export const Background = () => {
 };
 
 export const Gradient = () => {
-  const { t } = useTranslation();
   return (
     <Box style={{ width: 400 }}>
       {(Object.keys(colors) as Array<any>)
         .filter((c) => gradientIgnore.indexOf(c) === -1)
         .map((c) => (
           <Box key={c} p={3} m={2} bgColor={c} color={colors[c]} bgGradient>
-            {t(c)} {t("gradient")}
+            {c} gradient
           </Box>
         ))}
     </Box>
@@ -94,84 +106,81 @@ export const Gradient = () => {
 };
 
 export const BoxShadow = () => {
-  const { t } = useTranslation();
   return (
-    <Box style={{ width: 400 }} bgColor="light" p={4}>
+    <Box style={{ width: 400 }} bgColor="body-tertiary" p={4}>
       <Box shadow={false} p={3} mb={5} bgColor="body" rounded={2}>
-        {t("No Shadow")}
+        No Shadow
       </Box>
       <Box shadow p={3} mb={5} bgColor="body" rounded={2}>
-        {t("Regular Shadow")}
+        Regular Shadow
       </Box>
       <Box shadow="sm" p={3} mb={5} bgColor="body" rounded={2}>
-        {t("Small Shadow")}
+        Small Shadow
       </Box>
       <Box shadow="md" p={3} mb={5} bgColor="body" rounded={2}>
-        {t("Medium Shadow")}
+        Medium Shadow
       </Box>
       <Box shadow="lg" p={3} mb={5} bgColor="body" rounded={2}>
-        {t("Large Shadow")}
+        Large Shadow
       </Box>
       <Box shadow="xl" p={3} mb={5} bgColor="body" rounded={2}>
-        {t("Larger Shadow")}
+        Larger Shadow
       </Box>
       <Box shadow="2xl" p={3} mb={5} bgColor="body" rounded={2}>
-        {t("2x Larger Shadow")}
+        2x Larger Shadow
       </Box>
       <Box shadow="inner" p={3} mb={5} bgColor="body" rounded={2}>
-        {t("Inner Shadow")}
+        Inner Shadow
       </Box>
     </Box>
   );
 };
 
 export const DropShadow = () => {
-  const { t } = useTranslation();
   return (
-    <Box style={{ width: 400 }} bgColor="light" p={4}>
+    <Box style={{ width: 400 }} bgColor="body-tertiary" p={4}>
       <Box dropShadow={false} p={3} mb={5} bgColor="body" rounded={2}>
-        {t("No Shadow")}
+        No Shadow
       </Box>
       <Box dropShadow p={3} mb={5} bgColor="body" rounded={2}>
-        {t("Regular Shadow")}
+        Regular Shadow
       </Box>
       <Box dropShadow="sm" p={3} mb={5} bgColor="body" rounded={2}>
-        {t("Small Shadow")}
+        Small Shadow
       </Box>
       <Box dropShadow="md" p={3} mb={5} bgColor="body" rounded={2}>
-        {t("Medium Shadow")}
+        Medium Shadow
       </Box>
       <Box dropShadow="lg" p={3} mb={5} bgColor="body" rounded={2}>
-        {t("Large Shadow")}
+        Large Shadow
       </Box>
       <Box dropShadow="xl" p={3} mb={5} bgColor="body" rounded={2}>
-        {t("Larger Shadow")}
+        Larger Shadow
       </Box>
       <Box dropShadow="2xl" p={3} mb={5} bgColor="body" rounded={2}>
-        {t("2x Larger Shadow")}
+        2x Larger Shadow
       </Box>
     </Box>
   );
 };
 
 export const Display = () => {
-  const { t } = useTranslation();
   return (
     <Box style={{ width: 400 }}>
       <Box mb={2}>
         <Box d="inline" p={1} bgColor="primary" color="white">
-          {t("inline")}
+          inline
         </Box>
         <Box d="inline" p={1} bgColor="dark" color="white">
-          {t("inline")}
+          inline
         </Box>
       </Box>
       <Box mb={2}>
         <Box d="block" p={1} bgColor="primary" color="white">
-          {t("block")}
+          block
         </Box>
         <Box d="block" p={1} bgColor="dark" color="white">
-          {t("block")}
+          block
         </Box>
       </Box>
     </Box>
@@ -179,215 +188,304 @@ export const Display = () => {
 };
 
 export const Float = () => {
-  const { t } = useTranslation();
   return (
     <Box>
-      <Box float="start">{t("Float start on all viewport sizes")}</Box>
+      <Box float="start">Float start on all viewport sizes</Box>
       <br />
-      <Box float="end">{t("Float end on all viewport sizes")}</Box>
+      <Box float="end">Float end on all viewport sizes</Box>
       <br />
-      <Box float="none">{t("Don't float on all viewport sizes")}</Box>
+      <Box float="none">Don't float on all viewport sizes</Box>
     </Box>
   );
 };
 
 export const Link = () => {
-  const { t } = useTranslation();
   return (
-    <Box>
+    <Box d="flex" flexDirection="column">
       <Box as="a" href="#" p={1} mb={1} linkColor="primary">
-        {`${t("link")}-${t("primary")}`}
+        Primary Link
       </Box>
       <Box as="a" href="#" p={1} mb={1} linkColor="secondary">
-        {`${t("link")}-${t("secondary")}`}
+        Secondary Link
       </Box>
       <Box as="a" href="#" p={1} mb={1} linkColor="success">
-        {`${t("link")}-${t("success")}`}
+        Success Link
       </Box>
       <Box as="a" href="#" p={1} mb={1} linkColor="danger">
-        {`${t("link")}-${t("danger")}`}
+        Danger Link
       </Box>
       <Box as="a" href="#" p={1} mb={1} linkColor="warning">
-        {`${t("link")}-${t("warning")}`}
+        Warning Link
       </Box>
       <Box as="a" href="#" p={1} mb={1} linkColor="info">
-        {`${t("link")}-${t("info")}`}
+        Info Link
       </Box>
       <Box as="a" href="#" p={1} mb={1} linkColor="light">
-        {`${t("link")}-${t("light")}`}
+        Light Link
       </Box>
       <Box as="a" href="#" p={1} mb={1} linkColor="dark">
-        {`${t("link")}-${t("dark")}`}
+        Dark Link
+      </Box>
+      <Box as="a" href="#" p={1} mb={1} linkColor="body-emphasis">
+        Emphasis link
       </Box>
     </Box>
   );
 };
 
 export const PointerEvents = () => {
-  const { t } = useTranslation();
   return (
     <Box>
       <Box as="p">
         <Box as="a" href="#" pointerEvents="none" aria-disabled="true">
-          {t("This link")}
+          This link
         </Box>{" "}
-        {t("can not be clicked.")}
+        can not be clicked.
       </Box>
       <Box as="p">
         <Box as="a" href="#" pointerEvents="auto">
-          {t("This link")}
+          This link
         </Box>{" "}
-        {t("can be clicked (this is default behavior).")}
+        can be clicked (this is default behavior).
       </Box>
       <Box as="p" pointerEvents="none">
         <Box as="a" href="#" aria-disabled="true">
-          {t("This link")}
+          This link
         </Box>{" "}
-        {t(
-          "can not be clicked because the pointer-events property is inherited from its parent. However,"
-        )}{" "}
+        can not be clicked because the pointer-events property is inherited from
+        its parent. However,"{" "}
         <Box as="a" href="#" pointerEvents="auto">
-          {t("This link")}
+          This link
         </Box>{" "}
-        {t("has a pe-auto class and can be clicked.")}
+        has a pe-auto class and can be clicked.
+      </Box>
+    </Box>
+  );
+};
+
+export const Opacity = () => {
+  return (
+    <Box d="flex" style={{ width: 400 }}>
+      <Box
+        opacity={100}
+        p={3}
+        m={2}
+        bg="primary"
+        color="light"
+        fontWeight="bold"
+        rounded
+      >
+        100%
+      </Box>
+      <Box
+        opacity={75}
+        p={3}
+        m={2}
+        bg="primary"
+        color="light"
+        fontWeight="bold"
+        rounded
+      >
+        75%
+      </Box>
+      <Box
+        opacity={50}
+        p={3}
+        m={2}
+        bg="primary"
+        color="light"
+        fontWeight="bold"
+        rounded
+      >
+        59%
+      </Box>
+      <Box
+        opacity={25}
+        p={3}
+        m={2}
+        bg="primary"
+        color="light"
+        fontWeight="bold"
+        rounded
+      >
+        25%
+      </Box>
+      <Box
+        opacity={0}
+        p={3}
+        m={2}
+        bg="primary"
+        color="light"
+        fontWeight="bold"
+        rounded
+      >
+        0%
       </Box>
     </Box>
   );
 };
 
 export const Text = () => {
-  const { t } = useTranslation();
   return (
     <Box style={{ width: 400 }}>
       <Box p={1} mb={1} color="primary">
-        {`${t("text")}-${t("primary")}`}
+        primary
+      </Box>
+      <Box p={1} mb={1} color="primary-emphasis">
+        primary-emphasis
       </Box>
       <Box p={1} mb={1} color="secondary">
-        {`${t("text")}-${t("secondary")}`}
+        secondary
+      </Box>
+      <Box p={1} mb={1} color="secondary-emphasis">
+        secondary-emphasis
       </Box>
       <Box p={1} mb={1} color="success">
-        {`${t("text")}-${t("success")}`}
+        success
+      </Box>
+      <Box p={1} mb={1} color="success-emphasis">
+        success-emphasis
       </Box>
       <Box p={1} mb={1} color="danger">
-        {`${t("text")}-${t("danger")}`}
+        danger
+      </Box>
+      <Box p={1} mb={1} color="danger-emphasis">
+        danger
       </Box>
       <Box p={1} mb={1} color="warning" bgColor="dark">
-        {`${t("text")}-${t("warning")}`}
+        warning
+      </Box>
+      <Box p={1} mb={1} color="warning-emphasis">
+        warning-emphasis
       </Box>
       <Box p={1} mb={1} color="info" bgColor="dark">
-        {`${t("text")}-${t("info")}`}
+        info
+      </Box>
+      <Box p={1} mb={1} color="info-emphasis">
+        info-emphasis
       </Box>
       <Box p={1} mb={1} color="light" bgColor="dark">
-        {`${t("text")}-${t("light")}`}
+        light
+      </Box>
+      <Box p={1} mb={1} color="light-emphasis">
+        light-emphasis
       </Box>
       <Box p={1} mb={1} color="dark">
-        {`${t("text")}-${t("dark")}`}
+        dark
+      </Box>
+      <Box p={1} mb={1} color="dark-emphasis">
+        dark-emphasis
       </Box>
       <Box p={1} mb={1} color="body">
-        {`${t("text")}-${t("body")}`}
+        body
       </Box>
-      <Box p={1} mb={1} color="muted">
-        {`${t("text")}-${t("muted")}`}
+      <Box p={1} mb={1} color="body-emphasis">
+        body-emphasis
+      </Box>
+      <Box p={1} mb={1} color="body-secondary">
+        body-secondary
+      </Box>
+      <Box p={1} mb={1} color="body-tertiary">
+        body-terniary
       </Box>
       <Box p={1} mb={1} color="white" bgColor="dark">
-        {`${t("text")}-${t("white")}`}
+        white
+      </Box>
+      <Box p={1} mb={1} color="black">
+        black
       </Box>
       <Box p={1} mb={1} color="black-50">
-        {`${t("text")}-${t("black_50")}`}
+        black_50
       </Box>
       <Box p={1} mb={1} color="white-50" bgColor="dark">
-        {`${t("text")}-${t("white_50")}`}
+        white_50
       </Box>
     </Box>
   );
 };
 
 export const TextAlign = () => {
-  const { t } = useTranslation();
   return (
     <Box>
       <Box as="p" textAlign="start">
-        {t("Start aligned text on all viewport sizes.")}
+        Start aligned text on all viewport sizes.
       </Box>
       <Box as="p" textAlign="center">
-        {t("Center aligned text on all viewport sizes.")}
+        Center aligned text on all viewport sizes.
       </Box>
       <Box as="p" textAlign="end">
-        {t("End aligned text on all viewport sizes.")}
+        End aligned text on all viewport sizes.
       </Box>
       <Box as="p" textAlign={{ sm: "start" }}>
-        {t("Start aligned text on viewports sized SM (small) or wider.")}
+        Start aligned text on viewports sized SM (small) or wider.
       </Box>
       <Box as="p" textAlign={{ md: "start" }}>
-        {t("Start aligned text on viewports sized MD (medium) or wider.")}
+        Start aligned text on viewports sized MD (medium) or wider.
       </Box>
       <Box as="p" textAlign={{ lg: "start" }}>
-        {t("Start aligned text on viewports sized LG (large) or wider.")}
+        Start aligned text on viewports sized LG (large) or wider.
       </Box>
       <Box as="p" textAlign={{ xl: "start" }}>
-        {t("Start aligned text on viewports sized XL (extra-large) or wider.")}
+        Start aligned text on viewports sized XL (extra-large) or wider.
       </Box>
     </Box>
   );
 };
 
 export const FontSize = () => {
-  const { t } = useTranslation();
   return (
     <Box>
       <Box as="p" fontSize={1}>
-        {t("fontSize")}={`{1}`} {t("text")}
+        fontSize={`{1}`} text
       </Box>
       <Box as="p" fontSize={2}>
-        {t("fontSize")}={`{2}`} {t("text")}
+        fontSize={`{2}`} text
       </Box>
       <Box as="p" fontSize={3}>
-        {t("fontSize")}={`{3}`} {t("text")}
+        fontSize={`{3}`} text
       </Box>
       <Box as="p" fontSize={4}>
-        {t("fontSize")}={`{4}`} {t("text")}
+        fontSize={`{4}`} text
       </Box>
       <Box as="p" fontSize={5}>
-        {t("fontSize")}={`{5}`} {t("text")}
+        fontSize={`{5}`} text
       </Box>
       <Box as="p" fontSize={6}>
-        {t("fontSize")}={`{6}`} {t("text")}
+        fontSize={`{6}`} text
       </Box>
     </Box>
   );
 };
 
 export const FontWeight = () => {
-  const { t } = useTranslation();
   return (
     <Box>
       <Box as="p" fontWeight="bold">
-        {t("Bold text.")}
+        Bold text.
       </Box>
       <Box as="p" fontWeight="bolder">
-        {t("Bolder weight text (relative to the parent element).")}
+        Bolder weight text (relative to the parent element).
       </Box>
       <Box as="p" fontWeight="normal">
-        {t("Normal weight text.")}
+        Normal weight text.
       </Box>
       <Box as="p" fontWeight="light">
-        {t("Light weight text.")}
+        Light weight text.
       </Box>
       <Box as="p" fontWeight="lighter">
-        {t("Lighter weight text (relative to the parent element).")}
+        Lighter weight text (relative to the parent element).
       </Box>
       <Box as="p" fontStyle="italic">
-        {t("Italic text.")}
+        Italic text.
       </Box>
       <Box as="p" fontStyle="normal">
-        {t("Text with normal font style")}
+        Text with normal font style
       </Box>
     </Box>
   );
 };
 
 export const Overflow = () => {
-  const { t } = useTranslation();
   return (
     <Box display="flex">
       <Box
@@ -400,16 +498,15 @@ export const Overflow = () => {
         me={{
           md: 3,
         }}
-        bgColor="light"
+        bgColor="body-tertiary"
         style={{
           maxWidth: 260,
           maxHeight: 100,
         }}
       >
-        {t("This is an example of using")} <code>{t(".overflow-auto")}</code>{" "}
-        {t(
-          "on an element with set width and height dimensions. By design, this content will vertically scroll."
-        )}
+        This is an example of using <code>.overflow-auto</code> on an element
+        with set width and height dimensions. By design, this content will
+        vertically scroll.
       </Box>
       <Box
         overflow="hidden"
@@ -421,14 +518,14 @@ export const Overflow = () => {
         me={{
           md: 3,
         }}
-        bgColor="light"
+        bgColor="body-tertiary"
         style={{
           maxWidth: 260,
           maxHeight: 100,
         }}
       >
-        {t("This is an example of using")} <code>{t(".overflow-hidden")}</code>{" "}
-        {t("on an element with set width and height dimensions.")}
+        This is an example of using <code>.overflow-hidden</code> on an element
+        with set width and height dimensions.
       </Box>
       <Box
         overflow="visible"
@@ -440,26 +537,26 @@ export const Overflow = () => {
         me={{
           md: 3,
         }}
-        bgColor="light"
+        bgColor="body-tertiary"
         style={{
           maxWidth: 260,
           maxHeight: 100,
         }}
       >
-        {t("This is an example of using")} <code>{t(".overflow-visible")}</code>{" "}
-        {t("on an element with set width and height dimensions.")}
+        This is an example of using <code>.overflow-visible</code> on an element
+        with set width and height dimensions.
       </Box>
       <Box
         overflow="scroll"
         p={3}
-        bgColor="light"
+        bgColor="body-tertiary"
         style={{
           maxWidth: 260,
           maxHeight: 100,
         }}
       >
-        {t("This is an example of using")} <code>{t(".overflow-scroll")}</code>{" "}
-        {t("on an element with set width and height dimensions.")}
+        This is an example of using <code>.overflow-scroll</code> on an element
+        with set width and height dimensions.
       </Box>
     </Box>
   );

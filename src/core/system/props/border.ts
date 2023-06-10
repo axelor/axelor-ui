@@ -1,4 +1,4 @@
-import { TVariant } from "../theme";
+import { TSubtleVariant, TVariant } from "../theme";
 import { Config } from "../types";
 
 export interface BorderProps {
@@ -8,7 +8,7 @@ export interface BorderProps {
   borderStart?: boolean;
   borderEnd?: boolean;
   borderWidth?: 0 | 1 | 2 | 3 | 4 | 5;
-  borderColor?: TVariant;
+  borderColor?: TVariant | TSubtleVariant | "black" | "white";
   borderTranslucent?: boolean;
   rounded?: boolean | 0 | 1 | 2 | 3 | "circle" | "pill";
   roundedTop?: boolean;

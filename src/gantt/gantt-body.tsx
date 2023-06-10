@@ -38,7 +38,7 @@ const GanttRows = React.memo(function GanttRows({
         left += item.width;
         return (
           <div key={ind} className={classes["ganttColumn"]} style={style}>
-            <Box color="muted" className={classes["ganttColumnTitle"]}>
+            <Box color="secondary" className={classes["ganttColumnTitle"]}>
               {item.title}
             </Box>
           </div>

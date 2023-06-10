@@ -51,7 +51,7 @@ const content = (
       <Box as="h5" mb={1}>
         Lorem ipsum dolor
       </Box>
-      <Box as="small" color="muted">
+      <Box as="small" color="secondary">
         sit amet
       </Box>
     </Box>
@@ -59,7 +59,7 @@ const content = (
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a ultrices
       velit.
     </Box>
-    <Box as="small" color="muted">
+    <Box as="small" color="secondary">
       Fusce a ultrices velit.
     </Box>
   </>
@@ -133,7 +133,7 @@ export const FolderList = () => {
               <Box as="p" mb={0}>
                 Lorem ipsum
               </Box>
-              <Box as="small" color="muted">
+              <Box as="small" color="secondary">
                 et al dolor el
               </Box>
             </Box>
