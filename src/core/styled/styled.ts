@@ -112,7 +112,8 @@ const createStyled: CreateStyled =
             return prev;
           }, {} as any);
 
-        const attrs = { ...result, as, ref };
+        const className = result.className || undefined;
+        const attrs = { ...result, className, as, ref };
 
         return createElement(Component, attrs);
       }, [inProps, ref]);
