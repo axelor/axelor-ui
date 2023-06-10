@@ -201,6 +201,7 @@ function Menu({
         className={classNames(className, styles.menu)}
         show={showProp}
         target={buttonRef}
+        rounded={false}
         {...rest}
       >
         {React.Children.map(children, (child) => {
