@@ -452,7 +452,16 @@ export function Select({
             [selectStyles.invalidFocus]: invalid && state.isFocused,
           }),
         menu: () => selectStyles.menu,
+        menuList: () => selectStyles.menuList,
+        option: (state: any) => {
+          return clsx(selectStyles.option, {
+            [selectStyles.optionFocus]: state.isFocused,
+          });
+        },
         placeholder: () => selectStyles.placeholder,
+        singleValue: () => selectStyles.singleValue,
+        multiValue: () => selectStyles.multiValue,
+        input: () => selectStyles.input,
       }}
       menuPortalTarget={document.body}
       menuIsOpen={menuIsOpen}
