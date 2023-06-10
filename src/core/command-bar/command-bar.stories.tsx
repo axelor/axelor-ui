@@ -27,6 +27,7 @@ export const Basic = () => {
           {
             key: "save",
             text: "Save",
+            disabled: true,
             iconProps: {
               icon: "save",
             },
