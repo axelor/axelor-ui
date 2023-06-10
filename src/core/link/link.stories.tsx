@@ -18,7 +18,7 @@ export const Basic = () => {
 
 export const Colored = () => {
   return (
-    <Box>
+    <Box d="flex" flexDirection="column" g={3}>
       <Link href="#" color="primary">
         Primary link
       </Link>{" "}
@@ -49,8 +49,21 @@ export const Colored = () => {
 
 export const Underlined = () => {
   return (
+    <Box d="flex" flexDirection="column" g={3}>
+      <Link href="#" underline>
+        Link with underline
+      </Link>
+      <Link href="#" underline={false}>
+        Link without underline
+      </Link>
+    </Box>
+  );
+};
+
+export const Offset = () => {
+  return (
     <Box>
-      <Link href="#" underline={true}>
+      <Link href="#" offset={2}>
         Link
       </Link>
     </Box>
