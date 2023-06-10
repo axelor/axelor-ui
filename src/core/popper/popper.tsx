@@ -156,7 +156,7 @@ export const Popper = ({
   shadow = true,
   border = true,
   role = "tooltip",
-  bg = "light",
+  bg = "body",
   color = "body",
   container,
   transition: Transition = Fade,
