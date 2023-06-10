@@ -3,6 +3,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
 } from "react";
 import { ClassValue, cssx } from "../clsx";
@@ -18,24 +19,31 @@ const STYLES: Record<string, CSSModuleClasses> = {
 
 export interface ThemeContextValue {
   dir?: string;
+  theme?: "light" | "dark";
 }
 
-export interface ThemeProviderProps {
-  dir?: string;
+export interface ThemeProviderProps extends Partial<ThemeContextValue> {
   children: React.ReactElement;
 }
 
 const ThemeContext = createContext<ThemeContextValue>({});
 
-export function ThemeProvider({ dir, children }: ThemeProviderProps) {
+export function ThemeProvider({ dir, theme, children }: ThemeProviderProps) {
   const curr = useContext(ThemeContext);
+  const value = useMemo(() => ({ ...curr, dir, theme }), [curr, dir, theme]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (root.getAttribute("data-bs-theme")) return;
+    if (theme) root.setAttribute("data-bs-theme", theme);
+    return () => {
+      root.removeAttribute("data-bs-theme");
+    };
+  }, [theme]);
+
   return (
-    <ThemeContext.Provider value={{ dir: dir || curr.dir }}>
-      {dir
-        ? cloneElement(children, {
-            dir: children.props.dir || dir,
-          })
-        : children}
+    <ThemeContext.Provider value={value}>
+      {cloneElement(children, { dir: value.dir, "data-bs-theme": theme })}
     </ThemeContext.Provider>
   );
 }
