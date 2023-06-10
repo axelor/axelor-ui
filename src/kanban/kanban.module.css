@@ -15,5 +15,6 @@
 }
 
 .record {
-  background-color: white;
+  background-color: var(--bs-body-bg);
+  border: 1px solid var(--bs-border-color);
 }

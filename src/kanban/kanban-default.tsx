@@ -9,7 +9,7 @@ export const DefaultColumn: ColumnRenderer = ({
   RecordList,
 }) => {
   return (
-    <Box p={2} bg="light" border rounded me={2} className={styles.column}>
+    <Box p={2} bg="body-tertiary" border rounded me={2} className={styles.column}>
       <Box as="h5" p={2}>
         {column.title}
       </Box>

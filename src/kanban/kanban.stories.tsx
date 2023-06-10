@@ -144,16 +144,13 @@ export const ColumnEditor = () => (
         title: "Todo",
         records: getRecords(3),
         renderer: ({ RecordList, column }) => (
-          <Box p={2} bg="light" border rounded me={2}>
+          <Box p={2} bg="body-tertiary" border rounded me={2}>
             <Box as="h5" p={2}>
               {column.title}
             </Box>
-            <Box d="flex">
+            <Box d="flex" g={2}>
               <Input />
-              &nbsp;
-              <Button bg="primary" color="white">
-                Add
-              </Button>
+              <Button variant="primary">Add</Button>
             </Box>
             <RecordList column={column} />
           </Box>
@@ -191,7 +188,7 @@ export const ColumnScrollable = () => (
         title: "Todo",
         records: getRecords(10),
         renderer: ({ RecordList, column }) => (
-          <Box border rounded me={2} p={2} bg="light" style={{ width: 250 }}>
+          <Box border rounded me={2} p={2} bg="body-tertiary" style={{ width: 250 }}>
             <Box as="h5" p={2}>
               {column.title}
             </Box>
@@ -249,7 +246,7 @@ const Record = ({ record, column, onEdit, onDelete }: any) => {
   };
 
   return (
-    <Box p={2} mt={2} shadow="sm" rounded style={{ backgroundColor: "white" }}>
+    <Box p={2} mt={2} shadow="sm" rounded border bg="body">
       <Box pb={1} pt={1} d="flex" justifyContent="space-between">
         <Box as="p">{record.title}</Box>
         <Box>
