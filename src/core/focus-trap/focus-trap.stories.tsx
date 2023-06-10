@@ -11,18 +11,18 @@ const config = {
 export const Basic = function () {
   return (
     <FocusTrap>
-      <Box p={2} border borderColor="dark" bgColor="light">
+      <Box p={3} border rounded bgColor="body-tertiary">
         <Box as="h3" color="secondary">
           Information
         </Box>
         <Box>
-          <Input m={1} placeholder="First Name" />
-          <Input m={1} placeholder="Last Name" />
-          <Input m={1} placeholder="Mobile" />
-          <Button m={1} variant="primary">
+          <Input my={2} placeholder="First Name" />
+          <Input my={2} placeholder="Last Name" />
+          <Input my={2} placeholder="Mobile" />
+          <Button mt={2} variant="primary">
             Save
           </Button>
-          <Button m={1} variant="secondary">
+          <Button mt={2} ms={2} variant="secondary">
             Cancel
           </Button>
         </Box>
