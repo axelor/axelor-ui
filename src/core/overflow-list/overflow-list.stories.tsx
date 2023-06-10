@@ -7,7 +7,6 @@ import { ReactComponent as BiThreeDots } from "bootstrap-icons/icons/three-dots.
 
 import { Box } from "../box";
 import { Button } from "../button";
-import { ButtonGroup } from "../button-group";
 import { Icon } from "../icon";
 import { OverflowList } from "./overflow-list";
 import { OverflowListItemProps, OverflowListButtonType } from "./types";
@@ -40,14 +39,13 @@ export const Dropdown = ({ inverse = false, vertical = false }) => {
   return (
     <OverflowList
       d="flex"
+      g={1}
       vertical={vertical}
       inverse={inverse}
       items={items}
-      as={ButtonGroup}
       renderListItem={(item: OverflowListItemProps, index: number) => (
         <Button
-          border
-          variant="light"
+          variant="primary"
           style={{ minWidth: 120, whiteSpace: "nowrap" }}
           key={index}
         >
@@ -69,8 +67,7 @@ export const Dropdown = ({ inverse = false, vertical = false }) => {
         if (type === "dropdown") {
           return (
             <Button
-              variant="light"
-              border
+              variant="primary"
               {...props}
               d="flex"
               justifyContent="center"

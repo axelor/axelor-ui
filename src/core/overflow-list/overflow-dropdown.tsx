@@ -232,9 +232,8 @@ export const OverflowDropdown = withStyled(DropdownList)((props, ref) => {
         <Menu
           show
           arrow
-          bg={"light"}
-          color={"body"}
-          border={false}
+          bg="body"
+          color="body"
           transition={Fade}
           container={document.body}
           placement={vertical ? "end" : "bottom"}
