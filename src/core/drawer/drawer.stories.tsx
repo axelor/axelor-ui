@@ -34,7 +34,7 @@ export const Backdrop = () => {
       </Button>
       <Drawer
         d="flex"
-        bgColor="light"
+        bgColor="body-tertiary"
         placement="start"
         open={show}
         onClose={hideDrawer}
@@ -73,7 +73,7 @@ export const Basic = () => {
       </Button>
       <Drawer
         d="flex"
-        bgColor="light"
+        bgColor="body-tertiary"
         placement="start"
         open={show}
         onClose={hideDrawer}
@@ -134,7 +134,7 @@ function DrawerDemo({
       </Button>
       <Drawer
         d="flex"
-        bgColor="light"
+        bgColor="body-tertiary"
         placement={placement}
         open={show}
         onClose={hideDrawer}
@@ -195,7 +195,7 @@ export const Shadow = () => {
       </Button>
       <Drawer
         d="flex"
-        bgColor="light"
+        bgColor="body-tertiary"
         placement="start"
         open={show}
         onClose={hideDrawer}
