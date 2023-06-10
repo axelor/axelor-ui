@@ -10,7 +10,7 @@ const IconBox = (props: BootstrapIconProps) => {
   const { icon } = props;
   return (
     <Box
-      bg="light"
+      bg="body-tertiary"
       rounded
       d="flex"
       flexDirection="column"
