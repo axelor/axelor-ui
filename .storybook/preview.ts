@@ -31,10 +31,20 @@ const preview: Preview = {
       defaultValue: "en_US",
       toolbar: {
         icon: "globe",
-        title: "Locale",
         items: [
           { value: "en_US", title: "English" },
           { value: "ar_MA", title: "العربية" },
+        ],
+      },
+    },
+    theme: {
+      name: "Theme",
+      description: "Theme",
+      toolbar: {
+        icon: "circlehollow",
+        items: [
+          { value: "light", icon: "circlehollow", title: "Light" },
+          { value: "dark", icon: "circle", title: "Dark" },
         ],
       },
     },
