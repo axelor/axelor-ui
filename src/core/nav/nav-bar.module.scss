@@ -20,7 +20,7 @@
 .root > .menu > .menuItemWrapper {
   transition: all 0.2s ease-in-out;
   &.active {
-    background: var(--bs-light);
+    background: var(--bs-tertiary-bg);
   }
 }
 

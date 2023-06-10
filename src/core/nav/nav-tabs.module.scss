@@ -32,12 +32,6 @@ $spacing: 0.5rem;
   border-top-left-radius: $spacing * 2;
   border-top-right-radius: $spacing * 2;
   color: var(--bs-nav-active-color);
-  &.active {
-    z-index: 1;
-    background: var(--bs-white) !important;
-    border-color: var(--bs-nav-tabs-border-color);
-    border-bottom-color: transparent;
-  }
   &:first-child,
   &:hover,
   &:hover + & {
@@ -48,6 +42,13 @@ $spacing: 0.5rem;
   }
   &:hover {
     background: var(--bs-nav-tabs-hover-bg);
+    border-color: rgba(0, 0, 0, 0.05);
+  }
+  &.active {
+    z-index: 1;
+    background: var(--bs-body-bg) !important;
+    border-color: var(--bs-nav-tabs-border-color);
+    border-bottom-color: transparent;
   }
 }
 

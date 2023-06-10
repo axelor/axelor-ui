@@ -188,7 +188,6 @@ export const Navbar = () => {
         style={{
           width: float ? 60 : 250,
           height: "calc(100vh - 2rem)",
-          background: "#FBFBFF",
           transition: "all 0.2s ease-in-out",
         }}
       >

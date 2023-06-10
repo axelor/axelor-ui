@@ -49,8 +49,8 @@
 
 .nav-custom-tabs {
   --bs-nav-tabs-border-color: #{$nav-tabs-border-color};
-  --bs-nav-tabs-bg: #{$gray-100};
-  --bs-nav-tabs-hover-bg: #{$gray-200};
+  --bs-nav-tabs-bg: var(--bs-body-bg);
+  --bs-nav-tabs-hover-bg: var(--bs-tertiary-bg);
 }
 
 .gantt {
