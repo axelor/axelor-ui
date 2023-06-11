@@ -31,6 +31,8 @@ $iconSpacing: $spacing;
   border-radius: var(--bs-dropdown-border-radius) !important;
 }
 
+.group,
+.groupHeading,
 .option {
   color: var(--bs-dropdown-link-color) !important;
   background-color: transparent !important;

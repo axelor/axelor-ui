@@ -7,15 +7,15 @@ import ReactSelect, {
   createFilter,
 } from "react-select";
 import CreatableSelect from "react-select/creatable";
+
 import { MaterialIcon, MaterialIconProps } from "../../icons/meterial-icon";
 import { Box } from "../box";
-import { clsx } from "../clsx";
 import { useTheme } from "../styles";
-import selectStyles from "./select.module.scss";
+import { useReactSelectClassNames } from "./react-select";
+
+import styles from "./select.module.scss";
 
 export { components as SelectComponents } from "react-select";
-
-export { ReactSelect };
 
 export type SelectOption = unknown;
 
@@ -109,7 +109,7 @@ const IndicatorsContainer = (
     icons.length > 0 && (
       <Box
         d="flex"
-        className={selectStyles.icons}
+        className={styles.icons}
         {...(icons.some((icon) => icon.onClick)
           ? { onMouseDown: handleMouseDown }
           : {})}
@@ -441,28 +441,13 @@ export function Select({
     }
   };
 
+  const classNames = useReactSelectClassNames({ invalid });
+
   return (
     <SelectComponent
       className={className}
       classNamePrefix={classNamePrefix}
-      classNames={{
-        control: (state: any) =>
-          clsx(selectStyles.control, {
-            [selectStyles.invalid]: invalid,
-            [selectStyles.invalidFocus]: invalid && state.isFocused,
-          }),
-        menu: () => selectStyles.menu,
-        menuList: () => selectStyles.menuList,
-        option: (state: any) => {
-          return clsx(selectStyles.option, {
-            [selectStyles.optionFocus]: state.isFocused,
-          });
-        },
-        placeholder: () => selectStyles.placeholder,
-        singleValue: () => selectStyles.singleValue,
-        multiValue: () => selectStyles.multiValue,
-        input: () => selectStyles.input,
-      }}
+      classNames={classNames}
       menuPortalTarget={document.body}
       menuIsOpen={menuIsOpen}
       menuPlacement="auto"
