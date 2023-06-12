@@ -121,8 +121,9 @@
 .menuTag {
   position: absolute;
   right: 0.75rem;
-  padding-left: 0.65rem;
-  padding-right: 0.65rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  line-height: 0.9;
 
   .rtl & {
     right: unset;
