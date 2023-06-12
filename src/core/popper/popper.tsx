@@ -29,6 +29,7 @@ export interface PopperProps {
   open?: boolean;
   target: HTMLElement | null;
   container?: Element | null | (() => Element | null);
+  className?: string;
   children?: React.ReactNode;
   placement?: PopperPlacement;
   strategy?: "absolute" | "fixed";
@@ -72,6 +73,7 @@ const PopperWrapper = ({
   shadow,
   border,
   children,
+  className,
   ...props
 }: PopperProps) => {
   const instance = useRef<Instance | null>(null);
@@ -135,7 +137,7 @@ const PopperWrapper = ({
   return (
     <div
       ref={setWrapperEl}
-      className={classNames(styles.popper, {
+      className={classNames(styles.popper, className, {
         "drop-shadow-md": shadow,
         [styles.border]: border,
       })}
