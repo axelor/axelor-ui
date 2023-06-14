@@ -1,6 +1,6 @@
 import CSS from "csstype";
 import { SpaceValue } from ".";
-import { Config } from "../types";
+import { Config, Responsive } from "../types";
 import { toPixel } from "../utils";
 
 const convert = (value: any) => value;
@@ -29,24 +29,24 @@ const computeGap = (value: SpaceValue | undefined, breakpoint?: string) => {
 };
 
 export interface FlexProps {
-  flex?: CSS.Property.Flex;
-  flexBasis?: CSS.Property.FlexBasis;
-  flexDirection?: CSS.Property.FlexDirection;
-  flexFlow?: CSS.Property.FlexFlow;
-  flexGrow?: CSS.Property.FlexGrow;
-  flexShrink?: CSS.Property.FlexShrink;
-  flexWrap?: CSS.Property.FlexWrap;
-  order?: CSS.Property.Order;
-  justifyContent?: CSS.Property.JustifyContent;
-  alignContent?: CSS.Property.AlignContent;
-  alignItems?: CSS.Property.AlignItems;
-  alignSelf?: CSS.Property.AlignSelf;
-  placeContent?: CSS.Property.PlaceContent;
-  placeItems?: CSS.Property.PlaceItems;
-  rowGap?: CSS.Property.RowGap | number;
-  columnGap?: CSS.Property.ColumnGap | number;
-  gap?: CSS.Property.Gap | number;
-  g?: SpaceValue;
+  flex?: Responsive<CSS.Property.Flex>;
+  flexBasis?: Responsive<CSS.Property.FlexBasis>;
+  flexDirection?: Responsive<CSS.Property.FlexDirection>;
+  flexFlow?: Responsive<CSS.Property.FlexFlow>;
+  flexGrow?: Responsive<CSS.Property.FlexGrow>;
+  flexShrink?: Responsive<CSS.Property.FlexShrink>;
+  flexWrap?: Responsive<CSS.Property.FlexWrap>;
+  order?: Responsive<CSS.Property.Order>;
+  justifyContent?: Responsive<CSS.Property.JustifyContent>;
+  alignContent?: Responsive<CSS.Property.AlignContent>;
+  alignItems?: Responsive<CSS.Property.AlignItems>;
+  alignSelf?: Responsive<CSS.Property.AlignSelf>;
+  placeContent?: Responsive<CSS.Property.PlaceContent>;
+  placeItems?: Responsive<CSS.Property.PlaceItems>;
+  rowGap?: Responsive<CSS.Property.RowGap | number>;
+  columnGap?: Responsive<CSS.Property.ColumnGap | number>;
+  gap?: Responsive<CSS.Property.Gap | number>;
+  g?: Responsive<SpaceValue>;
 }
 
 export const FlexConfig: Config<FlexProps> = {
@@ -71,23 +71,23 @@ export const FlexConfig: Config<FlexProps> = {
 };
 
 export interface GridProps {
-  gridGap?: CSS.Property.GridGap | number;
-  gridRowGap?: CSS.Property.GridRowGap | number;
-  gridColumnGap?: CSS.Property.GridColumnGap | number;
-  gridRow?: CSS.Property.GridRow;
-  gridColumn?: CSS.Property.GridColumn;
-  gridRowEnd?: CSS.Property.GridRowEnd;
-  gridColumnEnd?: CSS.Property.GridColumnEnd;
-  gridAutoRows?: CSS.Property.GridAutoRows;
-  gridAutoColumns?: CSS.Property.GridAutoColumns;
-  gridAutoFlow?: CSS.Property.GridAutoFlow;
-  gridTemplate?: CSS.Property.GridTemplate;
-  gridTemplateRows?: CSS.Property.GridTemplateRows;
-  gridTemplateColumns?: CSS.Property.GridTemplateColumns;
-  gridTemplateAreas?: CSS.Property.GridTemplateAreas;
-  gridArea?: CSS.Property.GridArea;
-  gap?: CSS.Property.Gap | number;
-  g?: SpaceValue;
+  gridGap?: Responsive<CSS.Property.GridGap | number>;
+  gridRowGap?: Responsive<CSS.Property.GridRowGap | number>;
+  gridColumnGap?: Responsive<CSS.Property.GridColumnGap | number>;
+  gridRow?: Responsive<CSS.Property.GridRow>;
+  gridColumn?: Responsive<CSS.Property.GridColumn>;
+  gridRowEnd?: Responsive<CSS.Property.GridRowEnd>;
+  gridColumnEnd?: Responsive<CSS.Property.GridColumnEnd>;
+  gridAutoRows?: Responsive<CSS.Property.GridAutoRows>;
+  gridAutoColumns?: Responsive<CSS.Property.GridAutoColumns>;
+  gridAutoFlow?: Responsive<CSS.Property.GridAutoFlow>;
+  gridTemplate?: Responsive<CSS.Property.GridTemplate>;
+  gridTemplateRows?: Responsive<CSS.Property.GridTemplateRows>;
+  gridTemplateColumns?: Responsive<CSS.Property.GridTemplateColumns>;
+  gridTemplateAreas?: Responsive<CSS.Property.GridTemplateAreas>;
+  gridArea?: Responsive<CSS.Property.GridArea>;
+  gap?: Responsive<CSS.Property.Gap | number>;
+  g?: Responsive<SpaceValue>;
 }
 
 export const GridConfig: Config<GridProps> = {
