@@ -90,7 +90,9 @@ const extractStyle = <T extends StyleProps>(props: T) => {
       const compute = SystemConfig[name as KeyType];
       if (compute) {
         const values = toBreakpoints(value);
-        return values.flatMap(([v, b]) => compute(v, b));
+        return values.flatMap(([v, b]) =>
+          b && b !== "base" ? compute(v, b) : compute(v)
+        );
       }
       return {} as ComputeResult;
     })
