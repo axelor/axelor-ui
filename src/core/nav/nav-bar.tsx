@@ -9,7 +9,7 @@ import { MaterialIcon } from "../../icons/meterial-icon";
 import { Nav } from "./nav";
 import { NavItemProps, NavProps } from "./types";
 import { useClassNames, useTheme } from "../styles";
-import { getRGB } from "./utils";
+import { getRGB, getSupportedColor } from "./utils";
 
 import classes from "./nav-bar.module.scss";
 
@@ -78,7 +78,8 @@ const NavBarItem = React.memo(function NavBarItem({
   const classNames = useClassNames();
   const rtl = useTheme().dir === "rtl";
 
-  const { tag, tagStyle, icon, iconColor: color, title, items } = item;
+  const { tag, tagStyle, icon, iconColor, title, items } = item;
+  const color = iconColor && getSupportedColor(iconColor);
   const bgColor = color && getRGB(color, 0.25);
   const hasChildren = (items || []).length > 0;
 

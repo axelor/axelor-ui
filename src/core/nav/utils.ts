@@ -148,6 +148,16 @@ const colors: any = {
   yellowgreen: "#9acd32",
 };
 
+const legacyColors: Record<string, string> = {
+  amber: "#ffc107",
+  bluegrey: "#607d8b",
+  deeporange: "#ff5722",
+  deeppurple: "#673ab7",
+};
+
+export function getSupportedColor(color: string) {
+  return legacyColors[color] ?? color;
+}
 export function getRGB(color: string, alpha: number) {
   const hex = colors[color] || color;
   const r = parseInt(hex.slice(1, 3), 16);
