@@ -22,6 +22,7 @@
   display: flex;
   gap: 0.25rem;
   align-items: center;
+  justify-content: center;
 }
 
 .item.split {
@@ -43,7 +44,15 @@
 }
 
 .icon {
-  line-height: inherit;
+  line-height: 1;
+}
+
+.title:not(.iconOnly) .icon {
+  margin: 0 -0.25rem;
+}
+
+.arrowIcon {
+  margin: -0.375rem;
 }
 
 .image {
@@ -73,6 +82,9 @@
 }
 
 .item {
+  --bs-btn-padding-x: 0.5rem;
+  --bs-btn-padding-y: 0.5rem;
+  --bs-btn-font-family: ;
   --bs-btn-color: var(--bs-body-color);
   --bs-btn-bg: var(--bs-body-bg);
   --bs-btn-border-color: transparent;

@@ -146,18 +146,26 @@ export function CommandItem(props: CommandItemProps) {
           <span
             className={clsx(styles.title, {
               [styles.iconEnd]: iconSide === "end",
+              [styles.iconOnly]: iconOnly,
             })}
           >
-            {imageProps && <Image className={styles.image} {...imageProps} />}
+            {imageProps?.src && (
+              <Image className={styles.image} {...imageProps} />
+            )}
             {Icon ? (
               <Icon className={styles.icon} />
             ) : (
-              iconProps && (
+              iconProps?.icon && (
                 <MaterialIcon {...iconProps} className={styles.icon} />
               )
             )}
             {text && !iconOnly && <span className={styles.title}>{text}</span>}
-            {showArrow && <MaterialIcon icon="arrow_drop_down" />}
+            {showArrow && (
+              <MaterialIcon
+                icon="arrow_drop_down"
+                className={clsx(styles.icon, styles.arrowIcon)}
+              />
+            )}
           </span>
         </Button>
       )}
@@ -169,7 +177,10 @@ export function CommandItem(props: CommandItemProps) {
           {...splitProps}
         >
           <span className={styles.title}>
-            <MaterialIcon icon="arrow_drop_down" className={styles.icon} />
+            <MaterialIcon
+              icon="arrow_drop_down"
+              className={clsx(styles.icon, styles.arrowIcon)}
+            />
           </span>
         </Button>
       )}
