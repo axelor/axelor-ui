@@ -259,7 +259,7 @@ export const OverflowDropdown = withStyled(DropdownList)((props, ref) => {
     };
 
     return renderButton ? (
-      renderButton("dropdown", props)
+      renderButton("dropdown", props, items.length - offset)
     ) : (
       <DropdownButton {...props} />
     );

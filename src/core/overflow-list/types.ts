@@ -38,11 +38,12 @@ export interface OverflowListProps {
     item: OverflowListItemProps,
     index: number,
     props?: React.HTMLAttributes<HTMLElement>
-  ) => React.ReactChild;
+  ) => React.ReactElement;
   renderButton?: (
     type: OverflowListButtonType,
-    props?: React.HTMLAttributes<HTMLElement>
-  ) => React.ReactChild | null;
+    props?: React.HTMLAttributes<HTMLElement>,
+    overflowItemsCount?: number
+  ) => React.ReactElement | null;
   renderOverflow?: (
     items: OverflowListItemProps[],
     closeDropdown?: () => void
