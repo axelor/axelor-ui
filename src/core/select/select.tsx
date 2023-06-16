@@ -8,7 +8,7 @@ import ReactSelect, {
 } from "react-select";
 import CreatableSelect from "react-select/creatable";
 
-import { MaterialIcon, MaterialIconProps } from "../../icons/meterial-icon";
+import { MaterialIcon, MaterialIconProps } from "../../icons/material-icon";
 import { Box } from "../box";
 import { useTheme } from "../styles";
 import { useReactSelectClassNames } from "./react-select";

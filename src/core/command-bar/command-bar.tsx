@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { MaterialIcon, MaterialIconProps } from "../../icons/meterial-icon";
+import { MaterialIcon, MaterialIconProps } from "../../icons/material-icon";
 import { Box } from "../box";
 import { Button } from "../button";
 import { ButtonGroup } from "../button-group";

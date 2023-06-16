@@ -1,7 +1,7 @@
 import { Meta } from "@storybook/react";
 import { useState } from "react";
 
-import { MaterialIcon } from "../../icons/meterial-icon";
+import { MaterialIcon } from "../../icons/material-icon";
 import { Box } from "../box";
 import { TextField } from "./text-field";
 

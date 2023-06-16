@@ -9,7 +9,7 @@ import {
   useClassNames,
 } from "../core";
 
-import { MaterialIcon } from "../icons/meterial-icon";
+import { MaterialIcon } from "../icons/material-icon";
 import GridDragElement, { DropHandler } from "./grid-drag-element";
 import styles from "./grid.module.scss";
 import { useTranslation } from "./translate";

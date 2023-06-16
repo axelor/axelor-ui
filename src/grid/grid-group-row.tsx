@@ -1,7 +1,7 @@
 import React from "react";
 import { useClassNames } from "../core";
 
-import { MaterialIcon } from "../icons/meterial-icon";
+import { MaterialIcon } from "../icons/material-icon";
 import styles from "./grid.module.scss";
 import { useTranslation } from "./translate";
 import * as TYPES from "./types";

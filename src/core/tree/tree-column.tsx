@@ -1,6 +1,6 @@
 import * as TYPES from "./types";
 import { useClassNames } from "../styles";
-import { MaterialIcon } from "../../icons/meterial-icon";
+import { MaterialIcon } from "../../icons/material-icon";
 import { Box } from "../box";
 import styles from "./tree.module.scss";
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { MaterialIcon } from "../../icons/meterial-icon";
+import { MaterialIcon } from "../../icons/material-icon";
 import { Box } from "../box/box";
 import { MenuProps } from "../menu/menu";
 import { MenuItem } from "../menu/menu-item";

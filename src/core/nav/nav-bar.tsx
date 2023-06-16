@@ -5,7 +5,7 @@ import { Popper } from "../popper";
 import { Collapse } from "../collapse";
 import { Badge } from "../badge";
 import { Box } from "../box";
-import { MaterialIcon } from "../../icons/meterial-icon";
+import { MaterialIcon } from "../../icons/material-icon";
 import { Nav } from "./nav";
 import { NavItemProps, NavProps } from "./types";
 import { useClassNames, useTheme } from "../styles";

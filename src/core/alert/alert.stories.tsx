@@ -1,4 +1,4 @@
-import { MaterialIcon } from "../../icons/meterial-icon";
+import { MaterialIcon } from "../../icons/material-icon";
 import { Box } from "../box";
 import { Alert, AlertHeader, AlertLink } from "./alert";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Divider, Input, useClassNames } from "../core";
 
-import { MaterialIcon } from "../icons/meterial-icon";
+import { MaterialIcon } from "../icons/material-icon";
 import { GridColumn, GridColumnProps } from "./grid-column";
 import { GridColumResizer } from "./grid-column-resizer";
 import styles from "./grid.module.scss";

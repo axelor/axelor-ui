@@ -15,7 +15,7 @@ import { Nav } from "./nav";
 import { NavItemProps, NavProps } from "./types";
 import { getRGB } from "./utils";
 
-import { MaterialIcon } from "../../icons/meterial-icon";
+import { MaterialIcon } from "../../icons/material-icon";
 import classes from "./nav-tabs.module.scss";
 
 const RESIZE_DELAY = 50;

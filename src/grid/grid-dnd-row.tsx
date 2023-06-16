@@ -4,7 +4,7 @@
 import React from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Box } from "../core";
-import { MaterialIcon } from "../icons/meterial-icon";
+import { MaterialIcon } from "../icons/material-icon";
 import * as TYPES from "./types";
 
 const GridDNDRowContext = React.createContext<any>(null);

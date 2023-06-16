@@ -1,4 +1,4 @@
-import { MaterialIcon, MaterialIconProps } from "../../icons/meterial-icon";
+import { MaterialIcon, MaterialIconProps } from "../../icons/material-icon";
 import { Input, type InputProps } from "../input";
 import { InputFeedback } from "../input-feedback";
 import { InputLabel } from "../input-label";

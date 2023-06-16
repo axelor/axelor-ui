@@ -4,7 +4,7 @@ import { useDrag, useDrop } from "react-dnd";
 import { Box } from "../box";
 import { TreeColumn } from "./tree-column";
 import { useClassNames, useTheme } from "../styles";
-import { MaterialIcon } from "../../icons/meterial-icon";
+import { MaterialIcon } from "../../icons/material-icon";
 import * as TYPES from "./types";
 import styles from "./tree.module.scss";
 
