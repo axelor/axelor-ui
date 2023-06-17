@@ -159,7 +159,7 @@ export function CommandItem(props: CommandItemProps) {
                 <MaterialIcon {...iconProps} className={styles.icon} />
               )
             )}
-            {text && !iconOnly && <span className={styles.title}>{text}</span>}
+            {text && !iconOnly && <span className={styles.titleText}>{text}</span>}
             {showArrow && (
               <MaterialIcon
                 icon="arrow_drop_down"
