@@ -10,11 +10,6 @@ export type ColorParam =
 export const white = "white";
 export const black = "black";
 
-export const minContrastRatio = 4.5;
-
-export const colorContrastDark = black;
-export const colorContrastLight = white;
-
 export function hexColor(color: ColorParam) {
   return Color(color).hex().toLowerCase();
 }
@@ -37,7 +32,12 @@ export function colorEquals(color1: ColorParam, color2: ColorParam) {
   return color1 === color2 || hexColor(color1) === hexColor(color2);
 }
 
-export function colorContrast(background: ColorParam) {
+export function colorContrast(
+  background: ColorParam,
+  colorContrastLight: ColorParam = white,
+  colorContrastDark: ColorParam = black,
+  minContrastRatio: number = 4.5
+) {
   let maxRatio = 0;
   let maxRatioColor = null;
 

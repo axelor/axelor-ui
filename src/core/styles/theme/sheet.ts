@@ -1,5 +1,6 @@
 import Color from "color";
 
+import { toButtonVars } from "./buttons";
 import { ThemeOptions } from "./types";
 import { rgbColor, shadeColor, tintColor } from "./utils";
 
@@ -174,6 +175,13 @@ function toMiscVars({ palette = {}, components = {} }: ThemeOptions) {
   };
 }
 
+function joinVars(vars: Record<string, any>) {
+  return Object.entries(vars)
+    .filter(([, v]) => v !== undefined && v !== null)
+    .map(([k, v]) => `${k}:${v};`)
+    .join("");
+}
+
 function createRootRule(options: ThemeOptions) {
   const vars = {
     ...toColorVars(options),
@@ -184,19 +192,48 @@ function createRootRule(options: ThemeOptions) {
     ...toMiscVars(options),
   };
 
-  const text = Object.entries(vars)
-    .filter(([, v]) => v !== undefined && v !== null)
-    .map(([k, v]) => `${k}:${v};`)
-    .join("");
+  const text = joinVars(vars);
 
   return `:root{${text}}`;
 }
 
-export function createStyleSheet(options: ThemeOptions) {
+function createButtonRules(
+  { palette = {} }: ThemeOptions,
+  classes: CSSModuleClasses = {}
+) {
+  const themeColors = findThemeColors({ palette });
+  const rules: string[] = [];
+
+  for (const name of THEME_COLORS) {
+    const color = themeColors[name];
+    if (color) {
+      for (const prefix of ["btn", "btn-outline"]) {
+        const cls = classes[`${prefix}-${name}`];
+        const outline = prefix === "btn-outline";
+        if (cls) {
+          const vars = toButtonVars(name, color, outline);
+          const text = joinVars(vars);
+          const rule = `.${cls}{${text}}`;
+          rules.push(rule);
+        }
+      }
+    }
+  }
+
+  return rules.join("");
+}
+
+export function createStyleSheet(
+  options: ThemeOptions,
+  classes?: CSSModuleClasses
+) {
   const root = createRootRule(options);
+  const buttons = createButtonRules(options, classes);
+
+  const text = [root, buttons].filter(Boolean).join("");
   const sheet = new CSSStyleSheet();
 
-  sheet.replaceSync(root);
+  sheet.replaceSync(text);
 
   return sheet;
 }

@@ -50,16 +50,16 @@ export function ThemeProvider({
   }, [theme]);
 
   useEffect(() => {
+    const classes = dir && dir in STYLES ? STYLES[dir] : undefined;
+
     const last = [...document.adoptedStyleSheets];
-    const sheet = createStyleSheet({
-      palette,
-    });
+    const sheet = createStyleSheet({ palette }, classes);
 
     document.adoptedStyleSheets = [...last, sheet];
     return () => {
       document.adoptedStyleSheets = last;
     };
-  }, [palette]);
+  }, [dir, palette]);
 
   return (
     <ThemeContext.Provider value={value}>
