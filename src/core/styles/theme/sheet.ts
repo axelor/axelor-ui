@@ -4,7 +4,87 @@ import { toButtonVars } from "./buttons";
 import { ThemeOptions } from "./types";
 import { rgbColor, shadeColor, tintColor } from "./utils";
 
-const COMMON_COLORS = [
+interface ColorRecord extends Record<string, string | undefined> {}
+
+interface GrayColors extends ColorRecord {
+  100: string;
+  200: string;
+  300: string;
+  400: string;
+  500: string;
+  600: string;
+  700: string;
+  800: string;
+  900: string;
+}
+
+interface CommonColors extends ColorRecord {
+  blue: string;
+  indigo: string;
+  purple: string;
+  pink: string;
+  red: string;
+  orange: string;
+  yellow: string;
+  green: string;
+  teal: string;
+  cyan: string;
+  white: string;
+  black: string;
+  gray: string;
+}
+
+interface ThemeColors extends ColorRecord {
+  primary: string;
+  secondary: string;
+  success: string;
+  info: string;
+  warning: string;
+  danger: string;
+  light: string;
+  dark: string;
+}
+
+const GRAYS: GrayColors = {
+  100: "#f8f9fa",
+  200: "#e9ecef",
+  300: "#dee2e6",
+  400: "#ced4da",
+  500: "#adb5bd",
+  600: "#6c757d",
+  700: "#495057",
+  800: "#343a40",
+  900: "#212529",
+};
+
+const COMMON: CommonColors = {
+  blue: "#0d6efd",
+  indigo: "#6610f2",
+  purple: "#6f42c1",
+  pink: "#d63384",
+  red: "#dc3545",
+  orange: "#fd7e14",
+  yellow: "#ffc107",
+  green: "#198754",
+  teal: "#20c997",
+  cyan: "#0dcaf0",
+  white: "#ffffff",
+  black: "#000000",
+  gray: "#adb5bd",
+};
+
+const THEME: ThemeColors = {
+  primary: COMMON.blue,
+  secondary: GRAYS[600],
+  success: COMMON.green,
+  info: COMMON.cyan,
+  warning: COMMON.yellow,
+  danger: COMMON.red,
+  light: GRAYS[100],
+  dark: GRAYS[900],
+};
+
+const COMMON_COLOR_NAMES = [
   "blue",
   "indigo",
   "purple",
@@ -20,7 +100,7 @@ const COMMON_COLORS = [
   "gray",
 ] as const;
 
-const THEME_COLORS = [
+const THEME_COLOR_NAMES = [
   "primary",
   "secondary",
   "success",
@@ -31,10 +111,14 @@ const THEME_COLORS = [
   "dark",
 ] as const;
 
+function findColor(name: string): string | undefined {
+  return COMMON[name] ?? THEME[name] ?? GRAYS[name];
+}
+
 function findGrayColors({ palette = {} }: ThemeOptions) {
   const { grays, ...colors } = palette;
   return {
-    dark: colors.dark || grays?.[800],
+    dark: colors.dark ?? grays?.[800],
     100: grays?.[100] ?? colors.light,
     200: grays?.[200],
     300: grays?.[300],
@@ -49,20 +133,21 @@ function findGrayColors({ palette = {} }: ThemeOptions) {
 
 function findThemeColors({ palette = {} }: ThemeOptions) {
   const grays = findGrayColors({ palette });
+  const look = (name: any) => (palette as any)[name] ?? findColor(name);
   return {
-    primary: palette.primary ?? palette.blue,
-    secondary: palette.secondary ?? palette.gray,
-    success: palette.success ?? palette.green,
-    info: palette.info ?? palette.cyan,
-    warning: palette.warning ?? palette.yellow,
-    danger: palette.danger ?? palette.red,
-    light: palette.light ?? grays[100],
-    dark: palette.dark ?? grays[800],
+    primary: look(palette.primary) ?? palette.primary ?? palette.blue,
+    secondary: look(palette.secondary) ?? palette.secondary ?? palette.gray,
+    success: look(palette.success) ?? palette.success ?? palette.green,
+    info: look(palette.info) ?? palette.info ?? palette.cyan,
+    warning: look(palette.warning) ?? palette.warning ?? palette.yellow,
+    danger: look(palette.danger) ?? palette.danger ?? palette.red,
+    light: look(palette.light) ?? palette.light ?? grays[100],
+    dark: look(palette.dark) ?? palette.dark ?? grays[800],
   };
 }
 
 function toColorVars({ palette = {} }: ThemeOptions) {
-  const commonColors = COMMON_COLORS.reduce(
+  const commonColors = COMMON_COLOR_NAMES.reduce(
     (prev, name) => ({ ...prev, [`--bs-${name}`]: palette[name] }),
     {}
   );
@@ -81,7 +166,7 @@ function toColorVars({ palette = {} }: ThemeOptions) {
 
 function toThemeVars({ palette = {} }: ThemeOptions) {
   const themeColors = findThemeColors({ palette });
-  return THEME_COLORS.reduce((prev, name) => {
+  return THEME_COLOR_NAMES.reduce((prev, name) => {
     const color = themeColors[name];
     return {
       ...prev,
@@ -204,7 +289,7 @@ function createButtonRules(
   const themeColors = findThemeColors({ palette });
   const rules: string[] = [];
 
-  for (const name of THEME_COLORS) {
+  for (const name of THEME_COLOR_NAMES) {
     const color = themeColors[name];
     if (color) {
       for (const prefix of ["btn", "btn-outline"]) {
