@@ -6,18 +6,21 @@ import {
   useEffect,
   useMemo,
 } from "react";
-import { ClassValue, cssx } from "../clsx";
-import stylesLtr from "./styles.module.scss";
-import stylesRtl from "./styles.rtl.module.scss";
 
-type CSSModuleClasses = { readonly [key: string]: string };
+import { ClassValue, cssx } from "../../clsx";
+
+import { createStyleSheet } from "./sheet";
+import { ThemeOptions } from "./types";
+
+import stylesLtr from "../styles.module.scss";
+import stylesRtl from "../styles.rtl.module.scss";
 
 const STYLES: Record<string, CSSModuleClasses> = {
   ltr: stylesLtr,
   rtl: stylesRtl,
 };
 
-export interface ThemeContextValue {
+export interface ThemeContextValue extends ThemeOptions {
   dir?: string;
   theme?: "light" | "dark";
 }
@@ -28,7 +31,12 @@ export interface ThemeProviderProps extends Partial<ThemeContextValue> {
 
 const ThemeContext = createContext<ThemeContextValue>({});
 
-export function ThemeProvider({ dir, theme, children }: ThemeProviderProps) {
+export function ThemeProvider({
+  dir,
+  theme,
+  palette,
+  children,
+}: ThemeProviderProps) {
   const curr = useContext(ThemeContext);
   const value = useMemo(() => ({ ...curr, dir, theme }), [curr, dir, theme]);
 
@@ -40,6 +48,18 @@ export function ThemeProvider({ dir, theme, children }: ThemeProviderProps) {
       root.removeAttribute("data-bs-theme");
     };
   }, [theme]);
+
+  useEffect(() => {
+    const last = [...document.adoptedStyleSheets];
+    const sheet = createStyleSheet({
+      palette,
+    });
+
+    document.adoptedStyleSheets = [...last, sheet];
+    return () => {
+      document.adoptedStyleSheets = last;
+    };
+  }, [palette]);
 
   return (
     <ThemeContext.Provider value={value}>
