@@ -67,7 +67,7 @@ export interface SelectProps {
 }
 
 const ControlContainer = (props: ControlProps<SelectOption, true>) => {
-  const { onMouseDown, onTouchEnd } = props.innerProps;
+  const { onMouseDown } = props.innerProps;
   const { onControlClick } = props.selectProps as any;
   function handleMouseDown(e: React.MouseEvent<HTMLDivElement>) {
     if (!e.defaultPrevented) {
@@ -75,12 +75,12 @@ const ControlContainer = (props: ControlProps<SelectOption, true>) => {
       onMouseDown && onMouseDown(e);
     }
   }
+
   return (
     <components.Control
       {...props}
       innerProps={{
         onMouseDown: handleMouseDown,
-        onTouchEnd,
       }}
     />
   );
