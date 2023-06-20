@@ -183,8 +183,10 @@ interface NavMenuNode extends NavMenuItem {
 
 interface ItemProps {
   item: NavMenuItem;
-  active?: boolean;
-  hover?: boolean;
+  state: {
+    active?: string | null;
+    lookup?: string | null;
+  };
   onItemClick?: (item: NavMenuItem) => void;
   onItemHover?: (item: NavMenuItem) => void;
 }
@@ -253,9 +255,20 @@ function useNavMenu({
       setActive(root);
       setShowSearch(false);
 
-      if (items.length === 0 || !item.rootId) {
+      if (items.length === 0) {
         setLookup(null);
       }
+    },
+    [onItemClick, setShowSearch]
+  );
+
+  const handleIconClick = useCallback(
+    (item: NavMenuNode) => {
+      const root = item.rootId ?? item.id;
+      onItemClick?.(item);
+      setActive(root);
+      setShowSearch(false);
+      setLookup(null);
     },
     [onItemClick, setShowSearch]
   );
@@ -276,12 +289,13 @@ function useNavMenu({
     setShowSearch(true);
   }, [setShowSearch]);
 
+  const state = useMemo(() => ({ active, lookup }), [active, lookup]);
+
   return {
     mode,
     show,
     items,
-    active,
-    lookup,
+    state,
     showIcons,
     showSearch,
     searchItem,
@@ -289,6 +303,7 @@ function useNavMenu({
     handleEnter,
     handleLeave,
     handleItemClick,
+    handleIconClick,
     handleIconHover,
     handleSearchClick,
   };
@@ -296,9 +311,8 @@ function useNavMenu({
 
 function Accordion(props: VariantProps) {
   const {
+    state,
     items,
-    active,
-    lookup,
     showIcons,
     showSearch,
     searchItem,
@@ -309,6 +323,8 @@ function Accordion(props: VariantProps) {
     handleSearchClick,
   } = useNavMenu(props);
 
+  const { lookup } = state;
+
   return (
     <div
       className={clsx(styles.accordion, {
@@ -317,12 +333,14 @@ function Accordion(props: VariantProps) {
       onMouseMove={handleEnter}
       onMouseLeave={handleLeave}
     >
-      {showIcons && <MenuIcons mode="icons" show="icons" items={items} />}
+      {showIcons && (
+        <MenuIcons mode="icons" show="icons" state={state} items={items} />
+      )}
       {showSearch && (
         <div className={styles.menus}>
           <SearchMenu
             item={searchItem}
-            hover={true}
+            state={state}
             onItemClick={handleItemClick}
           />
         </div>
@@ -346,7 +364,7 @@ function Accordion(props: VariantProps) {
           <MenuItem
             key={item.id}
             item={item}
-            active={item.id === active}
+            state={state}
             onItemClick={handleItemClick}
           />
         ))}
@@ -357,24 +375,23 @@ function Accordion(props: VariantProps) {
 
 function Icons(props: VariantProps) {
   const {
+    state,
     items,
-    active,
-    lookup,
     showSearch,
     searchItem,
     searchEnabled,
     handleLeave,
     handleItemClick,
+    handleIconClick,
     handleIconHover,
   } = useNavMenu(props);
 
-  const hover = showSearch ? searchItem.id : lookup;
+  const hover = showSearch ? searchItem.id : state.lookup;
+
   const icons = useMemo(
     () => (searchEnabled ? [searchItem, ...items] : items),
     [items, searchEnabled, searchItem]
   );
-
-  const current = active || items[0]?.id;
 
   return (
     <div
@@ -386,8 +403,9 @@ function Icons(props: VariantProps) {
       <MenuIcons
         mode="icons"
         show="icons"
+        state={state}
         items={icons}
-        onItemClick={handleItemClick}
+        onItemClick={handleIconClick}
         onItemHover={handleIconHover}
       />
       <div className={styles.menusWrapper}>
@@ -395,7 +413,7 @@ function Icons(props: VariantProps) {
           {showSearch && (
             <SearchMenu
               item={searchItem}
-              hover={true}
+              state={state}
               onItemClick={handleItemClick}
             />
           )}
@@ -403,8 +421,7 @@ function Icons(props: VariantProps) {
             <Menu
               key={item.id}
               item={item}
-              active={item.id === (hover || current)}
-              hover={item.id === hover}
+              state={state}
               onItemClick={handleItemClick}
             />
           ))}
@@ -414,8 +431,12 @@ function Icons(props: VariantProps) {
   );
 }
 
-function Menu({ item, active, hover, onItemClick }: ItemProps) {
-  const { title } = item;
+function Menu({ item, state, onItemClick }: ItemProps) {
+  const { id, title } = item;
+
+  const active = state.lookup ? false : state.active === id;
+  const hover = state.lookup === id;
+
   return (
     <div
       className={clsx(styles.menu, {
@@ -424,11 +445,7 @@ function Menu({ item, active, hover, onItemClick }: ItemProps) {
       })}
     >
       <div className={styles.header}>{title}</div>
-      <MenuItems
-        item={item}
-        active={active || hover}
-        onItemClick={onItemClick}
-      />
+      <MenuItems item={item} state={state} onItemClick={onItemClick} />
     </div>
   );
 }
@@ -467,13 +484,19 @@ function MenuIcon({ item, onItemClick, onItemHover }: ItemProps) {
   );
 }
 
-function MenuIcons({ items, onItemClick, onItemHover }: VariantProps) {
+function MenuIcons({
+  items,
+  state,
+  onItemClick,
+  onItemHover,
+}: VariantProps & { state: ItemProps["state"] }) {
   return (
     <div className={styles.icons}>
       {items.map((item) => (
         <MenuIcon
           key={item.id}
           item={item}
+          state={state}
           onItemClick={onItemClick}
           onItemHover={onItemHover}
         />
@@ -482,8 +505,10 @@ function MenuIcons({ items, onItemClick, onItemHover }: VariantProps) {
   );
 }
 
-function MenuItem({ item, active, onItemClick }: ItemProps) {
+function MenuItem({ item, state, onItemClick }: ItemProps) {
   const { icon, tag: Tag, tagColor, title, items = [], onClick } = item;
+
+  const active = item.id === state.active;
 
   const [open, setOpen] = useState(false);
 
@@ -503,16 +528,14 @@ function MenuItem({ item, active, onItemClick }: ItemProps) {
     setOpen(false);
   }, [active]);
 
-  const isOpen = active && open;
-
   return (
     <div
       className={clsx(styles.item, {
-        [styles.open]: isOpen,
+        [styles.open]: open,
       })}
     >
       <div className={styles.title} onClick={handleClick}>
-        {hasIcon && <MenuIcon item={item} />}
+        {hasIcon && <MenuIcon item={item} state={state} />}
         {hasIcon || <div className={styles.icon}></div>}
         <div className={styles.text}>{title}</div>
         {Tag && (
@@ -525,15 +548,15 @@ function MenuItem({ item, active, onItemClick }: ItemProps) {
         </div>
       </div>
       {hasItems && (
-        <Collapse in={isOpen} mountOnEnter unmountOnExit>
-          <MenuItems item={item} active={active} onItemClick={onItemClick} />
+        <Collapse in={open} mountOnEnter unmountOnExit>
+          <MenuItems item={item} state={state} onItemClick={onItemClick} />
         </Collapse>
       )}
     </div>
   );
 }
 
-function MenuItems({ item, active, onItemClick }: ItemProps) {
+function MenuItems({ item, state, onItemClick }: ItemProps) {
   const { items = [] } = item;
   return (
     <div className={styles.items}>
@@ -541,7 +564,7 @@ function MenuItems({ item, active, onItemClick }: ItemProps) {
         <MenuItem
           key={item.id}
           item={item}
-          active={active}
+          state={state}
           onItemClick={onItemClick}
         />
       ))}
@@ -560,9 +583,11 @@ function flattenItem(item: NavMenuItem, parent?: NavMenuItem) {
   return items.length ? items : [rest];
 }
 
-function SearchMenu({ item, hover, onItemClick }: ItemProps) {
+function SearchMenu({ item, state, onItemClick }: ItemProps) {
   const [show, setShow] = useState(false);
   const [text, setText] = useState("");
+
+  const hover = true;
 
   const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -620,7 +645,12 @@ function SearchMenu({ item, hover, onItemClick }: ItemProps) {
         {show && (
           <div className={styles.items}>
             {filterd.map((item) => (
-              <MenuItem key={item.id} item={item} onItemClick={onItemClick} />
+              <MenuItem
+                key={item.id}
+                item={item}
+                state={state}
+                onItemClick={onItemClick}
+              />
             ))}
           </div>
         )}
