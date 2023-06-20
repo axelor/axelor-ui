@@ -39,6 +39,7 @@ export function ThemeProvider({
 }: ThemeProviderProps) {
   const curr = useContext(ThemeContext);
   const value = useMemo(() => ({ ...curr, dir, theme }), [curr, dir, theme]);
+  const classes = useStyles();
 
   useEffect(() => {
     const root = document.documentElement;
@@ -50,8 +51,6 @@ export function ThemeProvider({
   }, [theme]);
 
   useEffect(() => {
-    const classes = dir && dir in STYLES ? STYLES[dir] : undefined;
-
     const last = [...document.adoptedStyleSheets];
     const sheet = createStyleSheet({ palette }, classes);
 
@@ -59,7 +58,7 @@ export function ThemeProvider({
     return () => {
       document.adoptedStyleSheets = last;
     };
-  }, [dir, palette]);
+  }, [classes, dir, palette]);
 
   return (
     <ThemeContext.Provider value={value}>
