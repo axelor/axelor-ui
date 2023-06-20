@@ -2,8 +2,6 @@
   display: flex;
   flex: 1;
   min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 
 .accordion,
@@ -18,6 +16,8 @@
 .menus {
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .icons {

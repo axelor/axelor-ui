@@ -143,8 +143,7 @@ export function NavMenu({
 }: NavMenuProps) {
   const menus = useMemo(() => items.map((item) => walk(item)), [items]);
   const showIcons = mode === "icons";
-  const showMenus = mode === "accordion";
-
+  const Comp = showIcons ? Icons : Accordion;
   return (
     <div
       className={clsx(
@@ -155,26 +154,14 @@ export function NavMenu({
       )}
       style={style}
     >
-      {showIcons && (
-        <Icons
-          mode={mode}
-          show={show}
-          items={menus}
-          searchOptions={searchOptions}
-          searchActive={searchActive}
-          onItemClick={onItemClick}
-        />
-      )}
-      {showMenus && (
-        <Accordion
-          mode={mode}
-          show={show}
-          items={menus}
-          searchOptions={searchOptions}
-          searchActive={searchActive}
-          onItemClick={onItemClick}
-        />
-      )}
+      <Comp
+        mode={mode}
+        show={show}
+        items={menus}
+        searchOptions={searchOptions}
+        searchActive={searchActive}
+        onItemClick={onItemClick}
+      />
     </div>
   );
 }
@@ -206,94 +193,143 @@ interface VariantProps extends NavMenuProps {
   onItemHover?: (item: NavMenuItem) => void;
 }
 
-function Accordion({
+function useNavMenu({
+  mode,
   show,
   items,
   searchOptions,
-  searchActive,
+  searchActive = false,
   onItemClick,
 }: VariantProps) {
+  const [showSearch, setSearchShow] = useState(searchActive);
   const [active, setActive] = useState<string | null>(null);
-  const [hover, setHover] = useState(false);
-
-  const { searchEnabled, searchToggle, searchItem } = useMemo(
-    () =>
-      findSearchOptions({
-        items,
-        searchOptions,
-      }),
-    [items, searchOptions]
-  );
-
-  const [showSearch, setShowSearch] = useState(searchActive);
+  const [lookup, setLookup] = useState<string | null>(null);
 
   const showIcons = show === "icons";
 
-  useEffect(() => {
-    setShowSearch(searchActive);
-  }, [searchActive]);
+  const searchEnabled = Boolean(searchOptions);
+  const searchItem = useMemo(
+    () => ({
+      id: "-1009",
+      title: searchOptions?.title ?? "Search",
+      icon: () => <MaterialIcon icon="search" />,
+      items,
+    }),
+    [items, searchOptions?.title]
+  );
 
-  const handleClick = useCallback(
-    (item: NavMenuNode) => {
-      const id = item.rootId || item.id;
-      if (id !== active) {
-        setActive(id);
-      }
-
-      onItemClick?.(item);
-
-      if (show === "icons" && (item.items || []).length === 0) {
-        setHover(false);
-      }
-
-      if (showSearch) {
-        setShowSearch(false);
-        searchToggle(false);
+  const setShowSearch = useCallback(
+    (active: boolean) => {
+      const { onShow, onHide } = searchOptions ?? {};
+      if (active !== showSearch) {
+        active ? onShow?.() : onHide?.();
+        setSearchShow(active && searchEnabled);
       }
     },
-    [active, onItemClick, searchToggle, show, showSearch]
+    [searchEnabled, searchOptions, showSearch]
+  );
+
+  useEffect(
+    () => setShowSearch(searchActive && searchEnabled),
+    [searchActive, searchEnabled, setShowSearch]
   );
 
   const handleEnter = useCallback(() => {
-    if (!hover) {
-      setHover(true);
-    }
-  }, [hover]);
+    const id = active || (items[0] || {}).id;
+    setLookup(id);
+  }, [active, items]);
 
   const handleLeave = useCallback(() => {
-    setHover(false);
+    setLookup(null);
     setShowSearch(false);
-    searchToggle(false);
-  }, [searchToggle]);
+  }, [setShowSearch]);
 
-  const handleSearch = useCallback(() => {
+  const handleItemClick = useCallback(
+    (item: NavMenuNode) => {
+      const root = item.rootId ?? item.id;
+      const items = item.items ?? [];
+
+      onItemClick?.(item);
+      setActive(root);
+      setShowSearch(false);
+
+      if (items.length === 0 || !item.rootId) {
+        setLookup(null);
+      }
+    },
+    [onItemClick, setShowSearch]
+  );
+
+  const handleIconHover = useCallback(
+    (item: NavMenuNode) => {
+      setLookup(item.id);
+      if (searchEnabled && item.id === searchItem.id) {
+        setShowSearch(true);
+      } else {
+        setShowSearch(false);
+      }
+    },
+    [searchEnabled, searchItem.id, setShowSearch]
+  );
+
+  const handleSearchClick = useCallback(() => {
     setShowSearch(true);
-    searchToggle(true);
-  }, [searchToggle]);
+  }, [setShowSearch]);
 
-  let canShowSearch = searchEnabled && showSearch;
+  return {
+    mode,
+    show,
+    items,
+    active,
+    lookup,
+    showIcons,
+    showSearch,
+    searchItem,
+    searchEnabled,
+    handleEnter,
+    handleLeave,
+    handleItemClick,
+    handleIconHover,
+    handleSearchClick,
+  };
+}
+
+function Accordion(props: VariantProps) {
+  const {
+    items,
+    active,
+    lookup,
+    showIcons,
+    showSearch,
+    searchItem,
+    searchEnabled,
+    handleEnter,
+    handleLeave,
+    handleItemClick,
+    handleSearchClick,
+  } = useNavMenu(props);
 
   return (
     <div
       className={clsx(styles.accordion, {
-        [styles.hover]: hover || (show === "icons" && showSearch),
+        [styles.hover]: lookup || (showIcons && showSearch),
       })}
       onMouseMove={handleEnter}
       onMouseLeave={handleLeave}
     >
       {showIcons && <MenuIcons mode="icons" show="icons" items={items} />}
-      {canShowSearch && (
+      {showSearch && (
         <div className={styles.menus}>
           <SearchMenu
             item={searchItem}
             hover={true}
-            onItemClick={handleClick}
+            onItemClick={handleItemClick}
           />
         </div>
       )}
       <div
         className={clsx(styles.menus, {
-          [styles.hide]: canShowSearch,
+          [styles.hide]: showSearch,
         })}
       >
         {searchEnabled && (
@@ -302,7 +338,7 @@ function Accordion({
               className={styles.searchToggle}
               icon="keyboard_arrow_down"
               fontSize="16px"
-              onClick={handleSearch}
+              onClick={handleSearchClick}
             />
           </div>
         )}
@@ -311,7 +347,7 @@ function Accordion({
             key={item.id}
             item={item}
             active={item.id === active}
-            onItemClick={handleClick}
+            onItemClick={handleItemClick}
           />
         ))}
       </div>
@@ -319,90 +355,31 @@ function Accordion({
   );
 }
 
-function Icons({
-  items,
-  searchOptions,
-  searchActive,
-  onItemClick,
-}: VariantProps) {
-  const first = useMemo(() => (items.length ? items[0].id : null), [items]);
+function Icons(props: VariantProps) {
+  const {
+    items,
+    active,
+    lookup,
+    showSearch,
+    searchItem,
+    searchEnabled,
+    handleLeave,
+    handleItemClick,
+    handleIconHover,
+  } = useNavMenu(props);
 
-  const [active, setActive] = useState<string | null>(first);
-  const [hover, setHover] = useState<string | null>(null);
-
-  const { searchEnabled, searchItem, searchToggle } = useMemo(
-    () => findSearchOptions({ searchOptions, items }),
-    [items, searchOptions]
-  );
-
-  const [showSearch, setShowSearch] = useState(searchActive);
-
-  useEffect(() => {
-    setShowSearch(searchActive);
-  }, [searchActive]);
-
+  const hover = showSearch ? searchItem.id : lookup;
   const icons = useMemo(
     () => (searchEnabled ? [searchItem, ...items] : items),
     [items, searchEnabled, searchItem]
   );
 
-  const handleIconClick = useCallback(
-    (item: NavMenuNode) => {
-      if (item.id === searchItem.id) return;
-      setActive(item.id);
-      setHover(null);
-    },
-    [searchItem.id]
-  );
-
-  const handleIconHover = useCallback(
-    (item: NavMenuNode) => {
-      setHover(item.id);
-      if (searchEnabled && item.id === searchItem.id) {
-        setShowSearch(true);
-        searchToggle(true);
-      } else {
-        setShowSearch(false);
-        searchToggle(false);
-      }
-    },
-    [searchEnabled, searchItem.id, searchToggle]
-  );
-
-  const handleLeave = useCallback(() => {
-    setHover(null);
-    setShowSearch(false);
-    searchToggle(false);
-  }, [searchToggle]);
-
-  const handleItemClick = useCallback(
-    (item: NavMenuNode) => {
-      const id = item.rootId || item.id;
-      if (id !== active) {
-        setActive(id);
-      }
-
-      if ((item.items || []).length === 0) {
-        setHover(null);
-      }
-
-      setShowSearch(false);
-      searchToggle(false);
-
-      onItemClick?.(item);
-    },
-    [active, onItemClick, searchToggle]
-  );
-
-  const canShowSearch =
-    searchEnabled && (searchItem.id === hover || showSearch);
-
-  const hoverId = canShowSearch ? searchItem.id : hover;
+  const current = active || items[0]?.id;
 
   return (
     <div
       className={clsx(styles.buttons, {
-        [styles.hover]: hoverId,
+        [styles.hover]: hover,
       })}
       onMouseLeave={handleLeave}
     >
@@ -410,12 +387,12 @@ function Icons({
         mode="icons"
         show="icons"
         items={icons}
-        onItemClick={handleIconClick}
+        onItemClick={handleItemClick}
         onItemHover={handleIconHover}
       />
       <div className={styles.menusWrapper}>
         <div className={styles.menus}>
-          {canShowSearch && (
+          {showSearch && (
             <SearchMenu
               item={searchItem}
               hover={true}
@@ -426,8 +403,8 @@ function Icons({
             <Menu
               key={item.id}
               item={item}
-              active={item.id === (hoverId || active)}
-              hover={item.id === hoverId}
+              active={item.id === (hover || current)}
+              hover={item.id === hover}
               onItemClick={handleItemClick}
             />
           ))}
@@ -581,30 +558,6 @@ function flattenItem(item: NavMenuItem, parent?: NavMenuItem) {
 
   // don't include parent
   return items.length ? items : [rest];
-}
-
-function findSearchOptions({
-  items,
-  searchOptions,
-}: Pick<NavMenuProps, "items" | "searchOptions">) {
-  const { title = "search", onShow, onHide } = searchOptions ?? {};
-  const searchEnabled = Boolean(searchOptions);
-  const searchItem = {
-    id: "-1009",
-    title: title,
-    icon: () => <MaterialIcon icon="search" />,
-    items,
-  };
-
-  const searchToggle = (active: boolean) => {
-    active ? onShow?.() : onHide?.();
-  };
-
-  return {
-    searchEnabled,
-    searchItem,
-    searchToggle,
-  };
 }
 
 function SearchMenu({ item, hover, onItemClick }: ItemProps) {
