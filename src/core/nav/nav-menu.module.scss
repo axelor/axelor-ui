@@ -31,6 +31,10 @@
 .menus {
   width: var(--bs-nav-menu-items-width, 260px);
   flex: 1;
+
+  &.hide {
+    display: none !important;
+  }
 }
 
 .icon {
@@ -143,6 +147,30 @@
     background-color: var(--bs-nav-menu-icons-color, var(--bs-tertiary-bg));
   }
 }
+
+//
+// Search
+//
+
+.searchWrapper {
+  display: flex;
+  justify-content: center;
+}
+.searchToggle {
+  cursor: pointer;
+  opacity: 0.5;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.accordion .search .header {
+  background-color: transparent;
+}
+
+//
+// End Search
+//
 
 // accordion-mode
 
