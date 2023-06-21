@@ -1,4 +1,38 @@
 .nav {
+  --ax-nav-menu-bg: var(--bs-body-bg);
+  --ax-nav-menu-border-color: var(--bs-border-color);
+  --ax-nav-menu-border: 1px solid var(--ax-nav-menu-border-color);
+  --ax-nav-menu-shadow: var(--bs-box-shadow);
+  --ax-nav-menu-width: 16rem;
+  --ax-nav-menu-zIndex: 1000;
+
+  --ax-nav-menu-header-bg: var(--bs-secondary-bg);
+  --ax-nav-menu-header-color: var(--bs-secondary-bg);
+  --ax-nav-menu-header-radius: 1rem;
+
+  --ax-nav-menu-icons-width: 3rem;
+  --ax-nav-menu-icons-bg: var(--bs-body-bg);
+  --ax-nav-menu-icon-bg: var(--bs-body-bg);
+  --ax-nav-menu-icon-color: var(--bs-body-color);
+  --ax-nav-menu-icon-font-size: 1.5rem;
+  --ax-nav-menu-icon-width: 2rem;
+
+  --ax-nav-menu-icon-hover-bg: rgba(var(--bs-secondary-bg-rgb), 0.9);
+  --ax-nav-menu-icon-hover-color: var(--bs-secondary);
+
+  --ax-nav-menu-icon-active-bg: var(--bs-secondary-bg);
+  --ax-nav-menu-icon-active-color: var(--bs-secondary);
+
+  --ax-nav-menu-item-radius: 1rem;
+
+  --ax-nav-menu-item-hover-bg: var(--bs-tertiary-bg);
+  --ax-nav-menu-item-hover-color: var(--bs-body-color);
+
+  --ax-nav-menu-item-selected-bg: var(--bs-primary-bg-subtle);
+  --ax-nav-menu-item-selected-color: var(--bs-body-color);
+}
+
+.nav {
   display: flex;
   flex: 1;
   min-height: 0;
@@ -24,12 +58,12 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.25rem 0.5rem;
-  background-color: var(--bs-body-bg);
-  width: var(--bs-nav-menu-icons-width, 3rem);
+  background-color: var(--ax-nav-menu-icons-bg);
+  width: var(--ax-nav-menu-icons-width);
 }
 
 .menus {
-  width: var(--bs-nav-menu-items-width, 260px);
+  width: var(--ax-nav-menu-width);
   flex: 1;
   &.hide {
     display: none !important;
@@ -42,11 +76,11 @@
   justify-content: center;
   padding: 0.25rem;
   border-radius: 100%;
-  color: var(--bs-nav-menu-icon-color, var(--bs-body-color));
+  color: var(--ax-nav-menu-icon-color);
   cursor: pointer;
 
-  width: 2rem;
-  height: 2rem;
+  width: var(--ax-nav-menu-icon-width);
+  height: var(--ax-nav-menu-icon-width);
 }
 
 .item {
@@ -56,9 +90,9 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.25rem 0.5rem;
+    padding: 0.25rem;
+    border-radius: var(--ax-nav-menu-item-radius);
     cursor: pointer;
-    border-radius: var(--bs-nav-menu-item-radius, 0);
 
     .text {
       flex-grow: 1;
@@ -76,15 +110,14 @@
     }
 
     &:hover {
-      background-color: var(--bs-nav-menu-hover-bg, var(--bs-tertiary-bg));
+      background-color: var(--ax-nav-menu-item-hover-bg);
+      color: var(--ax-nav-menu-item-hover-color);
     }
   }
 
   &.selected > .title {
-    background-color: var(
-      --bs-nav-menu-selected-bg,
-      var(--bs-primary-bg-subtle)
-    );
+    background-color: var(--ax-nav-menu-item-selected-bg);
+    color: var(--ax-nav-menu-item-selected-color);
   }
 }
 
@@ -98,12 +131,13 @@
 
 .nav.mode-icons .icon.hover,
 .item:hover > .title > .icon,
-.icon.active,
 .icon:hover {
-  background-color: var(
-    --bs-nav-menu-icon-bg,
-    rgba(var(--bs-secondary-bg-rgb), 0.9)
-  );
+  background-color: var(--ax-nav-menu-icon-hover-bg);
+  color: var(--ax-nav-menu-icon-hover-color);
+}
+.icon.active {
+  background-color: var(--ax-nav-menu-icon-active-bg);
+  color: var(--ax-nav-menu-icon-active-color);
 }
 
 .item .item .icon {
@@ -122,20 +156,16 @@
   flex-direction: column;
   flex-grow: 1;
 
-  border-radius: var(--bs-nav-menu-item-radius, 0.5rem);
-  background-color: var(--bs-body-bg);
+  border-radius: var(--ax-nav-menu-item-radius);
+  background-color: var(--ax-nav-menu-bg);
 
   .header {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem;
-    background-color: var(--bs-nav-menu-header-bg, var(--bs-secondary-bg));
-  }
-
-  .header,
-  .title {
-    border-radius: var(--bs-nav-menu-header-radius, 0.5rem);
+    background-color: var(--ax-nav-menu-header-bg);
+    border-radius: var(--ax-nav-menu-header-radius);
   }
 
   .title {
@@ -153,10 +183,16 @@
   min-height: 0;
 
   > .items {
-    margin: 0.25rem 0;
     overflow-y: auto;
     overflow-x: hidden;
   }
+}
+
+.menu,
+.menus,
+.items,
+.item {
+  gap: 0.25rem;
 }
 
 .nav.show-overlay .menu,
@@ -170,7 +206,7 @@
 .buttons {
   gap: 0.5rem;
   .icons {
-    background-color: var(--bs-nav-menu-icons-color, var(--bs-body-bg));
+    background-color: var(--ax-nav-menu-icons-bg);
   }
 }
 
@@ -190,10 +226,17 @@
   }
 }
 
-.menu.search .item > .title {
+.menu.search .item {
   background-color: transparent;
   &:hover {
-    background-color: var(--bs-nav-menu-hover-bg, var(--bs-tertiary-bg));
+    background-color: var(--ax-nav-menu-item-hover-bg);
+    color: var(--ax-nav-menu-item-hover-color);
+  }
+}
+
+.menu.search .header {
+  input {
+    border-radius: var(--ax-nav-menu-header-radius);
   }
 }
 
@@ -230,11 +273,11 @@
     bottom: 0;
     left: 0;
     right: 0;
-    border: 1px solid var(--bs-border-color);
-    border-radius: var(--bs-nav-menu-item-radius, 0.5rem);
-    background-color: var(--bs-body-bg);
-    box-shadow: var(--bs-box-shadow);
-    z-index: var(--bs-nav-menu-overlay-zIndex, 1000);
+    border: var(--ax-nav-menu-border);
+    border-radius: var(--ax-nav-menu-item-radius);
+    background-color: var(--ax-nav-menu-bg);
+    box-shadow: var(--ax-nav-menu-shadow);
+    z-index: var(--ax-nav-menu-zIndex);
   }
 }
 
@@ -264,7 +307,7 @@
 
 .nav.mode-icons .buttons.hover {
   .menus {
-    box-shadow: var(--bs-box-shadow);
+    box-shadow: var(--ax-nav-menu-shadow);
   }
 }
 
@@ -281,11 +324,11 @@
     bottom: 0;
     left: 0;
     right: 0;
-    border: 1px solid var(--bs-border-color);
-    border-radius: var(--bs-nav-menu-item-radius, 0.5rem);
-    background-color: var(--bs-body-bg);
-    box-shadow: var(--bs-box-shadow);
-    z-index: var(--bs-nav-menu-overlay-zIndex, 1000);
+    border: var(--ax-nav-menu-border);
+    border-radius: var(--ax-nav-menu-item-radius);
+    background-color: var(--ax-nav-menu-bg);
+    box-shadow: var(--ax-nav-menu-shadow);
+    z-index: var(--ax-nav-menu-zIndex);
   }
 }
 
@@ -311,7 +354,7 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: var(--bs-border-color);
+    background: var(--ax-nav-menu-border-color);
     background-clip: padding-box;
     border: 4px solid transparent;
     border-radius: 8px;

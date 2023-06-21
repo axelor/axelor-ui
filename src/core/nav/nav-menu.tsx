@@ -477,7 +477,15 @@ function UnknownIcon() {
 function MenuIcon({ item, state, onItemClick, onItemHover }: ItemProps) {
   const { icon, iconColor } = item;
   const Icon = icon || UnknownIcon;
-  const bg = useMemo(() => iconColor && getRGB(iconColor, 0.15), [iconColor]);
+
+  const hoverBg = useMemo(
+    () => iconColor && getRGB(iconColor, 0.25),
+    [iconColor]
+  );
+  const activeBg = useMemo(
+    () => iconColor && getRGB(iconColor, 0.15),
+    [iconColor]
+  );
 
   const active = item.id === state.active;
   const hover = item.id === state.lookup;
@@ -498,8 +506,11 @@ function MenuIcon({ item, state, onItemClick, onItemHover }: ItemProps) {
       })}
       style={
         {
-          "--bs-nav-menu-icon-bg": bg,
-          "--bs-nav-menu-icon-color": iconColor,
+          "--ax-nav-menu-icon-hover-bg": hoverBg,
+          "--ax-nav-menu-icon-hover-color": iconColor,
+          "--ax-nav-menu-icon-active-bg": activeBg,
+          "--ax-nav-menu-icon-active-color": iconColor,
+          "--ax-nav-menu-icon-color": iconColor,
         } as any
       }
       onClick={handleClick}
