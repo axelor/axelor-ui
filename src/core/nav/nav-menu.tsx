@@ -255,6 +255,10 @@ function useNavMenu({
       const root = item.rootId || item.id;
       const items = item.items || [];
 
+      if (item === searchItem) {
+        return;
+      }
+
       if (mode === "accordion") {
         setActive(root);
         setSelected(() => ({ [root]: item.id }));
@@ -273,18 +277,21 @@ function useNavMenu({
         setLookup(null);
       }
     },
-    [mode, onItemClick, setShowSearch]
+    [mode, onItemClick, searchItem, setShowSearch]
   );
 
   const handleIconClick = useCallback(
     (item: NavMenuNode) => {
       const root = item.rootId ?? item.id;
+      if (item === searchItem) {
+        return;
+      }
       onItemClick?.(item);
-      setActive(root);
       setShowSearch(false);
+      setActive(root);
       setLookup(null);
     },
-    [onItemClick, setShowSearch]
+    [onItemClick, searchItem, setShowSearch]
   );
 
   const handleIconHover = useCallback(
