@@ -458,7 +458,10 @@ function Menu({ item, state, onItemClick }: ItemProps) {
         [styles.hover]: hover,
       })}
     >
-      <div className={styles.header}>{title}</div>
+      <div className={styles.header}>
+        <MenuIcon item={item} state={{}} />
+        <div className={styles.text}>{title}</div>
+      </div>
       <MenuItems item={item} state={state} onItemClick={onItemClick} />
     </div>
   );

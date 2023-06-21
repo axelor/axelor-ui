@@ -125,6 +125,9 @@
   background-color: var(--bs-body-bg);
 
   .header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     padding: 0.5rem;
     background-color: var(--bs-nav-menu-header-bg, var(--bs-secondary-bg));
   }
@@ -134,12 +137,11 @@
     border-radius: var(--bs-nav-menu-header-radius, 0.5rem);
   }
 
-  .icon {
-    display: none;
-  }
-
   .title {
     padding: 0.5rem;
+    .icon {
+      display: none;
+    }
   }
 
   &.hover,
