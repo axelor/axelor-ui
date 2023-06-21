@@ -83,6 +83,13 @@
       background-color: var(--bs-nav-menu-hover-bg, var(--bs-tertiary-bg));
     }
   }
+
+  &.selected > .title {
+    background-color: var(
+      --bs-nav-menu-selected-bg,
+      var(--bs-primary-bg-subtle)
+    );
+  }
 }
 
 .item.open {
@@ -172,6 +179,13 @@
   opacity: 0.5;
   &:hover {
     opacity: 1;
+  }
+}
+
+.menu.search .item > .title {
+  background-color: transparent;
+  &:hover {
+    background-color: var(--bs-nav-menu-hover-bg, var(--bs-tertiary-bg));
   }
 }
 

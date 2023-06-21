@@ -186,6 +186,7 @@ interface ItemProps {
   state: {
     active?: string | null;
     lookup?: string | null;
+    selected?: Record<string, string>;
   };
   onItemClick?: (item: NavMenuItem) => void;
   onItemHover?: (item: NavMenuItem) => void;
@@ -206,6 +207,7 @@ function useNavMenu({
   const [showSearch, setSearchShow] = useState(searchActive);
   const [active, setActive] = useState<string | null>(null);
   const [lookup, setLookup] = useState<string | null>(null);
+  const [selected, setSelected] = useState<Record<string, string>>({});
 
   const showIcons = show === "icons";
 
@@ -252,6 +254,14 @@ function useNavMenu({
       const root = item.rootId ?? item.id;
       const items = item.items ?? [];
 
+      if (items.length === 0) {
+        setSelected((prev) =>
+          mode === "accordion"
+            ? { [root]: item.id }
+            : { ...prev, [root]: item.id }
+        );
+      }
+
       onItemClick?.(item);
       setActive(root);
       setShowSearch(false);
@@ -260,7 +270,7 @@ function useNavMenu({
         setLookup(null);
       }
     },
-    [onItemClick, setShowSearch]
+    [mode, onItemClick, setShowSearch]
   );
 
   const handleIconClick = useCallback(
@@ -290,7 +300,10 @@ function useNavMenu({
     setShowSearch(true);
   }, [setShowSearch]);
 
-  const state = useMemo(() => ({ active, lookup }), [active, lookup]);
+  const state = useMemo(
+    () => ({ active, lookup, selected }),
+    [active, lookup, selected]
+  );
 
   return {
     mode,
@@ -455,10 +468,13 @@ function UnknownIcon() {
   return <MaterialIcon icon="question_mark" />;
 }
 
-function MenuIcon({ item, onItemClick, onItemHover }: ItemProps) {
+function MenuIcon({ item, state, onItemClick, onItemHover }: ItemProps) {
   const { icon, iconColor } = item;
   const Icon = icon || UnknownIcon;
   const bg = useMemo(() => iconColor && getRGB(iconColor, 0.15), [iconColor]);
+
+  const active = item.id === state.active;
+  const hover = item.id === state.lookup;
 
   const handleClick = useCallback(() => {
     onItemClick?.(item);
@@ -470,7 +486,10 @@ function MenuIcon({ item, onItemClick, onItemHover }: ItemProps) {
 
   return (
     <div
-      className={styles.icon}
+      className={clsx(styles.icon, {
+        [styles.active]: active,
+        [styles.hover]: hover,
+      })}
       style={
         {
           "--bs-nav-menu-icon-bg": bg,
@@ -507,9 +526,11 @@ function MenuIcons({
 }
 
 function MenuItem({ item, state, onItemClick }: ItemProps) {
+  const node: NavMenuNode = item;
   const { icon, tag: Tag, tagColor, title, items = [], onClick } = item;
 
   const active = item.id === state.active;
+  const selected = state.selected?.[node.rootId!] === item.id;
 
   const [open, setOpen] = useState(false);
 
@@ -533,6 +554,7 @@ function MenuItem({ item, state, onItemClick }: ItemProps) {
     <div
       className={clsx(styles.item, {
         [styles.open]: open,
+        [styles.selected]: selected,
       })}
     >
       <div className={styles.title} onClick={handleClick}>
