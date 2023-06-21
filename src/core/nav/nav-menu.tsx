@@ -226,9 +226,10 @@ function useNavMenu({
       if (active !== showSearch) {
         active ? onShow?.() : onHide?.();
         setSearchShow(active && searchEnabled);
+        setLookup(active ? searchItem.id : null);
       }
     },
-    [searchEnabled, searchOptions, showSearch]
+    [searchEnabled, searchItem.id, searchOptions, showSearch]
   );
 
   useEffect(
