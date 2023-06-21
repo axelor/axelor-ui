@@ -240,6 +240,13 @@
   }
 }
 
+.menu.search .itemWrapper.active {
+  .item .title {
+    background-color: var(--ax-nav-menu-item-selected-bg);
+    color: var(--ax-nav-menu-item-selected-color);
+  }
+}
+
 //
 // End Search
 //

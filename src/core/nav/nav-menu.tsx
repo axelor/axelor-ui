@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { MaterialIcon } from "../../icons/material-icon";
 import { clsx } from "../clsx";
@@ -634,23 +634,10 @@ function flattenItem(item: NavMenuItem, parent?: NavMenuItem) {
 function SearchMenu({ item, state, onItemClick }: ItemProps) {
   const [show, setShow] = useState(false);
   const [text, setText] = useState("");
+  const [cursor, setCursor] = useState(-1);
+  const itemsRef = useRef<HTMLDivElement>(null);
 
   const hover = true;
-
-  const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setText(value);
-    setShow(!!value);
-  }, []);
-
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.code === "Escape") {
-        onItemClick?.({ id: "", title: "" });
-      }
-    },
-    [onItemClick]
-  );
 
   const items = useMemo(
     () => item.items?.flatMap((x) => flattenItem(x)).flat(),
@@ -667,6 +654,47 @@ function SearchMenu({ item, state, onItemClick }: ItemProps) {
   }, [items, show, text]);
 
   const canShow = hover ?? false;
+
+  const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setText(value);
+    setShow(!!value);
+  }, []);
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.code === "Escape") {
+        onItemClick?.({ id: "", title: "" });
+      }
+      if (e.code === "Enter") {
+        if (cursor > -1) {
+          const item = filterd[cursor];
+          onItemClick?.(item);
+        }
+      }
+      if (e.code === "ArrowUp" || e.code === "ArrowDown") {
+        const inc = e.code === "ArrowUp" ? -1 : 1;
+        const max = e.code === "ArrowUp" ? -1 : filterd.length;
+
+        const next =
+          e.code === "ArrowUp"
+            ? Math.max(max, cursor + inc)
+            : Math.min(max, cursor + inc);
+
+        setCursor(next);
+
+        if (itemsRef.current) {
+          let item = itemsRef.current.querySelector(`[data-index="${next}"]`);
+          if (item) {
+            item.scrollIntoView({ block: "nearest" });
+          }
+        }
+
+        e.preventDefault();
+      }
+    },
+    [cursor, filterd, onItemClick]
+  );
 
   return (
     <Fade in={canShow} mountOnEnter unmountOnExit>
@@ -691,14 +719,23 @@ function SearchMenu({ item, state, onItemClick }: ItemProps) {
           </div>
         </div>
         {show && (
-          <div className={styles.items}>
-            {filterd.map((item) => (
-              <MenuItem
+          <div className={styles.items} ref={itemsRef}>
+            {filterd.map((item, index) => (
+              <div
                 key={item.id}
-                item={item}
-                state={state}
-                onItemClick={onItemClick}
-              />
+                data-id={item.id}
+                data-index={index}
+                className={clsx(styles.itemWrapper, {
+                  [styles.active]: index === cursor,
+                })}
+              >
+                <MenuItem
+                  key={item.id}
+                  item={item}
+                  state={{}}
+                  onItemClick={onItemClick}
+                />
+              </div>
             ))}
           </div>
         )}
