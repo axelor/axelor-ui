@@ -3,7 +3,8 @@
   width: 100% !important;
   height: 1px !important;
   background-color: currentColor;
-  opacity: 0.175;
+  opacity: 0.15;
+  border: 0;
 }
 .divider.vertical {
   margin: 0 0.25rem;
