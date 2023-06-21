@@ -1225,7 +1225,6 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           {...(allowCellSelection
             ? { tabIndex: 0, onKeyDown: handleNavigation }
             : {})}
-          onScroll={handleScroll}
         >
           <GridHeader
             className={classNames(styles.header, {
@@ -1311,6 +1310,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             onRowClick={handleRowClick}
             onRowDoubleClick={onRowDoubleClick}
             onRecordUpdate={handleRecordUpdate}
+            onScroll={handleScroll}
           />
           {hasFooter && (
             <GridFooter

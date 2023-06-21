@@ -1,13 +1,17 @@
 .container {
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  min-width: 0;
+  min-height: 0;
   user-select: none;
   flex: 1;
   position: relative;
   outline: none;
   color: var(--bs-table-color);
   border-color: var(--bs-table-border-color);
+}
+
+.container{
   --bs-table-bg: var(--bs-body-bg);
   --bs-table-th-bg: var(--bs-body-bg);
   --bs-table-striped-color: var(--bs-table-color);
@@ -28,8 +32,8 @@
 
 .body {
   flex: 1;
-  width: fit-content;
   min-width: 100%;
+  overflow: auto;
 }
 
 .row {
@@ -158,6 +162,10 @@
   position: absolute;
   left: -1px;
   opacity: 0.5;
+}
+
+.header .row:first-child .column:first-child::before {
+  content: unset;
 }
 
 .columnResizer {
