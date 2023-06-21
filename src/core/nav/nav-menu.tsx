@@ -252,19 +252,21 @@ function useNavMenu({
 
   const handleItemClick = useCallback(
     (item: NavMenuNode) => {
-      const root = item.rootId ?? item.id;
-      const items = item.items ?? [];
+      const root = item.rootId || item.id;
+      const items = item.items || [];
 
+      if (mode === "accordion") {
+        setActive(root);
+        setSelected(() => ({ [root]: item.id }));
+      }
+      if (mode === "icons") {
+        setSelected((prev) => ({ ...prev, [root]: item.id }));
+      }
       if (items.length === 0) {
-        setSelected((prev) =>
-          mode === "accordion"
-            ? { [root]: item.id }
-            : { ...prev, [root]: item.id }
-        );
+        setActive(root);
       }
 
       onItemClick?.(item);
-      setActive(root);
       setShowSearch(false);
 
       if (items.length === 0) {
@@ -533,8 +535,9 @@ function MenuItem({ item, state, onItemClick }: ItemProps) {
   const node: NavMenuNode = item;
   const { icon, tag: Tag, tagColor, title, items = [], onClick } = item;
 
+  const root = node.rootId || item.id;
   const active = item.id === state.active;
-  const selected = state.selected?.[node.rootId!] === item.id;
+  const selected = state.selected?.[root] === item.id;
 
   const [open, setOpen] = useState(false);
 
