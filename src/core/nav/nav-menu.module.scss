@@ -23,15 +23,14 @@
 .icons {
   align-items: center;
   gap: 0.5rem;
-  padding: 0.25rem;
+  padding: 0.25rem 0.5rem;
   background-color: var(--bs-body-bg);
-  width: var(--bs-nav-menu-icons-width, 40px);
+  width: var(--bs-nav-menu-icons-width, 3rem);
 }
 
 .menus {
   width: var(--bs-nav-menu-items-width, 260px);
   flex: 1;
-
   &.hide {
     display: none !important;
   }
@@ -61,7 +60,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.25rem;
+    padding: 0.25rem 0.5rem;
     cursor: pointer;
     border-radius: var(--bs-nav-menu-item-radius, 0);
 
@@ -241,12 +240,6 @@
   overflow: unset;
 }
 
-.nav.mode-icons.show-icons {
-  .buttons {
-    gap: 0;
-  }
-}
-
 .nav.mode-icons .buttons.hover {
   .menus {
     box-shadow: var(--bs-box-shadow);
@@ -255,10 +248,6 @@
 
 .nav.mode-icons.show-overlay,
 .nav.mode-icons.show-icons .buttons.hover {
-  & {
-    gap: 0.5rem;
-  }
-
   .menusWrapper {
     display: flex;
     position: relative;
@@ -275,6 +264,12 @@
     background-color: var(--bs-body-bg);
     box-shadow: var(--bs-box-shadow);
     z-index: var(--bs-nav-menu-overlay-zIndex, 1000);
+  }
+}
+
+.nav.mode-icons {
+  .buttons {
+    gap: 0;
   }
 }
 
