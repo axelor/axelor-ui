@@ -11,7 +11,7 @@
 .rbc-time-header-content,
 .rbc-time-header.rbc-overflowing,
 .rbc-time-content {
-  border-color: var(--bs-border-color);
+  border-color: var(--bs-border-color-translucent);
 }
 
 .rbc-off-range-bg {
@@ -35,6 +35,10 @@
 .rbc-event:focus {
   outline: none !important;
   box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.5);
+}
+
+.rbc-time-column .rbc-timeslot-group:first-child .rbc-time-slot:first-child {
+  border-top-color: transparent;
 }
 
 .rbc-show-more {
