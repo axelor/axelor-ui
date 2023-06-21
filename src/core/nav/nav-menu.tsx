@@ -201,10 +201,10 @@ function useNavMenu({
   show,
   items,
   searchOptions,
-  searchActive = false,
+  searchActive,
   onItemClick,
 }: VariantProps) {
-  const [showSearch, setSearchShow] = useState(searchActive);
+  const [showSearch, setSearchShow] = useState(searchActive ?? false);
   const [active, setActive] = useState<string | null>(null);
   const [lookup, setLookup] = useState<string | null>(null);
   const [selected, setSelected] = useState<Record<string, string>>({});
@@ -234,10 +234,11 @@ function useNavMenu({
     [searchEnabled, searchItem.id, searchOptions, showSearch]
   );
 
-  useEffect(
-    () => setShowSearch(searchActive && searchEnabled),
-    [searchActive, searchEnabled, setShowSearch]
-  );
+  useEffect(() => {
+    if (searchActive !== undefined) {
+      setShowSearch(searchActive && searchEnabled);
+    }
+  }, [searchActive, searchEnabled, setShowSearch]);
 
   const handleEnter = useCallback(() => {
     const id = active || (items[0] || {}).id;
