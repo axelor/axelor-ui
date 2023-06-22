@@ -632,7 +632,7 @@ function flattenItem(item: NavMenuItem, parent?: NavMenuItem) {
   return items.length ? items : [rest];
 }
 
-function SearchMenu({ item, onItemClick }: ItemProps) {
+function SearchMenu({ item, state, onItemClick }: ItemProps) {
   const [show, setShow] = useState(false);
   const [text, setText] = useState("");
   const [cursor, setCursor] = useState(0);
@@ -665,7 +665,7 @@ function SearchMenu({ item, onItemClick }: ItemProps) {
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.code === "Escape") {
-        onItemClick?.({ id: "", title: "" });
+        onItemClick?.({ id: state.active || "", title: "" });
       }
       if (e.code === "Enter") {
         if (cursor > -1) {
@@ -694,7 +694,7 @@ function SearchMenu({ item, onItemClick }: ItemProps) {
         e.preventDefault();
       }
     },
-    [cursor, filterd, onItemClick]
+    [cursor, filterd, onItemClick, state.active]
   );
 
   return (
