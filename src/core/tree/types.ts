@@ -28,6 +28,7 @@ export interface TreeSortColumn {
 }
 
 export interface TreeProps {
+  className?: string;
   records: any[];
   columns: TreeColumn[];
   sortable?: boolean;

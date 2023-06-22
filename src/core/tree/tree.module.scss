@@ -20,6 +20,8 @@
 .headerColumn {
   font-weight: 600;
   border-right: thin solid rgba(0, 0, 0, 0.15);
+  background-color: var(--bs-table-th-bg);
+  color: var(--bs-table-th-color);
   &:last-child {
     border-right: none;
   }
@@ -64,6 +66,7 @@
     background: var(--bs-table-active-bg);
     color: var(--bs-table-active-color);
   }
+  &:hover,
   &.hover {
     background: var(--bs-table-hover-bg);
     color: var(--bs-table-hover-color);

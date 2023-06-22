@@ -58,6 +58,7 @@ function getParentList(data: any, parent: any): number[] {
 
 export function Tree(props: TYPES.TreeProps) {
   const {
+    className,
     sortable,
     onLoad,
     onSort,
@@ -330,7 +331,7 @@ export function Tree(props: TYPES.TreeProps) {
 
   return (
     <div
-      className={classNames("table-tree", styles.tree, {
+      className={classNames("table-tree", className, styles.tree, {
         [styles.loading]: loading,
       })}
       {...(editNode
