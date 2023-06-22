@@ -50,20 +50,24 @@ export const GridBodyRow = React.memo(function GridBodyRow(
     [data, rowIndex, onCellClick, onClick]
   );
 
-  function renderColumn(column: TYPES.GridColumn) {
+  function getColumnValue(column: TYPES.GridColumn) {
+    const value = data.record[column.name];
+    return column.formatter
+      ? column.formatter(column, value, data.record)
+      : value;
+  }
+
+  function renderColumn(column: TYPES.GridColumn, value: any) {
     if (isRowCheck(column)) {
       return (
         <Input
           type={selectionType === "single" ? "radio" : "checkbox"}
           checked={selected}
-          onChange={() => {}}
+          onChange={() => { }}
         />
       );
     }
-    const value = data.record[column.name];
-    return column.formatter
-      ? column.formatter(column, value, data.record)
-      : value;
+    return value;
   }
 
   const RowComponent = renderer || "div";
@@ -80,23 +84,26 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         })}
         onDoubleClick={(e) => onDoubleClick && onDoubleClick(e, data, rowIndex)}
       >
-        {columns.map((column, index) => (
-          <GridColumn
-            key={column.name}
-            data={column}
-            index={index}
-            type="body"
-            record={data.record}
-            value={data.record[column.name]}
-            focus={editCell === index}
-            selected={selectedCell === index}
-            renderer={column.renderer || cellRenderer}
-            onClick={handleCellClick}
-            onUpdate={handleUpdate}
-          >
-            {renderColumn(column)}
-          </GridColumn>
-        ))}
+        {columns.map((column, index) => {
+          const value = getColumnValue(column);
+          return (
+            <GridColumn
+              key={column.name}
+              data={column}
+              index={index}
+              type="body"
+              record={data.record}
+              value={value}
+              focus={editCell === index}
+              selected={selectedCell === index}
+              renderer={column.renderer || cellRenderer}
+              onClick={handleCellClick}
+              onUpdate={handleUpdate}
+            >
+              {renderColumn(column, value)}
+            </GridColumn>
+          )
+        })}
       </RowComponent>
     </DragComponent>
   );
