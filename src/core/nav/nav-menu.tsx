@@ -482,12 +482,13 @@ function MenuIcon({ item, state, onItemClick, onItemHover }: ItemProps) {
   const { icon, iconColor } = item;
   const Icon = icon || UnknownIcon;
 
+  const bg = useMemo(() => iconColor && getRGB(iconColor, 0.1), [iconColor]);
   const hoverBg = useMemo(
-    () => iconColor && getRGB(iconColor, 0.25),
+    () => iconColor && getRGB(iconColor, 0.2),
     [iconColor]
   );
   const activeBg = useMemo(
-    () => iconColor && getRGB(iconColor, 0.15),
+    () => iconColor && getRGB(iconColor, 0.3),
     [iconColor]
   );
 
@@ -510,6 +511,7 @@ function MenuIcon({ item, state, onItemClick, onItemHover }: ItemProps) {
       })}
       style={
         {
+          "--ax-nav-menu-icon-bg": bg,
           "--ax-nav-menu-icon-hover-bg": hoverBg,
           "--ax-nav-menu-icon-hover-color": iconColor,
           "--ax-nav-menu-icon-active-bg": activeBg,
