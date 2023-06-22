@@ -662,10 +662,16 @@ function SearchMenu({ item, state, onItemClick }: ItemProps) {
     setShow(!!value);
   }, []);
 
+  const cancelSearch = useCallback(
+    () => onItemClick?.({ id: state.active || "", title: "" }),
+    [onItemClick, state.active]
+  );
+
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.code === "Escape") {
-        onItemClick?.({ id: state.active || "", title: "" });
+        cancelSearch();
+        return;
       }
       if (e.code === "Enter") {
         if (cursor > -1) {
@@ -694,7 +700,7 @@ function SearchMenu({ item, state, onItemClick }: ItemProps) {
         e.preventDefault();
       }
     },
-    [cursor, filterd, onItemClick, state.active]
+    [cancelSearch, cursor, filterd, onItemClick]
   );
 
   return (
@@ -712,6 +718,7 @@ function SearchMenu({ item, state, onItemClick }: ItemProps) {
               value={text}
               onChange={handleSearch}
               onKeyDown={handleKeyDown}
+              onBlur={cancelSearch}
               icons={[
                 {
                   icon: "search",
