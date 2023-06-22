@@ -215,7 +215,7 @@ function useNavMenu({
   const searchItem = useMemo(
     () => ({
       id: "-1009",
-      title: searchOptions?.title ?? "Search",
+      title: searchOptions?.title ?? "Search menu...",
       icon: () => <MaterialIcon icon="search" />,
       items,
     }),
@@ -375,13 +375,14 @@ function Accordion(props: VariantProps) {
         })}
       >
         {searchEnabled && (
-          <div className={styles.searchWrapper}>
-            <MaterialIcon
-              className={styles.searchToggle}
-              icon="keyboard_arrow_down"
-              fontSize="16px"
-              onClick={handleSearchClick}
-            />
+          <div
+            className={clsx(styles.item, styles.searchItem)}
+            onClick={handleSearchClick}
+          >
+            <div className={styles.title}>
+              <MenuIcon item={searchItem} state={{}} />
+              <div className={styles.text}>{searchItem.title}</div>
+            </div>
           </div>
         )}
         {items.map((item) => (
@@ -631,7 +632,7 @@ function flattenItem(item: NavMenuItem, parent?: NavMenuItem) {
   return items.length ? items : [rest];
 }
 
-function SearchMenu({ item, state, onItemClick }: ItemProps) {
+function SearchMenu({ item, onItemClick }: ItemProps) {
   const [show, setShow] = useState(false);
   const [text, setText] = useState("");
   const [cursor, setCursor] = useState(-1);
