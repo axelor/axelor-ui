@@ -635,7 +635,7 @@ function flattenItem(item: NavMenuItem, parent?: NavMenuItem) {
 function SearchMenu({ item, onItemClick }: ItemProps) {
   const [show, setShow] = useState(false);
   const [text, setText] = useState("");
-  const [cursor, setCursor] = useState(-1);
+  const [cursor, setCursor] = useState(0);
   const itemsRef = useRef<HTMLDivElement>(null);
 
   const hover = true;
@@ -675,7 +675,7 @@ function SearchMenu({ item, onItemClick }: ItemProps) {
       }
       if (e.code === "ArrowUp" || e.code === "ArrowDown") {
         const inc = e.code === "ArrowUp" ? -1 : 1;
-        const max = e.code === "ArrowUp" ? -1 : filterd.length;
+        const max = e.code === "ArrowUp" ? 0 : filterd.length - 1;
 
         const next =
           e.code === "ArrowUp"
