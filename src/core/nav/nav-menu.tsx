@@ -361,7 +361,7 @@ function Accordion(props: VariantProps) {
         <MenuIcons mode="icons" show="icons" state={state} items={items} />
       )}
       {showSearch && (
-        <div className={styles.menus}>
+        <div className={clsx(styles.menus, styles.search)}>
           <SearchMenu
             item={searchItem}
             state={state}
@@ -369,11 +369,7 @@ function Accordion(props: VariantProps) {
           />
         </div>
       )}
-      <div
-        className={clsx(styles.menus, {
-          [styles.hide]: showSearch,
-        })}
-      >
+      <div className={styles.menus}>
         {searchEnabled && (
           <div
             className={clsx(styles.item, styles.searchItem)}

@@ -33,9 +33,14 @@
 }
 
 .nav {
+  position: relative;
   display: flex;
   flex: 1;
   min-height: 0;
+}
+
+.nav.show-none {
+  display: none;
 }
 
 .accordion,
@@ -246,6 +251,31 @@
   }
 }
 
+.menus.search {
+  position: absolute;
+  top: 0;
+  bottom: auto !important;
+  left: 0;
+  right: 0;
+  max-height: 100% !important;
+  border: var(--ax-nav-menu-border);
+  border-radius: var(--ax-nav-menu-item-radius);
+  background-color: var(--ax-nav-menu-bg);
+  box-shadow: var(--ax-nav-menu-shadow);
+  z-index: calc(var(--ax-nav-menu-zIndex) + 1) !important;
+
+  .menu {
+    gap: 0;
+  }
+  .header {
+    padding: 0.25rem;
+    background: transparent;
+    input {
+      border-radius: calc(var(--ax-nav-menu-item-radius) - 4px);
+    }
+  }
+}
+
 //
 // End Search
 //
@@ -347,10 +377,6 @@
 }
 
 // end icons mode
-
-.nav.show-none {
-  display: none;
-}
 
 // scrollbar style
 
