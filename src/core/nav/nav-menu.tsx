@@ -708,6 +708,7 @@ function SearchMenu({ item, onItemClick }: ItemProps) {
           <div className={styles.text}>
             <TextField
               autoFocus
+              placeholder={item.title}
               value={text}
               onChange={handleSearch}
               onKeyDown={handleKeyDown}
