@@ -315,6 +315,8 @@
 .nav.mode-icons .buttons.hover {
   .menus {
     box-shadow: var(--ax-nav-menu-shadow);
+    border-radius: var(--ax-nav-menu-item-radius);
+    border-color: var(--ax-nav-menu-border-color);
   }
 }
 
