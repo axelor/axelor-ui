@@ -4,6 +4,22 @@ $spacing: 0.25rem;
 $border: 1px;
 $blockHeight: 30px;
 
+.gantt {
+  --gantt-border-color: var(--bs-border-color);
+  --gantt-edge-color: var(--bs-orange);
+  --gantt-line-bg: var(--bs-primary);
+  --gantt-progress-color: rgba(0, 0, 0, 0.25);
+  --gantt-progress-label-bg: var(--bs-dark);
+  --gantt-progress-label-color: var(--bs-light);
+  --gantt-line-color: var(--bs-light);
+  --gantt-row-active-bg: var(--bs-secondary-bg);
+  --gantt-row-active-color: var(--bs-body-color);
+  --gantt-cell-active-bg: var(--bs-secondary-bg);
+  --gantt-cell-active-color: var(--bs-body-color);
+  --gantt-connector-bg: var(--bs-border-color);
+  --gantt-connector-border-color: var(--bs-border-color);
+}
+
 .root {
   flex: 1;
   overflow: hidden;
@@ -17,6 +33,7 @@ $blockHeight: 30px;
   display: flex;
   font-size: 1rem;
   height: 3.8rem;
+  min-height: 3.8rem;
   border-top: $border solid var(--gantt-border-color);
   border-bottom: $border solid var(--gantt-border-color);
   & > * {
@@ -139,17 +156,17 @@ $blockHeight: 30px;
 .ganttLineProgressLabel {
   display: none;
   position: absolute;
-  top: -1rem;
+  top: -1.25rem;
   right: -0.625rem;
   line-height: 1rem;
-  width: 1.25rem;
   border-top: none;
   border-radius: 2px;
   box-sizing: border-box;
-  background: var(--gantt-line-color);
-  color: var(--gantt-progress-color);
+  background: var(--gantt-progress-label-bg);
+  color: var(--gantt-progress-label-color);
   text-align: center;
   font-size: 0.65rem;
+  padding: 0.125rem 0.25rem;
 }
 
 .ganttLineProgressIndicator {
@@ -284,6 +301,7 @@ $blockHeight: 30px;
 
 .tableHeader {
   height: 3.8rem;
+  min-height: 3.8rem;
   border: $border solid var(--bs-table-border-color);
   border-left: none;
   border-right: none;

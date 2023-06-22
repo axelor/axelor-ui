@@ -1,15 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react";
 import moment, { Dayjs } from "dayjs";
-import { Box, useTheme, useClassNames } from "../core";
+import React, { useEffect, useMemo, useState } from "react";
+import { Box, useClassNames, useTheme } from "../core";
 
-import * as TYPES from "./types";
-import { GanttLine } from "./gantt-line";
-import { GanttHeader } from "./gantt-header";
 import { GanttBody } from "./gantt-body";
 import { GanttEdge } from "./gantt-edge";
+import { GanttHeader } from "./gantt-header";
+import { GanttLine } from "./gantt-line";
 import { GanttTable } from "./gantt-table";
-import { getGraphConfig, getHeader, getGraphEdges } from "./utils";
 import classes from "./gantt.module.scss";
+import * as TYPES from "./types";
+import { getGraphConfig, getGraphEdges, getHeader } from "./utils";
 
 function GanttView(props: {
   view: TYPES.GanttType;
@@ -140,7 +140,7 @@ export function Gantt({
   return (
     <Box
       d="flex"
-      className={classNames("gantt", className, classes.root, {
+      className={classNames(classes.gantt, className, classes.root, {
         [classes.rtl]: rtl,
       })}
     >
