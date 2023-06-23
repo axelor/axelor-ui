@@ -4,6 +4,7 @@ import { MaterialIcon } from "../../icons/material-icon";
 import { clsx } from "../clsx";
 import { Collapse } from "../collapse";
 import { Fade } from "../fade";
+import { Scrollable } from "../scrollable";
 import { TextField } from "../text-field";
 import { getRGB } from "./utils";
 
@@ -369,7 +370,7 @@ function Accordion(props: VariantProps) {
           />
         </div>
       )}
-      <div className={styles.menus}>
+      <Scrollable className={styles.menus}>
         {searchEnabled && (
           <div
             className={clsx(styles.item, styles.searchItem)}
@@ -389,7 +390,7 @@ function Accordion(props: VariantProps) {
             onItemClick={handleItemClick}
           />
         ))}
-      </div>
+      </Scrollable>
     </div>
   );
 }
@@ -469,7 +470,9 @@ function Menu({ item, state, onItemClick }: ItemProps) {
         <MenuIcon item={item} state={{}} />
         <div className={styles.text}>{title}</div>
       </div>
-      <MenuItems item={item} state={state} onItemClick={onItemClick} />
+      <Scrollable>
+        <MenuItems item={item} state={state} onItemClick={onItemClick} />
+      </Scrollable>
     </div>
   );
 }
@@ -534,17 +537,19 @@ function MenuIcons({
   onItemHover,
 }: VariantProps & { state: ItemProps["state"] }) {
   return (
-    <div className={styles.icons}>
-      {items.map((item) => (
-        <MenuIcon
-          key={item.id}
-          item={item}
-          state={state}
-          onItemClick={onItemClick}
-          onItemHover={onItemHover}
-        />
-      ))}
-    </div>
+    <Scrollable>
+      <div className={styles.icons}>
+        {items.map((item) => (
+          <MenuIcon
+            key={item.id}
+            item={item}
+            state={state}
+            onItemClick={onItemClick}
+            onItemHover={onItemHover}
+          />
+        ))}
+      </div>
+    </Scrollable>
   );
 }
 
