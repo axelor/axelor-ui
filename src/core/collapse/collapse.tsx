@@ -38,16 +38,18 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
 
     const getWrapperSize = () => {
       const wrapper = wrapperRef.current;
-      if (wrapper && horizontal) {
-        wrapper.style.position = "absolute";
-        try {
-          return wrapper.clientWidth;
-        } finally {
-          wrapper.style.position = "";
-        }
-      }
       if (wrapper) {
-        return wrapper.clientHeight;
+        const position = wrapper.style.position;
+        const visibility = wrapper.style.visibility;
+        const side = horizontal ? "clientWidth" : "clientHeight";
+        try {
+          wrapper.style.visibility = "hidden";
+          wrapper.style.position = "absolute";
+          return wrapper[side];
+        } finally {
+          wrapper.style.position = position;
+          wrapper.style.visibility = visibility;
+        }
       }
       return 0;
     };
