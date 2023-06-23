@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { MaterialIcon, MaterialIconProps } from "../../icons/material-icon";
 import { Box } from "../box";
 import { Button } from "../button";
@@ -92,7 +92,12 @@ export function CommandItem(props: CommandItemProps) {
     [hideMenu]
   );
 
-  if (hidden) {
+  const allItemsHidden = useMemo(
+    () => items.length > 0 && items.filter((item) => !item.hidden).length === 0,
+    [items]
+  );
+
+  if (hidden || allItemsHidden) {
     return null;
   }
 
