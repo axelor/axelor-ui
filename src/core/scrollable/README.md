@@ -18,5 +18,3 @@ For, example:
   </Scrollable>
 </Box>
 ```
-
-**Note:** works only on chrome based borwser, firefox support is comming soon...

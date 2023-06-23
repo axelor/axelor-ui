@@ -10,12 +10,12 @@ export type ScrollableProps = {
 
 export const Scrollable = forwardRef<HTMLDivElement, ScrollableProps>(
   (props, ref) => {
-    const { overflowX = false, overflowY = true } = props;
+    const { overflowX = false, overflowY = true, ...restProps } = props;
     const className = clsx(props.className, styles.scrollable, {
       [styles.overflowX]: overflowX,
       [styles.overflowY]: overflowY,
     });
-    return <div {...props} className={className} ref={ref} />;
+    return <div {...restProps} className={className} ref={ref} />;
   }
 );
 

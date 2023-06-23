@@ -3,30 +3,40 @@ $width: 6px;
 .scrollable {
   min-width: 0;
   min-height: 0;
-  overflow-x: hidden;
-  overflow-y: hidden;
 }
 
 .overflowX {
   overflow-x: scroll;
+  overflow-y: hidden;
   padding-top: calc($width + 2px);
   padding-bottom: 2px;
 }
 
 .overflowY {
+  overflow-x: hidden;
   overflow-y: scroll;
   padding-left: calc($width + 2px);
   padding-right: 2px;
 }
 
-[dir="rtl"] {
-  .overflowY {
-    padding-left: 2px;
-    padding-right: calc($width + 2px);
-  }
+.overflowX.overflowY {
+  overflow-x: scroll;
+  overflow-y: scroll;
+}
+
+[dir="rtl"] .overflowY,
+.overflowY[dir="rtl"] {
+  padding-left: 2px;
+  padding-right: calc($width + 2px);
 }
 
 .scrollable {
+  --scrollbar-color: var(
+    --ax-scrollable-scrollbar-color,
+    var(--bs-border-color)
+  );
+  scrollbar-color: var(--scrollbar-color) transparent;
+  scrollbar-width: auto;
   &::-webkit-scrollbar {
     width: $width;
     height: $width;
@@ -34,7 +44,7 @@ $width: 6px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: var(--ax-scrollable-scrollbar-color, var(--bs-border-color));
+    background: var(--scrollbar-color);
     background-clip: padding-box;
     border: 0;
     border-radius: calc(($width / 3) * 2);

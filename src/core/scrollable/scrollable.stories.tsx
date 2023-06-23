@@ -5,7 +5,7 @@ import { Scrollable } from "./scrollable";
 
 const config = {
   component: Scrollable,
-  title: "Core/Scrollable",
+  title: "Components/Scrollable",
 };
 
 export default config;
