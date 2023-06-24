@@ -1,22 +1,30 @@
 import { forwardRef, useCallback, useEffect, useState } from "react";
 
 import { clsx } from "../clsx";
-import { CommandBar, CommandBarProps } from "../command-bar";
-
 import { Collapse } from "../collapse";
+import { CommandBar, CommandBarProps } from "../command-bar";
+import { Scrollable } from "../scrollable";
+
 import styles from "./panel.module.scss";
 
 export interface PanelProps extends React.HTMLProps<HTMLDivElement> {
   header?: React.ReactNode;
   footer?: React.ReactNode;
   toolbar?: CommandBarProps;
+  scrollbar?: {
+    custom?: boolean;
+    trigger?: {
+      headerShadow?: number;
+      headerHide?: number;
+    };
+  };
   collapsible?: boolean;
   collapsed?: boolean;
   onToggle?: (collapsed: boolean) => void;
 }
 
 export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
-  const { className, children, ...moreProps } = props;
+  const { className, children, scrollbar = {}, ...moreProps } = props;
   const {
     header,
     footer,
@@ -51,6 +59,23 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
     onToggle?.(true);
   }, [onToggle]);
 
+  const [headerShadow, setHeaderShadow] = useState(false);
+  const [headerHide, setHeaderHide] = useState(false);
+
+  const onScroll = useCallback<React.UIEventHandler<HTMLDivElement>>(
+    (e) => {
+      const st = e.currentTarget.scrollTop;
+      const trigger = scrollbar.trigger ?? {};
+      if (trigger.headerHide !== undefined) {
+        setHeaderHide(st > trigger.headerHide);
+      }
+      if (trigger.headerShadow !== undefined) {
+        setHeaderShadow(st > trigger.headerShadow);
+      }
+    },
+    [scrollbar.trigger]
+  );
+
   useEffect(() => {
     setOpen(!collapsed);
   }, [collapsed]);
@@ -70,9 +95,13 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
     />
   ) : null;
 
+  const ContentPane = scrollbar?.custom ? Scrollable : "div";
+
   const content = (
     <div className={styles.body}>
-      <div className={styles.content}>{children}</div>
+      <ContentPane className={styles.content} onScroll={onScroll}>
+        {children}
+      </ContentPane>
       {hasFooter && <div className={styles.footer}>{footer}</div>}
     </div>
   );
@@ -100,23 +129,35 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
       className={clsx(styles.panel, className, styles[collapseState])}
       {...restProps}
     >
-      {hasHeader && <Header {...moreProps}>{collapseIcon}</Header>}
+      {hasHeader && (
+        <Header
+          {...moreProps}
+          className={clsx({
+            [styles.hide]: headerHide,
+            [styles.shadow]: headerShadow,
+          })}
+        >
+          {collapseIcon}
+        </Header>
+      )}
       {body}
     </div>
   );
 });
 
 function Header(props: PanelProps) {
-  const { header, toolbar, children } = props;
+  const { header, toolbar, className, children } = props;
   return (
-    <div className={styles.header}>
-      <div className={styles.title}>{header}</div>
-      {toolbar && (
-        <div className={styles.toolbar}>
-          <CommandBar {...toolbar} />
-        </div>
-      )}
-      {children && <div className={styles.toolbar}>{children}</div>}
+    <div className={clsx(styles.header, className)}>
+      <div className={styles.headerInner}>
+        <div className={styles.title}>{header}</div>
+        {toolbar && (
+          <div className={styles.toolbar}>
+            <CommandBar {...toolbar} />
+          </div>
+        )}
+        {children && <div className={styles.toolbar}>{children}</div>}
+      </div>
     </div>
   );
 }

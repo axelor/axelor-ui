@@ -50,7 +50,10 @@ export const Basic: Story = {
         },
       ],
     },
-    footer: "Some status..."
+    footer: "Some status...",
+    scrollbar: {
+      custom: true,
+    },
   },
 };
 
@@ -59,5 +62,34 @@ export const Collapsible: Story = {
   args: {
     ...Basic.args,
     collapsible: true,
+  },
+};
+
+export const HeaderShadow: Story = {
+  ...Basic,
+  args: {
+    ...Basic.args,
+    collapsible: true,
+    scrollbar: {
+      custom: true,
+      trigger: {
+        headerShadow: 0,
+      },
+    },
+  },
+};
+
+export const HeaderHide: Story = {
+  ...Basic,
+  args: {
+    ...Basic.args,
+    collapsible: true,
+    scrollbar: {
+      custom: true,
+      trigger: {
+        headerShadow: 0,
+        headerHide: 48,
+      },
+    },
   },
 };
