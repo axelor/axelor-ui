@@ -731,7 +731,7 @@ function SearchMenu({ item, state, onItemClick }: ItemProps) {
           </div>
         </div>
         {show && (
-          <div className={styles.items} ref={itemsRef}>
+          <Scrollable className={styles.items} ref={itemsRef}>
             {filterd.map((item, index) => (
               <div
                 key={item.id}
@@ -749,7 +749,7 @@ function SearchMenu({ item, state, onItemClick }: ItemProps) {
                 />
               </div>
             ))}
-          </div>
+          </Scrollable>
         )}
       </div>
     </Fade>
