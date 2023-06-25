@@ -13,7 +13,8 @@
   --ax-panel-header-bg: var(--ax-panel-bg);
   --ax-panel-header-color: var(--ax-panel-color);
   --ax-panel-header-border: var(--ax-panel-border);
-  --ax-panel-header-padding: 0.25rem 0.5rem;
+  --ax-panel-header-padding: 0.25rem;
+  --ax-panel-header-title-padding: 0.5rem;
   --ax-panel-header-gap: 0.5rem;
   --ax-panel-header-font-size: 1rem;
   --ax-panel-header-font-weight: bold;
@@ -55,6 +56,7 @@
 
 .title {
   flex: 1;
+  padding: var(--ax-panel-header-title-padding);
 }
 
 .more {

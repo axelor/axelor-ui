@@ -150,7 +150,7 @@ function Header(props: PanelProps) {
   return (
     <div className={clsx(styles.header, className)}>
       <div className={styles.headerInner}>
-        <div className={styles.title}>{header}</div>
+        {header && <div className={styles.title}>{header}</div>}
         {toolbar && (
           <div className={styles.toolbar}>
             <CommandBar {...toolbar} />
