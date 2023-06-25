@@ -1,11 +1,11 @@
 import React, { useMemo } from "react";
-import { GridBodyRow } from "./grid-body-row";
-import { GridDNDContainer } from "./grid-dnd-row";
-import { GridFooterRow } from "./grid-footer-row";
 import { GridGroupRow } from "./grid-group-row";
-import styles from "./grid.module.scss";
-import * as TYPES from "./types";
+import { GridBodyRow } from "./grid-body-row";
+import { GridFooterRow } from "./grid-footer-row";
+import { GridDNDContainer } from "./grid-dnd-row";
 import { isRowVisible } from "./utils";
+import * as TYPES from "./types";
+import styles from "./grid.module.scss";
 
 export interface GridBodyProps
   extends Pick<
@@ -33,7 +33,6 @@ export interface GridBodyProps
   onRowMoveStart?: TYPES.GridRowProps["onMoveStart"];
   onRowClick?: TYPES.GridRowProps["onClick"];
   onRecordUpdate?: TYPES.GridRowProps["onUpdate"];
-  onScroll?: React.ComponentProps<"div">["onScroll"];
 }
 
 export function GridBody(props: GridBodyProps) {
@@ -61,7 +60,6 @@ export function GridBody(props: GridBodyProps) {
     onRowMoveStart,
     onRowClick,
     onRowDoubleClick,
-    onScroll,
   } = props;
 
   const renderRows = React.useMemo(
@@ -83,7 +81,6 @@ export function GridBody(props: GridBodyProps) {
     const props = {
       ...(showNoRecords ? { style: { width: totalWidth + 2 } } : {}),
       className: styles.body,
-      onScroll,
     };
     if (onRowMove) {
       return (
