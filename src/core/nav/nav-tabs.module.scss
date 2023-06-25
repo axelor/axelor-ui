@@ -48,6 +48,8 @@
   background-color: var(--ax-nav-tabs-tab-bg);
   font-weight: var(--ax-nav-tabs-tab-font-weight);
   text-transform: var(--ax-nav-tabs-tab-text-transform);
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .button,
