@@ -1,0 +1,7 @@
+.overflowMenu [data-overflow-menu] {
+  flex-shrink: 0;
+}
+
+.overflowingItems [data-overflowing] {
+  display: none;
+}
