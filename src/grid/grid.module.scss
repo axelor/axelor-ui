@@ -55,7 +55,6 @@
 .header {
   width: fit-content;
   min-width: 100%;
-  max-width: 100%;
   color: var(--bs-table-th-color);
   background-color: var(--bs-table-th-bg);
   &.sticky {
@@ -79,7 +78,6 @@
 .footer {
   width: fit-content;
   min-width: 100%;
-  max-width: 100%;
   border: 1px solid var(--bs-table-border-color);
   border-left: none;
   border-right: none;
