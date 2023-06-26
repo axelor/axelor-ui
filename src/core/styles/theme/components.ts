@@ -104,6 +104,7 @@ function toTableVars(options: ThemeOptions) {
     "--ax-theme-table-th-font-weight": opts.header?.fontWeight,
 
     "--ax-theme-table-cell-padding": opts.cell?.padding,
+    "--ax-theme-table-cell-active-bg": opts.cell_active?.bg,
   };
 }
 

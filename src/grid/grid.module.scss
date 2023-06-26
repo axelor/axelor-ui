@@ -8,10 +8,6 @@
   outline: none;
   color: var(--bs-table-color);
   border-color: var(--bs-table-border-color);
-  --bs-table-bg: var(--bs-body-bg);
-  --bs-table-th-bg: var(--bs-body-bg);
-  --bs-table-striped-color: var(--bs-table-color);
-  --bs-table-striped-bg: var(--bs-table-bg);
 }
 
 .resizingColumns,
@@ -112,7 +108,7 @@
 .column {
   &.selected {
     position: relative;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--bs-table-cell-active-bg, rgba(0, 0, 0, 0.05));
   }
   &.center {
     display: flex;
