@@ -104,6 +104,14 @@ export interface ThemeOptions {
         ringColor?: string;
       };
     };
+    Shell?: ThemeElementColors & {
+      scrollbar?: { color?: string };
+      sidebar?: ThemeElementCommon;
+      view?: {
+        toolbar?: ThemeElementCommon;
+        content?: ThemeElementCommon;
+      };
+    };
     Panel?: ThemeElementCommon & {
       title?: ThemeElementSpacing;
       header?: ThemeElementCommon;

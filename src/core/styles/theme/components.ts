@@ -17,6 +17,33 @@ function toBorder(
   }
 }
 
+function toShellVars(options: ThemeOptions) {
+  const opts = options.components?.Shell ?? {};
+  return {
+    "--ax-theme-shell-bg": opts.bg,
+    "--ax-theme-shell-color": opts.color,
+    "--ax-theme-shell-scrollbar-color": opts.scrollbar?.color,
+    "--ax-theme-shell-sidebar-bg": opts.sidebar?.bg,
+    "--ax-theme-shell-sidebar-color": opts.sidebar?.color,
+    "--ax-theme-shell-sidebar-paddding": opts.sidebar?.padding,
+    "--ax-theme-shell-sidebar-border": toBorder(options, opts.sidebar?.border),
+    "--ax-theme-shell-view-toolbar-bg": opts.view?.toolbar?.bg,
+    "--ax-theme-shell-view-toolbar-color": opts.view?.toolbar?.color,
+    "--ax-theme-shell-view-toolbar-padding": opts.view?.toolbar?.padding,
+    "--ax-theme-shell-view-toolbar-border": toBorder(
+      options,
+      opts.view?.toolbar?.border
+    ),
+    "--ax-theme-shell-view-content-bg": opts.view?.content?.bg,
+    "--ax-theme-shell-view-content-color": opts.view?.content?.color,
+    "--ax-theme-shell-view-content-padding": opts.view?.content?.padding,
+    "--ax-theme-shell-view-content-border": toBorder(
+      options,
+      opts.view?.content?.border
+    ),
+  };
+}
+
 function toPanelVars(options: ThemeOptions) {
   const opts = options.components?.Panel ?? {};
   return {
@@ -140,6 +167,7 @@ function toNavTabsVars(options: ThemeOptions) {
 
 export function toComponentVars(options: ThemeOptions) {
   return {
+    ...toShellVars(options),
     ...toPanelVars(options),
     ...toTableVars(options),
     ...toNavMenuVars(options),
