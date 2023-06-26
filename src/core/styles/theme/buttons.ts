@@ -1,5 +1,7 @@
 import Color from "color";
 
+import { THEME_COLOR_NAMES, findThemeColors, processVars } from "./common";
+import { ThemeOptions } from "./types";
 import {
   ColorParam,
   colorContrast,
@@ -126,4 +128,31 @@ function buttonOutlineVariant(options: ButtonOptions) {
     "--bs-btn-disabled-border-color": color,
     "--bs-gradient": "none",
   };
+}
+
+export function createButtonRules(
+  options: ThemeOptions,
+  classes: CSSModuleClasses = {}
+) {
+  const { palette = {} } = options;
+  const themeColors = findThemeColors({ palette });
+  const rules: string[] = [];
+
+  for (const name of THEME_COLOR_NAMES) {
+    const color = themeColors[name];
+    if (color) {
+      for (const prefix of ["btn", "btn-outline"]) {
+        const cls = classes[`${prefix}-${name}`];
+        const outline = prefix === "btn-outline";
+        if (cls) {
+          const vars = toButtonVars(name, color, outline);
+          const text = processVars(options, vars);
+          const rule = `.${cls}{${text}}`;
+          rules.push(rule);
+        }
+      }
+    }
+  }
+
+  return rules.join("");
 }

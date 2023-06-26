@@ -1,5 +1,3 @@
-import { CSSProperties } from "react";
-
 export interface ThemePalette {
   // common colors
   blue?: string;
@@ -17,18 +15,16 @@ export interface ThemePalette {
   white?: string;
   black?: string;
   gray?: string;
-  grays?: {
-    100: string;
-    200: string;
-    300: string;
-    400: string;
-    500: string;
-    600: string;
-    700: string;
-    800: string;
-    900: string;
-    dark?: string;
-  };
+  gray_dark?: string;
+  gray_100?: string;
+  gray_200?: string;
+  gray_300?: string;
+  gray_400?: string;
+  gray_500?: string;
+  gray_600?: string;
+  gray_700?: string;
+  gray_800?: string;
+  gray_900?: string;
 
   // base colors
   body?: string;
@@ -47,9 +43,40 @@ export interface ThemePalette {
 
 export interface ThemeTypograpy {
   fontFamily?: string | string[];
-  fontSize?: number | string;
+  fontSize?: string;
   fontWeight?: number | string;
   lineHeight?: number | string;
+}
+
+export interface ThemeElementColors {
+  bg?: string;
+  color?: string;
+  shadow?: string;
+}
+
+export interface ThemeElementBorder {
+  width?: string;
+  color?: string;
+  style?: React.CSSProperties["borderStyle"];
+  radius?: string;
+}
+
+export interface ThemeElementSpacing {
+  padding?: string;
+  gap?: string;
+}
+
+export interface ThemeElementRing {
+  width?: string;
+  color?: string;
+  opacity?: number;
+}
+
+export interface ThemeElementCommon
+  extends ThemeTypograpy,
+    ThemeElementColors,
+    ThemeElementSpacing {
+  border?: ThemeElementBorder;
 }
 
 export interface ThemeOptions {
@@ -58,34 +85,64 @@ export interface ThemeOptions {
     body?: ThemeTypograpy;
     code?: ThemeTypograpy;
   };
-  border?: {
-    width?: number | string;
-    color?: string;
-    style?: CSSProperties["borderStyle"];
-  };
+  border?: ThemeElementBorder;
   link?: {
     color?: string;
     hover?: string;
-    decoration?: CSSProperties["textDecorationStyle"];
+    decoration?: React.CSSProperties["textDecorationStyle"];
   };
   components?: {
-    input?: {
+    Input?: {
+      border?: ThemeElementBorder;
       focus?: {
-        ring?: {
-          width?: number | string;
-          color?: string;
-          opacity?: number;
-        };
-      };
-      valid?: {
-        color?: string;
-        borderColor?: string;
-        shadow?: string;
+        border?: ThemeElementBorder;
+        ring?: ThemeElementRing;
       };
       invalid?: {
         color?: string;
         borderColor?: string;
-        shadow?: string;
+        ringColor?: string;
+      };
+    };
+    Panel?: ThemeElementCommon & {
+      title?: ThemeElementSpacing;
+      header?: ThemeElementCommon;
+      footer?: ThemeElementCommon;
+    };
+    Table?: ThemeElementCommon & {
+      header?: ThemeElementCommon;
+      row?: ThemeElementCommon;
+      row_odd?: ThemeElementColors;
+      row_hover?: ThemeElementColors;
+      row_active?: ThemeElementColors;
+      cell?: ThemeElementSpacing;
+      cell_active?: ThemeElementColors;
+    };
+    NavMenu?: ThemeElementCommon & {
+      width?: string;
+      zIndex?: number;
+      header?: ThemeElementColors & ThemeElementSpacing;
+      item?: ThemeElementColors &
+        ThemeElementSpacing & { border?: ThemeElementBorder };
+      item_hover?: ThemeElementColors;
+      item_active?: ThemeElementColors;
+      icon?: ThemeElementColors & ThemeElementSpacing;
+      icon_hover?: ThemeElementColors;
+      icon_active?: ThemeElementColors;
+      buttons?: ThemeElementColors & ThemeElementSpacing & { width?: string };
+    };
+    NavTabs?: ThemeElementCommon & {
+      item?: ThemeElementCommon & {
+        transform?: React.CSSProperties["textTransform"];
+      };
+      item_hover?: ThemeElementColors;
+      item_active?: ThemeElementColors;
+      icon?: ThemeElementColors & ThemeElementSpacing;
+      icon_hover?: ThemeElementColors;
+      icon_active?: ThemeElementColors;
+      indicator?: {
+        bg?: string;
+        height?: string;
       };
     };
   };

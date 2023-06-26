@@ -1,33 +1,60 @@
 .panel {
-  --ax-panel-bg: var(--bs-body-bg);
-  --ax-panel-color: var(--bs-body-color);
+  --ax-panel-bg: var(--ax-theme-panel-bg, var(--bs-body-bg));
+  --ax-panel-color: var(--ax-theme-panel-color, var(--bs-body-color));
 
-  --ax-panel-border-width: 1px;
-  --ax-panel-border-color: var(--bs-border-color);
+  --ax-panel-border-width: var(--ax-theme-panel-border-width, 1px);
+  --ax-panel-border-color: var(
+    --ax-theme-panel-border-color,
+    var(--bs-border-color)
+  );
   --ax-panel-border: var(--ax-panel-border-width) solid
     var(--ax-panel-border-color);
-  --ax-panel-border-radius: var(--bs-border-radius);
+  --ax-panel-border-radius: var(
+    --ax-theme-panel-border-radius,
+    var(--bs-border-radius)
+  );
 
-  --ax-panel-shadow: none;
+  --ax-panel-shadow: var(--ax-theme-panel-shadow, none);
 
-  --ax-panel-header-bg: var(--ax-panel-bg);
-  --ax-panel-header-color: var(--ax-panel-color);
-  --ax-panel-header-border: var(--ax-panel-border);
-  --ax-panel-header-padding: 0.25rem;
-  --ax-panel-header-title-padding: 0.5rem;
-  --ax-panel-header-gap: 0.5rem;
-  --ax-panel-header-font-size: 1rem;
-  --ax-panel-header-font-weight: bold;
+  --ax-panel-header-bg: var(--ax-theme-panel-header-bg, var(--ax-panel-bg));
+  --ax-panel-header-color: var(
+    --ax-theme-panel-header-color,
+    var(--ax-panel-color)
+  );
+  --ax-panel-header-border: var(
+    --ax-theme-panel-header-border,
+    var(--ax-panel-border)
+  );
+  --ax-panel-header-padding: var(--ax-theme-panel-header-padding, 0.25rem);
+  --ax-panel-header-title-padding: var(
+    --ax-theme-panel-header-title-padding,
+    0.5rem
+  );
+  --ax-panel-header-gap: var(--ax-theme-panel-header-gap, 0.5rem);
+  --ax-panel-header-font-size: var(--ax-theme-panel-header-font-size, 1rem);
+  --ax-panel-header-font-weight: var(--ax-theme-panel-header-font-weight, bold);
 
-  --ax-panel-footer-bg: var(--ax-panel-bg);
-  --ax-panel-footer-color: var(--ax-panel-color);
-  --ax-panel-footer-border: var(--ax-panel-border);
-  --ax-panel-footer-padding: 0.25rem 0.5rem;
-  --ax-panel-footer-gap: 0.5rem;
-  --ax-panel-footer-font-size: 0.9rem;
-  --ax-panel-footer-font-weight: normal;
+  --ax-panel-footer-bg: var(--ax-theme-panel-footer-bg, var(--ax-panel-bg));
+  --ax-panel-footer-color: var(
+    --ax-theme-panel-footer-color,
+    var(--ax-panel-color)
+  );
+  --ax-panel-footer-border: var(
+    --ax-theme-panel-footer-border,
+    var(--ax-panel-border)
+  );
+  --ax-panel-footer-padding: var(
+    --ax-theme-panel-footer-padding,
+    0.25rem 0.5rem
+  );
+  --ax-panel-footer-gap: var(--ax-theme-panel-footer-gap, 0.5rem);
+  --ax-panel-footer-font-size: var(--ax-theme-panel-footer-font-size, 0.9rem);
+  --ax-panel-footer-font-weight: var(
+    --ax-theme-panel-footer-font-weight,
+    normal
+  );
 
-  --ax-panel-body-padding: 0.5rem;
+  --ax-panel-body-padding: var(--ax-theme-panel-body-padding, 0.5rem);
 }
 
 .panel {

@@ -20,9 +20,10 @@ const STYLES: Record<string, CSSModuleClasses> = {
   rtl: stylesRtl,
 };
 
-export interface ThemeContextValue extends ThemeOptions {
+export interface ThemeContextValue {
   dir?: string;
   theme?: "light" | "dark";
+  options?: ThemeOptions;
 }
 
 export interface ThemeProviderProps extends Partial<ThemeContextValue> {
@@ -34,7 +35,7 @@ const ThemeContext = createContext<ThemeContextValue>({});
 export function ThemeProvider({
   dir,
   theme,
-  palette,
+  options = {},
   children,
 }: ThemeProviderProps) {
   const curr = useContext(ThemeContext);
@@ -52,13 +53,13 @@ export function ThemeProvider({
 
   useEffect(() => {
     const last = [...document.adoptedStyleSheets];
-    const sheet = createStyleSheet({ palette }, classes);
+    const sheet = createStyleSheet(options, classes);
 
     document.adoptedStyleSheets = [...last, sheet];
     return () => {
       document.adoptedStyleSheets = last;
     };
-  }, [classes, dir, palette]);
+  }, [classes, dir, options]);
 
   return (
     <ThemeContext.Provider value={value}>

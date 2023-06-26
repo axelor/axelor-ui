@@ -1,24 +1,46 @@
 .container {
-  --ax-nav-tabs-icon-bg: transparent;
-  --ax-nav-tabs-icon-color: inherit;
-  --ax-nav-tabs-icon-padding: 0.25rem;
+  --ax-nav-tabs-icon-bg: var(--ax-theme-nav-tabs-icon-bg, transparent);
+  --ax-nav-tabs-icon-color: var(--ax-theme-nav-tabs-icon-color, inherit);
+  --ax-nav-tabs-icon-padding: var(--ax-theme-nav-tabs-icon-padding, 0.25rem);
 
-  --ax-nav-tabs-tab-padding: 0.5rem 1rem;
-  --ax-nav-tabs-tab-bg: inherit;
-  --ax-nav-tabs-tab-color: var(--bs-tertiary-color);
-  --ax-nav-tabs-tab-font-weight: 600;
-  --ax-nav-tabs-tab-text-transform: uppercase;
+  --ax-nav-tabs-tab-padding: var(--ax-theme-nav-tabs-tab-padding, 0.5rem 1rem);
+  --ax-nav-tabs-tab-bg: var(--ax-theme-nav-tabs-tab-bg, inherit);
+  --ax-nav-tabs-tab-color: var(
+    --ax-theme-nav-tabs-tab-color,
+    var(--bs-tertiary-color)
+  );
+  --ax-nav-tabs-tab-font-weight: var(--ax-theme-nav-tabs-tab-font-weight, 600);
+  --ax-nav-tabs-tab-text-transform: var(
+    --ax-theme-nav-tabs-tab-text-transform,
+    uppercase
+  );
 
-  --ax-nav-tabs-tab-hover-bg: inherit;
-  --ax-nav-tabs-tab-hover-color: inherit;
-  --ax-nav-tabs-tab-hover-font-weight: var(--ax-nav-tabs-tab-font-weight);
+  --ax-nav-tabs-tab-hover-bg: var(--ax-theme-nav-tabs-tab-hover-bg, inherit);
+  --ax-nav-tabs-tab-hover-color: var(
+    --ax-theme-nav-tabs-tab-hover-color,
+    inherit
+  );
+  --ax-nav-tabs-tab-hover-font-weight: var(
+    --ax-theme-nav-tabs-tab-hover-font-weight
+  );
 
-  --ax-nav-tabs-tab-active-bg: inherit;
-  --ax-nav-tabs-tab-active-color: inherit;
-  --ax-nav-tabs-tab-active-font-weight: var(--ax-nav-tabs-tab-font-weight);
+  --ax-nav-tabs-tab-active-bg: var(--ax-theme-nav-tabs-tab-active-bg, inherit);
+  --ax-nav-tabs-tab-active-color: var(
+    --ax-theme-nav-tabs-tab-active-color,
+    inherit
+  );
+  --ax-nav-tabs-tab-active-font-weight: var(
+    --ax-theme-nav-tabs-tab-active-font-weight
+  );
 
-  --ax-nav-tabs-indicator-size: 0.125rem;
-  --ax-nav-tabs-indicator-color: var(--bs-primary);
+  --ax-nav-tabs-indicator-size: var(
+    --ax-theme-nav-tabs-indicator-size,
+    0.125rem
+  );
+  --ax-nav-tabs-indicator-color: var(
+    --ax-theme-nav-tabs-indicator-color,
+    var(--bs-primary)
+  );
 }
 
 .container,
