@@ -133,6 +133,12 @@ export interface NavMenuProps {
    */
   header?: React.ReactNode;
 
+  /**
+   * The smaller header to show in icons bar.
+   *
+   */
+  headerSmall?: React.ReactNode;
+
   style?: React.CSSProperties;
 
   className?: string;
@@ -143,6 +149,7 @@ export function NavMenu({
   show,
   items,
   header,
+  headerSmall,
   style,
   className,
   searchOptions,
@@ -167,6 +174,7 @@ export function NavMenu({
         show={show}
         items={menus}
         header={header}
+        headerSmall={headerSmall}
         searchOptions={searchOptions}
         searchActive={searchActive}
         onItemClick={onItemClick}
@@ -364,7 +372,7 @@ function Accordion(props: VariantProps) {
   } = useNavMenu(props);
 
   const { lookup } = state;
-  const { header } = props;
+  const { header, headerSmall } = props;
 
   return (
     <div
@@ -375,7 +383,13 @@ function Accordion(props: VariantProps) {
       onMouseLeave={handleLeave}
     >
       {showIcons && (
-        <MenuIcons mode="icons" show="icons" state={state} items={icons} />
+        <MenuIcons
+          mode="icons"
+          show="icons"
+          state={state}
+          items={icons}
+          header={headerSmall}
+        />
       )}
       {showSearch && (
         <div className={clsx(styles.menus, styles.search)}>
@@ -548,12 +562,14 @@ function MenuIcon({ item, state, onItemClick, onItemHover }: ItemProps) {
 function MenuIcons({
   items,
   state,
+  header,
   onItemClick,
   onItemHover,
 }: VariantProps & { state: ItemProps["state"] }) {
   return (
     <Scrollable>
       <div className={styles.icons}>
+        {header && <div className={styles.iconsHeader}>{header}</div>}
         {items.map((item) => (
           <MenuIcon
             key={item.id}
