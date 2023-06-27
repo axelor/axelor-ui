@@ -168,5 +168,10 @@ export interface ThemeOptions {
         shadow?: string;
       };
     };
+    Dropdown?: ThemeElementCommon & {
+      item?: ThemeElementColors;
+      item_hover?: ThemeElementColors;
+      item_active?: ThemeElementColors;
+    }
   };
 }

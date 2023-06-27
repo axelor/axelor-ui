@@ -187,6 +187,23 @@ function toCommandBarVars(options: ThemeOptions) {
   };
 }
 
+function toDropdownVars(options: ThemeOptions) {
+  const opts = options.components?.Dropdown ?? {};
+  return {
+    "--ax-theme-dropdown-bg": opts.bg,
+    "--ax-theme-dropdown-color": opts.color,
+    "--ax-theme-dropdown-border-color": opts.border?.color,
+    "--ax-theme-dropdown-border-radius": opts.border?.radius,
+    "--ax-theme-dropdown-border-width": opts.border?.width,
+    "--ax-theme-dropdown-box-shadow": opts.shadow,
+    "--ax-theme-dropdown-link-color": opts.item?.color,
+    "--ax-theme-dropdown-link-hover-bg": opts.item_hover?.bg,
+    "--ax-theme-dropdown-link-hover-color": opts.item_hover?.color,
+    "--ax-theme-dropdown-link-active-color": opts.item_active?.color,
+    "--ax-theme-dropdown-link-active-bg": opts.item_active?.bg,
+  };
+}
+
 export function toComponentVars(options: ThemeOptions) {
   return {
     ...toShellVars(options),
@@ -195,5 +212,6 @@ export function toComponentVars(options: ThemeOptions) {
     ...toNavMenuVars(options),
     ...toNavTabsVars(options),
     ...toCommandBarVars(options),
+    ...toDropdownVars(options),
   };
 }

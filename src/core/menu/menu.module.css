@@ -1,4 +1,49 @@
 .dropdownMenu {
+  --bs-dropdown-color: var(--ax-theme-dropdown-color, var(--bs-body-color));
+  --bs-dropdown-bg: var(--ax-theme-dropdown-bg, var(--bs-body-bg));
+  --bs-dropdown-border-color: var(
+    --ax-theme-dropdown-border-color,
+    var(--bs-border-color-translucent)
+  );
+  --bs-dropdown-border-radius: var(
+    --ax-theme-dropdown-border-radius,
+    var(--bs-border-radius)
+  );
+  --bs-dropdown-border-width: var(
+    --ax-theme-dropdown-border-width,
+    var(--bs-border-width)
+  );
+  --bs-dropdown-inner-border-radius: var(
+    --ax-theme-dropdown-inner-border-radius,
+    calc(var(--bs-dropdown-border-radius) - var(--bs-border-width))
+  );
+  --bs-dropdown-box-shadow: var(
+    --ax-theme-dropdown-box-shadow,
+    0 0.5rem 1rem rgba(0, 0, 0, 0.15)
+  );
+  --bs-dropdown-link-color: var(
+    --ax-theme-dropdown-link-color,
+    var(--bs-body-color)
+  );
+  --bs-dropdown-link-hover-color: var(
+    --ax-theme-dropdown-link-hover-color,
+    var(--bs-body-color)
+  );
+  --bs-dropdown-link-hover-bg: var(
+    --ax-theme-dropdown-link-hover-bg,
+    var(--bs-tertiary-bg)
+  );
+  --bs-dropdown-link-active-color: var(
+    --ax-theme-dropdown-link-active-color,
+    #fff
+  );
+  --bs-dropdown-link-active-bg: var(
+    --ax-theme-dropdown-link-active-bg,
+    var(--bs-primary)
+  );
+}
+
+.dropdownMenu {
   position: relative;
 }
 .menuItem:not(:disabled) {
