@@ -41,6 +41,10 @@
     --ax-theme-dropdown-link-active-bg,
     var(--bs-primary)
   );
+  --bs-dropdown-divider-bg: var(
+    --ax-theme-dropdown-divider-bg,
+    var(--bs-border-color-translucent)
+  );
 }
 
 .dropdownMenu {

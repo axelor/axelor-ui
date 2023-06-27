@@ -172,6 +172,7 @@ export interface ThemeOptions {
       item?: ThemeElementColors;
       item_hover?: ThemeElementColors;
       item_active?: ThemeElementColors;
+      divider?: ThemeElementColors;
     };
     NavSelect?: {
       item?: ThemeElementCommon;

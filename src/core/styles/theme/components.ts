@@ -201,6 +201,7 @@ function toDropdownVars(options: ThemeOptions) {
     "--ax-theme-dropdown-link-hover-color": opts.item_hover?.color,
     "--ax-theme-dropdown-link-active-color": opts.item_active?.color,
     "--ax-theme-dropdown-link-active-bg": opts.item_active?.bg,
+    "--ax-theme-dropdown-divider-bg": opts.divider?.bg,
   };
 }
 
