@@ -268,24 +268,14 @@ function toMiscVars({ palette = {}, components = {} }: ThemeOptions) {
   const black = palette.black || "black";
 
   const { Input: input = {} } = components;
-  const { focus = {}, invalid = {} } = input;
-  const { ring = {} } = focus;
-
-  const ringColor = ring.color
-    ? ring.color
-    : palette.primary
-    ? Color(palette.primary).alpha(0.25)
-    : undefined;
+  const { invalid = {} } = input;
 
   return {
     "--bs-black-rgb": rgbColor(black, true), // for button shadow
     "--bs-code-color": palette.pink,
     "--bs-highlight-bg": yellow100,
-    "--bs-focus-ring-width": ring.width,
-    "--bs-focus-ring-opacity": ring.opacity,
-    "--bs-focus-ring-color": ringColor && rgbColor(ringColor),
     "--bs-form-invalid-color": invalid.color ?? palette.danger,
-    "--bs-form-invalid-border-color": invalid.borderColor ?? palette.danger,
+    "--bs-form-invalid-border-color": invalid.border?.color ?? palette.danger,
   };
 }
 

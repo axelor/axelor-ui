@@ -221,6 +221,24 @@ function toNavSelectVars(options: ThemeOptions) {
   };
 }
 
+function toInputVars(options: ThemeOptions) {
+  const opts = options.components?.Input ?? {};
+  return {
+    "--ax-theme-input-border": toBorder(options, opts.border),
+    "--ax-theme-input-focus-border": toBorder(options, opts.focus?.border),
+    "--ax-theme-input-focus-shadow": opts.focus?.shadow,
+    "--ax-theme-input-invalid-border": toBorder(options, opts.invalid?.border),
+    "--ax-theme-input-invalid-focus-border": toBorder(
+      options,
+      opts.invalid_focus?.border
+    ),
+    "--ax-theme-input-invalid-focus-shadow": opts.invalid_focus?.shadow,
+    "--ax-theme-input-border-radius": opts.border?.radius,
+    "--ax-theme-input-border-radius-sm": opts.border_sm?.radius,
+    "--ax-theme-input-border-radius-lg": opts.border_lg?.radius,
+  };
+}
+
 export function toComponentVars(options: ThemeOptions) {
   return {
     ...toShellVars(options),
@@ -231,5 +249,6 @@ export function toComponentVars(options: ThemeOptions) {
     ...toCommandBarVars(options),
     ...toDropdownVars(options),
     ...toNavSelectVars(options),
+    ...toInputVars(options),
   };
 }

@@ -71,12 +71,6 @@ export interface ThemeElementSpacing {
   gap?: string;
 }
 
-export interface ThemeElementRing {
-  width?: string;
-  color?: string;
-  opacity?: number;
-}
-
 export interface ThemeElementCommon
   extends ThemeTypograpy,
     ThemeElementColors,
@@ -99,14 +93,20 @@ export interface ThemeOptions {
   components?: {
     Input?: {
       border?: ThemeElementBorder;
+      border_sm?: ThemeElementBorder;
+      border_lg?: ThemeElementBorder;
       focus?: {
         border?: ThemeElementBorder;
-        ring?: ThemeElementRing;
+        shadow?: string;
       };
       invalid?: {
         color?: string;
-        borderColor?: string;
-        ringColor?: string;
+        border?: ThemeElementBorder;
+      };
+      invalid_focus?: {
+        color?: string;
+        border?: ThemeElementBorder;
+        shadow?: string;
       };
     };
     Shell?: ThemeElementColors & {
