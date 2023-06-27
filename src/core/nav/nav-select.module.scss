@@ -5,6 +5,34 @@ $spacing: 0.25rem;
 $borderWidth: 2px;
 
 .root {
+  --ax-nav-select-bg: var(--ax-theme-nav-select-bg, transparent);
+  --ax-nav-select-color: var(--ax-theme-nav-select-color, inherit);
+  --ax-nav-select-border-width: var(--ax-theme-nav-select-border-width, 2px);
+  --ax-nav-select-border-color: var(
+    --ax-theme-nav-select-border-color,
+    var(--bs-border-color)
+  );
+  --ax-nav-select-hover-bg: var(--ax-theme-nav-select-hover-bg, inherit);
+  --ax-nav-select-hover-color: var(
+    --ax-theme-nav-select-hover-color,
+    var(--bs-primary)
+  );
+  --ax-nav-select-hover-border-color: var(
+    --ax-theme-nav-select-hover-border-color,
+    var(--bs-border-color)
+  );
+  --ax-nav-select-active-bg: var(--ax-theme-nav-select-active-bg, inherit);
+  --ax-nav-select-active-color: var(
+    --ax-theme-nav-select-active-color,
+    var(--bs-primary)
+  );
+  --ax-nav-select-active-border-color: var(
+    --ax-theme-nav-select-active-border-color,
+    var(--bs-primary)
+  );
+}
+
+.root {
   overflow: hidden;
 }
 .root > * > [data-popper-placement] {
@@ -20,17 +48,21 @@ $borderWidth: 2px;
   min-width: 120px;
   cursor: pointer;
   &:hover {
-    color: var(--bs-nav-link-hover-color);
+    background-color: var(--ax-nav-select-hover-bg);
+    color: var(--ax-nav-select-hover-color);
   }
   &.active {
-    color: var(--bs-nav-link-active-color);
+    background-color: var(--ax-nav-select-active-bg);
+    color: var(--ax-nav-select-active-color);
   }
 }
 
 .listItem {
   $offset: calc(-1 * math.div($height, 2));
 
-  color: var(--bs-secondary);
+  color: var(--ax-nav-select-color);
+  background-color: var(--ax-nav-select-bg);
+
   cursor: pointer;
   display: flex;
   user-select: none;
@@ -47,7 +79,7 @@ $borderWidth: 2px;
     }
   }
   & a {
-    border: $borderWidth solid var(--bs-secondary);
+    border: $borderWidth solid var(--ax-nav-select-border-color);
     border-right: none;
     border-left: none;
     display: inline;
@@ -75,14 +107,14 @@ $borderWidth: 2px;
   }
 
   &:first-child a {
-    border-color: var(--bs-secondary);
+    border-color: var(--ax-nav-select-border-color);
     .root:not(.rtl) & {
-      border-left: $borderWidth solid;
+      border-left: $borderWidth solid var(--ax-nav-select-border-color);
       border-top-left-radius: $spacing;
       border-bottom-left-radius: $spacing;
     }
     .root.rtl & {
-      border-right: $borderWidth solid;
+      border-right: $borderWidth solid var(--ax-nav-select-border-color);
       border-top-right-radius: $spacing;
       border-bottom-right-radius: $spacing;
     }
@@ -96,7 +128,7 @@ $borderWidth: 2px;
     position: absolute;
     z-index: 1;
     background: transparent;
-    border: $borderWidth solid var(--bs-secondary);
+    border: $borderWidth solid var(--ax-nav-select-border-color);
     transform: rotate(45deg);
 
     .root:not(.rtl) & {
@@ -130,11 +162,20 @@ $borderWidth: 2px;
     display: none;
   }
 
+  &:hover a,
+  &:hover a:after,
+  &:hover a:before {
+    color: var(--ax-nav-select-hover-color) !important;
+    background-color: var(--ax-nav-select-hover-bg) !important;
+    border-color: var(--ax-nav-select-hover-border-color) !important;
+  }
+
   &.active a,
   &.active a:after,
   &.active a:before {
-    color: var(--bs-primary) !important;
-    border-color: var(--bs-primary) !important;
+    color: var(--ax-nav-select-active-color) !important;
+    background-color: var(--ax-nav-select-active-bg) !important;
+    border-color: var(--ax-nav-select-active-border-color) !important;
   }
 
   &.dropdown {
@@ -173,10 +214,10 @@ $borderWidth: 2px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: var(--bs-secondary);
+  color: var(--ax-nav-select-color);
   font-size: 1em;
   &.active {
-    color: var(--bs-primary);
+    color: var(--ax-nav-select-active-color);
   }
   .root:not(.rtl) & {
     margin-left: $spacing * 3;

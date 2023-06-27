@@ -204,6 +204,23 @@ function toDropdownVars(options: ThemeOptions) {
   };
 }
 
+function toNavSelectVars(options: ThemeOptions) {
+  const opts = options.components?.NavSelect ?? {};
+  return {
+    "--ax-theme-nav-select-bg": opts.item?.bg,
+    "--ax-theme-nav-select-color": opts.item?.bg,
+    "--ax-theme-nav-select-border-width": opts.item?.border?.width,
+    "--ax-theme-nav-select-border-color": opts.item?.border?.color,
+    "--ax-theme-nav-select-hover-bg": opts.item_hover?.bg,
+    "--ax-theme-nav-select-hover-color": opts.item_hover?.color,
+    "--ax-theme-nav-select-hover-border-color": opts.item_hover?.border?.color,
+    "--ax-theme-nav-select-active-bg": opts.item_active?.bg,
+    "--ax-theme-nav-select-active-color": opts.item_active?.color,
+    "--ax-theme-nav-select-active-border-color":
+      opts.item_active?.border?.color,
+  };
+}
+
 export function toComponentVars(options: ThemeOptions) {
   return {
     ...toShellVars(options),
@@ -213,5 +230,6 @@ export function toComponentVars(options: ThemeOptions) {
     ...toNavTabsVars(options),
     ...toCommandBarVars(options),
     ...toDropdownVars(options),
+    ...toNavSelectVars(options),
   };
 }
