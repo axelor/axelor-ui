@@ -22,7 +22,7 @@
   );
   --ax-nav-menu-header-radius: var(--ax-theme-nav-menu-header-radius, 1rem);
 
-  --ax-nav-menu-icons-width: var(--ax-theme-nav-menu-icons-width, 3rem);
+  --ax-nav-menu-icons-width: var(--ax-theme-nav-menu-icons-width, auto);
   --ax-nav-menu-icons-bg: var(--ax-theme-nav-menu-icons-bg, transparent);
   --ax-nav-menu-icon-bg: var(--ax-theme-nav-menu-icon-bg, var(--bs-body-bg));
   --ax-nav-menu-icon-color: var(
@@ -99,8 +99,8 @@
 .icons {
   align-items: center;
   gap: 0.5rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
   background-color: var(--ax-nav-menu-icons-bg);
   width: var(--ax-nav-menu-icons-width);
 }
