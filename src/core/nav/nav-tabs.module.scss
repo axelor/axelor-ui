@@ -21,7 +21,8 @@
     inherit
   );
   --ax-nav-tabs-tab-hover-font-weight: var(
-    --ax-theme-nav-tabs-tab-hover-font-weight
+    --ax-theme-nav-tabs-tab-hover-font-weight,
+    var(--ax-nav-tabs-tab-font-weight)
   );
 
   --ax-nav-tabs-tab-active-bg: var(--ax-theme-nav-tabs-tab-active-bg, inherit);
@@ -30,7 +31,8 @@
     inherit
   );
   --ax-nav-tabs-tab-active-font-weight: var(
-    --ax-theme-nav-tabs-tab-active-font-weight
+    --ax-theme-nav-tabs-tab-active-font-weight,
+    var(--ax-nav-tabs-tab-font-weight)
   );
 
   --ax-nav-tabs-indicator-size: var(

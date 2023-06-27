@@ -143,8 +143,8 @@ export interface ThemeOptions {
       item?: ThemeElementCommon & {
         transform?: React.CSSProperties["textTransform"];
       };
-      item_hover?: ThemeElementColors;
-      item_active?: ThemeElementColors;
+      item_hover?: ThemeElementCommon;
+      item_active?: ThemeElementCommon;
       icon?: ThemeElementColors & ThemeElementSpacing;
       icon_hover?: ThemeElementColors;
       icon_active?: ThemeElementColors;
