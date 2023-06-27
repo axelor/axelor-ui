@@ -70,6 +70,11 @@
   }
 }
 
+.input:checked {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}
+
 .input[type="range"] {
   &:focus::-webkit-slider-thumb {
     box-shadow: var(--ax-theme-input-range-focus-shadow);
