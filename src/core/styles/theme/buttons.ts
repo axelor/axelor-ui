@@ -1,7 +1,7 @@
 import Color from "color";
 
 import {
-  THEME_COLOR_NAMES,
+  THEME_VARIANT_NAMES,
   findColor,
   findThemeColors,
   processVars,
@@ -159,7 +159,7 @@ export function createButtonRules(
   const white = findColor(options, "white") ?? "white";
   const black = findColor(options, "black") ?? "black";
 
-  for (const name of THEME_COLOR_NAMES) {
+  for (const name of THEME_VARIANT_NAMES) {
     const color = themeColors[name];
     if (color) {
       for (const prefix of ["btn", "btn-outline"]) {

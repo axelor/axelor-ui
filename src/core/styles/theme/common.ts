@@ -2,7 +2,7 @@ import Color from "color";
 
 import { toComponentVars } from "./components";
 import { ThemeOptions, ThemePalette } from "./types";
-import { rgbColor, shadeColor, tintColor } from "./utils";
+import { hexColor, rgbColor, shadeColor, tintColor } from "./utils";
 
 export interface ColorRecord extends Record<string, string | undefined> {}
 
@@ -32,7 +32,17 @@ export interface CommonColors extends ColorRecord {
   gray_900: string;
 }
 
-export interface ThemeColors extends ColorRecord {
+export interface ThemeBodyColors extends ColorRecord {
+  body_bg: string;
+  body_color: string;
+  secondary_bg: string;
+  secondary_color: string;
+  tertiary_bg: string;
+  tertiary_color: string;
+  emphasis_color: string;
+}
+
+export interface ThemeVariantColors extends ColorRecord {
   primary: string;
   secondary: string;
   success: string;
@@ -43,7 +53,7 @@ export interface ThemeColors extends ColorRecord {
   dark: string;
 }
 
-export const COMMON: CommonColors = {
+export const COMMON_COLORS: CommonColors = {
   blue: "#0d6efd",
   indigo: "#6610f2",
   purple: "#6f42c1",
@@ -69,15 +79,25 @@ export const COMMON: CommonColors = {
   gray_900: "#212529",
 };
 
-export const THEME: ThemeColors = {
-  primary: COMMON.blue,
-  secondary: COMMON.gray_600,
-  success: COMMON.green,
-  info: COMMON.cyan,
-  warning: COMMON.yellow,
-  danger: COMMON.red,
-  light: COMMON.gray_100,
-  dark: COMMON.gray_900,
+export const BODY_COLORS: ThemeBodyColors = {
+  body_bg: COMMON_COLORS.white,
+  body_color: COMMON_COLORS.gray_900,
+  secondary_bg: COMMON_COLORS.gray_200,
+  secondary_color: hexColor(Color(COMMON_COLORS.white).alpha(0.75)),
+  tertiary_bg: COMMON_COLORS.gray_100,
+  tertiary_color: hexColor(Color(COMMON_COLORS.white).alpha(0.5)),
+  emphasis_color: COMMON_COLORS.black,
+};
+
+export const THEME_VARIANT_COLORS: ThemeVariantColors = {
+  primary: COMMON_COLORS.blue,
+  secondary: COMMON_COLORS.gray_600,
+  success: COMMON_COLORS.green,
+  info: COMMON_COLORS.cyan,
+  warning: COMMON_COLORS.yellow,
+  danger: COMMON_COLORS.red,
+  light: COMMON_COLORS.gray_100,
+  dark: COMMON_COLORS.gray_900,
 };
 
 export const COMMON_COLOR_NAMES = [
@@ -106,7 +126,17 @@ export const COMMON_COLOR_NAMES = [
   "gray_900",
 ] as const;
 
-export const THEME_COLOR_NAMES = [
+export const BODY_COLOR_NAMES = [
+  "body_bg",
+  "body_color",
+  "secondary_bg",
+  "secondary_color",
+  "tertiary_bg",
+  "tertiary_color",
+  "emphasis_color",
+] as const;
+
+export const THEME_VARIANT_NAMES = [
   "primary",
   "secondary",
   "success",
@@ -118,7 +148,7 @@ export const THEME_COLOR_NAMES = [
 ] as const;
 
 function findDefaultColor(name: string): string | undefined {
-  return COMMON[name] ?? THEME[name];
+  return COMMON_COLORS[name] ?? BODY_COLORS[name] ?? THEME_VARIANT_COLORS[name];
 }
 
 export function findColor({ palette = {} }: ThemeOptions, color?: string) {
@@ -131,7 +161,9 @@ export function findColor({ palette = {} }: ThemeOptions, color?: string) {
   return value;
 }
 
-export function findThemeColors({ palette = {} }: ThemeOptions): ThemeColors {
+export function findThemeColors({
+  palette = {},
+}: ThemeOptions): ThemeVariantColors {
   const look = (name: any) => (palette as any)[name] ?? findDefaultColor(name);
   return {
     primary: look(palette.primary) ?? palette.primary ?? palette.blue,
@@ -162,7 +194,7 @@ function toColorVars({ palette = {} }: ThemeOptions) {
 
 function toThemeVars({ palette = {} }: ThemeOptions) {
   const themeColors = findThemeColors({ palette });
-  return THEME_COLOR_NAMES.reduce((prev, name) => {
+  return THEME_VARIANT_NAMES.reduce((prev, name) => {
     const color = themeColors[name];
     const variable = name.replace("_", "-");
     return {
@@ -177,15 +209,16 @@ function toThemeVars({ palette = {} }: ThemeOptions) {
 }
 
 function toBodyVars({ palette = {}, typography = {} }: ThemeOptions) {
-  const text = palette.text || palette.gray_900;
-  const body = palette.body || palette.white;
-  const black = palette.black;
+  const text = palette.body_color ?? palette.gray_900;
+  const body = palette.body_bg ?? palette.white;
 
-  const gray200 = palette.gray_200;
-  const gray100 = palette.gray_100;
+  const secondary_bg = palette.secondary_bg ?? palette.gray_200;
+  const secondary_color = palette.secondary_color ?? Color(text).alpha(0.75);
 
-  const secondary = Color(text).alpha(0.75);
-  const tertiary = Color(body).alpha(0.5);
+  const tertiary_bg = palette.tertiary_bg ?? palette.gray_100;
+  const tertiary_color = palette.tertiary_color ?? Color(text).alpha(0.5);
+
+  const emphasis_color = palette.emphasis_color ?? palette.black;
 
   return {
     "--bs-body-bg": body,
@@ -196,16 +229,17 @@ function toBodyVars({ palette = {}, typography = {} }: ThemeOptions) {
     "--bs-body-font-size": typography.body?.fontSize,
     "--bs-body-font-weight": typography.body?.fontWeight,
     "--bs-body-line-height": typography.body?.lineHeight,
-    "--bs-emphasis-color": black,
-    "--bs-emphasis-color-rgb": black && rgbColor(black, true),
-    "--bs-secondary-color": text && rgbColor(secondary),
-    "--bs-secondary-color-rgb": text && rgbColor(secondary, true),
-    "--bs-secondary-bg": gray200,
-    "--bs-secondary-bg-rgb": gray200 && rgbColor(gray200, true),
-    "--bs-tertiary-color": body && rgbColor(tertiary),
-    "--bs-tertiary-color-rgb": body && rgbColor(tertiary, true),
-    "--bs-tertiary-bg": gray100,
-    "--bs-tertiary-bg-rgb": gray100 && rgbColor(gray100, true),
+    "--bs-emphasis-color": emphasis_color,
+    "--bs-emphasis-color-rgb": emphasis_color && rgbColor(emphasis_color, true),
+    "--bs-secondary-color": secondary_color && rgbColor(secondary_color),
+    "--bs-secondary-color-rgb":
+      secondary_color && rgbColor(secondary_color, true),
+    "--bs-secondary-bg": secondary_bg,
+    "--bs-secondary-bg-rgb": secondary_bg && rgbColor(secondary_bg, true),
+    "--bs-tertiary-color": tertiary_color && rgbColor(tertiary_color),
+    "--bs-tertiary-color-rgb": tertiary_color && rgbColor(tertiary_color, true),
+    "--bs-tertiary-bg": tertiary_bg,
+    "--bs-tertiary-bg-rgb": tertiary_bg && rgbColor(tertiary_bg, true),
   };
 }
 

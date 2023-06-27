@@ -26,9 +26,14 @@ export interface ThemePalette {
   gray_800?: string;
   gray_900?: string;
 
-  // base colors
-  body?: string;
-  text?: string;
+  // body colors
+  body_bg?: string;
+  body_color?: string;
+  secondary_bg?: string;
+  secondary_color?: string;
+  tertiary_bg?: string;
+  tertiary_color?: string;
+  emphasis_color?: string;
 
   // theme colors
   primary?: string;
