@@ -11,7 +11,7 @@
 .rbc-time-header-content,
 .rbc-time-header.rbc-overflowing,
 .rbc-time-content {
-  border-color: var(--bs-border-color-translucent);
+  border-color: var(--bs-border-color);
 }
 
 .rbc-off-range-bg {
@@ -19,7 +19,7 @@
 }
 
 .rbc-today {
-  background-color: var(--bs-primary-bg-subtle);
+  background-color: rgba(var(--bs-primary-rgb), 0.25);
 }
 
 .rbc-event,
