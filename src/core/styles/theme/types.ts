@@ -178,5 +178,16 @@ export interface ThemeOptions {
       item_hover?: ThemeElementCommon;
       item_active?: ThemeElementCommon;
     };
+    Badge?: ThemeElementCommon & {
+      opacity?: number;
+      primary?: { color?: string };
+      secondary?: { color?: string };
+      success?: { color?: string };
+      danger?: { color?: string };
+      warning?: { color?: string };
+      info?: { color?: string };
+      light?: { color?: string };
+      dark?: { color?: string };
+    };
   };
 }

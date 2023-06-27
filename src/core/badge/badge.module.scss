@@ -1,0 +1,23 @@
+.badge {
+  --bs-bg-opacity: var(--ax-theme-badge-opacity, 1);
+  --bs-badge-color: var(--ax-theme-badge-color, #fff);
+  --bs-badge-padding: var(--ax-theme-badge-padding, 0.35em 0.65em);
+  --bs-badge-padding-x: 0;
+  --bs-badge-padding-y: 0;
+  --bs-badge-font-size: var(--ax-theme-badge-font-size, 0.75em);
+  --bs-badge-font-weight: var(--ax-theme-badge-font-weight, 700);
+  --bs-badge-border-radius: var(
+    --ax-theme-badge-border-radius,
+    var(--bs-border-radius)
+  );
+}
+
+.badge {
+  padding: var(--bs-badge-padding);
+}
+
+@each $name in (primary secondary success danger warning info light dark) {
+  .#{$name} {
+    color: var(--ax-theme-badge-#{$name}-color);
+  }
+}

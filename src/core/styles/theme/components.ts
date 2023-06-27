@@ -239,6 +239,26 @@ function toInputVars(options: ThemeOptions) {
   };
 }
 
+function toBadgeVars(options: ThemeOptions) {
+  const opts = options.components?.Badge ?? {};
+  return {
+    "--ax-theme-badge-opacity": opts.opacity,
+    "--ax-theme-badge-color": opts.color,
+    "--ax-theme-badge-padding": opts.padding,
+    "--ax-theme-badge-font-size": opts.fontSize,
+    "--ax-theme-badge-font-weight": opts.fontWeight,
+    "--ax-theme-badge-border-radius": opts.border?.radius,
+    "--ax-theme-badge-primary-color": opts.color,
+    "--ax-theme-badge-secondary-color": opts.color,
+    "--ax-theme-badge-success-color": opts.color,
+    "--ax-theme-badge-danger-color": opts.color,
+    "--ax-theme-badge-warning-color": opts.color,
+    "--ax-theme-badge-info-color": opts.color,
+    "--ax-theme-badge-light-color": opts.color,
+    "--ax-theme-badge-dark-color": opts.color,
+  };
+}
+
 export function toComponentVars(options: ThemeOptions) {
   return {
     ...toShellVars(options),
@@ -250,5 +270,6 @@ export function toComponentVars(options: ThemeOptions) {
     ...toDropdownVars(options),
     ...toNavSelectVars(options),
     ...toInputVars(options),
+    ...toBadgeVars(options),
   };
 }
