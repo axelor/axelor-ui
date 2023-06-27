@@ -1,15 +1,48 @@
 .bar {
-  --ax-command-bar-button-bg: transparent;
-  --ax-command-bar-button-color: var(--bs-body-color);
-  --ax-command-bar-button-border-color: transparent;
-  --ax-command-bar-button-hover-bg: rgba(0, 0, 0, 0.1);
-  --ax-command-bar-button-hover-color: var(--ax-command-bar-button-color);
-  --ax-command-bar-button-hover-border-color: transparent;
-  --ax-command-bar-button-active-bg: rgba(0, 0, 0, 0.15);
-  --ax-command-bar-button-active-color: var(--ax-command-bar-button-color);
-  --ax-command-bar-button-active-border-color: transparent;
-  --ax-command-bar-button-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.1);
-  --ax-command-bar-menu-border-color: rgba(0, 0, 0, 0.1);
+  --ax-command-bar-button-padding: var(
+    --ax-theme-command-bar-button-padding,
+    0.5rem
+  );
+  --ax-command-bar-button-bg: var(
+    --ax-theme-command-bar-button-bg,
+    transparent
+  );
+  --ax-command-bar-button-color: var(
+    --ax-theme-command-bar-button-color,
+    var(--bs-body-color)
+  );
+  --ax-command-bar-button-border-color: var(
+    --ax-theme-command-bar-button-border-color,
+    transparent
+  );
+  --ax-command-bar-button-hover-bg: var(
+    --ax-theme-command-bar-button-hover-bg,
+    rgba(0, 0, 0, 0.1)
+  );
+  --ax-command-bar-button-hover-color: var(
+    --ax-theme-command-bar-button-hover-color,
+    var(--ax-command-bar-button-color)
+  );
+  --ax-command-bar-button-hover-border-color: var(
+    --ax-theme-command-bar-button-hover-border-color,
+    transparent
+  );
+  --ax-command-bar-button-active-bg: var(
+    --ax-theme-command-bar-button-active-bg,
+    rgba(0, 0, 0, 0.15)
+  );
+  --ax-command-bar-button-active-color: var(
+    --ax-theme-command-bar-button-active-color,
+    var(--ax-command-bar-button-color)
+  );
+  --ax-command-bar-button-active-border-color: var(
+    --ax-theme-command-bar-button-active-border-color,
+    transparent
+  );
+  --ax-command-bar-button-active-shadow: var(
+    --ax-theme-command-bar-button-active-shadow,
+    inset 0 3px 5px rgba(0, 0, 0, 0.1)
+  );
 }
 
 .bar {
@@ -26,6 +59,7 @@
   border-radius: 0;
   user-select: none;
   box-shadow: none;
+  padding: var(--ax-command-bar-button-padding);
 }
 
 .item:focus-visible {
@@ -73,10 +107,6 @@
   display: flex;
 }
 
-.menu {
-  border-color: var(--ax-command-bar-menu-border-color);
-}
-
 .iconEnd {
   flex-direction: row-reverse;
 }
@@ -95,8 +125,8 @@
 }
 
 .item {
-  --bs-btn-padding-x: 0.5rem;
-  --bs-btn-padding-y: 0.5rem;
+  --bs-btn-padding-x: 0;
+  --bs-btn-padding-y: 0;
   --bs-btn-color: var(--ax-command-bar-button-color);
   --bs-btn-bg: var(--ax-command-bar-button-bg);
   --bs-btn-border-color: var(--ax-command-bar-button-border-color);

@@ -168,6 +168,25 @@ function toNavTabsVars(options: ThemeOptions) {
   };
 }
 
+function toCommandBarVars(options: ThemeOptions) {
+  const opts = options.components?.CommandBar ?? {};
+  return {
+    "--ax-theme-command-bar-button-paddding": opts.button?.padding,
+    "--ax-theme-command-bar-button-bg": opts.button?.bg,
+    "--ax-theme-command-bar-button-color": opts.button?.color,
+    "--ax-theme-command-bar-button-border-color": opts.button?.border?.color,
+    "--ax-theme-command-bar-button-hover-bg": opts.button_hover?.bg,
+    "--ax-theme-command-bar-button-hover-color": opts.button_hover?.color,
+    "--ax-theme-command-bar-button-hover-border-color":
+      opts.button_hover?.border?.color,
+    "--ax-theme-command-bar-button-active-bg": opts.button_active?.bg,
+    "--ax-theme-command-bar-button-active-color": opts.button_active?.color,
+    "--ax-theme-command-bar-button-active-border-color":
+      opts.button_active?.border?.color,
+    "--ax-theme-command-bar-button-active-shadow": opts.button_active?.shadow,
+  };
+}
+
 export function toComponentVars(options: ThemeOptions) {
   return {
     ...toShellVars(options),
@@ -175,5 +194,6 @@ export function toComponentVars(options: ThemeOptions) {
     ...toTableVars(options),
     ...toNavMenuVars(options),
     ...toNavTabsVars(options),
+    ...toCommandBarVars(options),
   };
 }

@@ -158,5 +158,15 @@ export interface ThemeOptions {
         height?: string;
       };
     };
+    CommandBar?: {
+      button?: ThemeElementCommon;
+      button_hover?: ThemeElementColors & {
+        border?: ThemeElementBorder;
+      };
+      button_active?: ThemeElementColors & {
+        border?: ThemeElementBorder;
+        shadow?: string;
+      };
+    };
   };
 }
