@@ -2,7 +2,7 @@ import Color from "color";
 
 import { toComponentVars } from "./components";
 import { ThemeOptions, ThemePalette } from "./types";
-import { hexColor, rgbColor, shadeColor, tintColor } from "./utils";
+import { hexColor, rgbColor, shadeColor, shiftColor, tintColor } from "./utils";
 
 export interface ColorRecord extends Record<string, string | undefined> {}
 
@@ -251,13 +251,15 @@ function toBorderVars({ border = {} }: ThemeOptions) {
   };
 }
 
-function toLinkVars({ link = {} }: ThemeOptions) {
+function toLinkVars({ palette = {}, link = {} }: ThemeOptions) {
+  const color = link.color ?? palette.primary ?? palette.blue;
+  const hover = link.hover ?? (color && shiftColor(color, 0.2));
   return {
-    "--bs-link-color": link.color,
-    "--bs-link-color-rgb": link.color && rgbColor(link.color, true),
+    "--bs-link-color": color,
+    "--bs-link-color-rgb": color && rgbColor(color, true),
     "--bs-link-decoration": link.decoration,
-    "--bs-link-hover-color": link.hover,
-    "--bs-link-hover-color-rgb": link.hover && rgbColor(link.hover, true),
+    "--bs-link-hover-color": hover,
+    "--bs-link-hover-color-rgb": hover && rgbColor(hover, true),
   };
 }
 

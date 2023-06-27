@@ -33,6 +33,10 @@ export function shadeColor(
   return Color(color).mix(Color(black), weight);
 }
 
+export function shiftColor(color: ColorParam, weight: number) {
+  return weight > 0 ? shadeColor(color, weight) : tintColor(color, -weight);
+}
+
 export function colorEquals(color1: ColorParam, color2: ColorParam) {
   return color1 === color2 || hexColor(color1) === hexColor(color2);
 }
