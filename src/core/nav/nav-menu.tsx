@@ -127,6 +127,12 @@ export interface NavMenuProps {
    */
   searchActive?: boolean;
 
+  /**
+   * The header element.
+   *
+   */
+  header?: React.ReactNode;
+
   style?: React.CSSProperties;
 
   className?: string;
@@ -136,6 +142,7 @@ export function NavMenu({
   mode,
   show,
   items,
+  header,
   style,
   className,
   searchOptions,
@@ -159,6 +166,7 @@ export function NavMenu({
         mode={mode}
         show={show}
         items={menus}
+        header={header}
         searchOptions={searchOptions}
         searchActive={searchActive}
         onItemClick={onItemClick}
@@ -356,6 +364,7 @@ function Accordion(props: VariantProps) {
   } = useNavMenu(props);
 
   const { lookup } = state;
+  const { header } = props;
 
   return (
     <div
@@ -370,6 +379,7 @@ function Accordion(props: VariantProps) {
       )}
       {showSearch && (
         <div className={clsx(styles.menus, styles.search)}>
+          {header && <div className={styles.menusHeader}>{header}</div>}
           <SearchMenu
             item={searchItem}
             state={state}
@@ -377,27 +387,30 @@ function Accordion(props: VariantProps) {
           />
         </div>
       )}
-      <Scrollable className={styles.menus}>
-        {searchEnabled && (
-          <div
-            className={clsx(styles.item, styles.searchItem)}
-            onClick={handleSearchClick}
-          >
-            <div className={styles.title}>
-              <MenuIcon item={searchItem} state={{}} />
-              <div className={styles.text}>{searchItem.title}</div>
+      <div className={styles.menus}>
+        {header && <div className={styles.menusHeader}>{header}</div>}
+        <Scrollable className={styles.menusInner}>
+          {searchEnabled && (
+            <div
+              className={clsx(styles.item, styles.searchItem)}
+              onClick={handleSearchClick}
+            >
+              <div className={styles.title}>
+                <MenuIcon item={searchItem} state={{}} />
+                <div className={styles.text}>{searchItem.title}</div>
+              </div>
             </div>
-          </div>
-        )}
-        {items.map((item) => (
-          <MenuItem
-            key={item.id}
-            item={item}
-            state={state}
-            onItemClick={handleItemClick}
-          />
-        ))}
-      </Scrollable>
+          )}
+          {items.map((item) => (
+            <MenuItem
+              key={item.id}
+              item={item}
+              state={state}
+              onItemClick={handleItemClick}
+            />
+          ))}
+        </Scrollable>
+      </div>
     </div>
   );
 }

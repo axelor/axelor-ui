@@ -360,6 +360,14 @@
   }
 }
 
+.menusHeader {
+  display: flex;
+  align-items: center;
+  border-top-left-radius: var(--ax-nav-menu-header-radius);
+  border-top-right-radius: var(--ax-nav-menu-header-radius);
+  padding: 0.5rem;
+}
+
 // end accordion mode
 
 // icons mode
