@@ -7,6 +7,7 @@
   position: relative;
   outline: none;
   color: var(--bs-table-color);
+  background-color: var(--bs-table-bg);
   border-color: var(--bs-table-border-color);
 }
 
@@ -38,14 +39,14 @@
   background: var(--bs-table-striped-bg);
 }
 
-.body .row.selected {
-  background: var(--bs-table-active-bg);
-  color: var(--bs-table-active-color);
-}
-
 .body .row:hover {
   background: var(--bs-table-hover-bg);
   color: var(--bs-table-hover-color);
+}
+
+.body .row.selected {
+  background: var(--bs-table-active-bg);
+  color: var(--bs-table-active-color);
 }
 
 .header {
