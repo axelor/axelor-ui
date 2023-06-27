@@ -223,6 +223,11 @@ function useNavMenu({
     [items, searchOptions?.title]
   );
 
+  const icons = useMemo(
+    () => (searchEnabled ? [searchItem, ...items] : items),
+    [items, searchEnabled, searchItem]
+  );
+
   const setShowSearch = useCallback(
     (active: boolean) => {
       const { onShow, onHide } = searchOptions ?? {};
@@ -319,6 +324,7 @@ function useNavMenu({
   return {
     mode,
     show,
+    icons,
     items,
     state,
     showIcons,
@@ -337,6 +343,7 @@ function useNavMenu({
 function Accordion(props: VariantProps) {
   const {
     state,
+    icons,
     items,
     showIcons,
     showSearch,
@@ -359,7 +366,7 @@ function Accordion(props: VariantProps) {
       onMouseLeave={handleLeave}
     >
       {showIcons && (
-        <MenuIcons mode="icons" show="icons" state={state} items={items} />
+        <MenuIcons mode="icons" show="icons" state={state} items={icons} />
       )}
       {showSearch && (
         <div className={clsx(styles.menus, styles.search)}>
@@ -398,10 +405,10 @@ function Accordion(props: VariantProps) {
 function Icons(props: VariantProps) {
   const {
     state,
+    icons,
     items,
     showSearch,
     searchItem,
-    searchEnabled,
     handleLeave,
     handleItemClick,
     handleIconClick,
@@ -409,11 +416,6 @@ function Icons(props: VariantProps) {
   } = useNavMenu(props);
 
   const hover = showSearch ? searchItem.id : state.lookup;
-
-  const icons = useMemo(
-    () => (searchEnabled ? [searchItem, ...items] : items),
-    [items, searchEnabled, searchItem]
-  );
 
   return (
     <div
