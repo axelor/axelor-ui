@@ -14,12 +14,20 @@ function createRootRule(options: ThemeOptions) {
   return `:root{${text}}`;
 }
 
+const cleanUp = (options: ThemeOptions): ThemeOptions =>
+  JSON.parse(
+    JSON.stringify(options, (key, value) =>
+      value || value === 0 ? value : undefined
+    )
+  );
+
 export function createStyleSheet(
   options: ThemeOptions,
   classes?: CSSModuleClasses
 ) {
-  const root = createRootRule(options);
-  const buttons = createButtonRules(options, classes);
+  const opts = cleanUp(options);
+  const root = createRootRule(opts);
+  const buttons = createButtonRules(opts, classes);
 
   const text = [root, buttons].filter(Boolean).join("");
   const sheet = new CSSStyleSheet();
