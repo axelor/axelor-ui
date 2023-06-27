@@ -7,9 +7,6 @@ export type ColorParam =
   | number
   | { [key: string]: any };
 
-export const white = "white";
-export const black = "black";
-
 export function hexColor(color: ColorParam) {
   return Color(color).hex().toLowerCase();
 }
@@ -20,11 +17,19 @@ export function rgbColor(color: ColorParam, tuple?: boolean) {
   return tuple ? text : nums.length === 4 ? `rgba(${text})` : `rgb(${text})`;
 }
 
-export function tintColor(color: ColorParam, weight: number) {
+export function tintColor(
+  color: ColorParam,
+  weight: number,
+  white: ColorParam = "white"
+) {
   return Color(color).mix(Color(white), weight);
 }
 
-export function shadeColor(color: ColorParam, weight: number) {
+export function shadeColor(
+  color: ColorParam,
+  weight: number,
+  black: ColorParam = "black"
+) {
   return Color(color).mix(Color(black), weight);
 }
 
@@ -34,14 +39,14 @@ export function colorEquals(color1: ColorParam, color2: ColorParam) {
 
 export function colorContrast(
   background: ColorParam,
-  colorContrastLight: ColorParam = white,
-  colorContrastDark: ColorParam = black,
+  colorContrastLight: ColorParam = "white",
+  colorContrastDark: ColorParam = "black",
   minContrastRatio: number = 4.5
 ) {
   let maxRatio = 0;
   let maxRatioColor = null;
 
-  for (const color of [colorContrastLight, colorContrastDark, white, black]) {
+  for (const color of [colorContrastLight, colorContrastDark]) {
     const ratio = Color(background).contrast(Color(color));
     if (ratio > minContrastRatio) {
       return color;
