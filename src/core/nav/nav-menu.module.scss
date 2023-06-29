@@ -43,11 +43,11 @@
 
   --ax-nav-menu-icon-active-bg: var(
     --ax-theme-nav-menu-icon-active-bg,
-    var(--bs-secondary-bg)
+    var(--ax-nav-menu-icon-hover-bg)
   );
   --ax-nav-menu-icon-active-color: var(
     --ax-theme-nav-menu-icon-active-color,
-    var(--bs-secondary)
+    var(--ax-nav-menu-icon-hover-color)
   );
 
   --ax-nav-menu-item-radius: var(--ax-theme-nav-menu-item-radius, 1rem);
@@ -130,6 +130,10 @@
     --ax-nav-menu-icon-bg-normal,
     var(--ax-nav-menu-icon-bg)
   );
+
+  &:empty {
+    background-color: transparent !important;
+  }
 }
 
 .item {
@@ -184,9 +188,16 @@
   background-color: var(--ax-nav-menu-icon-hover-bg);
   color: var(--ax-nav-menu-icon-hover-color);
 }
+.item:hover > .title > .icon.active,
 .icon.active {
-  background-color: var(--ax-nav-menu-icon-active-bg);
-  color: var(--ax-nav-menu-icon-active-color);
+  background-color: var(
+    --ax-theme-nav-menu-icon-active-bg,
+    var(--ax-nav-menu-icon-active-bg)
+  );
+  color: var(
+    --ax-theme-nav-menu-icon-active-color,
+    var(--ax-nav-menu-icon-active-color)
+  );
 }
 
 .item .item .icon {
