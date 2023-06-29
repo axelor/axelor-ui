@@ -21,6 +21,7 @@ export function usePopperTrigger({
   const [contentEl, setContentEl] = useState<any>();
   const [open, setOpen] = useState(false);
 
+  const hiding = useRef<boolean>();
   const inside = useRef<boolean>();
   const timer = useRef<number>();
 
@@ -47,16 +48,23 @@ export function usePopperTrigger({
   }, [setOpen]);
 
   const onContentEnter = useCallback(() => {
+    if (hiding.current) return;
     inside.current = true;
     showPopper();
   }, [showPopper]);
 
   const onContentLeave = useCallback(() => {
+    hiding.current = true;
     inside.current = false;
     if (document.activeElement !== targetEl) {
       hidePopper();
     }
   }, [targetEl, hidePopper]);
+
+  const showOnHover = useCallback(() => {
+    hiding.current = false;
+    showPopper();
+  }, [showPopper]);
 
   // clear timeout
   useEffect(() => () => clearTimeout(timer.current), []);
@@ -74,14 +82,14 @@ export function usePopperTrigger({
   // handle hover trigger
   useEffect(() => {
     if (targetEl && trigger === "hover") {
-      targetEl.addEventListener("mouseenter", showPopper);
+      targetEl.addEventListener("mouseenter", showOnHover);
       targetEl.addEventListener("mouseleave", hidePopper);
       return () => {
-        targetEl.removeEventListener("mouseenter", showPopper);
+        targetEl.removeEventListener("mouseenter", showOnHover);
         targetEl.removeEventListener("mouseleave", hidePopper);
       };
     }
-  }, [trigger, targetEl, showPopper, hidePopper]);
+  }, [trigger, targetEl, showPopper, hidePopper, showOnHover]);
 
   // handle focus trigger
   useEffect(() => {
