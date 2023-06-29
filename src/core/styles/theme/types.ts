@@ -145,14 +145,15 @@ export interface ThemeOptions {
       buttons?: ThemeElementColors & ThemeElementSpacing & { width?: string };
     };
     NavTabs?: ThemeElementCommon & {
-      item?: ThemeElementCommon & {
-        transform?: React.CSSProperties["textTransform"];
-      };
+      item?: ThemeElementCommon;
       item_hover?: ThemeElementCommon;
       item_active?: ThemeElementCommon;
       icon?: ThemeElementColors & ThemeElementSpacing;
       icon_hover?: ThemeElementColors;
       icon_active?: ThemeElementColors;
+      text?: ThemeElementSpacing & {
+        transform?: React.CSSProperties["textTransform"];
+      };
       indicator?: {
         bg?: string;
         height?: string;

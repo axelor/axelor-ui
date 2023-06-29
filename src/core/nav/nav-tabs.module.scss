@@ -10,7 +10,8 @@
     var(--bs-tertiary-color)
   );
   --ax-nav-tabs-tab-font-weight: var(--ax-theme-nav-tabs-tab-font-weight, 600);
-  --ax-nav-tabs-tab-text-transform: var(
+  --ax-nav-tabs-text-padding: var(--ax-theme-nav-tabs-text-padding, 0.25rem);
+--ax-nav-tabs-tab-text-transform: var(
     --ax-theme-nav-tabs-tab-text-transform,
     uppercase
   );
@@ -94,6 +95,10 @@
   .arrow {
     visibility: visible;
   }
+}
+
+.text {
+  padding: var(--ax-nav-tabs-text-padding);
 }
 
 .icon {
