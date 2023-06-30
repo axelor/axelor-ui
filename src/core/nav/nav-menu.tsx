@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { MaterialIcon } from "../../icons/material-icon";
+import { ClickAwayListener } from "../click-away-listener";
 import { clsx } from "../clsx";
 import { Collapse } from "../collapse";
 import { Fade } from "../fade";
@@ -375,57 +376,59 @@ function Accordion(props: VariantProps) {
   const { header, headerSmall } = props;
 
   return (
-    <div
-      className={clsx(styles.accordion, {
-        [styles.hover]: lookup || (showIcons && showSearch),
-      })}
-      onMouseMove={handleEnter}
-      onMouseLeave={handleLeave}
-    >
-      {showIcons && (
-        <MenuIcons
-          mode="icons"
-          show="icons"
-          state={state}
-          items={icons}
-          header={headerSmall}
-        />
-      )}
-      {showSearch && (
-        <div className={clsx(styles.menus, styles.search)}>
-          {header && <div className={styles.menusHeader}>{header}</div>}
-          <SearchMenu
-            item={searchItem}
+    <ClickAwayListener onClickAway={handleLeave}>
+      <div
+        className={clsx(styles.accordion, {
+          [styles.hover]: lookup || (showIcons && showSearch),
+        })}
+        onMouseMove={handleEnter}
+        onMouseLeave={handleLeave}
+      >
+        {showIcons && (
+          <MenuIcons
+            mode="icons"
+            show="icons"
             state={state}
-            onItemClick={handleItemClick}
+            items={icons}
+            header={headerSmall}
           />
-        </div>
-      )}
-      <div className={styles.menus}>
-        {header && <div className={styles.menusHeader}>{header}</div>}
-        <Scrollable className={styles.menusInner}>
-          {searchEnabled && (
-            <div
-              className={clsx(styles.item, styles.searchItem)}
-              onClick={handleSearchClick}
-            >
-              <div className={styles.title}>
-                <MenuIcon item={searchItem} state={{}} />
-                <div className={styles.text}>{searchItem.title}</div>
-              </div>
-            </div>
-          )}
-          {items.map((item) => (
-            <MenuItem
-              key={item.id}
-              item={item}
+        )}
+        {showSearch && (
+          <div className={clsx(styles.menus, styles.search)}>
+            {header && <div className={styles.menusHeader}>{header}</div>}
+            <SearchMenu
+              item={searchItem}
               state={state}
               onItemClick={handleItemClick}
             />
-          ))}
-        </Scrollable>
+          </div>
+        )}
+        <div className={styles.menus}>
+          {header && <div className={styles.menusHeader}>{header}</div>}
+          <Scrollable className={styles.menusInner}>
+            {searchEnabled && (
+              <div
+                className={clsx(styles.item, styles.searchItem)}
+                onClick={handleSearchClick}
+              >
+                <div className={styles.title}>
+                  <MenuIcon item={searchItem} state={{}} />
+                  <div className={styles.text}>{searchItem.title}</div>
+                </div>
+              </div>
+            )}
+            {items.map((item) => (
+              <MenuItem
+                key={item.id}
+                item={item}
+                state={state}
+                onItemClick={handleItemClick}
+              />
+            ))}
+          </Scrollable>
+        </div>
       </div>
-    </div>
+    </ClickAwayListener>
   );
 }
 
