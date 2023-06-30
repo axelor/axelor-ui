@@ -125,9 +125,9 @@
   min-width: var(--ax-nav-menu-icon-width);
   min-height: var(--ax-nav-menu-icon-width);
 
-  color: var(--ax-nav-menu-icon-color);
+  color: var(--ax-theme-nav-menu-icon-color, var(--ax-nav-menu-icon-color));
   background-color: var(
-    --ax-nav-menu-icon-bg-normal,
+    --ax-theme-nav-menu-icon-bg,
     var(--ax-nav-menu-icon-bg)
   );
 
@@ -185,8 +185,14 @@
 .nav.mode-icons .icon.hover,
 .item:hover > .title > .icon,
 .icon:hover {
-  background-color: var(--ax-nav-menu-icon-hover-bg);
-  color: var(--ax-nav-menu-icon-hover-color);
+  background-color: var(
+    --ax-theme-nav-menu-icon-hover-bg,
+    var(--ax-nav-menu-icon-hover-bg)
+  );
+  color: var(
+    --ax-theme-nav-menu-icon-hover-color,
+    var(--ax-nav-menu-icon-hover-color)
+  );
 }
 .item:hover > .title > .icon.active,
 .icon.active {

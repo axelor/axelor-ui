@@ -165,6 +165,12 @@ function toNavTabsVars(options: ThemeOptions) {
     "--ax-theme-nav-tabs-tab-active-color": opts.item_active?.color,
     "--ax-theme-nav-tabs-tab-active-font-weight": opts.item_active?.fontWeight,
 
+    "--ax-theme-nav-tabs-icon-hover-bg": opts.icon_hover?.bg,
+    "--ax-theme-nav-tabs-icon-hover-color": opts.icon_hover?.color,
+
+    "--ax-theme-nav-tabs-icon-active-bg": opts.icon_active?.bg,
+    "--ax-theme-nav-tabs-icon-active-color": opts.icon_active?.color,
+
     "--ax-theme-nav-tabs-indicator-size": opts.indicator?.height,
     "--ax-theme-nav-tabs-indicator-color": opts.indicator?.bg,
   };

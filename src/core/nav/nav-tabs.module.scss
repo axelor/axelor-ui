@@ -11,7 +11,7 @@
   );
   --ax-nav-tabs-tab-font-weight: var(--ax-theme-nav-tabs-tab-font-weight, 600);
   --ax-nav-tabs-text-padding: var(--ax-theme-nav-tabs-text-padding, 0.25rem);
---ax-nav-tabs-tab-text-transform: var(
+  --ax-nav-tabs-tab-text-transform: var(
     --ax-theme-nav-tabs-tab-text-transform,
     uppercase
   );
@@ -102,8 +102,11 @@
 }
 
 .icon {
-  color: var(--ax-nav-tabs-icon-color);
-  background-color: var(--ax-nav-tabs-icon-bg);
+  color: var(--ax-theme-nav-tabs-icon-color, var(--ax-nav-tabs-icon-color));
+  background-color: var(
+    --ax-theme-nav-tabs-icon-bg,
+    var(--ax-nav-tabs-icon-bg)
+  );
   padding: var(--ax-nav-tabs-icon-padding);
   border-radius: 100%;
 }
@@ -124,8 +127,14 @@
       font-weight: var(--ax-nav-tabs-tab-active-font-weight);
     }
     .icon {
-      color: var(--ax-nav-tabs-icon-active-color);
-      background-color: var(--ax-nav-tabs-icon-active-bg);
+      color: var(
+        --ax-theme-nav-tabs-icon-active-color,
+        var(--ax-nav-tabs-icon-active-color)
+      );
+      background-color: var(
+        --ax-theme-nav-tabs-icon-active-bg,
+        var(--ax-nav-tabs-icon-active-bg)
+      );
     }
   }
   &:hover {
@@ -135,8 +144,14 @@
       font-weight: var(--ax-nav-tabs-tab-hover-font-weight);
     }
     .icon {
-      color: var(--ax-nav-tabs-icon-hover-color);
-      background-color: var(--ax-nav-tabs-icon-hover-bg);
+      color: var(
+        --ax-theme-nav-tabs-icon-hover-color,
+        var(--ax-nav-tabs-icon-hover-color)
+      );
+      background-color: var(
+        --ax-theme-nav-tabs-icon-hover-bg,
+        var(--ax-nav-tabs-icon-hover-bg)
+      );
     }
   }
 }
