@@ -4,8 +4,8 @@ React components by Axelor.
 
 ## Prerequisite
 
-- node >= v18.12.1
-- pnpm >= 7.26.3
+- node >= v18.14.0
+- pnpm >= 8
 
 ```bash
 # Nodejs
@@ -19,7 +19,7 @@ $ nvm install 18
 
 # pnpm
 $ corepack enable
-$ corepack prepare pnpm@latest --activate
+$ corepack prepare pnpm@latest-8 --activate
 ```
 
 ## Quick start

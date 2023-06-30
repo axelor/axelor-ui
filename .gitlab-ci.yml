@@ -19,9 +19,10 @@ build_package:
       - dist
   only:
     - tags
-  script:
+  before_script:
     - corepack enable
-    - corepack prepare pnpm@latest --activate
+    - corepack prepare pnpm@latest-8 --activate
+  script:
     - pnpm install
     - pnpm build
       
