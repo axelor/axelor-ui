@@ -7,7 +7,7 @@
   --ax-nav-tabs-tab-bg: var(--ax-theme-nav-tabs-tab-bg, inherit);
   --ax-nav-tabs-tab-color: var(
     --ax-theme-nav-tabs-tab-color,
-    var(--bs-tertiary-color)
+    var(--bs-body-color)
   );
   --ax-nav-tabs-tab-font-weight: var(--ax-theme-nav-tabs-tab-font-weight, 600);
   --ax-nav-tabs-text-padding: var(--ax-theme-nav-tabs-text-padding, 0.25rem);
@@ -76,6 +76,7 @@
   text-transform: var(--ax-nav-tabs-tab-text-transform);
   white-space: nowrap;
   text-overflow: ellipsis;
+  opacity: 0.75;
 }
 
 .button,
@@ -122,6 +123,7 @@
 .tab {
   &.active {
     .title {
+      opacity: 1;
       color: var(--ax-nav-tabs-tab-active-color);
       background-color: var(--ax-nav-tabs-tab-active-bg);
       font-weight: var(--ax-nav-tabs-tab-active-font-weight);
@@ -139,6 +141,7 @@
   }
   &:hover {
     .title {
+      opacity: 1;
       color: var(--ax-nav-tabs-tab-hover-color);
       background-color: var(--ax-nav-tabs-tab-hover-bg);
       font-weight: var(--ax-nav-tabs-tab-hover-font-weight);
