@@ -70,7 +70,7 @@ export const Menu = withStyled(MenuContent)(
               <ArrowNavigation selector="auto-vertical">
                 <MenuContent
                   {...props}
-                  show={show}
+                  show
                   bg="transparent"
                   border={false}
                   rounded={rounded}
