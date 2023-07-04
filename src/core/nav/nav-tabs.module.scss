@@ -87,15 +87,8 @@
 }
 
 .arrow {
-  visibility: hidden;
   cursor: pointer;
   user-select: none;
-}
-
-.button.active {
-  .arrow {
-    visibility: visible;
-  }
 }
 
 .text {

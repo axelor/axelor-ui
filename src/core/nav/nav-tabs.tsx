@@ -241,17 +241,15 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
     return (
       <NavTabsContext.Provider value={{ active, activeElement, setActive }}>
         <div className={clsx(className, styles.container)} ref={ref}>
-          <div
-            className={clsx(styles.button, styles.start, {
-              [styles.active]: startArrow,
-            })}
-          >
-            <MaterialIcon
-              className={styles.arrow}
-              icon={isRtl ? "keyboard_arrow_right" : "keyboard_arrow_left"}
-              onClick={onScrollToEnd}
-            />
-          </div>
+          {startArrow && (
+            <div className={styles.button}>
+              <MaterialIcon
+                className={styles.arrow}
+                icon={isRtl ? "keyboard_arrow_right" : "keyboard_arrow_left"}
+                onClick={onScrollToEnd}
+              />
+            </div>
+          )}
           <div
             ref={stripRef}
             className={styles.strip}
@@ -281,17 +279,15 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
               }
             ></div>
           </div>
-          <div
-            className={clsx(styles.button, styles.end, {
-              [styles.active]: endArrow,
-            })}
-          >
-            <MaterialIcon
-              className={styles.arrow}
-              icon={isRtl ? "keyboard_arrow_left" : "keyboard_arrow_right"}
-              onClick={onScrollToStart}
-            />
-          </div>
+          {endArrow && (
+            <div className={styles.button}>
+              <MaterialIcon
+                className={styles.arrow}
+                icon={isRtl ? "keyboard_arrow_left" : "keyboard_arrow_right"}
+                onClick={onScrollToStart}
+              />
+            </div>
+          )}
         </div>
       </NavTabsContext.Provider>
     );
