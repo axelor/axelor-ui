@@ -32,7 +32,6 @@ export const Input = styled.input<InputProps>(
       [styles["input-lg"]]: large,
       "form-control-sm": small,
       "form-control-lg": large,
-      "is-invalid": invalid,
     },
   ],
   ({ type = "text" }) => ({ type })
