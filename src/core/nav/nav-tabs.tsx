@@ -204,14 +204,15 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
     useLayoutEffect(() => {
       if (activeElement && stripElement) {
         const observer = new ResizeObserver(() => {
-          setIndicator({
-            x: isRtl
-              ? stripElement.clientWidth -
-                activeElement.offsetLeft -
-                activeElement.offsetWidth
-              : activeElement.offsetLeft,
-            w: activeElement.offsetWidth,
-          });
+          const x = isRtl
+            ? stripElement.clientWidth -
+              activeElement.offsetLeft -
+              activeElement.offsetWidth
+            : activeElement.offsetLeft;
+          const w = activeElement.offsetWidth;
+          if (w > 0) {
+            setIndicator({ x, w });
+          }
         });
         observer.observe(activeElement);
         return () => {
