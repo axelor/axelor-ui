@@ -19,7 +19,7 @@ export interface BootstrapIconProps {
 export const BootstrapIcon = forwardRef<HTMLElement, BootstrapIconProps>(
   (props, ref) => {
     const { className, onClick, icon, fill, color, fontSize } = props;
-    const name = fill && icon.endsWith("-fill") ? icon : `${icon}-fill`;
+    const name = fill && !icon.endsWith("-fill") ?  `${icon}-fill` : icon;
     const cls = `bi-${name}`;
     const clsName = clsx(className, styles["bi"], styles[cls]);
 
