@@ -113,6 +113,10 @@ export interface NavMenuProps {
     title?: string;
 
     /**
+     * Used to filter search menu items
+     */
+    filter?: (item: NavMenuItem, term: string) => boolean;
+    /**
      * Called when search menu shows.
      */
     onShow?: () => void;
@@ -373,7 +377,7 @@ function Accordion(props: VariantProps) {
   } = useNavMenu(props);
 
   const { lookup } = state;
-  const { header, headerSmall } = props;
+  const { header, headerSmall, searchOptions } = props;
 
   return (
     <ClickAwayListener onClickAway={handleLeave}>
@@ -399,6 +403,7 @@ function Accordion(props: VariantProps) {
             <SearchMenu
               item={searchItem}
               state={state}
+              filter={searchOptions?.filter}
               onItemClick={handleItemClick}
             />
           </div>
@@ -445,6 +450,7 @@ function Icons(props: VariantProps) {
     handleIconHover,
   } = useNavMenu(props);
 
+  const { searchOptions } = props;
   const hover = showSearch ? searchItem.id : state.lookup;
 
   return (
@@ -468,6 +474,7 @@ function Icons(props: VariantProps) {
             <SearchMenu
               item={searchItem}
               state={state}
+              filter={searchOptions?.filter}
               onItemClick={handleItemClick}
             />
           )}
@@ -669,7 +676,14 @@ function flattenItem(item: NavMenuItem, parent?: NavMenuItem) {
   return items.length ? items : [rest];
 }
 
-function SearchMenu({ item, state, onItemClick }: ItemProps) {
+function SearchMenu({
+  item,
+  state,
+  filter: filterMenuItem,
+  onItemClick,
+}: ItemProps & {
+  filter?: (item: NavMenuItem, searchText: string) => boolean;
+}) {
   const [show, setShow] = useState(false);
   const [text, setText] = useState("");
   const [cursor, setCursor] = useState(0);
@@ -685,11 +699,13 @@ function SearchMenu({ item, state, onItemClick }: ItemProps) {
   const filterd = useMemo(() => {
     if (show && items) {
       return items.filter((item) =>
-        item.title.toLowerCase().includes(text.toLowerCase())
+        filterMenuItem
+          ? filterMenuItem(item, text)
+          : item.title.toLowerCase().includes(text.toLowerCase())
       );
     }
     return [];
-  }, [items, show, text]);
+  }, [items, filterMenuItem, show, text]);
 
   const canShow = hover ?? false;
 
