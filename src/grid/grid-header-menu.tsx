@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
+  ArrowNavigation,
   Badge,
   Box,
+  ClickAwayListener,
   Divider,
+  FocusTrap,
   Input,
-  Menu,
+  MenuContent,
   MenuItem,
+  Popper,
+  PopperPlacement,
   useClassNames,
 } from "../core";
 
@@ -103,111 +108,130 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
   const rtl = useRTL();
   const classNames = useClassNames();
 
+  const showMenu = useCallback(() => setColumnOptions(true), []);
+  const hideMenu = useCallback(() => setColumnOptions(false), []);
+  const placement = `bottom-${rtl ? "start" : "end"}` as PopperPlacement;
+
   return (
     <>
       <Box
         ref={setColumnOptionsTarget}
         className={styles.columnOptions}
-        onClick={() => setColumnOptions(true)}
+        onClick={showMenu}
       >
         <MaterialIcon icon="more_vert" />
       </Box>
-      <Menu
+      <Popper
         className={classNames("table-popover", styles.columnOptionsMenu)}
-        navigation
-        placement={`bottom-${rtl ? "start" : "end"}`}
+        placement={placement}
         target={columnOptionsTarget}
-        show={showColumnOptions}
-        onHide={() => setColumnOptions(false)}
+        open={showColumnOptions}
       >
-        {columns
-          .filter((c) => c.title)
-          .map((column) => {
-            const { visible = true } = column;
-            function toggle(e: React.SyntheticEvent) {
-              visible && onColumnHide && onColumnHide(e, column);
-              !visible && onColumnShow && onColumnShow(e, column);
-            }
-            function render() {
-              return (
-                <Box py={1} d="flex" px={3}>
-                  <Input
-                    type="checkbox"
-                    checked={visible}
-                    onChange={() => {}}
-                  />
-                  <Box
-                    className={styles.columnOptionMenuTitle}
-                    as="span"
-                    ms={2}
-                  >
-                    {column.title}
+        <ClickAwayListener onClickAway={hideMenu}>
+          <Box d="flex" flexDirection="column">
+            <FocusTrap enabled={showColumnOptions}>
+              <ArrowNavigation selector="auto-vertical">
+                <MenuContent
+                  show
+                  border={false}
+                  placement={placement}
+                  className={styles.columnOptionsMenuColumns}
+                >
+                  {columns
+                    .filter((c) => c.title?.trim())
+                    .map((column) => {
+                      const { visible = true } = column;
+                      function toggle(e: React.SyntheticEvent) {
+                        visible && onColumnHide && onColumnHide(e, column);
+                        !visible && onColumnShow && onColumnShow(e, column);
+                      }
+                      function render() {
+                        return (
+                          <Box py={1} d="flex" px={3}>
+                            <Input
+                              type="checkbox"
+                              checked={visible}
+                              onChange={() => {}}
+                            />
+                            <Box
+                              className={styles.columnOptionMenuTitle}
+                              as="span"
+                              ms={2}
+                            >
+                              {column.title}
+                            </Box>
+                          </Box>
+                        );
+                      }
+                      return (
+                        <CustomMenuItem key={column.name} onClick={toggle}>
+                          {onColumnDrop ? (
+                            <GridDragElement
+                              className={styles.dragColumn}
+                              column={column}
+                              onDrop={onColumnDrop}
+                            >
+                              {render()}
+                            </GridDragElement>
+                          ) : (
+                            render()
+                          )}
+                        </CustomMenuItem>
+                      );
+                    })}
+                </MenuContent>
+              </ArrowNavigation>
+            </FocusTrap>
+            {onColumnDrop && (
+              <Box>
+                <Divider aria-disabled="true" />
+                <GridDragElement
+                  canDrag={false}
+                  canDrop={true}
+                  onDrop={onColumnDrop}
+                  className={styles.dragColumnArea}
+                  aria-disabled="true"
+                >
+                  <Box className={styles.groupTagContainer}>
+                    {(groupBy || []).length === 0 && (
+                      <Box className={styles.groupPlaceholder}>
+                        {t("Groups")}
+                      </Box>
+                    )}
+                    {(groupBy || []).map((group) => {
+                      const column = columns.find((x) => x.name === group.name);
+                      return (
+                        <GridGroupTag
+                          key={group.name}
+                          title={column && column.title}
+                          name={group.name}
+                          onDrop={onColumnDrop}
+                          onRemove={onColumnGroupRemove}
+                        />
+                      );
+                    })}
                   </Box>
-                </Box>
-              );
-            }
-            return (
-              <CustomMenuItem key={column.name} onClick={toggle}>
-                {onColumnDrop ? (
-                  <GridDragElement
-                    className={styles.dragColumn}
-                    column={column}
-                    onDrop={onColumnDrop}
-                  >
-                    {render()}
-                  </GridDragElement>
-                ) : (
-                  render()
-                )}
-              </CustomMenuItem>
-            );
-          })}
-        {onColumnDrop && (
-          <>
-            <Divider aria-disabled="true" />
-            <GridDragElement
-              canDrag={false}
-              canDrop={true}
-              onDrop={onColumnDrop}
-              className={styles.dragColumnArea}
-              aria-disabled="true"
-            >
-              <Box className={styles.groupTagContainer}>
-                {(groupBy || []).length === 0 && (
-                  <Box className={styles.groupPlaceholder}>{t("Groups")}</Box>
-                )}
-                {(groupBy || []).map((group) => {
-                  const column = columns.find((x) => x.name === group.name);
-                  return (
-                    <GridGroupTag
-                      key={group.name}
-                      title={column && column.title}
-                      name={group.name}
-                      onDrop={onColumnDrop}
-                      onRemove={onColumnGroupRemove}
-                    />
-                  );
-                })}
+                </GridDragElement>
               </Box>
-            </GridDragElement>
-          </>
-        )}
-        {onColumnCustomize && (
-          <>
-            <Divider aria-disabled="true" />
-            <CustomMenuItem
-              onClick={(e: React.SyntheticEvent) => {
-                onColumnCustomize(e);
-                setColumnOptions(false);
-              }}
-            >
-              <Box as="span" ms={2}>
-                {t("Customize...")}
+            )}
+            {onColumnCustomize && (
+              <Box>
+                <Divider aria-disabled="true" />
+                <CustomMenuItem
+                  onClick={(e: React.SyntheticEvent) => {
+                    onColumnCustomize(e);
+                    hideMenu();
+                  }}
+                >
+                  <Box as="span" m={1} mb={2} ms={2}>
+                    {t("Customize...")}
+                  </Box>
+                </CustomMenuItem>
               </Box>
-            </CustomMenuItem>
-          </>
-        )}
-      </Menu>
+            )}
+          </Box>
+        </ClickAwayListener>
+      </Popper>
     </>
   );
 });

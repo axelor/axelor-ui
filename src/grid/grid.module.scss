@@ -330,9 +330,16 @@
 }
 
 .columnOptionsMenu {
+  display: flex;
   max-width: 200px;
-  max-height: 420px;
+}
+
+.columnOptionsMenuColumns {
+  max-height: 350px;
   overflow-y: auto;
+  flex: 1;
+  display: flex !important;
+  flex-direction: column;
 }
 
 .columnOptionMenuTitle {

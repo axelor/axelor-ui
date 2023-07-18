@@ -20,7 +20,7 @@ export interface MenuProps
   rounded?: boolean;
 }
 
-const MenuContent = styled.div<MenuProps>(({ show, placement }) => [
+export const MenuContent = styled.div<MenuProps>(({ show, placement }) => [
   styles.dropdownMenu,
   "dropdown-menu",
   {
