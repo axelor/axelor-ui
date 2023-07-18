@@ -138,7 +138,7 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
                   className={styles.columnOptionsMenuColumns}
                 >
                   {columns
-                    .filter((c) => c.title?.trim())
+                    .filter((c) => c.title?.trim() && c.hidden !== true)
                     .map((column) => {
                       const { visible = true } = column;
                       function toggle(e: React.SyntheticEvent) {

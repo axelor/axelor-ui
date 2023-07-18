@@ -99,11 +99,17 @@
   .header.options
   .column:last-child:not(.action) {
   padding-right: 1.5rem !important;
+  .headerColumnMenuButton {
+    right: 1.25rem;
+  }
 }
 .container.rtl:not(.no-columns)
   .header.options
   .column:last-child:not(.action) {
   padding-left: 1.5rem !important;
+  .headerColumnMenuButton {
+    left: 1.25rem;
+  }
 }
 
 .column {
@@ -141,6 +147,33 @@
   &.resizable {
     max-width: calc(100% - 0.5rem);
   }
+}
+
+.headerColumnMenuButton {
+  visibility: hidden;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  .rtl & {
+    right: unset;
+    left: 0;
+  }
+  .header .column:hover &,
+  &.active {
+    visibility: visible;
+  }
+}
+
+.ascSortIcon {
+  transform: scaleY(-1);
+}
+
+.headerColumnMenuIcon {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .headerMenuItem:active {
@@ -211,9 +244,13 @@
 
 .row .column {
   padding: var(--bs-table-cell-padding);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  &, & > * {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 }
 .header .row,
 .body .row {

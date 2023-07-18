@@ -659,6 +659,19 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       [setState]
     );
 
+    const handleGroupColumnAdd = React.useCallback(
+      (e: React.SyntheticEvent, group: TYPES.GridGroup) => {
+        setState((data) => {
+          const groupBy = (data.groupBy = data.groupBy || []);
+          if (!groupBy.find((g) => g.name === group.name)) {
+            groupBy.push(group);
+          }
+          data.selectedCell = null;
+        });
+      },
+      [setState]
+    );
+
     const handleGroupColumnRemove = React.useCallback(
       (e: React.SyntheticEvent, group: TYPES.GridGroup) => {
         setState((data) => {
@@ -1262,6 +1275,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
                   ...(allowGrouping
                     ? {
                         onColumnDrop: handleGroupColumnDrop,
+                        onColumnGroupAdd: handleGroupColumnAdd,
                         onColumnGroupRemove: handleGroupColumnRemove,
                       }
                     : {}),

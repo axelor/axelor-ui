@@ -7,6 +7,7 @@ export interface GridColumn {
   width?: number;
   minWidth?: number;
   visible?: boolean;
+  hidden?: boolean;
   computed?: boolean;
   sort?: boolean;
   sortable?: boolean;

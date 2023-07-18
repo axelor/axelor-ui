@@ -37,6 +37,7 @@ export interface GridHeaderProps
   onColumnHide?: GridHeaderMenuProps["onColumnHide"];
   onColumnCustomize?: GridHeaderMenuProps["onColumnCustomize"];
   onColumnDrop?: GridHeaderMenuProps["onColumnDrop"];
+  onColumnGroupAdd?: GridHeaderMenuProps["onColumnGroupRemove"];
   onColumnGroupRemove?: GridHeaderMenuProps["onColumnGroupRemove"];
 }
 
@@ -60,6 +61,7 @@ export const GridHeader = React.memo(function GridHeader(
     onColumnCustomize,
     onColumnShow,
     onColumnHide,
+    onColumnGroupAdd,
     onColumnGroupRemove,
     onColumnResizeStart,
     onColumnResize,
@@ -81,11 +83,17 @@ export const GridHeader = React.memo(function GridHeader(
               data={column}
               sort={sortColumn ? sortColumn.order : null}
               groupBy={groupBy}
+              columns={allColumns}
               onCheckAll={onCheckAll}
               onClick={onColumnClick}
+              onGroup={onColumnGroupAdd}
+              onUngroup={onColumnGroupRemove}
+              onShow={onColumnShow}
+              onHide={onColumnHide}
               onResize={onColumnResize}
               onResizeStart={onColumnResizeStart}
               onResizeEnd={onColumnResizeEnd}
+              onCustomize={onColumnCustomize}
               {...(isRowCheck(column) ? { checkType, selectionType } : {})}
             />
           );
