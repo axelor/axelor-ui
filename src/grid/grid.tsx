@@ -32,7 +32,6 @@ const isDefined = (val: any) => val !== undefined;
 const isNull = (value: any) => !isDefined(value) || value === null;
 const getColumns = (columns: TYPES.GridColumn[]) =>
   columns.filter((column) => column.visible !== false);
-const _translate = (str: string) => str;
 
 const getCssSelector = (str: string) => (str || "").replace(/\+/g, () => "\\+");
 
@@ -90,7 +89,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       allowRowReorder,
       stickyHeader = true,
       stickyFooter = true,
-      translate = _translate,
+      labels,
     } = props;
     const isRTL = useRTL();
 
@@ -1224,7 +1223,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     const classNames = useClassNames();
 
     return (
-      <TranslateProvider t={translate}>
+      <TranslateProvider labels={labels}>
         <Box
           ref={handleRef}
           className={classNames("table-grid", styles.container, className, {

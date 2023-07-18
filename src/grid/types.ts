@@ -52,6 +52,22 @@ export interface GridState {
 
 export type Renderer = (props: any) => React.ReactElement | null;
 export type GridStateHandler = (state: GridState) => any;
+export type GridLabel =
+  | "Sum"
+  | "Min"
+  | "Max"
+  | "Avg"
+  | "Count"
+  | "items"
+  | "Sort Ascending"
+  | "Sort Descending"
+  | "Group by"
+  | "Ungroup"
+  | "Hide"
+  | "Show"
+  | "Customize..."
+  | "Groups"
+  | "No records found.";
 
 export interface GridProps {
   className?: string;
@@ -125,6 +141,7 @@ export interface GridProps {
     columnIndex: number
   ) => void;
   translate?: (key: string) => null | string;
+  labels?: Record<GridLabel, string>;
 }
 
 export interface GridRowProps {

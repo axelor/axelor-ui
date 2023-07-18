@@ -44,7 +44,7 @@ export const GridFooterRow = React.memo(function GridFooterRow(
             type="footer"
           >
             {column.aggregate
-              ? `${t(capitalizeWord(column.aggregate))} : ${
+              ? `${t(capitalizeWord(column.aggregate) as TYPES.GridLabel)} : ${
                   column.formatter
                     ? column.formatter(column, value, { [column.name]: value })
                     : value
