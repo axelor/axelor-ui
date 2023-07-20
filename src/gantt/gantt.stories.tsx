@@ -27,16 +27,19 @@ export const Basic = () => {
     response.data
   );
   const [view, setView] = React.useState(GANTT_TYPES.MONTH);
-  const handleRecordUpdate = React.useCallback((record, changes) => {
-    setRecords((records) => {
-      return records.map((r) =>
-        r.id === record.id ? { ...r, ...changes } : r
-      );
-    });
-  }, []);
+  const handleRecordUpdate = React.useCallback(
+    (record: TYPES.GanttRecord, changes: Partial<TYPES.GanttRecord>) => {
+      setRecords((records) => {
+        return records.map((r) =>
+          r.id === record.id ? { ...r, ...changes } : r
+        );
+      });
+    },
+    []
+  );
 
   const handleRecordConnect = React.useCallback(
-    ({ startId, finishId, source, target }) => {
+    ({ startId, finishId, source, target }: TYPES.ConnectProps) => {
       setRecords((records) => {
         const set = connectSetTypes[`${source}_${target}`];
         const index = records.findIndex((r) => r.id === finishId);
@@ -57,7 +60,7 @@ export const Basic = () => {
   );
 
   const handleRecordDisconnect = React.useCallback(
-    ({ startId, finishId, source, target }) => {
+    ({ startId, finishId, source, target }: TYPES.ConnectProps) => {
       const flag = window.confirm("Are you sure want to remove?");
       flag &&
         setRecords((records) => {

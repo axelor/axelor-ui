@@ -2,7 +2,7 @@ import React from "react";
 
 import { Box } from "../box";
 import { Input } from "../input";
-import { Select } from "../select";
+import { Select, SelectIcon } from "../select";
 
 const SelectStories = {
   component: Select,
@@ -107,7 +107,7 @@ export const Creatable = () => {
   const [value, setValue] = React.useState<any>(null);
   const [multiValue, setMultiValue] = React.useState<any[]>([]);
 
-  const handleOnCreate = React.useCallback(function handleOnCreate(value) {
+  const handleOnCreate = React.useCallback(function handleOnCreate(value: any) {
     const newColor = {
       title: value,
       code: value.toLowerCase(),
@@ -116,14 +116,17 @@ export const Creatable = () => {
     colors.push(newColor);
   }, []);
 
-  const handleMultiOnCreate = React.useCallback(function handleOnCreate(value) {
+  const handleMultiOnCreate = React.useCallback(function handleOnCreate(
+    value: any
+  ) {
     const newColor = {
       title: value,
       code: value.toLowerCase(),
     };
     setMultiValue((values) => (values || []).concat(newColor));
     colors.push(newColor);
-  }, []);
+  },
+  []);
 
   const handleChecked = (event: any) => {
     setAsync(event.target.checked);
@@ -212,11 +215,13 @@ export const Actions = () => {
       </Box>
       <FormControl label="Colors">
         <Select
-          icons={[
-            ...(canCreate ? [{ icon: "add" }] : []),
-            ...(value && canEdit ? [{ icon: "edit" }] : []),
-            ...(canRead && value ? [{ icon: "edit_document" }] : []),
-          ]}
+          icons={
+            [
+              ...(canCreate ? [{ icon: "add" }] : []),
+              ...(value && canEdit ? [{ icon: "edit" }] : []),
+              ...(canRead && value ? [{ icon: "edit_document" }] : []),
+            ] as SelectIcon[]
+          }
           value={value}
           onChange={setValue}
           options={colors}

@@ -1,9 +1,9 @@
 import { useState, useCallback } from "react";
-import { Box, Input, Button, Icon, Menu, MenuItem } from "../core";
-import { ReactComponent as BiCaretDownFill } from "bootstrap-icons/icons/caret-down-fill.svg";
+import { Box, Input, Button, Menu, MenuItem } from "../core";
 
 import { Kanban, KanbanProps } from "./kanban";
 import { CardEvent, Column, ColumnEvent } from "./types";
+import { MaterialIcon } from "../icons/material-icon";
 
 const config = {
   component: Kanban,
@@ -89,12 +89,13 @@ function KanbanContainer({ columns: columnsProp, readonly }: KanbanProps) {
   );
 
   const getColumnIndex = useCallback(
-    (columnId) => columns.findIndex((c) => String(c.id) === String(columnId)),
+    (columnId: Column["id"]) =>
+      columns.findIndex((c) => String(c.id) === String(columnId)),
     [columns]
   );
 
   const getRecordIndex = useCallback(
-    (recordId, columnId) =>
+    (recordId: any, columnId: Column["id"]) =>
       columns[getColumnIndex(columnId)]?.records?.findIndex(
         (r) => String(r.id) === String(recordId)
       ),
@@ -188,7 +189,14 @@ export const ColumnScrollable = () => (
         title: "Todo",
         records: getRecords(10),
         renderer: ({ RecordList, column }) => (
-          <Box border rounded me={2} p={2} bg="body-tertiary" style={{ width: 250 }}>
+          <Box
+            border
+            rounded
+            me={2}
+            p={2}
+            bg="body-tertiary"
+            style={{ width: 250 }}
+          >
             <Box as="h5" p={2}>
               {column.title}
             </Box>
@@ -251,7 +259,7 @@ const Record = ({ record, column, onEdit, onDelete }: any) => {
         <Box as="p">{record.title}</Box>
         <Box>
           <Button p={0} ref={setTargetEl} onClick={toggle} d="inline-flex">
-            <Icon as={BiCaretDownFill} />
+            <MaterialIcon icon="arrow_drop_down" />
           </Button>
         </Box>
         <Menu show={open} target={targetEl} onHide={closeMenu}>

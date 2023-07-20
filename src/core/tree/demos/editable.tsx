@@ -78,7 +78,7 @@ function Form({ node, index, columns, onSave, onCancel }: any) {
   const handlers = React.useContext(FormHandlers);
   const dirty = React.useRef(false);
 
-  const handleChange = React.useCallback((name, value) => {
+  const handleChange = React.useCallback((name: string, value: any) => {
     dirty.current = true;
     values.current = {
       ...values.current,

@@ -7,6 +7,7 @@ import { Grid } from "../grid";
 import { GridProvider } from "../grid-provider";
 import { columns, records } from "./demo-data";
 import useGridState from "./useGridState";
+import { GridRow } from "../types";
 
 const FormHandlers = React.createContext(React.createRef<any>());
 
@@ -41,9 +42,9 @@ function Form({
   const values = React.useRef({ ...data.record });
   const handlers = React.useContext(FormHandlers);
   const dirty = React.useRef(!data.record.id);
-  const currentFocus = React.useRef();
+  const currentFocus = React.useRef<number>();
 
-  const handleChange = React.useCallback((name, value) => {
+  const handleChange = React.useCallback((name: string, value: any) => {
     dirty.current = true;
     values.current = {
       ...values.current,
@@ -51,7 +52,7 @@ function Form({
     };
   }, []);
 
-  const handleFocus = React.useCallback((fieldIndex) => {
+  const handleFocus = React.useCallback((fieldIndex: number) => {
     currentFocus.current = fieldIndex;
   }, []);
 
@@ -60,7 +61,7 @@ function Form({
   }, [onCancel, index]);
 
   const handleSave = React.useCallback(
-    (isSaveFromEdit) => {
+    (isSaveFromEdit?: boolean) => {
       const data = values.current;
       return (
         onSave &&
@@ -166,40 +167,49 @@ export default function Editable() {
     setRecords((records) => [...records, {}] as any);
   }, []);
 
-  const handleRecordEdit = React.useCallback(async (record) => {
-    const { save } = handlers.current || {};
-    if (save) {
-      return await save(true);
-    }
-  }, []);
-
-  const handleRecordSave = React.useCallback((record, index) => {
-    boxRef.current.style.opacity = "0.5";
-    return saveRecordAPI(record).then((record: any) => {
-      if (record) {
-        setRecords((records) =>
-          records.map((_record, i) =>
-            (_record.id ? _record.id === record.id : i === index)
-              ? record
-              : _record
-          )
-        );
+  const handleRecordEdit = React.useCallback(
+    async (record: GridRow["record"]) => {
+      const { save } = handlers.current || {};
+      if (save) {
+        return await save(true);
       }
-      boxRef.current.style.opacity = null;
-      return record;
-    });
-  }, []);
+    },
+    []
+  );
 
-  const handleRecordDiscard = React.useCallback((record, rowIndex) => {
-    if (!record.id) {
-      setRecords((records) => records.filter((record, i) => i !== rowIndex));
-    }
-  }, []);
+  const handleRecordSave = React.useCallback(
+    (record: GridRow["record"], index: number) => {
+      boxRef.current.style.opacity = "0.5";
+      return saveRecordAPI(record).then((record: any) => {
+        if (record) {
+          setRecords((records) =>
+            records.map((_record, i) =>
+              (_record.id ? _record.id === record.id : i === index)
+                ? record
+                : _record
+            )
+          );
+        }
+        boxRef.current.style.opacity = null;
+        return record;
+      });
+    },
+    []
+  );
+
+  const handleRecordDiscard = React.useCallback(
+    (record: GridRow["record"], rowIndex: number) => {
+      if (!record.id) {
+        setRecords((records) => records.filter((record, i) => i !== rowIndex));
+      }
+    },
+    []
+  );
 
   return (
     <GridProvider>
       <FormHandlers.Provider value={handlers}>
-        <Box ref={boxRef} style={{ display: "flex"}}>
+        <Box ref={boxRef} style={{ display: "flex" }}>
           <Grid
             editable
             allowColumnResize
