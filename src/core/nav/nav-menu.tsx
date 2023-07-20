@@ -688,6 +688,7 @@ function SearchMenu({
   const [text, setText] = useState("");
   const [cursor, setCursor] = useState(0);
   const itemsRef = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<NodeJS.Timeout>();
 
   const hover = true;
 
@@ -756,6 +757,16 @@ function SearchMenu({
     [cancelSearch, cursor, filterd, onItemClick]
   );
 
+  const handleBlur = useCallback(() => {
+    timerRef.current = setTimeout(() => {
+      cancelSearch();
+    }, 200);
+  }, [cancelSearch]);
+
+  useEffect(() => {
+    return () => clearTimeout(timerRef.current);
+  }, []);
+
   return (
     <Fade in={canShow} mountOnEnter unmountOnExit>
       <div
@@ -771,7 +782,7 @@ function SearchMenu({
               value={text}
               onChange={handleSearch}
               onKeyDown={handleKeyDown}
-              onBlur={cancelSearch}
+              onBlur={filterd.length ? handleBlur : cancelSearch}
               icons={[
                 {
                   icon: "search",
