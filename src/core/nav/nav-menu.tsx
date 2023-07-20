@@ -697,7 +697,7 @@ function SearchMenu({
     [item]
   );
 
-  const filterd = useMemo(() => {
+  const filtered = useMemo(() => {
     if (show && items) {
       return items.filter((item) =>
         filterMenuItem
@@ -729,13 +729,13 @@ function SearchMenu({
       }
       if (e.code === "Enter") {
         if (cursor > -1) {
-          const item = filterd[cursor];
+          const item = filtered[cursor];
           onItemClick?.(item);
         }
       }
       if (e.code === "ArrowUp" || e.code === "ArrowDown") {
         const inc = e.code === "ArrowUp" ? -1 : 1;
-        const max = e.code === "ArrowUp" ? 0 : filterd.length - 1;
+        const max = e.code === "ArrowUp" ? 0 : filtered.length - 1;
 
         const next =
           e.code === "ArrowUp"
@@ -754,7 +754,7 @@ function SearchMenu({
         e.preventDefault();
       }
     },
-    [cancelSearch, cursor, filterd, onItemClick]
+    [cancelSearch, cursor, filtered, onItemClick]
   );
 
   const handleBlur = useCallback(() => {
@@ -782,7 +782,7 @@ function SearchMenu({
               value={text}
               onChange={handleSearch}
               onKeyDown={handleKeyDown}
-              onBlur={filterd.length ? handleBlur : cancelSearch}
+              onBlur={filtered.length ? handleBlur : cancelSearch}
               icons={[
                 {
                   icon: "search",
@@ -793,7 +793,7 @@ function SearchMenu({
         </div>
         {show && (
           <Scrollable className={styles.items} ref={itemsRef}>
-            {filterd.map((item, index) => (
+            {filtered.map((item, index) => (
               <div
                 key={item.id}
                 data-id={item.id}
