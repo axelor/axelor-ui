@@ -63,7 +63,8 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         <Input
           type={selectionType === "single" ? "radio" : "checkbox"}
           checked={selected}
-          onChange={() => { }}
+          onChange={() => {}}
+          m={0}
         />
       );
     }
@@ -102,7 +103,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
             >
               {renderColumn(column, value)}
             </GridColumn>
-          )
+          );
         })}
       </RowComponent>
     </DragComponent>
