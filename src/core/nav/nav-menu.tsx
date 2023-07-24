@@ -688,7 +688,7 @@ function SearchMenu({
   const [text, setText] = useState("");
   const [cursor, setCursor] = useState(0);
   const itemsRef = useRef<HTMLDivElement>(null);
-  const timerRef = useRef<NodeJS.Timeout>();
+  const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
   const hover = true;
 
