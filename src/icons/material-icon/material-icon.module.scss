@@ -6,3 +6,9 @@ $material-symbols-font-path: "@material-symbols/font-400/";
 .material-symbols-sharp {
   overflow: hidden;
 }
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  font-size: 24px;
+}

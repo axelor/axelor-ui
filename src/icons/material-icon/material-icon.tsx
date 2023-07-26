@@ -47,7 +47,7 @@ export const MaterialIcon = forwardRef<HTMLSpanElement, MaterialIconProps>(
     } = props;
 
     const cls = `material-symbols-${variant}`;
-    const clsName = clsx(className, styles[cls]);
+    const clsName = clsx(className, styles.icon, styles[cls]);
     const style = useMemo(() => {
       const props = { fill, fontSize };
       return hasStyles(props) ? getStyles(props) : undefined;
