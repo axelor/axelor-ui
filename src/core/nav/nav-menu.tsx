@@ -534,7 +534,6 @@ function MenuIcon({ item, state, onItemClick, onItemHover }: ItemProps) {
     [iconColor]
   );
 
-  const active = item.id === state.active;
   const hover = item.id === state.lookup;
 
   const handleClick = useCallback(() => {
@@ -548,7 +547,6 @@ function MenuIcon({ item, state, onItemClick, onItemHover }: ItemProps) {
   return (
     <div
       className={clsx(styles.icon, {
-        [styles.active]: active,
         [styles.hover]: hover,
       })}
       style={

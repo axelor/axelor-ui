@@ -195,8 +195,7 @@
     var(--ax-nav-menu-icon-hover-color)
   );
 }
-.item:hover > .title > .icon.active,
-.icon.active {
+.item.selected > .title > .icon {
   background-color: var(
     --ax-theme-nav-menu-icon-active-bg,
     var(--ax-nav-menu-icon-active-bg)
