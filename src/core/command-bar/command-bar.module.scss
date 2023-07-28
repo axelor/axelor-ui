@@ -123,6 +123,13 @@
     opacity: 0.5;
   }
 }
+.menuTitle {
+  flex: 1;  
+}
+
+.menuItemIcon {
+  line-height: 0;
+}
 
 .item {
   --bs-btn-padding-x: 0;

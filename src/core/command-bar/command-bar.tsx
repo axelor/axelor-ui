@@ -33,6 +33,7 @@ export interface CommandItemProps {
   >;
   items?: CommandItemProps[];
   showDownArrow?: boolean;
+  showAsMenuItem?: boolean;
   className?: string;
   render?: (props: CommandItemProps) => JSX.Element | null;
 }
@@ -48,6 +49,7 @@ export interface CommandBarProps {
 export function CommandItem(props: CommandItemProps) {
   const {
     text,
+    subtext,
     description,
     menuProps,
     imageProps,
@@ -63,6 +65,7 @@ export function CommandItem(props: CommandItemProps) {
     onClick,
     items = [],
     showDownArrow = false,
+    showAsMenuItem,
     className,
   } = props;
   const classNames = useClassNames();
@@ -109,7 +112,7 @@ export function CommandItem(props: CommandItemProps) {
     return <hr className={styles.divider} />;
   }
 
-  const isSplit = onClick && items.length > 0;
+  const isSplit = onClick && items.length > 0 && !showAsMenuItem;
   const Wrapper = isSplit ? ButtonGroup : Box;
 
   const showArrow = showDownArrow && !isSplit && items.length > 0;
@@ -131,63 +134,90 @@ export function CommandItem(props: CommandItemProps) {
 
   const hasContent = imageProps || Icon || iconProps || text || showArrow;
   return (
-    <Wrapper className={clsx(styles.itemWrapper, className)}>
-      {hasContent && (
-        <Button
-          variant="light"
-          title={description}
-          className={clsx(
-            styles.item,
-            {
-              [styles.open]: show && !isSplit && items.length > 0,
-            },
-            classNames({
-              active: checked,
-            })
+    <>
+      {showAsMenuItem ? (
+        <MenuItem disabled={disabled} {...buttonProps}>
+          {subtext ? (
+            <div className={styles.menuTexts}>
+              <span className={styles.menuTitle}>{text}</span>
+              <span className={styles.menuSub}>{subtext}</span>
+            </div>
+          ) : (
+            <span className={styles.menuTitle}>{text}</span>
           )}
-          disabled={disabled}
-          {...buttonProps}
-        >
-          <span
-            className={clsx(styles.title, {
-              [styles.iconEnd]: iconSide === "end",
-              [styles.iconOnly]: iconOnly,
-            })}
-          >
-            {imageProps?.src && (
-              <Image className={styles.image} {...imageProps} />
-            )}
-            {Icon ? (
-              <Icon className={styles.icon} />
-            ) : (
-              iconProps?.icon && (
-                <MaterialIcon {...iconProps} className={styles.icon} />
-              )
-            )}
-            {text && !iconOnly && <span className={styles.titleText}>{text}</span>}
-            {showArrow && (
+          {items?.length > 0 && (
+            <span className={styles.menuItemIcon}>
               <MaterialIcon
-                icon="arrow_drop_down"
-                className={clsx(styles.icon, styles.arrowIcon)}
+                icon="arrow_right"
+                className={styles.icon}
               />
-            )}
-          </span>
-        </Button>
-      )}
-      {isSplit && (
-        <Button
-          variant="light"
-          className={clsx(styles.item, styles.split, { [styles.open]: show })}
-          disabled={disabled}
-          {...splitProps}
-        >
-          <span className={styles.title}>
-            <MaterialIcon
-              icon="arrow_drop_down"
-              className={clsx(styles.icon, styles.arrowIcon)}
-            />
-          </span>
-        </Button>
+            </span>
+          )}
+        </MenuItem>
+      ) : (
+        <Wrapper className={clsx(styles.itemWrapper, className)}>
+          {hasContent && (
+            <Button
+              variant="light"
+              title={description}
+              className={clsx(
+                styles.item,
+                {
+                  [styles.open]: show && !isSplit && items.length > 0,
+                },
+                classNames({
+                  active: checked,
+                })
+              )}
+              disabled={disabled}
+              {...buttonProps}
+            >
+              <span
+                className={clsx(styles.title, {
+                  [styles.iconEnd]: iconSide === "end",
+                  [styles.iconOnly]: iconOnly,
+                })}
+              >
+                {imageProps?.src && (
+                  <Image className={styles.image} {...imageProps} />
+                )}
+                {Icon ? (
+                  <Icon className={styles.icon} />
+                ) : (
+                  iconProps?.icon && (
+                    <MaterialIcon {...iconProps} className={styles.icon} />
+                  )
+                )}
+                {text && !iconOnly && (
+                  <span className={styles.titleText}>{text}</span>
+                )}
+                {showArrow && (
+                  <MaterialIcon
+                    icon="arrow_drop_down"
+                    className={clsx(styles.icon, styles.arrowIcon)}
+                  />
+                )}
+              </span>
+            </Button>
+          )}
+          {isSplit && (
+            <Button
+              variant="light"
+              className={clsx(styles.item, styles.split, {
+                [styles.open]: show,
+              })}
+              disabled={disabled}
+              {...splitProps}
+            >
+              <span className={styles.title}>
+                <MaterialIcon
+                  icon="arrow_drop_down"
+                  className={clsx(styles.icon, styles.arrowIcon)}
+                />
+              </span>
+            </Button>
+          )}
+        </Wrapper>
       )}
       {items.length > 0 && (
         <Menu
@@ -197,10 +227,12 @@ export function CommandItem(props: CommandItemProps) {
           rounded={false}
           className={styles.menu}
           {...menuProps}
+          {...(showAsMenuItem && {
+            placement: "end-top",
+          })}
         >
           {items.map((item) => {
-            const { key, divider, hidden, disabled, text, subtext, render } =
-              item;
+            const { key, divider, hidden, render } = item;
 
             if (hidden) {
               return null;
@@ -211,29 +243,20 @@ export function CommandItem(props: CommandItemProps) {
             }
 
             const itemProps = {
+              ...item,
+              showAsMenuItem: true,
               onClick: (e: any) => handleMenuClick(e, item),
             };
 
             if (render) {
-              return render({ ...itemProps, ...item, render: undefined });
+              return render({ ...itemProps, render: undefined });
             }
 
-            return (
-              <MenuItem key={key} disabled={disabled} {...itemProps}>
-                {subtext ? (
-                  <div className={styles.menuTexts}>
-                    <span className={styles.menuTitle}>{text}</span>
-                    <span className={styles.menuSub}>{subtext}</span>
-                  </div>
-                ) : (
-                  <span className={styles.menuTitle}>{text}</span>
-                )}
-              </MenuItem>
-            );
+            return <CommandItem {...itemProps} />;
           })}
         </Menu>
       )}
-    </Wrapper>
+    </>
   );
 }
 

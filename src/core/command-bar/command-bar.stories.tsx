@@ -51,6 +51,45 @@ export const Basic = () => {
             ],
           },
           {
+            key: "Menu 1",
+            text: "Menu 1",
+            showDownArrow: true,
+            items: [
+              {
+                key: "Menu 1.1",
+                text: "Menu 1.1",
+                items: [
+                  {
+                    key: "Menu 1.1.1",
+                    text: "Menu 1.1.1",
+                    items: [
+                      {
+                        key: "Menu 1.1.1.1",
+                        text: "Menu 1.1.1.1",
+                      },
+                      {
+                        key: "Menu 1.1.1.2",
+                        text: "Menu 1.1.1.2",
+                      },
+                    ],
+                  },
+                  {
+                    key: "Menu 1.1.2",
+                    text: "Menu 1.1.2",
+                  },
+                ],
+              },
+              {
+                key: "Menu 1.2",
+                text: "Menu 1.2",
+              },
+              {
+                key: "Menu 1.3",
+                text: "Menu 1.3",
+              },
+            ],
+          },
+          {
             key: "more",
             iconProps: {
               icon: "more_vert",
