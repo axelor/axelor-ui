@@ -91,7 +91,8 @@
 }
 
 .icons,
-.menus {
+.menus,
+.menusInner {
   display: flex;
   flex-direction: column;
 }
@@ -255,6 +256,7 @@
 
 .menu,
 .menus,
+.menusInner, 
 .items,
 .item {
   gap: 0.25rem;
