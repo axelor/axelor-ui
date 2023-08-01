@@ -95,33 +95,48 @@ const MenuList = ({ innerProps, ...rest }: MenuListProps) => {
   );
 };
 
+const IndicatorIcon = ({
+  icon,
+  onMenuClose,
+}: {
+  icon: SelectIcon;
+  onMenuClose?: () => void;
+}) => {
+  const { onClick } = icon;
+
+  const handleMouseDown = React.useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      if (onClick) {
+        e.preventDefault();
+        onMenuClose?.();
+      }
+    },
+    [onClick, onMenuClose]
+  );
+
+  return (
+    <Box d="inline-flex" onMouseDown={handleMouseDown}>
+      <MaterialIcon {...icon} />
+    </Box>
+  );
+};
+
 const IndicatorsContainer = (
   props: IndicatorsContainerProps<SelectOption, true>
 ) => {
-  function handleMouseDown(e: React.SyntheticEvent) {
-    const { onMenuClose } = props.selectProps || {};
-    onMenuClose && onMenuClose();
-    e.preventDefault();
-  }
+  const { onMenuClose } = props.selectProps || {};
   const icons: SelectIcon[] =
     (props.selectProps.components as any)?.icons || [];
   return (
     icons.length > 0 && (
-      <Box
-        d="flex"
-        className={styles.icons}
-        {...(icons.some((icon) => icon.onClick)
-          ? { onMouseDown: handleMouseDown }
-          : {})}
-        me={1}
-      >
+      <Box d="flex" className={styles.icons} me={1}>
         {icons.map(
           (icon) =>
             !icon.hidden && (
-              <MaterialIcon
+              <IndicatorIcon
                 key={icon.icon}
-                icon={icon.icon}
-                onClick={icon.onClick}
+                icon={icon}
+                onMenuClose={onMenuClose}
               />
             )
         )}
