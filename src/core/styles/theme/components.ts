@@ -25,7 +25,7 @@ function toShellVars(options: ThemeOptions) {
     "--ax-theme-shell-scrollbar-color": opts.scrollbar?.color,
     "--ax-theme-shell-sidebar-bg": opts.sidebar?.bg,
     "--ax-theme-shell-sidebar-color": opts.sidebar?.color,
-    "--ax-theme-shell-sidebar-paddding": opts.sidebar?.padding,
+    "--ax-theme-shell-sidebar-padding": opts.sidebar?.padding,
     "--ax-theme-shell-sidebar-border": toBorder(options, opts.sidebar?.border),
     "--ax-theme-shell-view-toolbar-bg": opts.view?.toolbar?.bg,
     "--ax-theme-shell-view-toolbar-color": opts.view?.toolbar?.color,
@@ -179,7 +179,7 @@ function toNavTabsVars(options: ThemeOptions) {
 function toCommandBarVars(options: ThemeOptions) {
   const opts = options.components?.CommandBar ?? {};
   return {
-    "--ax-theme-command-bar-button-paddding": opts.button?.padding,
+    "--ax-theme-command-bar-button-padding": opts.button?.padding,
     "--ax-theme-command-bar-button-bg": opts.button?.bg,
     "--ax-theme-command-bar-button-color": opts.button?.color,
     "--ax-theme-command-bar-button-border-color": opts.button?.border?.color,
