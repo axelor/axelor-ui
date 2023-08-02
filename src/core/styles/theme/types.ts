@@ -46,7 +46,7 @@ export interface ThemePalette {
   dark?: string;
 }
 
-export interface ThemeTypograpy {
+export interface ThemeTypography {
   fontFamily?: string | string[];
   fontSize?: string;
   fontWeight?: number | string;
@@ -72,7 +72,7 @@ export interface ThemeElementSpacing {
 }
 
 export interface ThemeElementCommon
-  extends ThemeTypograpy,
+  extends ThemeTypography,
     ThemeElementColors,
     ThemeElementSpacing {
   border?: ThemeElementBorder;
@@ -81,8 +81,8 @@ export interface ThemeElementCommon
 export interface ThemeOptions {
   palette?: ThemePalette;
   typography?: {
-    body?: ThemeTypograpy;
-    code?: ThemeTypograpy;
+    body?: ThemeTypography;
+    code?: ThemeTypography;
   };
   border?: ThemeElementBorder;
   link?: {
