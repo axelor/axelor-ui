@@ -115,7 +115,7 @@ const IndicatorIcon = ({
   );
 
   return (
-    <Box d="inline-flex" onMouseDown={handleMouseDown}>
+    <Box d="inline-flex" className={styles.icon} onMouseDown={handleMouseDown}>
       <MaterialIcon {...icon} />
     </Box>
   );
