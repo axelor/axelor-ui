@@ -297,7 +297,13 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
               cellIndex || -1
             );
             if (result === null) {
-              return;
+              return (
+                (cellIndex ?? 0) >= 0 &&
+                setState((draft) => {
+                  draft.selectedCell = [rowIndex, cellIndex!];
+                  draft.selectedRows = [rowIndex];
+                })
+              );
             }
           }
           return setState((draft) => {
