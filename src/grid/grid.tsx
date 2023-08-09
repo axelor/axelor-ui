@@ -144,6 +144,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             title: "",
             type: "row-checked",
             computed: true,
+            editable: false,
             sortable: false,
             searchable: false,
             width: 32,
@@ -158,6 +159,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             width: 32,
             computed: true,
             title: "",
+            editable: false,
             sortable: false,
             searchable: false,
             renderer: GridDNDColumn,
@@ -289,6 +291,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         onRowClick && onRowClick(e, row, rowIndex);
         if (!isSelectBox && editable && !e.ctrlKey && !(cell as any).readonly) {
           if (onRecordEdit) {
+            if (cell?.editable !== false) {
+              e.preventDefault();
+            }
             const result = await onRecordEdit(
               row,
               rowIndex,

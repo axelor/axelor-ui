@@ -10,6 +10,7 @@ export interface GridColumn {
   hidden?: boolean;
   computed?: boolean;
   sort?: boolean;
+  editable?: boolean;
   sortable?: boolean;
   searchable?: boolean;
   action?: boolean;
