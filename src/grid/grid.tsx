@@ -289,7 +289,6 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         onRowClick && onRowClick(e, row, rowIndex);
         if (!isSelectBox && editable && !e.ctrlKey && !(cell as any).readonly) {
           if (onRecordEdit) {
-            e.preventDefault();
             const result = await onRecordEdit(
               row,
               rowIndex,
