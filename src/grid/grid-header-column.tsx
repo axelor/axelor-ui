@@ -257,7 +257,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
 
           {(onGroup || onUngroup) && (
             <>
-              <MenuDivider />
+              {canSort && (<MenuDivider />)}
 
               <MenuItem
                 onClick={(e: SyntheticEvent) => {
@@ -286,21 +286,23 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
             </>
           )}
 
-          <MenuDivider />
-
           {onHide && (
-            <MenuItem
-              onClick={(e: SyntheticEvent) => {
-                handleHide();
-                onHide(e, column);
-              }}
-            >
-              <Box d="flex" alignItems="center" gap={4}>
-                <span className={styles.headerColumnMenuIcon} />
-                {t("Hide")}
-                <i>{column.title}</i>
-              </Box>
-            </MenuItem>
+            <>
+              {(canSort || onGroup || onUngroup) && (<MenuDivider />)}
+              
+              <MenuItem
+                onClick={(e: SyntheticEvent) => {
+                  handleHide();
+                  onHide(e, column);
+                }}
+              >
+                <Box d="flex" alignItems="center" gap={4}>
+                  <span className={styles.headerColumnMenuIcon} />
+                  {t("Hide")}
+                  <i>{column.title}</i>
+                </Box>
+              </MenuItem>
+            </>
           )}
 
           {onShow &&
@@ -326,7 +328,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
 
           {onCustomize && (
             <>
-              <MenuDivider />
+              {(canSort || onGroup || onUngroup || onHide || onShow) && (<MenuDivider />)}
               <MenuItem
                 onClick={(e: SyntheticEvent) => {
                   handleHide();
