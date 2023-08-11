@@ -37,7 +37,7 @@ export const GridFooterRow = React.memo(function GridFooterRow(
         const value = column.aggregate && data.aggregate[column.name];
         return (
           <GridColumn
-            key={column.name}
+            key={column.id ?? column.name}
             selected={selectedCell === index}
             index={index}
             data={column}

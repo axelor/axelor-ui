@@ -78,7 +78,7 @@ export const GridHeader = React.memo(function GridHeader(
           );
           return (
             <GridHeaderColumn
-              key={column.name}
+              key={column.id ?? column.name}
               index={index}
               data={column}
               sort={sortColumn ? sortColumn.order : null}

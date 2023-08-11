@@ -89,7 +89,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
           const value = getColumnValue(column);
           return (
             <GridColumn
-              key={column.name}
+              key={column.id ?? column.name}
               data={column}
               index={index}
               type="body"

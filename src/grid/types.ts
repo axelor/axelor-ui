@@ -1,6 +1,7 @@
 import React, { SyntheticEvent } from "react";
 
 export interface GridColumn {
+  id?: string;
   name: string;
   type?: string;
   title?: string;

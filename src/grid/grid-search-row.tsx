@@ -18,7 +18,7 @@ export const GridSearchRow = React.memo(function GridSearchRow(
   return (
     <SearchRow className={clsx(styles.row, styles.searchRow)}>
       {columns.map((column, index) => (
-        <GridColumn key={column.name} data={column} index={index}>
+        <GridColumn key={column.id ?? column.name} data={column} index={index}>
           {ColumnRenderer && (
             <ColumnRenderer column={column} columnIndex={index} />
           )}

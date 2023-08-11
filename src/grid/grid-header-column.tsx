@@ -312,7 +312,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
               )
               .map((column) => (
                 <MenuItem
-                  key={column.name}
+                  key={column.id ?? column.name}
                   onClick={(e: SyntheticEvent) => {
                     handleHide();
                     onShow(e, column);

@@ -164,7 +164,7 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
                         );
                       }
                       return (
-                        <CustomMenuItem key={column.name} onClick={toggle}>
+                        <CustomMenuItem key={column.id ?? column.name} onClick={toggle}>
                           {onColumnDrop ? (
                             <GridDragElement
                               className={styles.dragColumn}

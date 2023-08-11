@@ -579,7 +579,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       (e: React.SyntheticEvent, column: TYPES.GridColumn) => {
         setState((draft) => {
           const columnState = draft.columns.find(
-            (col) => col.name === column.name
+            (col) => column.id ? column.id === col.id : col.name === column.name
           ) as TYPES.GridColumn;
           columnState && (columnState.visible = false);
         });
@@ -591,8 +591,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     const handleColumnShow = React.useCallback(
       (e: React.SyntheticEvent, column: TYPES.GridColumn) => {
         setState((draft) => {
-          const columnState = draft.columns.find(
-            (col) => col.name === column.name
+          const columnState = draft.columns.find((col) =>
+            column.id ? column.id === col.id : col.name === column.name
           ) as TYPES.GridColumn;
           columnState && (columnState.visible = true);
         });
