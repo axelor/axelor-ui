@@ -161,7 +161,16 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
           className={classNames(styles.headerColumnTitle, {
             [styles.resizable]: Boolean(onResize),
           })}
-          onClick={(e) => canSort && onClick && onClick(e, data, index)}
+          onClick={(e) => {
+            const dropdownEl = targetRef.current;
+            if (
+              dropdownEl &&
+              (e.target === dropdownEl ||
+                dropdownEl?.contains?.(e.target as Node))
+            )
+              return;
+            canSort && onClick && onClick(e, data, index);
+          }}
         >
           <Box as="span" flex={1} d="inline-flex" alignItems="center">
             <span>{column.title}</span>
@@ -183,11 +192,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
                 [styles.active]: show,
               })}
               ref={targetRef}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleShow();
-              }}
+              onClick={handleShow}
             >
               <MaterialIcon icon="arrow_drop_down" />
             </span>
