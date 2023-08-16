@@ -31,6 +31,7 @@ export interface SelectProps {
   placeholder?: string;
   autoFocus?: boolean;
   loading?: boolean;
+  isSelectable?: boolean;
   isMulti?: boolean;
   isClearable?: boolean;
   isCreatable?: boolean;
@@ -191,6 +192,7 @@ export function Select({
   autoFocus,
   placeholder,
   isMulti,
+  isSelectable = true,
   isClearable = true,
   isDisabled = false,
   isRtl,
@@ -465,7 +467,7 @@ export function Select({
       className={className}
       classNamePrefix={classNamePrefix}
       classNames={classNames}
-      menuIsOpen={menuIsOpen}
+      menuIsOpen={isSelectable && menuIsOpen}
       menuPlacement="auto"
       styles={styles}
       filterOption={filterOption}
