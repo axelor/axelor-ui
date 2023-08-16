@@ -39,6 +39,7 @@ export interface SelectProps {
   isSearchable?: boolean;
   isClearOnDelete?: boolean;
   value: any;
+  disablePortal?: boolean;
   onInputChange?: (value: any) => void;
   onChange: (value: any) => void;
   onFocus?: (e: React.SyntheticEvent) => void;
@@ -197,6 +198,7 @@ export function Select({
   isSearchable = true,
   loading: _loading,
   value,
+  disablePortal,
   onInputChange,
   onChange,
   onFocus,
@@ -463,11 +465,13 @@ export function Select({
       className={className}
       classNamePrefix={classNamePrefix}
       classNames={classNames}
-      menuPortalTarget={document.body}
       menuIsOpen={menuIsOpen}
       menuPlacement="auto"
       styles={styles}
       filterOption={filterOption}
+      {...(!disablePortal && {
+        menuPortalTarget: document.body,
+      })}
       {...{
         options: $options,
         placeholder: placeholder ?? "",
