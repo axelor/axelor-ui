@@ -76,6 +76,8 @@ export interface GridProps {
   gridColumnGap?: Responsive<CSS.Property.GridColumnGap | number>;
   gridRow?: Responsive<CSS.Property.GridRow>;
   gridColumn?: Responsive<CSS.Property.GridColumn>;
+  gridRowStart?: Responsive<CSS.Property.GridRowStart>;
+  gridColumnStart?: Responsive<CSS.Property.GridColumnStart>;
   gridRowEnd?: Responsive<CSS.Property.GridRowEnd>;
   gridColumnEnd?: Responsive<CSS.Property.GridColumnEnd>;
   gridAutoRows?: Responsive<CSS.Property.GridAutoRows>;
@@ -96,6 +98,8 @@ export const GridConfig: Config<GridProps> = {
   gridColumnGap: computeVar("grid-column-gap", toPixel),
   gridRow: computeVar("grid-row"),
   gridColumn: computeVar("grid-column"),
+  gridRowStart: computeVar("grid-row-start"),
+  gridColumnStart: computeVar("grid-column-start"),
   gridRowEnd: computeVar("grid-row-end"),
   gridColumnEnd: computeVar("grid-column-end"),
   gridAutoRows: computeVar("grid-auto-rows"),
