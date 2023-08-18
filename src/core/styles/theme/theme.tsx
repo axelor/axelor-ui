@@ -9,7 +9,7 @@ import {
 
 import { ClassValue, cssx } from "../../clsx";
 
-import { createStyleSheet } from "./sheet";
+import { adoptStyleSheet } from "./sheet";
 import { ThemeOptions } from "./types";
 
 import stylesLtr from "../styles.module.scss";
@@ -51,32 +51,7 @@ export function ThemeProvider({
     };
   }, [theme]);
 
-  useEffect(() => {
-    const sheet = createStyleSheet(options, classes);
-    const canAdoptStyleSheet = sheet instanceof CSSStyleSheet;
-
-    if (canAdoptStyleSheet) {
-      const last = [...document.adoptedStyleSheets];
-
-      document.adoptedStyleSheets = [...last, sheet];
-      return () => {
-        document.adoptedStyleSheets = last;
-      };
-    } else {
-      const cssStyles = sheet;
-      if (cssStyles) {
-        const head = document.getElementsByTagName("head")[0];
-        const style = document.createElement("style");
-        style.setAttribute("type", "text/css");
-        style.innerHTML = cssStyles;
-
-        head.appendChild(style);
-        return () => {
-          head.removeChild(style);
-        };
-      }
-    }
-  }, [classes, dir, options]);
+  useEffect(() => adoptStyleSheet(options, classes), [classes, dir, options]);
 
   return (
     <ThemeContext.Provider value={value}>

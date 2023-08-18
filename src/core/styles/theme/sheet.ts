@@ -21,12 +21,30 @@ const cleanUp = (options: ThemeOptions): ThemeOptions =>
     )
   );
 
-const isStyleSheetSupported = () =>
+// adoptedStyleSheets and CSSStyleSheet() constructor are not supported in Firefox < 101.
+const SUPPORTS_ADOPTED_STYLE_SHEETS =
+  "adoptedStyleSheets" in document &&
   typeof CSSStyleSheet === "function" &&
-  "replaceSync" in CSSStyleSheet.prototype &&
-  "adoptedStyleSheets" in document;
+  "replaceSync" in CSSStyleSheet.prototype;
 
-export function createStyleSheet(
+const adopt: (text: string) => () => void = SUPPORTS_ADOPTED_STYLE_SHEETS
+  ? (text) => {
+      const sheet = new CSSStyleSheet();
+      sheet.replaceSync(text);
+      const last = [...document.adoptedStyleSheets];
+      document.adoptedStyleSheets = [...last, sheet];
+      return () => (document.adoptedStyleSheets = last);
+    }
+  : (text) => {
+      const head = document.getElementsByTagName("head")[0];
+      const style = document.createElement("style");
+      style.setAttribute("type", "text/css");
+      style.innerHTML = text;
+      head.appendChild(style);
+      return () => head.removeChild(style);
+    };
+
+export function adoptStyleSheet(
   options: ThemeOptions,
   classes?: CSSModuleClasses
 ) {
@@ -36,11 +54,5 @@ export function createStyleSheet(
 
   const text = [root, buttons].filter(Boolean).join("");
 
-  if (!isStyleSheetSupported()) return text;
-
-  const sheet = new CSSStyleSheet();
-
-  sheet.replaceSync(text);
-
-  return sheet;
+  return adopt(text);
 }
