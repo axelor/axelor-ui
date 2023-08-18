@@ -52,13 +52,30 @@ export function ThemeProvider({
   }, [theme]);
 
   useEffect(() => {
-    const last = [...document.adoptedStyleSheets];
     const sheet = createStyleSheet(options, classes);
+    const canAdoptStyleSheet = sheet instanceof CSSStyleSheet;
 
-    document.adoptedStyleSheets = [...last, sheet];
-    return () => {
-      document.adoptedStyleSheets = last;
-    };
+    if (canAdoptStyleSheet) {
+      const last = [...document.adoptedStyleSheets];
+
+      document.adoptedStyleSheets = [...last, sheet];
+      return () => {
+        document.adoptedStyleSheets = last;
+      };
+    } else {
+      const cssStyles = sheet;
+      if (cssStyles) {
+        const head = document.getElementsByTagName("head")[0];
+        const style = document.createElement("style");
+        style.setAttribute("type", "text/css");
+        style.innerHTML = cssStyles;
+
+        head.appendChild(style);
+        return () => {
+          head.removeChild(style);
+        };
+      }
+    }
   }, [classes, dir, options]);
 
   return (

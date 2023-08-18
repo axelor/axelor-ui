@@ -21,6 +21,11 @@ const cleanUp = (options: ThemeOptions): ThemeOptions =>
     )
   );
 
+const isStyleSheetSupported = () =>
+  typeof CSSStyleSheet === "function" &&
+  "replaceSync" in CSSStyleSheet.prototype &&
+  "adoptedStyleSheets" in document;
+
 export function createStyleSheet(
   options: ThemeOptions,
   classes?: CSSModuleClasses
@@ -30,6 +35,9 @@ export function createStyleSheet(
   const buttons = createButtonRules(opts, classes);
 
   const text = [root, buttons].filter(Boolean).join("");
+
+  if (!isStyleSheetSupported()) return text;
+
   const sheet = new CSSStyleSheet();
 
   sheet.replaceSync(text);
