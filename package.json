@@ -45,7 +45,7 @@
     "color": "^4.2.3",
     "csstype": "^3.1.2",
     "dayjs": "^1.11.9",
-    "focus-trap": "^7.4.3",
+    "focus-trap": "^7.5.2",
     "immer": "^9.0.18",
     "react-beautiful-dnd": "^13.1.1",
     "react-big-calendar": "^1.8.2",
