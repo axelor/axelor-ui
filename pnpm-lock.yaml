@@ -45,8 +45,8 @@ dependencies:
     specifier: ^13.1.1
     version: 13.1.1(react-dom@18.2.0)(react@18.2.0)
   react-big-calendar:
-    specifier: ^1.6.8
-    version: 1.6.8(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^1.8.2
+    version: 1.8.2(react-dom@18.2.0)(react@18.2.0)
   react-select:
     specifier: ^5.7.3
     version: 5.7.3(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)
@@ -86,8 +86,8 @@ devDependencies:
     specifier: ^13.1.4
     version: 13.1.4
   '@types/react-big-calendar':
-    specifier: ^0.38.4
-    version: 0.38.4
+    specifier: ^1.6.4
+    version: 1.6.4
   '@types/react-dom':
     specifier: ^18.2.7
     version: 18.2.7
@@ -4833,8 +4833,8 @@ packages:
     resolution: {integrity: sha512-/RVXdLvJxLg4QKvMoM5WlwNR9ViO9z8B/qPcc+C0Sa/teJY7QG7kJ441DwzOjMYEY7GmU4dj5EcGHIkKZiQZCA==}
     dev: true
 
-  /@restart/hooks@0.4.8(react@18.2.0):
-    resolution: {integrity: sha512-Ivvp1FZ0Lja80iUTYAhbzy+stxwO7FbPHP95ypCtIh0wyOLiayQywXhVJ2ZYP5S1AjW2GmKHeRU4UglMwTG2sA==}
+  /@restart/hooks@0.4.11(react@18.2.0):
+    resolution: {integrity: sha512-Ft/ncTULZN6ldGHiF/k5qt72O8JyRMOeg0tApvCni8LkoiEahO+z3TNxfXIVGy890YtWVDvJAl662dVJSJXvMw==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
@@ -6200,8 +6200,8 @@ packages:
       '@types/react': 18.2.21
     dev: true
 
-  /@types/react-big-calendar@0.38.4:
-    resolution: {integrity: sha512-6sorJYTTlHjqCeqpJ1FdSDkdNJ8tHCesQDwZ+NJFt+Qz86CTVFagFd9rAH4XRPM3i3R7fDW+0/IT2j9B0bUJaw==}
+  /@types/react-big-calendar@1.6.4:
+    resolution: {integrity: sha512-xAbdQ2cQhx71dsnacJ1knSGqTi6cD8odGi28AzCjA+N4bgpJjSyYo/fN1bG4ScfBAEQomSl/UoXYrSgUoJ0MGA==}
     dependencies:
       '@types/date-arithmetic': 4.1.1
       '@types/prop-types': 15.7.5
@@ -7609,7 +7609,7 @@ packages:
   /dom-helpers@5.2.1:
     resolution: {integrity: sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==}
     dependencies:
-      '@babel/runtime': 7.20.13
+      '@babel/runtime': 7.22.11
       csstype: 3.1.2
     dev: false
 
@@ -9542,8 +9542,8 @@ packages:
     engines: {node: 14 || >=16.14}
     dev: true
 
-  /luxon@3.2.1:
-    resolution: {integrity: sha512-QrwPArQCNLAKGO/C+ZIilgIuDnEnKx5QYODdDtbFaxzsbZcc/a7WFq7MhsVYgRlwawLtvOUESTlfJ+hc/USqPg==}
+  /luxon@3.4.1:
+    resolution: {integrity: sha512-2USspxOCXWGIKHwuQ9XElxPPYrDOJHDQ5DQ870CoD+CxJbBnRDIBCfhioUJJjct7BKOy80Ia8cVstIcIMb/0+Q==}
     engines: {node: '>=12'}
     dev: false
 
@@ -9771,8 +9771,8 @@ packages:
     hasBin: true
     dev: true
 
-  /moment-timezone@0.5.40:
-    resolution: {integrity: sha512-tWfmNkRYmBkPJz5mr9GVDn9vRlVZOTe6yqY92rFxiOdWXbjaR0+9LwQnZGGuNR63X456NqmEkbskte8tWL5ePg==}
+  /moment-timezone@0.5.43:
+    resolution: {integrity: sha512-72j3aNyuIsDxdF1i7CEgV2FfxM1r6aaqJyLB2vwb33mXYyoyLly+F1zbWqhA3/bVIoJ4szlUoMbUnVdid32NUQ==}
     dependencies:
       moment: 2.29.4
     dev: false
@@ -10380,13 +10380,13 @@ packages:
       - react-native
     dev: false
 
-  /react-big-calendar@1.6.8(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-uDuHoqH5/Wnk3tBxXnrXQD5w9FEofd1Ch1vMpLuv2LRBqrF2u7FcIruc80urizrkxcDWrTGxa7bsr0a9bby4Mw==}
+  /react-big-calendar@1.8.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-L6OcmTGT198eD6VmaK/T6IE6SPYSV2lup//V25huCy3KLgONmEPQbX8/m3XnHYKqCEIoIyU8mzIsSmd8eXQVbw==}
     peerDependencies:
       react: ^16.14.0 || ^17 || ^18
       react-dom: ^16.14.0 || ^17 || ^18
     dependencies:
-      '@babel/runtime': 7.20.13
+      '@babel/runtime': 7.22.11
       clsx: 1.2.1
       date-arithmetic: 4.1.0
       dayjs: 1.11.8
@@ -10395,10 +10395,10 @@ packages:
       invariant: 2.2.4
       lodash: 4.17.21
       lodash-es: 4.17.21
-      luxon: 3.2.1
+      luxon: 3.4.1
       memoize-one: 6.0.0
       moment: 2.29.4
-      moment-timezone: 0.5.40
+      moment-timezone: 0.5.43
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -10543,9 +10543,9 @@ packages:
       react: '>=16.3.0'
       react-dom: '>=16.3.0'
     dependencies:
-      '@babel/runtime': 7.20.13
+      '@babel/runtime': 7.22.11
       '@popperjs/core': 2.11.8
-      '@restart/hooks': 0.4.8(react@18.2.0)
+      '@restart/hooks': 0.4.11(react@18.2.0)
       '@types/warning': 3.0.0
       dom-helpers: 5.2.1
       prop-types: 15.8.1
@@ -11569,7 +11569,7 @@ packages:
     peerDependencies:
       react: '>=15.0.0'
     dependencies:
-      '@babel/runtime': 7.20.13
+      '@babel/runtime': 7.22.11
       '@types/react': 18.2.21
       invariant: 2.2.4
       react: 18.2.0
