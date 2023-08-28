@@ -23,9 +23,8 @@ export type StyledComponentProps<
 
 export interface StyledComponent<C extends React.ElementType, P extends {}>
   extends React.FC<StyledComponentProps<C, P>> {
-  (props: StyledComponentProps<C, P>): JSX.Element | null;
-  <As extends React.ElementType>(
-    props: { as: As } & StyledComponentProps<As, P>
+  <As extends React.ElementType = C>(
+    props: { as?: As } & StyledComponentProps<As, P>
   ): JSX.Element | null;
 }
 
@@ -158,7 +157,7 @@ export const withStyled =
   <C extends StyledComponent<any, any>>(_: C) =>
   <P extends {}>(
     render: (
-      props: { as?: React.ElementType } & P & React.ComponentPropsWithoutRef<C>,
+      props: P & React.ComponentPropsWithoutRef<C>,
       ref: React.Ref<any>
     ) => JSX.Element | null
   ) => {
