@@ -72,7 +72,7 @@
 
 .input {
   flex: 1;
-  min-width: 0;
+  min-width: 25%;
   border: none;
   outline: none;
   appearance: none;
@@ -81,6 +81,8 @@
 .select {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
   background-color: var(--bs-body-bg);
   border: var(--ax-input-border);
   border-radius: var(--ax-input-border-radius);
@@ -137,4 +139,10 @@
     color: var(--bs-dropdown-link-active-color);
     background-color: var(--bs-dropdown-link-active-bg);
   }
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
 }

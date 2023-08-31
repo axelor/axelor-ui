@@ -185,3 +185,17 @@ export const Actions: Story = {
     </div>
   ),
 };
+
+export const Multiple: Story = {
+  render: () => (
+    <div style={{ width: 250 }}>
+      <Select
+        multiple
+        options={OPTIONS}
+        optionKey={(x) => x.value}
+        optionLabel={(x) => x.title}
+        optionEqual={(o, v) => o.value === v.value}
+      />
+    </div>
+  ),
+};

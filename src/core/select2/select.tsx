@@ -23,6 +23,7 @@ import {
 } from "react";
 
 import { MaterialIcon } from "../../icons/material-icon";
+import { Badge } from "../badge";
 import { clsx } from "../clsx";
 
 import styles from "./select.module.scss";
@@ -153,6 +154,25 @@ export const Select = forwardRef(function Select<
     [multiple, optionEqual, value],
   );
 
+  const updateValue = useCallback(
+    (event: React.SyntheticEvent, option: Type) => {
+      const selected = acceptOption(option);
+      if (multiple) {
+        setInputValue("");
+      } else {
+        setInputValue(optionLabel(option));
+      }
+      setActiveIndex(null);
+      setOpen(false);
+      inputRef.current?.focus();
+      if (selected !== value) {
+        setValue(selected);
+        onChange?.(event, selected);
+      }
+    },
+    [acceptOption, multiple, onChange, optionLabel, setOpen, setValue, value],
+  );
+
   const handleInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const text = event.target.value.trim();
@@ -170,36 +190,35 @@ export const Select = forwardRef(function Select<
     (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter" && activeIndex !== null && items[activeIndex]) {
         const option = items[activeIndex];
-        const selected = acceptOption(option);
-        setInputValue(optionLabel(option)); // TODO: consider multiple
-        setActiveIndex(null);
-        setOpen(false);
-        if (selected !== value) {
-          setValue(selected);
-          onChange?.(event, selected);
-        }
+        updateValue(event, option);
+      }
+
+      if (multiple && event.key === "Backspace") {
+        if (inputValue) return;
+        setValue((prev) => {
+          if (Array.isArray(prev)) {
+            const next = [...prev];
+            next.pop();
+            return next as OptionType<Type, Multiple>;
+          }
+          return prev;
+        });
       }
     },
-    [
-      acceptOption,
-      activeIndex,
-      items,
-      onChange,
-      optionLabel,
-      setOpen,
-      setValue,
-      value,
-    ],
+    [activeIndex, inputValue, items, multiple, setValue, updateValue],
   );
 
   const rootRef = useMergeRefs([ref, refs.setReference]);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const handleRootClick = useCallback(() => {
+    inputRef.current?.focus();
+  }, []);
+
   const handleIconClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       const index = parseInt(event.currentTarget.dataset.index ?? "-1");
       const icon = icons[index];
-      inputRef.current?.focus();
       icon?.onClick?.(event);
     },
     [icons],
@@ -207,7 +226,6 @@ export const Select = forwardRef(function Select<
 
   const handleToggleClick = useCallback(() => {
     setOpen((prev) => !prev);
-    inputRef.current?.focus();
   }, [setOpen]);
 
   const handleClearClick = useCallback(
@@ -215,7 +233,6 @@ export const Select = forwardRef(function Select<
       setValue(null);
       setInputValue("");
       onChange?.(event, null);
-      inputRef.current?.focus();
     },
     [onChange, setValue],
   );
@@ -238,6 +255,17 @@ export const Select = forwardRef(function Select<
     };
   }, [props.clearIcon, handleClearClick]);
 
+  const renderMultiple = useCallback(() => {
+    const items = value as Type[] | null;
+    return items?.map((item) => {
+      return (
+        <Badge bg="primary" key={optionKey(item)} className={styles.tag}>
+          {optionLabel(item)}
+        </Badge>
+      );
+    });
+  }, [optionKey, optionLabel, value]);
+
   return (
     <>
       <div
@@ -245,7 +273,9 @@ export const Select = forwardRef(function Select<
         className={clsx(className, styles.select, {
           [styles.open]: open,
         })}
+        onClick={handleRootClick}
       >
+        {multiple && renderMultiple()}
         <input
           ref={inputRef}
           type="text"
@@ -303,10 +333,8 @@ export const Select = forwardRef(function Select<
                     ref(node) {
                       listRef.current[index] = node;
                     },
-                    onClick() {
-                      setInputValue(optionLabel(item));
-                      setOpen(false);
-                      refs.domReference.current?.focus();
+                    onClick(event: React.MouseEvent<HTMLDivElement>) {
+                      updateValue(event, item);
                     },
                   })}
                   active={activeIndex === index}
