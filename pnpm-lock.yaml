@@ -8,6 +8,9 @@ dependencies:
   '@emotion/is-prop-valid':
     specifier: ^1.2.1
     version: 1.2.1
+  '@floating-ui/react':
+    specifier: ^0.25.2
+    version: 0.25.3(react-dom@18.2.0)(react@18.2.0)
   '@fluentui/priority-overflow':
     specifier: ^9.1.5
     version: 9.1.5
@@ -2361,7 +2364,19 @@ packages:
       '@floating-ui/dom': 1.5.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-    dev: true
+
+  /@floating-ui/react@0.25.3(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-Ti3ClVZIUqZq1OCkfbhsBA8u3m8jJ0h9gAInFwdrLaa+yTAZx3bFH8YR+/wQwPmRrpgJJ3cRhCfx4puz0PqVIA==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@floating-ui/react-dom': 2.0.2(react-dom@18.2.0)(react@18.2.0)
+      '@floating-ui/utils': 0.1.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      tabbable: 6.2.0
+    dev: false
 
   /@floating-ui/utils@0.1.1:
     resolution: {integrity: sha512-m0G6wlnhm/AX0H12IOWtK8gASEMffnX08RtKkCgTdHb9JpHKGloI7icFfLg9ZmQeavcvR0PKmzxClyuFPSjKWw==}
