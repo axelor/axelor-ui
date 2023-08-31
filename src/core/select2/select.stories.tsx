@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
+import { useState } from "react";
 import { MaterialIcon } from "../../icons/material-icon";
 import { Select } from "./select";
 
@@ -184,6 +185,29 @@ export const Actions: Story = {
       />
     </div>
   ),
+};
+
+export const Creatable = () => {
+  const [value, setValue] = useState<{ value: string; title: string } | null>(
+    null,
+  );
+  return (
+    <div style={{ width: 250 }}>
+      <Select
+        value={value}
+        options={OPTIONS}
+        optionKey={(x) => x.value}
+        optionLabel={(x) => x.title}
+        optionEqual={(o, v) => o.value === v.value}
+        onCreate={(text) => {
+          setValue({
+            title: text.toUpperCase(),
+            value: text,
+          });
+        }}
+      />
+    </div>
+  );
 };
 
 export const Multiple: Story = {

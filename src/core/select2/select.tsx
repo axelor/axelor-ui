@@ -47,6 +47,10 @@ export interface SelectProps<Type, Multiple extends boolean> {
   toggleIcon?: SelectIcon | false;
   clearIcon?: SelectIcon | false;
   icons?: SelectIcon[];
+  translations?: {
+    create?: string;
+  };
+  onCreate?: (inputValue: string) => void;
   onChange?: (
     event: React.SyntheticEvent,
     value: OptionType<Type, Multiple>,
@@ -75,11 +79,15 @@ export const Select = forwardRef(function Select<
     className,
     options,
     icons = [],
+    translations = {
+      create: "Create",
+    },
     optionKey,
     optionLabel,
     optionEqual,
     optionMatch,
     onChange,
+    onCreate,
     onInputChange,
   } = props;
 
@@ -88,6 +96,13 @@ export const Select = forwardRef(function Select<
 
   const [inputValue, setInputValue] = useState("");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (multiple) return;
+    if (value) {
+      setInputValue(optionLabel(value as Type));
+    }
+  }, [multiple, optionLabel, value]);
 
   const { refs, floatingStyles, context } = useFloating<HTMLDivElement>({
     open,
@@ -188,9 +203,15 @@ export const Select = forwardRef(function Select<
 
   const handleInputKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
-      if (event.key === "Enter" && activeIndex !== null && items[activeIndex]) {
+      if (event.key === "Enter" && activeIndex !== null) {
         const option = items[activeIndex];
-        updateValue(event, option);
+        if (option) {
+          updateValue(event, option);
+        } else {
+          // creatable
+          setOpen(false);
+          onCreate?.(inputValue);
+        }
       }
 
       if (multiple && event.key === "Backspace") {
@@ -205,7 +226,16 @@ export const Select = forwardRef(function Select<
         });
       }
     },
-    [activeIndex, inputValue, items, multiple, setValue, updateValue],
+    [
+      activeIndex,
+      inputValue,
+      items,
+      multiple,
+      onCreate,
+      setOpen,
+      setValue,
+      updateValue,
+    ],
   );
 
   const rootRef = useMergeRefs([ref, refs.setReference]);
@@ -342,6 +372,22 @@ export const Select = forwardRef(function Select<
                   {optionLabel(item)}
                 </SelectItem>
               ))}
+              {onCreate && (
+                <SelectItem
+                  {...getItemProps({
+                    ref(node) {
+                      listRef.current[items.length] = node;
+                    },
+                    onClick() {
+                      setOpen(false);
+                      onCreate(inputValue);
+                    },
+                  })}
+                  active={activeIndex === items.length}
+                >
+                  {translations.create} <em>{inputValue}</em>...
+                </SelectItem>
+              )}
             </div>
           </FloatingFocusManager>
         )}
