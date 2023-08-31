@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
+import { MaterialIcon } from "../../icons/material-icon";
 import { Select } from "./select";
 
 const meta: Meta<typeof Select> = {
@@ -157,6 +158,29 @@ export const Basic: Story = {
         optionKey={(x) => x.value}
         optionLabel={(x) => x.title}
         optionEqual={(o, v) => o.value === v.value}
+      />
+    </div>
+  ),
+};
+
+export const Actions: Story = {
+  render: () => (
+    <div style={{ width: 250 }}>
+      <Select
+        options={OPTIONS}
+        optionKey={(x) => x.value}
+        optionLabel={(x) => x.title}
+        optionEqual={(o, v) => o.value === v.value}
+        clearIcon={false}
+        toggleIcon={false}
+        icons={[
+          {
+            icon: <MaterialIcon icon="add" />,
+          },
+          {
+            icon: <MaterialIcon icon="delete" />,
+          },
+        ]}
       />
     </div>
   ),

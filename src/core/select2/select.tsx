@@ -22,6 +22,7 @@ import {
   useState,
 } from "react";
 
+import { MaterialIcon } from "../../icons/material-icon";
 import { clsx } from "../clsx";
 
 import styles from "./select.module.scss";
@@ -72,6 +73,7 @@ export const Select = forwardRef(function Select<
     multiple,
     className,
     options,
+    icons = [],
     optionKey,
     optionLabel,
     optionEqual,
@@ -191,11 +193,61 @@ export const Select = forwardRef(function Select<
   );
 
   const rootRef = useMergeRefs([ref, refs.setReference]);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleIconClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      const index = parseInt(event.currentTarget.dataset.index ?? "-1");
+      const icon = icons[index];
+      inputRef.current?.focus();
+      icon?.onClick?.(event);
+    },
+    [icons],
+  );
+
+  const handleToggleClick = useCallback(() => {
+    setOpen((prev) => !prev);
+    inputRef.current?.focus();
+  }, [setOpen]);
+
+  const handleClearClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      setValue(null);
+      setInputValue("");
+      onChange?.(event, null);
+      inputRef.current?.focus();
+    },
+    [onChange, setValue],
+  );
+
+  const toggleIcon = useMemo(() => {
+    if (props.toggleIcon === false) return false;
+    return {
+      icon: <MaterialIcon icon="arrow_drop_down" />,
+      onClick: handleToggleClick,
+      ...props.toggleIcon,
+    };
+  }, [props.toggleIcon, handleToggleClick]);
+
+  const clearIcon = useMemo(() => {
+    if (props.clearIcon === false) return false;
+    return {
+      icon: <MaterialIcon icon="close" fontSize="1rem" />,
+      onClick: handleClearClick,
+      ...props.clearIcon,
+    };
+  }, [props.clearIcon, handleClearClick]);
 
   return (
     <>
-      <div ref={rootRef} className={clsx(styles.select, className)}>
+      <div
+        ref={rootRef}
+        className={clsx(className, styles.select, {
+          [styles.open]: open,
+        })}
+      >
         <input
+          ref={inputRef}
           type="text"
           className={styles.input}
           {...getReferenceProps({
@@ -204,6 +256,31 @@ export const Select = forwardRef(function Select<
             onKeyDown: handleInputKeyDown,
           })}
         />
+        {clearIcon && (
+          <div
+            className={clsx(styles.action, styles.clearIcon)}
+            onClick={clearIcon.onClick}
+          >
+            {clearIcon.icon}
+          </div>
+        )}
+        {icons.map((icon, index) => (
+          <div
+            data-index={index}
+            className={clsx(styles.action)}
+            onClick={handleIconClick}
+          >
+            {icon.icon}
+          </div>
+        ))}
+        {toggleIcon && (
+          <div
+            className={clsx(styles.action, styles.toggleIcon)}
+            onClick={toggleIcon.onClick}
+          >
+            {toggleIcon.icon}
+          </div>
+        )}
       </div>
       <FloatingPortal>
         {open && (
