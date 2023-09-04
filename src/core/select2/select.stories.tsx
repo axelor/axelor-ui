@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MaterialIcon } from "../../icons/material-icon";
+import { Badge } from "../badge";
 import { Box } from "../box";
 import { Input } from "../input";
 import { InputLabel } from "../input-label";
@@ -303,6 +304,29 @@ export const Async = () => {
         optionEqual={(o, v) => o.value === v.value}
         optionMatch={() => true}
         onInputChange={handleInputChange}
+      />
+    </div>
+  );
+};
+
+export const Renderers = () => {
+  return (
+    <div style={{ width: 250 }}>
+      <Select
+        multiple
+        options={OPTIONS}
+        optionKey={(x) => x.value}
+        optionLabel={(x) => x.title}
+        optionEqual={(o, v) => o.value === v.value}
+        renderOption={({ option }) => <strong>{option.title}</strong>}
+        renderTag={({ option }) => (
+          <Badge bg="primary">
+            <Box d="flex" alignItems="center" g={1}>
+              <span>{option.title}</span>
+              <MaterialIcon icon="close" fontSize="1rem" />
+            </Box>
+          </Badge>
+        )}
       />
     </div>
   );

@@ -38,6 +38,11 @@ export type SelectIcon = {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 };
 
+export interface SelectOptionProps<Type> {
+  option: Type;
+  active: boolean;
+}
+
 export interface SelectProps<Type, Multiple extends boolean> {
   className?: string;
   options: Type[];
@@ -61,6 +66,8 @@ export interface SelectProps<Type, Multiple extends boolean> {
   optionLabel: (option: Type) => string;
   optionEqual: (option: Type, value: Type) => boolean;
   optionMatch?: (option: Type, text: string) => boolean;
+  renderOption?: (props: SelectOptionProps<Type>) => JSX.Element | null;
+  renderTag?: (option: SelectOptionProps<Type>) => JSX.Element | null;
 }
 
 function useValue<T>(initial: T) {
@@ -94,6 +101,8 @@ export const Select = forwardRef(function Select<
     onChange,
     onCreate,
     onInputChange,
+    renderOption,
+    renderTag,
   } = props;
 
   const [value, setValue] = useValue(props.value);
@@ -280,12 +289,21 @@ export const Select = forwardRef(function Select<
     const items = value as Type[] | null;
     return items?.map((item) => {
       return (
-        <Badge bg="primary" key={optionKey(item)} className={styles.tag}>
-          {optionLabel(item)}
-        </Badge>
+        <div key={optionKey(item)} className={styles.tag}>
+          {!!renderTag && renderTag({ option: item, active: false })}
+          {!!renderTag || (
+            <Badge
+              bg="secondary"
+              key={optionKey(item)}
+              className={styles.badge}
+            >
+              {optionLabel(item)}
+            </Badge>
+          )}
+        </div>
       );
     });
-  }, [optionKey, optionLabel, value]);
+  }, [optionKey, optionLabel, renderTag, value]);
 
   const canClear =
     clearIcon &&
@@ -386,7 +404,12 @@ export const Select = forwardRef(function Select<
                   })}
                   active={activeIndex === index}
                 >
-                  {optionLabel(item)}
+                  {!!renderOption || optionLabel(item)}
+                  {!!renderOption &&
+                    renderOption({
+                      option: item,
+                      active: activeIndex === index,
+                    })}
                 </SelectItem>
               ))}
               {canCreate && (
@@ -418,27 +441,25 @@ export const Select = forwardRef(function Select<
   },
 ) => React.ReactNode;
 
-interface SelectItemProps {
-  children: React.ReactNode;
+type SelectItemProps = React.HTMLProps<HTMLDivElement> & {
   active: boolean;
-}
+};
 
-const SelectItem = forwardRef<
-  HTMLDivElement,
-  SelectItemProps & React.HTMLProps<HTMLDivElement>
->(({ children, active, style, className, ...rest }, ref) => {
-  const id = useId();
-  return (
-    <div
-      ref={ref}
-      role="option"
-      id={id}
-      aria-selected={active}
-      style={style}
-      className={clsx(className, styles.option, { [styles.active]: active })}
-      {...rest}
-    >
-      {children}
-    </div>
-  );
-});
+const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
+  function SelectOption(props, ref) {
+    const { active, children, className, ...rest } = props;
+    const id = useId();
+    return (
+      <div
+        ref={ref}
+        role="option"
+        id={id}
+        aria-selected={active}
+        className={clsx(className, styles.option, { [styles.active]: active })}
+        {...rest}
+      >
+        {children}
+      </div>
+    );
+  },
+);
