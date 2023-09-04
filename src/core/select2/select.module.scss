@@ -90,8 +90,8 @@
   padding: 0.375rem 0.75rem;
 }
 
-.select:focus,
-.select:focus-within {
+.select:not(.disabled):focus,
+.select:not(.disabled):focus-within {
   border: var(--ax-input-focus-border);
   box-shadow: var(--ax-input-focus-shadow);
 }
@@ -99,8 +99,8 @@
 .invalid {
   border: var(--ax-input-invalid-border) !important;
 }
-.invalid:focus,
-.invalid:focus-within {
+.invalid:not(.disabled):focus,
+.invalid:not(.disabled):focus-within {
   box-shadow: var(--ax-input-invalid-focus-shadow) !important;
 }
 

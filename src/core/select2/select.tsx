@@ -55,10 +55,7 @@ export interface SelectProps<Type, Multiple extends boolean> {
   disabled?: boolean;
   invalid?: boolean;
   onCreate?: (inputValue: string) => void;
-  onChange?: (
-    event: React.SyntheticEvent,
-    value: OptionType<Type, Multiple>,
-  ) => void;
+  onChange?: (value: OptionType<Type, Multiple>) => void;
   onInputChange?: React.ChangeEventHandler<HTMLInputElement>;
   optionKey: (option: Type) => string | number;
   optionLabel: (option: Type) => string;
@@ -158,39 +155,32 @@ export const Select = forwardRef(function Select<
   }, [inputValue, optionMatch, options, searchOptions]);
 
   const acceptOption = useCallback(
-    (option: Type) => {
+    (value: OptionType<Type, Multiple>, option: Type) => {
       const selected = [value].flat().filter(Boolean) as Type[];
-      const found = selected
-        .filter(Boolean)
-        .find((x) => optionEqual(x, option));
-
+      const found = selected.find((item) => optionEqual(item, option));
       if (found) {
         return value;
       }
-
-      const next = multiple
-        ? ([...selected, option].filter(Boolean) as OptionType<Type, Multiple>)
-        : (option as OptionType<Type, Multiple>);
-
-      return next;
+      const selection = multiple ? [...selected, option] : option;
+      return selection as OptionType<Type, Multiple>;
     },
-    [multiple, optionEqual, value],
+    [multiple, optionEqual],
   );
 
   const updateValue = useCallback(
-    (event: React.SyntheticEvent, option: Type | null) => {
-      const selected = option ? acceptOption(option) : null;
-      if (multiple) {
-        setInputValue("");
-      } else {
-        setInputValue(option ? optionLabel(option) : "");
-      }
+    (option: Type | null) => {
+      const next = option ? acceptOption(value, option) : null;
+      const text = multiple ? "" : option ? optionLabel(option) : "";
+
       setActiveIndex(null);
+      setInputValue(text);
       setOpen(false);
+
       inputRef.current?.focus();
-      if (selected !== value) {
-        setValue(selected);
-        onChange?.(event, selected);
+
+      if (next !== value) {
+        setValue(next);
+        onChange?.(next);
       }
     },
     [acceptOption, multiple, onChange, optionLabel, setOpen, setValue, value],
@@ -205,7 +195,7 @@ export const Select = forwardRef(function Select<
         setOpen(true);
         setActiveIndex(0);
       } else if (!multiple) {
-        updateValue(event, null);
+        updateValue(null);
       }
     },
     [multiple, onInputChange, setOpen, updateValue],
@@ -213,11 +203,10 @@ export const Select = forwardRef(function Select<
 
   const handleInputKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
-      if (readOnly || disabled) return;
       if (event.key === "Enter" && activeIndex !== null) {
         const option = items[activeIndex];
         if (option) {
-          updateValue(event, option);
+          updateValue(option);
         } else {
           // creatable
           setOpen(false);
@@ -225,29 +214,30 @@ export const Select = forwardRef(function Select<
         }
       }
 
+      // delete the last item from the selection
       if (multiple && event.key === "Backspace") {
         if (inputValue) return;
-        setValue((prev) => {
-          if (Array.isArray(prev)) {
-            const next = [...prev];
-            next.pop();
-            return next as OptionType<Type, Multiple>;
-          }
-          return prev;
-        });
+        if (Array.isArray(value)) {
+          const items = value.slice(0, value.length - 1);
+          const next = items.length
+            ? (items as OptionType<Type, Multiple>)
+            : null;
+          setValue(next);
+          onChange?.(next);
+        }
       }
     },
     [
       activeIndex,
-      disabled,
       inputValue,
       items,
       multiple,
+      onChange,
       onCreate,
-      readOnly,
       setOpen,
       setValue,
       updateValue,
+      value,
     ],
   );
 
@@ -258,29 +248,15 @@ export const Select = forwardRef(function Select<
     inputRef.current?.focus();
   }, []);
 
-  const handleIconClick = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      const index = parseInt(event.currentTarget.dataset.index ?? "-1");
-      const icon = icons[index];
-      icon?.onClick?.(event);
-    },
-    [icons],
-  );
-
   const handleToggleClick = useCallback(() => {
     if (readOnly || disabled) return;
     setOpen((prev) => !prev);
   }, [disabled, readOnly, setOpen]);
 
-  const handleClearClick = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      if (readOnly || disabled) return;
-      setValue(null);
-      setInputValue("");
-      onChange?.(event, null);
-    },
-    [disabled, onChange, readOnly, setValue],
-  );
+  const handleClearClick = useCallback(() => {
+    if (readOnly || disabled) return;
+    updateValue(null);
+  }, [disabled, readOnly, updateValue]);
 
   const toggleIcon = useMemo(() => {
     if (props.toggleIcon === false) return false;
@@ -316,6 +292,7 @@ export const Select = forwardRef(function Select<
     [value].flat().filter(Boolean).length > 0 &&
     !readOnly &&
     !disabled;
+
   const canCreate =
     onCreate &&
     (multiple || !value || inputValue !== optionLabel(value as Type));
@@ -367,7 +344,7 @@ export const Select = forwardRef(function Select<
             <div
               data-index={index}
               className={clsx(styles.action)}
-              onClick={handleIconClick}
+              onClick={icon.onClick}
             >
               {icon.icon}
             </div>
@@ -403,8 +380,8 @@ export const Select = forwardRef(function Select<
                     ref(node) {
                       listRef.current[index] = node;
                     },
-                    onClick(event: React.MouseEvent<HTMLDivElement>) {
-                      updateValue(event, item);
+                    onClick() {
+                      updateValue(item);
                     },
                   })}
                   active={activeIndex === index}
@@ -420,6 +397,7 @@ export const Select = forwardRef(function Select<
                     },
                     onClick() {
                       setOpen(false);
+                      setActiveIndex(null);
                       onCreate?.(inputValue);
                     },
                   })}
