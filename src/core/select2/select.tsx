@@ -311,42 +311,46 @@ export const Select = forwardRef(function Select<
         })}
         onClick={handleRootClick}
       >
-        {multiple && renderMultiple()}
-        <input
-          ref={inputRef}
-          type="text"
-          className={styles.input}
-          {...getReferenceProps({
-            value: inputValue,
-            onChange: handleInputChange,
-            onKeyDown: handleInputKeyDown,
-          })}
-        />
-        {clearIcon && value && (
-          <div
-            className={clsx(styles.action, styles.clearIcon)}
-            onClick={clearIcon.onClick}
-          >
-            {clearIcon.icon}
-          </div>
-        )}
-        {icons.map((icon, index) => (
-          <div
-            data-index={index}
-            className={clsx(styles.action)}
-            onClick={handleIconClick}
-          >
-            {icon.icon}
-          </div>
-        ))}
-        {toggleIcon && (
-          <div
-            className={clsx(styles.action, styles.toggleIcon)}
-            onClick={toggleIcon.onClick}
-          >
-            {toggleIcon.icon}
-          </div>
-        )}
+        <div className={styles.content}>
+          {multiple && renderMultiple()}
+          <input
+            ref={inputRef}
+            type="text"
+            className={styles.input}
+            {...getReferenceProps({
+              value: inputValue,
+              onChange: handleInputChange,
+              onKeyDown: handleInputKeyDown,
+            })}
+          />
+        </div>
+        <div className={styles.actions}>
+          {clearIcon && value && (
+            <div
+              className={clsx(styles.action, styles.clearIcon)}
+              onClick={clearIcon.onClick}
+            >
+              {clearIcon.icon}
+            </div>
+          )}
+          {icons.map((icon, index) => (
+            <div
+              data-index={index}
+              className={clsx(styles.action)}
+              onClick={handleIconClick}
+            >
+              {icon.icon}
+            </div>
+          ))}
+          {toggleIcon && (
+            <div
+              className={clsx(styles.action, styles.toggleIcon)}
+              onClick={toggleIcon.onClick}
+            >
+              {toggleIcon.icon}
+            </div>
+          )}
+        </div>
       </div>
       <FloatingPortal>
         {open && (

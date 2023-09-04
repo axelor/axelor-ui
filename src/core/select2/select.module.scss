@@ -80,7 +80,6 @@
 
 .select {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: 0.25rem;
   background-color: var(--bs-body-bg);
@@ -102,6 +101,19 @@
 .invalid:focus,
 .invalid:focus-within {
   box-shadow: var(--ax-input-invalid-focus-shadow) !important;
+}
+
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.actions {
+  display: flex;
 }
 
 .action {
