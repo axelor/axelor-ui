@@ -90,9 +90,10 @@ export function CommandItem(props: CommandItemProps) {
   const handleMenuClick = useCallback(
     (e: any, menu: CommandItemProps) => {
       hideMenu();
+      if (showAsMenuItem) handleClick(e);
       if (menu.onClick) menu.onClick(e);
     },
-    [hideMenu]
+    [showAsMenuItem, hideMenu, handleClick]
   );
 
   const allItemsHidden = useMemo(
