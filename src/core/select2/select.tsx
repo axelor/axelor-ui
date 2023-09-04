@@ -272,11 +272,11 @@ export const Select = forwardRef(function Select<
   const toggleIcon = useMemo(() => {
     if (props.toggleIcon === false) return false;
     return {
-      icon: <MaterialIcon icon="arrow_drop_down" />,
+      icon: <MaterialIcon icon={open ? "arrow_drop_up" : "arrow_drop_down"} />,
       onClick: handleToggleClick,
       ...props.toggleIcon,
     };
-  }, [props.toggleIcon, handleToggleClick]);
+  }, [props.toggleIcon, open, handleToggleClick]);
 
   const clearIcon = useMemo(() => {
     if (props.clearIcon === false) return false;

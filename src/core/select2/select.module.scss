@@ -114,6 +114,14 @@
 
 .actions {
   display: flex;
+  margin-right: -0.5rem;
+}
+
+[dir="rtl"] {
+  .actions {
+    margin-right: 0;
+    margin-left: -0.5rem;
+  }
 }
 
 .action {
