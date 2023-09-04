@@ -2,6 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MaterialIcon } from "../../icons/material-icon";
+import { Box } from "../box";
+import { Input } from "../input";
+import { InputLabel } from "../input-label";
 import { Select } from "./select";
 
 const meta: Meta<typeof Select> = {
@@ -159,17 +162,51 @@ const OPTIONS: Fruit[] = FRUITS.map(
   {},
 );
 
-export const Basic: Story = {
-  render: () => (
+export const Basic = () => {
+  const [attrs, setAttrs] = useState<{
+    required?: boolean;
+    readonly?: boolean;
+    disabled?: boolean;
+  }>({});
+
+  const handleCheckBox = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.name as keyof typeof attrs;
+    setAttrs((prev) => ({ ...prev, [name]: !prev[name] }));
+  };
+
+  const renderCheckBox = (name: keyof typeof attrs) => {
+    const checked = attrs[name] ?? false;
+    return (
+      <InputLabel>
+        <Input
+          type="checkbox"
+          name={name}
+          checked={checked}
+          onChange={handleCheckBox}
+        />{" "}
+        {name}
+      </InputLabel>
+    );
+  };
+
+  return (
     <div style={{ width: 250 }}>
+      <Box d="flex" flexDirection="column">
+        {renderCheckBox("required")}
+        {renderCheckBox("readonly")}
+        {renderCheckBox("disabled")}
+      </Box>
       <Select
+        readOnly={attrs.readonly}
+        required={attrs.required}
+        disabled={attrs.disabled}
         options={OPTIONS}
         optionKey={(x) => x.value}
         optionLabel={(x) => x.title}
         optionEqual={(o, v) => o.value === v.value}
       />
     </div>
-  ),
+  );
 };
 
 export const Actions: Story = {

@@ -76,6 +76,7 @@
   border: none;
   outline: none;
   appearance: none;
+  background-color: transparent;
 }
 
 .select {
@@ -91,7 +92,7 @@
 
 .select:focus,
 .select:focus-within {
-  border: var(--ax-input-focus-border) !important;
+  border: var(--ax-input-focus-border);
   box-shadow: var(--ax-input-focus-shadow);
 }
 
@@ -101,6 +102,10 @@
 .invalid:focus,
 .invalid:focus-within {
   box-shadow: var(--ax-input-invalid-focus-shadow) !important;
+}
+
+.select.disabled {
+  background-color: var(--bs-secondary-bg);
 }
 
 .content {
@@ -135,6 +140,13 @@
 }
 .select.open .toggleIcon {
   opacity: 1;
+}
+
+.select.readonly,
+.select.disabled {
+  .action {
+    cursor: default;
+  }
 }
 
 .list {

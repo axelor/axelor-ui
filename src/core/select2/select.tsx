@@ -50,6 +50,10 @@ export interface SelectProps<Type, Multiple extends boolean> {
   translations?: {
     create?: string;
   };
+  required?: boolean;
+  readOnly?: boolean;
+  disabled?: boolean;
+  invalid?: boolean;
   onCreate?: (inputValue: string) => void;
   onChange?: (
     event: React.SyntheticEvent,
@@ -82,6 +86,10 @@ export const Select = forwardRef(function Select<
     translations = {
       create: "Create",
     },
+    required,
+    readOnly,
+    disabled,
+    invalid,
     optionKey,
     optionLabel,
     optionEqual,
@@ -205,6 +213,7 @@ export const Select = forwardRef(function Select<
 
   const handleInputKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (readOnly || disabled) return;
       if (event.key === "Enter" && activeIndex !== null) {
         const option = items[activeIndex];
         if (option) {
@@ -230,10 +239,12 @@ export const Select = forwardRef(function Select<
     },
     [
       activeIndex,
+      disabled,
       inputValue,
       items,
       multiple,
       onCreate,
+      readOnly,
       setOpen,
       setValue,
       updateValue,
@@ -257,16 +268,18 @@ export const Select = forwardRef(function Select<
   );
 
   const handleToggleClick = useCallback(() => {
+    if (readOnly || disabled) return;
     setOpen((prev) => !prev);
-  }, [setOpen]);
+  }, [disabled, readOnly, setOpen]);
 
   const handleClearClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
+      if (readOnly || disabled) return;
       setValue(null);
       setInputValue("");
       onChange?.(event, null);
     },
-    [onChange, setValue],
+    [disabled, onChange, readOnly, setValue],
   );
 
   const toggleIcon = useMemo(() => {
@@ -298,9 +311,21 @@ export const Select = forwardRef(function Select<
     });
   }, [optionKey, optionLabel, value]);
 
+  const canClear =
+    clearIcon &&
+    [value].flat().filter(Boolean).length > 0 &&
+    !readOnly &&
+    !disabled;
   const canCreate =
     onCreate &&
     (multiple || !value || inputValue !== optionLabel(value as Type));
+
+  const notValid = useMemo(() => {
+    if (invalid) return true;
+    if (value) return false;
+    if (required) return true;
+    return false;
+  }, [required, invalid, value]);
 
   return (
     <>
@@ -308,6 +333,10 @@ export const Select = forwardRef(function Select<
         ref={rootRef}
         className={clsx(className, styles.select, {
           [styles.open]: open,
+          [styles.required]: required,
+          [styles.readonly]: readOnly,
+          [styles.disabled]: disabled,
+          [styles.invalid]: notValid,
         })}
         onClick={handleRootClick}
       >
@@ -319,13 +348,14 @@ export const Select = forwardRef(function Select<
             className={styles.input}
             {...getReferenceProps({
               value: inputValue,
+              readOnly: readOnly || disabled,
               onChange: handleInputChange,
               onKeyDown: handleInputKeyDown,
             })}
           />
         </div>
         <div className={styles.actions}>
-          {clearIcon && value && (
+          {canClear && (
             <div
               className={clsx(styles.action, styles.clearIcon)}
               onClick={clearIcon.onClick}
