@@ -170,12 +170,12 @@ export const Select = forwardRef(function Select<
   );
 
   const updateValue = useCallback(
-    (event: React.SyntheticEvent, option: Type) => {
-      const selected = acceptOption(option);
+    (event: React.SyntheticEvent, option: Type | null) => {
+      const selected = option ? acceptOption(option) : null;
       if (multiple) {
         setInputValue("");
       } else {
-        setInputValue(optionLabel(option));
+        setInputValue(option ? optionLabel(option) : "");
       }
       setActiveIndex(null);
       setOpen(false);
@@ -196,9 +196,11 @@ export const Select = forwardRef(function Select<
       if (text) {
         setOpen(true);
         setActiveIndex(0);
+      } else if (!multiple) {
+        updateValue(event, null);
       }
     },
-    [onInputChange, setOpen],
+    [multiple, onInputChange, setOpen, updateValue],
   );
 
   const handleInputKeyDown = useCallback(
@@ -296,6 +298,10 @@ export const Select = forwardRef(function Select<
     });
   }, [optionKey, optionLabel, value]);
 
+  const canCreate =
+    onCreate &&
+    (multiple || !value || inputValue !== optionLabel(value as Type));
+
   return (
     <>
       <div
@@ -316,7 +322,7 @@ export const Select = forwardRef(function Select<
             onKeyDown: handleInputKeyDown,
           })}
         />
-        {clearIcon && (
+        {clearIcon && value && (
           <div
             className={clsx(styles.action, styles.clearIcon)}
             onClick={clearIcon.onClick}
@@ -372,7 +378,7 @@ export const Select = forwardRef(function Select<
                   {optionLabel(item)}
                 </SelectItem>
               ))}
-              {onCreate && (
+              {canCreate && (
                 <SelectItem
                   {...getItemProps({
                     ref(node) {
@@ -380,7 +386,7 @@ export const Select = forwardRef(function Select<
                     },
                     onClick() {
                       setOpen(false);
-                      onCreate(inputValue);
+                      onCreate?.(inputValue);
                     },
                   })}
                   active={activeIndex === items.length}
