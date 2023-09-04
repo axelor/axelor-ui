@@ -126,6 +126,10 @@
   overflow-y: auto;
 }
 
+.list:empty {
+  display: none;
+}
+
 .option {
   padding: 0.375rem 0.75rem;
   color: var(--bs-dropdown-link-color);

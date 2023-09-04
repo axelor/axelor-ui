@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { MaterialIcon } from "../../icons/material-icon";
 import { Select } from "./select";
 
@@ -12,6 +12,11 @@ const meta: Meta<typeof Select> = {
 export default meta;
 
 type Story = StoryObj<typeof Select>;
+
+type Fruit = {
+  title: string;
+  value: string;
+};
 
 const FRUITS = [
   "Alfalfa Sprouts",
@@ -149,7 +154,10 @@ const FRUITS = [
   "Zucchini Squash",
 ];
 
-const OPTIONS = FRUITS.map((name) => ({ title: name, value: name }), {});
+const OPTIONS: Fruit[] = FRUITS.map(
+  (name) => ({ title: name, value: name }),
+  {},
+);
 
 export const Basic: Story = {
   render: () => (
@@ -188,9 +196,7 @@ export const Actions: Story = {
 };
 
 export const Creatable = () => {
-  const [value, setValue] = useState<{ value: string; title: string } | null>(
-    null,
-  );
+  const [value, setValue] = useState<Fruit | null>(null);
   return (
     <div style={{ width: 250 }}>
       <Select
@@ -222,4 +228,45 @@ export const Multiple: Story = {
       />
     </div>
   ),
+};
+
+export const Async = () => {
+  const [options, setOptions] = useState<Fruit[]>([]);
+  const [text, setText] = useState("");
+  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+
+  const handleInputChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const inputValue = event.target.value;
+      setText(inputValue);
+    },
+    [],
+  );
+
+  useEffect(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    timerRef.current = setTimeout(() => {
+      setOptions(
+        OPTIONS.filter((x) =>
+          x.title.toLowerCase().includes(text.toLowerCase()),
+        ),
+      );
+    }, 300);
+  }, [text]);
+
+  return (
+    <div style={{ width: 250 }}>
+      <Select
+        multiple
+        options={options}
+        optionKey={(x) => x.value}
+        optionLabel={(x) => x.title}
+        optionEqual={(o, v) => o.value === v.value}
+        optionMatch={() => true}
+        onInputChange={handleInputChange}
+      />
+    </div>
+  );
 };
