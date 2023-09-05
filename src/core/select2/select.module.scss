@@ -82,6 +82,7 @@
 
 .value {
   flex: 1;
+  cursor: default;
 }
 
 .select {
@@ -112,6 +113,7 @@
 
 .select.disabled {
   background-color: var(--bs-secondary-bg);
+  user-select: none;
 }
 
 .content {
@@ -126,6 +128,7 @@
 .actions {
   display: flex;
   margin-right: -0.5rem;
+  user-select: none;
 }
 
 [dir="rtl"] {
