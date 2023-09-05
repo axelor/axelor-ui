@@ -117,10 +117,12 @@ export const Select = forwardRef(function Select<
 
   useEffect(() => {
     if (multiple) return;
-    if (value) {
+    if (value && autoComplete) {
       setInputValue(optionLabel(value as Type));
+    } else {
+      setInputValue("");
     }
-  }, [multiple, optionLabel, value]);
+  }, [autoComplete, multiple, optionLabel, value]);
 
   const { refs, floatingStyles, context } = useFloating<HTMLDivElement>({
     open,
