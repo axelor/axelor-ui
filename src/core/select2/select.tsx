@@ -329,12 +329,10 @@ export const Select = forwardRef(function Select<
           ref={inputRef}
           type="text"
           className={styles.input}
-          {...getReferenceProps({
-            value: inputValue,
-            readOnly: readOnly || disabled,
-            onChange: handleInputChange,
-            onKeyDown: handleInputKeyDown,
-          })}
+          value={inputValue}
+          readOnly={readOnly || disabled}
+          onChange={handleInputChange}
+          onKeyDown={handleInputKeyDown}
         />
       );
     }
@@ -351,7 +349,6 @@ export const Select = forwardRef(function Select<
   }, [
     autoComplete,
     disabled,
-    getReferenceProps,
     handleInputChange,
     handleInputKeyDown,
     inputValue,
@@ -382,8 +379,6 @@ export const Select = forwardRef(function Select<
   return (
     <>
       <div
-        ref={rootRef}
-        tabIndex={autoComplete || disabled ? undefined : 0}
         className={clsx(className, styles.select, {
           [styles.open]: open,
           [styles.required]: required,
@@ -391,7 +386,13 @@ export const Select = forwardRef(function Select<
           [styles.disabled]: disabled,
           [styles.invalid]: notValid,
         })}
-        onClick={handleRootClick}
+        aria-disabled={disabled ? true : undefined}
+        aria-readonly={readOnly ? true : undefined}
+        {...getReferenceProps({
+          ref: rootRef,
+          tabIndex: autoComplete || disabled ? undefined : 0,
+          onClick: handleRootClick,
+        })}
       >
         <div className={styles.content}>
           {multiple && renderMultiple()}
