@@ -256,6 +256,20 @@ export const Select = forwardRef(function Select<
     ],
   );
 
+  const handleRootKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (autoComplete) return;
+      if (event.target !== event.currentTarget) return;
+      if (event.key === "Enter" && activeIndex !== null) {
+        const option = items[activeIndex];
+        if (option) {
+          updateValue(option);
+        }
+      }
+    },
+    [activeIndex, autoComplete, items, updateValue],
+  );
+
   const rootRef = useMergeRefs([ref, refs.setReference]);
   const inputRef = useRef<HTMLInputElement>(null);
   const valueRef = useRef<HTMLDivElement>(null);
@@ -394,6 +408,7 @@ export const Select = forwardRef(function Select<
           ref: rootRef,
           tabIndex: autoComplete || disabled ? undefined : 0,
           onClick: handleRootClick,
+          onKeyDown: handleRootKeyDown,
         })}
       >
         <div className={styles.content}>
