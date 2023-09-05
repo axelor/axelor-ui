@@ -166,9 +166,12 @@ const OPTIONS: Fruit[] = FRUITS.map(
 export const Basic = () => {
   const [attrs, setAttrs] = useState<{
     required?: boolean;
-    readonly?: boolean;
+    readOnly?: boolean;
     disabled?: boolean;
-  }>({});
+    autoComplete?: boolean;
+  }>({
+    autoComplete: false,
+  });
 
   const handleCheckBox = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name as keyof typeof attrs;
@@ -194,13 +197,15 @@ export const Basic = () => {
     <div style={{ width: 250 }}>
       <Box d="flex" flexDirection="column">
         {renderCheckBox("required")}
-        {renderCheckBox("readonly")}
+        {renderCheckBox("readOnly")}
         {renderCheckBox("disabled")}
+        {renderCheckBox("autoComplete")}
       </Box>
       <Select
-        readOnly={attrs.readonly}
+        readOnly={attrs.readOnly}
         required={attrs.required}
         disabled={attrs.disabled}
+        autoComplete={attrs.autoComplete}
         options={OPTIONS}
         optionKey={(x) => x.value}
         optionLabel={(x) => x.title}

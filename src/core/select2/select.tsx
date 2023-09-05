@@ -40,12 +40,13 @@ export type SelectIcon = {
 
 export interface SelectOptionProps<Type> {
   option: Type;
-  active: boolean;
+  active?: boolean;
 }
 
 export interface SelectProps<Type, Multiple extends boolean> {
   className?: string;
   options: Type[];
+  autoComplete?: boolean;
   multiple?: Multiple;
   value?: OptionType<Type, Multiple>;
   open?: boolean;
@@ -68,6 +69,7 @@ export interface SelectProps<Type, Multiple extends boolean> {
   optionMatch?: (option: Type, text: string) => boolean;
   renderOption?: (props: SelectOptionProps<Type>) => JSX.Element | null;
   renderTag?: (option: SelectOptionProps<Type>) => JSX.Element | null;
+  renderValue?: (option: SelectOptionProps<Type>) => JSX.Element | null;
 }
 
 function useValue<T>(initial: T) {
@@ -83,6 +85,7 @@ export const Select = forwardRef(function Select<
   Multiple extends boolean,
 >(props: SelectProps<Type, Multiple>, ref: React.ForwardedRef<HTMLDivElement>) {
   const {
+    autoComplete = true,
     multiple,
     className,
     options,
@@ -103,6 +106,7 @@ export const Select = forwardRef(function Select<
     onInputChange,
     renderOption,
     renderTag,
+    renderValue,
   } = props;
 
   const [value, setValue] = useValue(props.value);
@@ -252,10 +256,23 @@ export const Select = forwardRef(function Select<
 
   const rootRef = useMergeRefs([ref, refs.setReference]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const valueRef = useRef<HTMLDivElement>(null);
 
-  const handleRootClick = useCallback(() => {
-    inputRef.current?.focus();
-  }, []);
+  const handleRootClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (disabled) return;
+      if (inputRef.current) inputRef.current.focus();
+      if (readOnly) return;
+      if (
+        event.target === event.currentTarget ||
+        event.target === inputRef.current ||
+        event.target === valueRef.current
+      ) {
+        setOpen((open) => !open);
+      }
+    },
+    [disabled, readOnly, setOpen],
+  );
 
   const handleToggleClick = useCallback(() => {
     if (readOnly || disabled) return;
@@ -290,7 +307,7 @@ export const Select = forwardRef(function Select<
     return items?.map((item) => {
       return (
         <div key={optionKey(item)} className={styles.tag}>
-          {!!renderTag && renderTag({ option: item, active: false })}
+          {!!renderTag && renderTag({ option: item })}
           {!!renderTag || (
             <Badge
               bg="secondary"
@@ -304,6 +321,46 @@ export const Select = forwardRef(function Select<
       );
     });
   }, [optionKey, optionLabel, renderTag, value]);
+
+  const renderSelector = useCallback(() => {
+    if (autoComplete) {
+      return (
+        <input
+          ref={inputRef}
+          type="text"
+          className={styles.input}
+          {...getReferenceProps({
+            value: inputValue,
+            readOnly: readOnly || disabled,
+            onChange: handleInputChange,
+            onKeyDown: handleInputKeyDown,
+          })}
+        />
+      );
+    }
+    if (multiple) return null;
+    if (value) {
+      return (
+        <div ref={valueRef} className={styles.value}>
+          {!!renderValue && renderValue({ option: value as Type })}
+          {!!renderValue || optionLabel(value as Type)}
+        </div>
+      );
+    }
+    return null;
+  }, [
+    autoComplete,
+    disabled,
+    getReferenceProps,
+    handleInputChange,
+    handleInputKeyDown,
+    inputValue,
+    multiple,
+    optionLabel,
+    readOnly,
+    renderValue,
+    value,
+  ]);
 
   const canClear =
     clearIcon &&
@@ -326,6 +383,7 @@ export const Select = forwardRef(function Select<
     <>
       <div
         ref={rootRef}
+        tabIndex={autoComplete || disabled ? undefined : 0}
         className={clsx(className, styles.select, {
           [styles.open]: open,
           [styles.required]: required,
@@ -337,17 +395,7 @@ export const Select = forwardRef(function Select<
       >
         <div className={styles.content}>
           {multiple && renderMultiple()}
-          <input
-            ref={inputRef}
-            type="text"
-            className={styles.input}
-            {...getReferenceProps({
-              value: inputValue,
-              readOnly: readOnly || disabled,
-              onChange: handleInputChange,
-              onKeyDown: handleInputKeyDown,
-            })}
-          />
+          {renderSelector()}
         </div>
         <div className={styles.actions}>
           {canClear && (
