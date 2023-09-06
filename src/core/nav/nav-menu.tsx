@@ -212,6 +212,7 @@ interface ItemProps {
   };
   onItemClick?: (item: NavMenuItem) => void;
   onItemHover?: (item: NavMenuItem) => void;
+  isSubItems?: boolean;
 }
 
 interface VariantProps extends NavMenuProps {
@@ -640,17 +641,22 @@ function MenuItem({ item, state, onItemClick }: ItemProps) {
       </div>
       {hasItems && (
         <Collapse in={open} mountOnEnter unmountOnExit>
-          <MenuItems item={item} state={state} onItemClick={onItemClick} />
+          <MenuItems
+            item={item}
+            state={state}
+            onItemClick={onItemClick}
+            isSubItems
+          />
         </Collapse>
       )}
     </div>
   );
 }
 
-function MenuItems({ item, state, onItemClick }: ItemProps) {
+function MenuItems({ item, state, onItemClick, isSubItems }: ItemProps) {
   const { items = [] } = item;
   return (
-    <div className={styles.items}>
+    <div className={clsx(styles.items, { [styles.subItems]: isSubItems })}>
       {items.map((item) => (
         <MenuItem
           key={item.id}
