@@ -34,6 +34,7 @@ export type SelectOptionType<Type, Multiple extends boolean> =
   | undefined;
 
 export type SelectIcon = {
+  key?: string | number;
   icon: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 };
@@ -446,6 +447,7 @@ export const Select = forwardRef(function Select<
           )}
           {icons.map((icon, index) => (
             <div
+              key={icon.key ?? index}
               data-index={index}
               className={clsx(styles.action)}
               onClick={icon.onClick}
