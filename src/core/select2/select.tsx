@@ -65,6 +65,8 @@ export interface SelectProps<Type, Multiple extends boolean> {
   invalid?: boolean;
   onCreate?: (inputValue: string) => void;
   onChange?: (value: SelectOptionType<Type, Multiple>) => void;
+  onOpen?: () => void;
+  onClose?: () => void;
   onInputChange?: React.ChangeEventHandler<HTMLInputElement>;
   optionKey: (option: Type) => string | number;
   optionLabel: (option: Type) => string;
@@ -114,6 +116,8 @@ export const Select = forwardRef(function Select<
     optionLabel,
     optionEqual,
     optionMatch,
+    onOpen,
+    onClose,
     onChange,
     onCreate,
     onInputChange,
@@ -135,6 +139,27 @@ export const Select = forwardRef(function Select<
       setInputValue("");
     }
   }, [autoComplete, multiple, optionLabel, value]);
+
+  const handleOpen = useCallback(() => {
+    if (open) return;
+    setOpen(true);
+    onOpen?.();
+  }, [onOpen, open, setOpen]);
+
+  const handleClose = useCallback(() => {
+    if (open) {
+      setOpen(false);
+      onClose?.();
+    }
+  }, [onClose, open, setOpen]);
+
+  useEffect(() => {
+    if (open) {
+      onOpen?.();
+    } else {
+      onClose?.();
+    }
+  }, [onClose, onOpen, open]);
 
   const { refs, floatingStyles, context } = useFloating<HTMLDivElement>({
     open,
@@ -201,7 +226,7 @@ export const Select = forwardRef(function Select<
 
       setActiveIndex(null);
       setInputValue(text);
-      setOpen(false);
+      handleClose();
 
       inputRef.current?.focus();
 
@@ -210,7 +235,15 @@ export const Select = forwardRef(function Select<
         onChange?.(next);
       }
     },
-    [acceptOption, multiple, onChange, optionLabel, setOpen, setValue, value],
+    [
+      acceptOption,
+      handleClose,
+      multiple,
+      onChange,
+      optionLabel,
+      setValue,
+      value,
+    ],
   );
 
   const handleInputChange = useCallback(
@@ -219,13 +252,13 @@ export const Select = forwardRef(function Select<
       setInputValue(text);
       onInputChange?.(event);
       if (text) {
-        setOpen(true);
+        handleOpen();
         setActiveIndex(0);
       } else if (!multiple) {
         updateValue(null);
       }
     },
-    [multiple, onInputChange, setOpen, updateValue],
+    [handleOpen, multiple, onInputChange, updateValue],
   );
 
   const handleInputKeyDown = useCallback(
@@ -236,7 +269,7 @@ export const Select = forwardRef(function Select<
           updateValue(option);
         } else {
           // creatable
-          setOpen(false);
+          handleClose();
           onCreate?.(inputValue);
         }
       }
@@ -256,12 +289,12 @@ export const Select = forwardRef(function Select<
     },
     [
       activeIndex,
+      handleClose,
       inputValue,
       items,
       multiple,
       onChange,
       onCreate,
-      setOpen,
       setValue,
       updateValue,
       value,
@@ -286,6 +319,15 @@ export const Select = forwardRef(function Select<
   const inputRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
+  const handleToggleClick = useCallback(() => {
+    if (readOnly || disabled) return;
+    if (open) {
+      handleClose();
+    } else {
+      handleOpen();
+    }
+  }, [disabled, handleClose, handleOpen, open, readOnly]);
+
   const handleRootClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       if (disabled) return;
@@ -297,16 +339,11 @@ export const Select = forwardRef(function Select<
         event.target === contentRef.current ||
         contentRef.current?.contains(event.target as Node)
       ) {
-        setOpen((open) => !open);
+        handleToggleClick();
       }
     },
-    [disabled, readOnly, setOpen],
+    [disabled, handleToggleClick, readOnly],
   );
-
-  const handleToggleClick = useCallback(() => {
-    if (readOnly || disabled) return;
-    setOpen((prev) => !prev);
-  }, [disabled, readOnly, setOpen]);
 
   const handleClearClick = useCallback(() => {
     if (readOnly || disabled) return;
@@ -507,7 +544,7 @@ export const Select = forwardRef(function Select<
                       listRef.current[items.length] = node;
                     },
                     onClick() {
-                      setOpen(false);
+                      handleClose();
                       setActiveIndex(null);
                       onCreate?.(inputValue);
                     },
