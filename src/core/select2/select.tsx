@@ -282,7 +282,8 @@ export const Select = forwardRef(function Select<
       if (
         event.target === event.currentTarget ||
         event.target === inputRef.current ||
-        event.target === valueRef.current
+        event.target === valueRef.current ||
+        valueRef.current?.contains(event.target as Node)
       ) {
         setOpen((open) => !open);
       }
