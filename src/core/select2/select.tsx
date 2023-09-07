@@ -264,6 +264,7 @@ export const Select = forwardRef(function Select<
   const handleInputKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter" && activeIndex !== null) {
+        event.preventDefault();
         const option = items[activeIndex];
         if (option) {
           updateValue(option);
@@ -306,6 +307,7 @@ export const Select = forwardRef(function Select<
       if (autoComplete) return;
       if (event.target !== event.currentTarget) return;
       if (event.key === "Enter" && activeIndex !== null) {
+        event.preventDefault();
         const option = items[activeIndex];
         if (option) {
           updateValue(option);
