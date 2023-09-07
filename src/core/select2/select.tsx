@@ -28,7 +28,7 @@ import { clsx } from "../clsx";
 
 import styles from "./select.module.scss";
 
-export type OptionType<Type, Multiple extends boolean> =
+export type SelectOptionType<Type, Multiple extends boolean> =
   | (Multiple extends true ? Type[] : Type)
   | null
   | undefined;
@@ -48,7 +48,7 @@ export interface SelectProps<Type, Multiple extends boolean> {
   options: Type[];
   autoComplete?: boolean;
   multiple?: Multiple;
-  value?: OptionType<Type, Multiple>;
+  value?: SelectOptionType<Type, Multiple>;
   open?: boolean;
   toggleIcon?: SelectIcon | false;
   clearIcon?: SelectIcon | false;
@@ -61,7 +61,7 @@ export interface SelectProps<Type, Multiple extends boolean> {
   disabled?: boolean;
   invalid?: boolean;
   onCreate?: (inputValue: string) => void;
-  onChange?: (value: OptionType<Type, Multiple>) => void;
+  onChange?: (value: SelectOptionType<Type, Multiple>) => void;
   onInputChange?: React.ChangeEventHandler<HTMLInputElement>;
   optionKey: (option: Type) => string | number;
   optionLabel: (option: Type) => string;
@@ -170,14 +170,14 @@ export const Select = forwardRef(function Select<
   }, [inputValue, optionMatch, options, searchOptions]);
 
   const acceptOption = useCallback(
-    (value: OptionType<Type, Multiple>, option: Type) => {
+    (value: SelectOptionType<Type, Multiple>, option: Type) => {
       const selected = [value].flat().filter(Boolean) as Type[];
       const found = selected.find((item) => optionEqual(item, option));
       if (found) {
         return value;
       }
       const selection = multiple ? [...selected, option] : option;
-      return selection as OptionType<Type, Multiple>;
+      return selection as SelectOptionType<Type, Multiple>;
     },
     [multiple, optionEqual],
   );
@@ -235,7 +235,7 @@ export const Select = forwardRef(function Select<
         if (Array.isArray(value)) {
           const items = value.slice(0, value.length - 1);
           const next = items.length
-            ? (items as OptionType<Type, Multiple>)
+            ? (items as SelectOptionType<Type, Multiple>)
             : null;
           setValue(next);
           onChange?.(next);
