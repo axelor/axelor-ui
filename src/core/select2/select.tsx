@@ -45,6 +45,7 @@ export interface SelectOptionProps<Type> {
 
 export interface SelectProps<Type, Multiple extends boolean> {
   className?: string;
+  placeholder?: string;
   options: Type[];
   autoFocus?: boolean;
   autoComplete?: boolean;
@@ -81,11 +82,21 @@ function useValue<T>(initial: T) {
   return [value, setValue] as const;
 }
 
+function isEmpty(value: unknown) {
+  return (
+    value === undefined ||
+    value === null ||
+    (typeof value === "string" && value.trim().length === 0) ||
+    (Array.isArray(value) && value.length === 0)
+  );
+}
+
 export const Select = forwardRef(function Select<
   Type,
   Multiple extends boolean,
 >(props: SelectProps<Type, Multiple>, ref: React.ForwardedRef<HTMLDivElement>) {
   const {
+    placeholder,
     autoFocus,
     autoComplete = true,
     multiple,
@@ -351,6 +362,7 @@ export const Select = forwardRef(function Select<
           className={styles.input}
           value={inputValue}
           readOnly={readOnly || disabled}
+          placeholder={isEmpty(value) ? placeholder : undefined}
           onChange={handleInputChange}
           onKeyDown={handleInputKeyDown}
         />
@@ -365,19 +377,27 @@ export const Select = forwardRef(function Select<
         </div>
       );
     }
+    if (placeholder) {
+      return (
+        <span ref={valueRef} className={styles.placeholder}>
+          {placeholder}
+        </span>
+      );
+    }
     return null;
   }, [
-    autoFocus,
     autoComplete,
+    multiple,
+    value,
+    autoFocus,
+    inputValue,
+    readOnly,
     disabled,
+    placeholder,
     handleInputChange,
     handleInputKeyDown,
-    inputValue,
-    multiple,
-    optionLabel,
-    readOnly,
     renderValue,
-    value,
+    optionLabel,
   ]);
 
   const canClear =

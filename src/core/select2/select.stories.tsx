@@ -202,6 +202,7 @@ export const Basic = () => {
         {renderCheckBox("autoComplete")}
       </Box>
       <Select
+        placeholder="Select a value"
         readOnly={attrs.readOnly}
         required={attrs.required}
         disabled={attrs.disabled}

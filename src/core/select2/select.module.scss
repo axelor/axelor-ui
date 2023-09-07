@@ -85,6 +85,18 @@
   cursor: default;
 }
 
+.input:placeholder-shown {
+  text-overflow: ellipsis;
+}
+
+.placeholder {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  user-select: none;
+  opacity: 0.6;
+}
+
 .select {
   display: flex;
   align-items: center;
