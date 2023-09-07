@@ -320,12 +320,13 @@ export const Renderers = () => {
     <div style={{ width: 250 }}>
       <Select
         multiple
+        autoComplete={false}
         options={OPTIONS}
         optionKey={(x) => x.value}
         optionLabel={(x) => x.title}
         optionEqual={(o, v) => o.value === v.value}
         renderOption={({ option }) => <strong>{option.title}</strong>}
-        renderTag={({ option }) => (
+        renderValue={({ option }) => (
           <Badge bg="primary">
             <Box d="flex" alignItems="center" g={1}>
               <span>{option.title}</span>

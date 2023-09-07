@@ -70,7 +70,6 @@ export interface SelectProps<Type, Multiple extends boolean> {
   optionEqual: (option: Type, value: Type) => boolean;
   optionMatch?: (option: Type, text: string) => boolean;
   renderOption?: (props: SelectOptionProps<Type>) => JSX.Element | null;
-  renderTag?: (option: SelectOptionProps<Type>) => JSX.Element | null;
   renderValue?: (option: SelectOptionProps<Type>) => JSX.Element | null;
 }
 
@@ -118,7 +117,6 @@ export const Select = forwardRef(function Select<
     onCreate,
     onInputChange,
     renderOption,
-    renderTag,
     renderValue,
   } = props;
 
@@ -285,7 +283,7 @@ export const Select = forwardRef(function Select<
 
   const rootRef = useMergeRefs([ref, refs.setReference]);
   const inputRef = useRef<HTMLInputElement>(null);
-  const valueRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const handleRootClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
@@ -295,8 +293,8 @@ export const Select = forwardRef(function Select<
       if (
         event.target === event.currentTarget ||
         event.target === inputRef.current ||
-        event.target === valueRef.current ||
-        valueRef.current?.contains(event.target as Node)
+        event.target === contentRef.current ||
+        contentRef.current?.contains(event.target as Node)
       ) {
         setOpen((open) => !open);
       }
@@ -337,8 +335,8 @@ export const Select = forwardRef(function Select<
     return items?.map((item) => {
       return (
         <div key={optionKey(item)} className={styles.tag}>
-          {!!renderTag && renderTag({ option: item })}
-          {!!renderTag || (
+          {!!renderValue && renderValue({ option: item })}
+          {!!renderValue || (
             <Badge
               bg="secondary"
               key={optionKey(item)}
@@ -350,7 +348,7 @@ export const Select = forwardRef(function Select<
         </div>
       );
     });
-  }, [optionKey, optionLabel, renderTag, value]);
+  }, [optionKey, optionLabel, renderValue, value]);
 
   const renderSelector = useCallback(() => {
     if (autoComplete) {
@@ -371,18 +369,14 @@ export const Select = forwardRef(function Select<
     if (multiple) return null;
     if (value) {
       return (
-        <div ref={valueRef} className={styles.value}>
+        <div className={styles.value}>
           {!!renderValue && renderValue({ option: value as Type })}
           {!!renderValue || optionLabel(value as Type)}
         </div>
       );
     }
     if (placeholder) {
-      return (
-        <span ref={valueRef} className={styles.placeholder}>
-          {placeholder}
-        </span>
-      );
+      return <span className={styles.placeholder}>{placeholder}</span>;
     }
     return null;
   }, [
@@ -437,7 +431,7 @@ export const Select = forwardRef(function Select<
           onKeyDown: handleRootKeyDown,
         })}
       >
-        <div className={styles.content}>
+        <div ref={contentRef} className={styles.content}>
           {multiple && renderMultiple()}
           {renderSelector()}
         </div>
