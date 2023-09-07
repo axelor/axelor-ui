@@ -46,6 +46,7 @@ export interface SelectOptionProps<Type> {
 export interface SelectProps<Type, Multiple extends boolean> {
   className?: string;
   options: Type[];
+  autoFocus?: boolean;
   autoComplete?: boolean;
   multiple?: Multiple;
   value?: SelectOptionType<Type, Multiple>;
@@ -85,6 +86,7 @@ export const Select = forwardRef(function Select<
   Multiple extends boolean,
 >(props: SelectProps<Type, Multiple>, ref: React.ForwardedRef<HTMLDivElement>) {
   const {
+    autoFocus,
     autoComplete = true,
     multiple,
     className,
@@ -345,6 +347,7 @@ export const Select = forwardRef(function Select<
         <input
           ref={inputRef}
           type="text"
+          autoFocus={autoFocus}
           className={styles.input}
           value={inputValue}
           readOnly={readOnly || disabled}
@@ -364,6 +367,7 @@ export const Select = forwardRef(function Select<
     }
     return null;
   }, [
+    autoFocus,
     autoComplete,
     disabled,
     handleInputChange,
@@ -403,6 +407,7 @@ export const Select = forwardRef(function Select<
           [styles.disabled]: disabled,
           [styles.invalid]: notValid,
         })}
+        autoFocus={autoComplete ? undefined : autoFocus}
         aria-disabled={disabled ? true : undefined}
         aria-readonly={readOnly ? true : undefined}
         {...getReferenceProps({
