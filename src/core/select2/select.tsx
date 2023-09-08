@@ -332,7 +332,7 @@ export const Select = forwardRef(function Select<
 
   const handleRootClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
-      if (disabled) return;
+      if (disabled || event.isDefaultPrevented()) return;
       if (inputRef.current) inputRef.current.focus();
       if (readOnly) return;
       if (
