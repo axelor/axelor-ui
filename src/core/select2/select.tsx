@@ -44,6 +44,12 @@ export interface SelectOptionProps<Type> {
   active?: boolean;
 }
 
+export interface SelectCustomOption {
+  key: string | number;
+  title: React.ReactNode;
+  onClick?: React.MouseEventHandler<HTMLElement>;
+}
+
 export interface SelectProps<Type, Multiple extends boolean> {
   className?: string;
   placeholder?: string;
@@ -56,24 +62,11 @@ export interface SelectProps<Type, Multiple extends boolean> {
   toggleIcon?: SelectIcon | false;
   clearIcon?: SelectIcon | false;
   icons?: SelectIcon[];
-  translations?: {
-    create?: string;
-    select?: string;
-  };
   required?: boolean;
   readOnly?: boolean;
   disabled?: boolean;
   invalid?: boolean;
-  /**
-   * Handler to create selection item on the fly
-   * @param inputValue the current input value
-   */
-  onCreate?: (inputValue: string) => void;
-  /**
-   * Handler to select an item manually if not found in the list
-   * @param inputValue the current input value
-   */
-  onSelect?: (inputValue: string) => void;
+  customOptions?: SelectCustomOption[];
   onChange?: (value: SelectOptionType<Type, Multiple>) => void;
   onOpen?: () => void;
   onClose?: () => void;
@@ -114,11 +107,8 @@ export const Select = forwardRef(function Select<
     multiple,
     className,
     options,
+    customOptions,
     icons = [],
-    translations = {
-      create: "Create",
-      select: "Select",
-    },
     required,
     readOnly,
     disabled,
@@ -130,8 +120,6 @@ export const Select = forwardRef(function Select<
     onOpen,
     onClose,
     onChange,
-    onCreate,
-    onSelect,
     onInputChange,
     renderOption,
     renderValue,
@@ -143,12 +131,16 @@ export const Select = forwardRef(function Select<
   const [inputValue, setInputValue] = useState("");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
+  const valueRef = useRef<SelectOptionType<Type, Multiple>>();
+
   useEffect(() => {
+    if (valueRef.current === value) return;
     if (value && autoComplete && !multiple) {
       setInputValue(optionLabel(value as Type));
     } else {
       setInputValue("");
     }
+    valueRef.current = value;
   }, [autoComplete, multiple, optionLabel, value]);
 
   const handleOpen = useCallback(() => {
@@ -280,7 +272,7 @@ export const Select = forwardRef(function Select<
         if (option) {
           updateValue(option);
         } else {
-          // onCreate or onSelect option
+          // custom option
           const ref = listRef.current[activeIndex];
           if (ref) {
             handleClose();
@@ -453,39 +445,6 @@ export const Select = forwardRef(function Select<
     !readOnly &&
     !disabled;
 
-  const extraOptions = useMemo(() => {
-    const canSelect =
-      multiple || !value || inputValue !== optionLabel(value as Type);
-
-    const actions = [onCreate, onSelect];
-    const titles = [translations.create, translations.select];
-    const keys = ["__on_create", "__on_select"];
-    const items = canSelect
-      ? actions.map((onClick, index) => {
-          return {
-            onClick,
-            key: keys[index],
-            title: (
-              <span>
-                {titles[index]}
-                {inputValue && <em> {inputValue}</em>}...
-              </span>
-            ),
-          };
-        })
-      : [];
-    return items.filter((x) => x.onClick);
-  }, [
-    inputValue,
-    multiple,
-    onCreate,
-    onSelect,
-    optionLabel,
-    translations.create,
-    translations.select,
-    value,
-  ]);
-
   const notValid = useMemo(() => {
     if (invalid) return true;
     if (value) return false;
@@ -581,16 +540,16 @@ export const Select = forwardRef(function Select<
                     })}
                 </SelectItem>
               ))}
-              {extraOptions.map((item, index) => (
+              {customOptions?.map((item, index) => (
                 <SelectItem
                   {...getItemProps({
                     ref(node) {
                       listRef.current[items.length + index] = node;
                     },
-                    onClick() {
+                    onClick(event) {
                       handleClose();
                       setActiveIndex(null);
-                      item.onClick?.(inputValue);
+                      item.onClick?.(event);
                     },
                   })}
                   key={item.key}

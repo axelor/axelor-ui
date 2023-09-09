@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { MaterialIcon } from "../../icons/material-icon";
 import { Badge } from "../badge";
 import { Box } from "../box";
 import { Input } from "../input";
 import { InputLabel } from "../input-label";
-import { Select } from "./select";
+import { Select, SelectOptionType } from "./select";
 
 const meta: Meta<typeof Select> = {
   title: "Components/Select2",
@@ -241,26 +241,59 @@ export const Actions: Story = {
 
 export const Creatable = () => {
   const [value, setValue] = useState<Fruit | null>(null);
+  const [text, setText] = useState("");
+
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setText(e.target.value.trim());
+    },
+    [],
+  );
+
+  const handleChange = useCallback((value: SelectOptionType<Fruit, false>) => {
+    setValue(value as Fruit | null);
+  }, []);
+
+  const extras = useMemo(
+    () =>
+      value
+        ? []
+        : [
+            {
+              key: "create",
+              title: `Create ${text}...`,
+              onClick: () => {
+                setValue({
+                  title: text.toUpperCase(),
+                  value: text,
+                });
+              },
+            },
+            {
+              key: "select",
+              title: `Select ${text}...`,
+              onClick: () => {
+                setValue({
+                  title: text.toUpperCase(),
+                  value: text,
+                });
+              },
+            },
+          ],
+    [text, value],
+  );
+
   return (
     <div style={{ width: 250 }}>
       <Select
         value={value}
+        onChange={handleChange}
+        onInputChange={handleInputChange}
         options={OPTIONS}
         optionKey={(x) => x.value}
         optionLabel={(x) => x.title}
         optionEqual={(o, v) => o.value === v.value}
-        onCreate={(text) => {
-          setValue({
-            title: text.toUpperCase(),
-            value: text,
-          });
-        }}
-        onSelect={(text) => {
-          setValue({
-            title: text.toUpperCase(),
-            value: text,
-          });
-        }}
+        customOptions={extras}
       />
     </div>
   );
