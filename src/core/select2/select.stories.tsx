@@ -255,6 +255,12 @@ export const Creatable = () => {
             value: text,
           });
         }}
+        onSelect={(text) => {
+          setValue({
+            title: text.toUpperCase(),
+            value: text,
+          });
+        }}
       />
     </div>
   );

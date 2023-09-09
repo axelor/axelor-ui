@@ -58,12 +58,22 @@ export interface SelectProps<Type, Multiple extends boolean> {
   icons?: SelectIcon[];
   translations?: {
     create?: string;
+    select?: string;
   };
   required?: boolean;
   readOnly?: boolean;
   disabled?: boolean;
   invalid?: boolean;
+  /**
+   * Handler to create selection item on the fly
+   * @param inputValue the current input value
+   */
   onCreate?: (inputValue: string) => void;
+  /**
+   * Handler to select an item manually if not found in the list
+   * @param inputValue the current input value
+   */
+  onSelect?: (inputValue: string) => void;
   onChange?: (value: SelectOptionType<Type, Multiple>) => void;
   onOpen?: () => void;
   onClose?: () => void;
@@ -107,6 +117,7 @@ export const Select = forwardRef(function Select<
     icons = [],
     translations = {
       create: "Create",
+      select: "Select",
     },
     required,
     readOnly,
@@ -120,6 +131,7 @@ export const Select = forwardRef(function Select<
     onClose,
     onChange,
     onCreate,
+    onSelect,
     onInputChange,
     renderOption,
     renderValue,
@@ -132,8 +144,7 @@ export const Select = forwardRef(function Select<
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    if (multiple) return;
-    if (value && autoComplete) {
+    if (value && autoComplete && !multiple) {
       setInputValue(optionLabel(value as Type));
     } else {
       setInputValue("");
@@ -269,9 +280,12 @@ export const Select = forwardRef(function Select<
         if (option) {
           updateValue(option);
         } else {
-          // creatable
-          handleClose();
-          onCreate?.(inputValue);
+          // onCreate or onSelect option
+          const ref = listRef.current[activeIndex];
+          if (ref) {
+            handleClose();
+            ref.click();
+          }
         }
       }
 
@@ -295,7 +309,6 @@ export const Select = forwardRef(function Select<
       items,
       multiple,
       onChange,
-      onCreate,
       setValue,
       updateValue,
       value,
@@ -440,9 +453,38 @@ export const Select = forwardRef(function Select<
     !readOnly &&
     !disabled;
 
-  const canCreate =
-    onCreate &&
-    (multiple || !value || inputValue !== optionLabel(value as Type));
+  const extraOptions = useMemo(() => {
+    const canSelect =
+      multiple || !value || inputValue !== optionLabel(value as Type);
+
+    const actions = [onCreate, onSelect];
+    const titles = [translations.create, translations.select];
+    const keys = ["__on_create", "__on_select"];
+    const items = canSelect
+      ? actions.map((onClick, index) => {
+          return {
+            onClick,
+            key: keys[index],
+            title: (
+              <span>
+                {titles[index]}
+                {inputValue && <em> {inputValue}</em>}...
+              </span>
+            ),
+          };
+        })
+      : [];
+    return items.filter((x) => x.onClick);
+  }, [
+    inputValue,
+    multiple,
+    onCreate,
+    onSelect,
+    optionLabel,
+    translations.create,
+    translations.select,
+    value,
+  ]);
 
   const notValid = useMemo(() => {
     if (invalid) return true;
@@ -539,23 +581,24 @@ export const Select = forwardRef(function Select<
                     })}
                 </SelectItem>
               ))}
-              {canCreate && (
+              {extraOptions.map((item, index) => (
                 <SelectItem
                   {...getItemProps({
                     ref(node) {
-                      listRef.current[items.length] = node;
+                      listRef.current[items.length + index] = node;
                     },
                     onClick() {
                       handleClose();
                       setActiveIndex(null);
-                      onCreate?.(inputValue);
+                      item.onClick?.(inputValue);
                     },
                   })}
-                  active={activeIndex === items.length}
+                  key={item.key}
+                  active={activeIndex === items.length + index}
                 >
-                  {translations.create} <em>{inputValue}</em>...
+                  {item.title}
                 </SelectItem>
-              )}
+              ))}
             </div>
           </FloatingFocusManager>
         )}
