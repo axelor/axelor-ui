@@ -251,9 +251,16 @@ export const Creatable = () => {
     setValue(value as Fruit | null);
   }, []);
 
+  const exists = useMemo(() => {
+    return (
+      value?.title.toLowerCase() === text.toLowerCase() ||
+      OPTIONS.some((x) => x.title.toLowerCase() === text.toLowerCase())
+    );
+  }, [text, value?.title]);
+
   const extras = useMemo(
     () =>
-      value
+      exists
         ? []
         : [
             {
@@ -277,7 +284,7 @@ export const Creatable = () => {
               },
             },
           ],
-    [text, value],
+    [exists, text],
   );
 
   return (
