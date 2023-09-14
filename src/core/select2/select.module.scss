@@ -188,12 +188,13 @@
   padding: 0.375rem 0.75rem;
   color: var(--bs-dropdown-link-color);
 
-  &:hover {
+  &:hover,
+  &.active {
     color: var(--bs-dropdown-link-hover-color);
     background-color: var(--bs-dropdown-link-hover-bg);
   }
 
-  &.active {
+  &.selected {
     color: var(--bs-dropdown-link-active-color);
     background-color: var(--bs-dropdown-link-active-bg);
   }

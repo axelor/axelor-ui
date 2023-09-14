@@ -135,6 +135,7 @@ export const Select = forwardRef(function Select<
   const [inputValue, setInputValue] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const valueRef = useRef<SelectValue<Type, Multiple>>();
 
@@ -150,11 +151,28 @@ export const Select = forwardRef(function Select<
     valueRef.current = value;
   }, [autoComplete, multiple, onInputChange, optionLabel, value]);
 
+  const searchOptions = useCallback(
+    (option: Type, text: string) =>
+      optionLabel(option).toLowerCase().startsWith(text.toLowerCase()),
+    [optionLabel],
+  );
+
+  const items = useMemo(() => {
+    const matches = optionMatch ?? searchOptions;
+    return options.filter((option) => matches(option, searchValue));
+  }, [optionMatch, options, searchOptions, searchValue]);
+
   const handleOpen = useCallback(() => {
     if (open) return;
+    if (!multiple) {
+      const selected = value
+        ? items.findIndex((x) => optionEqual(x, value as Type))
+        : null;
+      setSelectedIndex(selected ?? null);
+    }
     setOpen(true);
     onOpen?.();
-  }, [onOpen, open, setOpen]);
+  }, [items, multiple, onOpen, open, optionEqual, setOpen, value]);
 
   const handleClose = useCallback(() => {
     if (open) {
@@ -196,6 +214,7 @@ export const Select = forwardRef(function Select<
   const listNav = useListNavigation(context, {
     listRef,
     activeIndex,
+    selectedIndex,
     onNavigate: setActiveIndex,
     virtual: true,
     loop: true,
@@ -204,17 +223,6 @@ export const Select = forwardRef(function Select<
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
     [role, dismiss, listNav],
   );
-
-  const searchOptions = useCallback(
-    (option: Type, text: string) =>
-      optionLabel(option).toLowerCase().startsWith(text.toLowerCase()),
-    [optionLabel],
-  );
-
-  const items = useMemo(() => {
-    const matches = optionMatch ?? searchOptions;
-    return options.filter((option) => matches(option, searchValue));
-  }, [optionMatch, options, searchOptions, searchValue]);
 
   const acceptOption = useCallback(
     (value: SelectValue<Type, Multiple>, option: Type) => {
@@ -302,14 +310,22 @@ export const Select = forwardRef(function Select<
           onChange?.(next);
         }
       }
+
+      if (open) return;
+      if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+        event.preventDefault();
+        handleOpen();
+      }
     },
     [
       activeIndex,
       handleClose,
+      handleOpen,
       inputValue,
       items,
       multiple,
       onChange,
+      open,
       setValue,
       updateValue,
       value,
@@ -327,8 +343,13 @@ export const Select = forwardRef(function Select<
           updateValue(option);
         }
       }
+      if (open) return;
+      if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+        event.preventDefault();
+        handleOpen();
+      }
     },
-    [activeIndex, autoComplete, items, updateValue],
+    [activeIndex, autoComplete, handleOpen, items, open, updateValue],
   );
 
   const rootRef = useMergeRefs([ref, refs.setReference]);
@@ -540,6 +561,7 @@ export const Select = forwardRef(function Select<
                     },
                   })}
                   active={activeIndex === index}
+                  selected={selectedIndex === index}
                 >
                   {!!renderOption || optionLabel(item)}
                   {!!renderOption &&
@@ -581,11 +603,12 @@ export const Select = forwardRef(function Select<
 
 type SelectItemProps = React.HTMLProps<HTMLDivElement> & {
   active: boolean;
+  selected?: boolean;
 };
 
 const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
   function SelectOption(props, ref) {
-    const { active, children, className, ...rest } = props;
+    const { active, selected, children, className, ...rest } = props;
     const id = useId();
     return (
       <div
@@ -593,7 +616,10 @@ const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
         role="option"
         id={id}
         aria-selected={active}
-        className={clsx(className, styles.option, { [styles.active]: active })}
+        className={clsx(className, styles.option, {
+          [styles.active]: active,
+          [styles.selected]: selected,
+        })}
         {...rest}
       >
         {children}
