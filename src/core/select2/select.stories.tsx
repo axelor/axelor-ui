@@ -6,7 +6,7 @@ import { Badge } from "../badge";
 import { Box } from "../box";
 import { Input } from "../input";
 import { InputLabel } from "../input-label";
-import { Select, SelectOptionType } from "./select";
+import { Select, SelectValue } from "./select";
 
 const meta: Meta<typeof Select> = {
   title: "Components/Select2",
@@ -250,7 +250,7 @@ export const Creatable = () => {
     [],
   );
 
-  const handleChange = useCallback((value: SelectOptionType<Fruit, false>) => {
+  const handleChange = useCallback((value: SelectValue<Fruit, false>) => {
     setValue(value as Fruit | null);
   }, []);
 

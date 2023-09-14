@@ -28,7 +28,7 @@ import { clsx } from "../clsx";
 
 import styles from "./select.module.scss";
 
-export type SelectOptionType<Type, Multiple extends boolean> =
+export type SelectValue<Type, Multiple extends boolean> =
   | (Multiple extends true ? Type[] : Type)
   | null
   | undefined;
@@ -57,7 +57,7 @@ export interface SelectProps<Type, Multiple extends boolean> {
   autoFocus?: boolean;
   autoComplete?: boolean;
   multiple?: Multiple;
-  value?: SelectOptionType<Type, Multiple>;
+  value?: SelectValue<Type, Multiple>;
   open?: boolean;
   toggleIcon?: SelectIcon | false;
   clearIcon?: SelectIcon | false;
@@ -67,7 +67,7 @@ export interface SelectProps<Type, Multiple extends boolean> {
   disabled?: boolean;
   invalid?: boolean;
   customOptions?: SelectCustomOption[];
-  onChange?: (value: SelectOptionType<Type, Multiple>) => void;
+  onChange?: (value: SelectValue<Type, Multiple>) => void;
   onOpen?: () => void;
   onClose?: () => void;
   onInputChange?: React.ChangeEventHandler<HTMLInputElement>;
@@ -131,7 +131,7 @@ export const Select = forwardRef(function Select<
   const [inputValue, setInputValue] = useState("");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const valueRef = useRef<SelectOptionType<Type, Multiple>>();
+  const valueRef = useRef<SelectValue<Type, Multiple>>();
 
   useEffect(() => {
     if (valueRef.current === value) return;
@@ -210,14 +210,14 @@ export const Select = forwardRef(function Select<
   }, [inputValue, optionMatch, options, searchOptions]);
 
   const acceptOption = useCallback(
-    (value: SelectOptionType<Type, Multiple>, option: Type) => {
+    (value: SelectValue<Type, Multiple>, option: Type) => {
       const selected = [value].flat().filter(Boolean) as Type[];
       const found = selected.find((item) => optionEqual(item, option));
       if (found) {
         return value;
       }
       const selection = multiple ? [...selected, option] : option;
-      return selection as SelectOptionType<Type, Multiple>;
+      return selection as SelectValue<Type, Multiple>;
     },
     [multiple, optionEqual],
   );
@@ -287,7 +287,7 @@ export const Select = forwardRef(function Select<
         if (Array.isArray(value)) {
           const items = value.slice(0, value.length - 1);
           const next = items.length
-            ? (items as SelectOptionType<Type, Multiple>)
+            ? (items as SelectValue<Type, Multiple>)
             : null;
           setValue(next);
           onChange?.(next);
