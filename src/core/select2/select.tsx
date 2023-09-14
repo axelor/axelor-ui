@@ -70,7 +70,7 @@ export interface SelectProps<Type, Multiple extends boolean> {
   onChange?: (value: SelectValue<Type, Multiple>) => void;
   onOpen?: () => void;
   onClose?: () => void;
-  onInputChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onInputChange?: (value: string) => void;
   optionKey: (option: Type) => string | number;
   optionLabel: (option: Type) => string;
   optionEqual: (option: Type, value: Type) => boolean;
@@ -253,7 +253,7 @@ export const Select = forwardRef(function Select<
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const text = event.target.value.trim();
       setInputValue(text);
-      onInputChange?.(event);
+      onInputChange?.(text);
       if (text) {
         handleOpen();
         setActiveIndex(0);

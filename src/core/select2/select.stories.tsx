@@ -243,12 +243,9 @@ export const Creatable = () => {
   const [value, setValue] = useState<Fruit | null>(null);
   const [text, setText] = useState("");
 
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setText(e.target.value.trim());
-    },
-    [],
-  );
+  const handleInputChange = useCallback((text: string) => {
+    setText(text);
+  }, []);
 
   const handleChange = useCallback((value: SelectValue<Fruit, false>) => {
     setValue(value as Fruit | null);
@@ -318,13 +315,9 @@ export const Async = () => {
   const [text, setText] = useState("");
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
-  const handleInputChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const inputValue = event.target.value;
-      setText(inputValue);
-    },
-    [],
-  );
+  const handleInputChange = useCallback((text: string) => {
+    setText(text);
+  }, []);
 
   useEffect(() => {
     if (timerRef.current) {
