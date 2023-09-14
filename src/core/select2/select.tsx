@@ -133,6 +133,7 @@ export const Select = forwardRef(function Select<
   });
 
   const [inputValue, setInputValue] = useState("");
+  const [searchValue, setSearchValue] = useState("");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const valueRef = useRef<SelectValue<Type, Multiple>>();
@@ -144,8 +145,10 @@ export const Select = forwardRef(function Select<
     } else {
       setInputValue("");
     }
+    setSearchValue("");
+    onInputChange?.("");
     valueRef.current = value;
-  }, [autoComplete, multiple, optionLabel, value]);
+  }, [autoComplete, multiple, onInputChange, optionLabel, value]);
 
   const handleOpen = useCallback(() => {
     if (open) return;
@@ -210,8 +213,8 @@ export const Select = forwardRef(function Select<
 
   const items = useMemo(() => {
     const matches = optionMatch ?? searchOptions;
-    return options.filter((option) => matches(option, inputValue.trim()));
-  }, [inputValue, optionMatch, options, searchOptions]);
+    return options.filter((option) => matches(option, searchValue));
+  }, [optionMatch, options, searchOptions, searchValue]);
 
   const acceptOption = useCallback(
     (value: SelectValue<Type, Multiple>, option: Type) => {
@@ -233,6 +236,7 @@ export const Select = forwardRef(function Select<
 
       setActiveIndex(null);
       setInputValue(text);
+      setSearchValue("");
       handleClose();
 
       inputRef.current?.focus();
@@ -257,6 +261,7 @@ export const Select = forwardRef(function Select<
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const text = event.target.value.trim();
       setInputValue(text);
+      setSearchValue(text);
       onInputChange?.(text);
       if (text) {
         handleOpen();
