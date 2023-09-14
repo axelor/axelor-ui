@@ -25,6 +25,7 @@ import {
 import { MaterialIcon } from "../../icons/material-icon";
 import { Badge } from "../badge";
 import { clsx } from "../clsx";
+import { useControlled } from "../hooks";
 
 import styles from "./select.module.scss";
 
@@ -58,6 +59,7 @@ export interface SelectProps<Type, Multiple extends boolean> {
   autoComplete?: boolean;
   multiple?: Multiple;
   value?: SelectValue<Type, Multiple>;
+  defaultValue?: SelectValue<Type, Multiple>;
   open?: boolean;
   toggleIcon?: SelectIcon | false;
   clearIcon?: SelectIcon | false;
@@ -77,14 +79,6 @@ export interface SelectProps<Type, Multiple extends boolean> {
   optionMatch?: (option: Type, text: string) => boolean;
   renderOption?: (props: SelectOptionProps<Type>) => JSX.Element | null;
   renderValue?: (option: SelectOptionProps<Type>) => JSX.Element | null;
-}
-
-function useValue<T>(initial: T) {
-  const [value, setValue] = useState<T>(initial);
-  useEffect(() => {
-    setValue(initial);
-  }, [initial]);
-  return [value, setValue] as const;
 }
 
 function isEmpty(value: unknown) {
@@ -125,8 +119,18 @@ export const Select = forwardRef(function Select<
     renderValue,
   } = props;
 
-  const [value, setValue] = useValue(props.value);
-  const [open, setOpen] = useValue(props.open ?? false);
+  const [value, setValue] = useControlled({
+    name: "Select",
+    prop: "value",
+    state: props.value,
+    defaultState: props.defaultValue,
+  });
+
+  const [open, setOpen] = useControlled({
+    name: "Select",
+    prop: "open",
+    state: props.open,
+  });
 
   const [inputValue, setInputValue] = useState("");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
