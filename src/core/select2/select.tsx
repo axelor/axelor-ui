@@ -141,7 +141,7 @@ export const Select = forwardRef(function Select<
 
   useEffect(() => {
     if (valueRef.current === value) return;
-    if (value && autoComplete && !multiple) {
+    if (value && !multiple) {
       setInputValue(optionLabel(value as Type));
     } else {
       setInputValue("");
@@ -149,7 +149,7 @@ export const Select = forwardRef(function Select<
     setSearchValue("");
     onInputChange?.("");
     valueRef.current = value;
-  }, [autoComplete, multiple, onInputChange, optionLabel, value]);
+  }, [multiple, onInputChange, optionLabel, value]);
 
   const searchOptions = useCallback(
     (option: Type, text: string) =>
