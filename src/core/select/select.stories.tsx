@@ -1,236 +1,379 @@
-import React from "react";
+import type { Meta, StoryObj } from "@storybook/react";
 
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { MaterialIcon } from "../../icons/material-icon";
+import { Badge } from "../badge";
 import { Box } from "../box";
 import { Input } from "../input";
-import { Select, SelectIcon } from "../select";
+import { InputLabel } from "../input-label";
+import { Select, SelectValue } from "./select";
 
-const SelectStories = {
-  component: Select,
+const meta: Meta<typeof Select> = {
   title: "Components/Select",
+  component: Select,
 };
 
-function FormControl({ label, children }: any) {
-  return (
-    <Box mb={2}>
-      <Box>{label}</Box>
-      <Box>{children}</Box>
-    </Box>
-  );
-}
+export default meta;
 
-const colors = [
-  { title: "Green", code: "green" },
-  { title: "Red", code: "red" },
-  { title: "Blue", code: "blue" },
-  { title: "Orange", code: "orange" },
-  { title: "White", code: "white" },
-  { title: "Black", code: "black" },
-  { title: "Grey", code: "grey" },
-  { title: "Olive", code: "olive" },
-  { title: "Purple", code: "purple" },
-  { title: "Brown", code: "brown" },
-  { title: "Pink", code: "pink" },
-  { title: "Yellow", code: "yellow" },
-  { title: "Sky", code: "sky" },
-  { title: "Navy", code: "navy" },
+type Story = StoryObj<typeof Select>;
+
+type Fruit = {
+  title: string;
+  value: string;
+};
+
+const FRUITS = [
+  "Alfalfa Sprouts",
+  "Apple",
+  "Apricot",
+  "Artichoke",
+  "Asian Pear",
+  "Asparagus",
+  "Atemoya",
+  "Avocado",
+  "Bamboo Shoots",
+  "Banana",
+  "Bean Sprouts",
+  "Beans",
+  "Beets",
+  "Belgian Endive",
+  "Bell Peppers",
+  "Bitter Melon",
+  "Blackberries",
+  "Blueberries",
+  "Bok Choy",
+  "Boniato",
+  "Boysenberries",
+  "Broccoflower",
+  "Broccoli",
+  "Brussels Sprouts",
+  "Cabbage",
+  "Cactus Pear",
+  "Cantaloupe",
+  "Carambola",
+  "Carrots",
+  "Casaba Melon",
+  "Cauliflower",
+  "Celery",
+  "Chayote",
+  "Cherimoya",
+  "Cherries",
+  "Coconuts",
+  "Collard Greens",
+  "Corn",
+  "Cranberries",
+  "Cucumber",
+  "Dates",
+  "Dried Plums",
+  "Eggplant",
+  "Endive",
+  "Escarole",
+  "Feijoa",
+  "Fennel",
+  "Figs",
+  "Garlic",
+  "Gooseberries",
+  "Grapefruit",
+  "Grapes",
+  "Green Beans",
+  "Green Onions",
+  "Greens",
+  "Guava",
+  "Hominy",
+  "Honeydew Melon",
+  "Horned Melon",
+  "Iceberg Lettuce",
+  "Jerusalem Artichoke",
+  "Jicama",
+  "Kale",
+  "Kiwifruit",
+  "Kohlrabi",
+  "Kumquat",
+  "Leeks",
+  "Lemons",
+  "Lettuce",
+  "Lima Beans",
+  "Limes",
+  "Longan",
+  "Loquat",
+  "Lychee",
+  "Madarins",
+  "Malanga",
+  "Mandarin Oranges",
+  "Mangos",
+  "Mulberries",
+  "Mushrooms",
+  "Napa",
+  "Nectarines",
+  "Okra",
+  "Onion",
+  "Oranges",
+  "Papayas",
+  "Parsnip",
+  "Passion Fruit",
+  "Peaches",
+  "Pears",
+  "Peas",
+  "Peppers",
+  "Persimmons",
+  "Pineapple",
+  "Plantains",
+  "Plums",
+  "Pomegranate",
+  "Potatoes",
+  "Prickly Pear",
+  "Prunes",
+  "Pummelo",
+  "Pumpkin",
+  "Quince",
+  "Radicchio",
+  "Radishes",
+  "Raisins",
+  "Raspberries",
+  "Red Cabbage",
+  "Rhubarb",
+  "Romaine Lettuce",
+  "Rutabaga",
+  "Shallots",
+  "Snow Peas",
+  "Spinach",
+  "Sprouts",
+  "Squash",
+  "Strawberries",
+  "String Beans",
+  "Sweet Potato",
+  "Tangelo",
+  "Tangerines",
+  "Tomatillo",
+  "Tomato",
+  "Turnip",
+  "Ugli Fruit",
+  "Water Chestnuts",
+  "Watercress",
+  "Watermelon",
+  "Waxed Beans",
+  "Yams",
+  "Yellow Squash",
+  "Yuca/Cassava",
+  "Zucchini Squash",
 ];
 
+const OPTIONS: Fruit[] = FRUITS.map(
+  (name) => ({ title: name, value: name }),
+  {},
+);
+
 export const Basic = () => {
-  const [value, setValue] = React.useState<any>(colors[0]);
+  const [attrs, setAttrs] = useState<{
+    required?: boolean;
+    readOnly?: boolean;
+    disabled?: boolean;
+    autoComplete?: boolean;
+  }>({
+    autoComplete: false,
+  });
+
+  const handleCheckBox = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.name as keyof typeof attrs;
+    setAttrs((prev) => ({ ...prev, [name]: !prev[name] }));
+  };
+
+  const renderCheckBox = (name: keyof typeof attrs) => {
+    const checked = attrs[name] ?? false;
+    return (
+      <InputLabel>
+        <Input
+          type="checkbox"
+          name={name}
+          checked={checked}
+          onChange={handleCheckBox}
+        />{" "}
+        {name}
+      </InputLabel>
+    );
+  };
+
   return (
-    <FormControl label="Colors">
+    <div style={{ width: 250 }}>
+      <Box d="flex" flexDirection="column">
+        {renderCheckBox("required")}
+        {renderCheckBox("readOnly")}
+        {renderCheckBox("disabled")}
+        {renderCheckBox("autoComplete")}
+      </Box>
       <Select
-        value={value}
-        onChange={setValue}
-        options={colors}
-        optionLabel="title"
-        optionValue="code"
-        noOptionsMessage={() => "No results"}
+        placeholder="Select a value"
+        readOnly={attrs.readOnly}
+        required={attrs.required}
+        disabled={attrs.disabled}
+        autoComplete={attrs.autoComplete}
+        options={OPTIONS}
+        optionKey={(x) => x.value}
+        optionLabel={(x) => x.title}
+        optionEqual={(o, v) => o.value === v.value}
       />
-    </FormControl>
+    </div>
   );
 };
 
-const fetchColors = (colorStr: string) => {
-  console.log("fetch colors");
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(
-        colorStr
-          ? colors.filter((color) =>
-              color.title.toLowerCase().includes(colorStr.toLowerCase())
-            )
-          : colors
-      );
-    }, 2000);
-  });
+export const Actions: Story = {
+  render: () => (
+    <div style={{ width: 250 }}>
+      <Select
+        options={OPTIONS}
+        optionKey={(x) => x.value}
+        optionLabel={(x) => x.title}
+        optionEqual={(o, v) => o.value === v.value}
+        clearIcon={false}
+        toggleIcon={false}
+        icons={[
+          {
+            icon: <MaterialIcon icon="add" />,
+          },
+          {
+            icon: <MaterialIcon icon="delete" />,
+          },
+        ]}
+      />
+    </div>
+  ),
+};
+
+export const Creatable = () => {
+  const [value, setValue] = useState<Fruit | null>(null);
+  const [text, setText] = useState("");
+
+  const handleInputChange = useCallback((text: string) => {
+    setText(text);
+  }, []);
+
+  const handleChange = useCallback((value: SelectValue<Fruit, false>) => {
+    setValue(value as Fruit | null);
+  }, []);
+
+  const exists = useMemo(() => {
+    return (
+      value?.title.toLowerCase() === text.toLowerCase() ||
+      OPTIONS.some((x) => x.title.toLowerCase() === text.toLowerCase())
+    );
+  }, [text, value?.title]);
+
+  const extras = useMemo(
+    () =>
+      exists
+        ? []
+        : [
+            {
+              key: "create",
+              title: `Create ${text}...`,
+              onClick: () => {
+                setValue({
+                  title: text.toUpperCase(),
+                  value: text,
+                });
+              },
+            },
+            {
+              key: "select",
+              title: `Select ${text}...`,
+              onClick: () => {
+                setValue({
+                  title: text.toUpperCase(),
+                  value: text,
+                });
+              },
+            },
+          ],
+    [exists, text],
+  );
+
+  return (
+    <div style={{ width: 250 }}>
+      <Select
+        value={value}
+        onChange={handleChange}
+        onInputChange={handleInputChange}
+        options={OPTIONS}
+        optionKey={(x) => x.value}
+        optionLabel={(x) => x.title}
+        optionEqual={(o, v) => o.value === v.value}
+        customOptions={extras}
+      />
+    </div>
+  );
+};
+
+export const Multiple: Story = {
+  render: () => (
+    <div style={{ width: 250 }}>
+      <Select
+        multiple
+        options={OPTIONS}
+        optionKey={(x) => x.value}
+        optionLabel={(x) => x.title}
+        optionEqual={(o, v) => o.value === v.value}
+      />
+    </div>
+  ),
 };
 
 export const Async = () => {
-  const [value, setValue] = React.useState<any>(null);
-  return (
-    <FormControl label="Colors">
-      <Select
-        value={value}
-        onChange={setValue}
-        fetchOptions={fetchColors}
-        optionLabel="title"
-        optionValue="code"
-      />
-    </FormControl>
-  );
-};
+  const [options, setOptions] = useState<Fruit[]>([]);
+  const [text, setText] = useState("");
+  const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
-export const Multiple = () => {
-  const [value, setValue] = React.useState<any>(colors.slice(0, 2));
-  return (
-    <FormControl label="Colors">
-      <Select
-        isMulti
-        value={value}
-        onChange={setValue}
-        fetchOptions={fetchColors}
-        optionLabel="title"
-        optionValue="code"
-      />
-    </FormControl>
-  );
-};
-
-function CreateNewOption(str: string) {
-  return `Create "${str}"`;
-}
-
-export const Creatable = () => {
-  const [isAsync, setAsync] = React.useState(true);
-
-  const [value, setValue] = React.useState<any>(null);
-  const [multiValue, setMultiValue] = React.useState<any[]>([]);
-
-  const handleOnCreate = React.useCallback(function handleOnCreate(value: any) {
-    const newColor = {
-      title: value,
-      code: value.toLowerCase(),
-    };
-    setValue(newColor);
-    colors.push(newColor);
+  const handleInputChange = useCallback((text: string) => {
+    setText(text);
   }, []);
 
-  const handleMultiOnCreate = React.useCallback(function handleOnCreate(
-    value: any
-  ) {
-    const newColor = {
-      title: value,
-      code: value.toLowerCase(),
-    };
-    setMultiValue((values) => (values || []).concat(newColor));
-    colors.push(newColor);
-  },
-  []);
-
-  const handleChecked = (event: any) => {
-    setAsync(event.target.checked);
-  };
-
-  const selectProps = isAsync
-    ? { key: "async-select", fetchOptions: fetchColors }
-    : { key: "static-select", options: colors };
+  useEffect(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    timerRef.current = setTimeout(() => {
+      setOptions(
+        OPTIONS.filter((x) =>
+          x.title.toLowerCase().includes(text.toLowerCase()),
+        ),
+      );
+    }, 300);
+  }, [text]);
 
   return (
-    <Box>
-      <Box m={1}>
-        <Input type="checkbox" checked={isAsync} onChange={handleChecked} />
-        <Box as="label" ms={2}>
-          Async
-        </Box>
-      </Box>
-      <FormControl label="Colors">
-        <Select
-          isCreatable
-          value={value}
-          optionLabel="title"
-          optionValue="code"
-          createOption={CreateNewOption}
-          onChange={setValue}
-          onCreate={handleOnCreate}
-          {...selectProps}
-        />
-      </FormControl>
-      <FormControl label="Colors (Multi)">
-        <Select
-          isCreatable
-          isMulti
-          value={multiValue}
-          optionLabel="title"
-          optionValue="code"
-          createOption={CreateNewOption}
-          onChange={setMultiValue}
-          onCreate={handleMultiOnCreate}
-          {...selectProps}
-        />
-      </FormControl>
-    </Box>
+    <div style={{ width: 250 }}>
+      <Select
+        multiple
+        options={options}
+        optionKey={(x) => x.value}
+        optionLabel={(x) => x.title}
+        optionEqual={(o, v) => o.value === v.value}
+        optionMatch={() => true}
+        onInputChange={handleInputChange}
+      />
+    </div>
   );
 };
 
-export const Actions = () => {
-  const [value, setValue] = React.useState<any>(colors[0]);
-  const [canCreate, setCreate] = React.useState(true);
-  const [canRead, setRead] = React.useState(true);
-  const [canEdit, setEdit] = React.useState(true);
-
+export const Renderers = () => {
   return (
-    <Box>
-      <Box d="flex">
-        <Box m={1}>
-          <Input
-            type="checkbox"
-            checked={canCreate}
-            onChange={(e) => setCreate((e.target as HTMLInputElement).checked)}
-          />
-          <Box as="label" ms={2}>
-            Create
-          </Box>
-        </Box>
-        <Box m={1}>
-          <Input
-            type="checkbox"
-            checked={canRead}
-            onChange={(e) => setRead((e.target as HTMLInputElement).checked)}
-          />
-          <Box as="label" ms={2}>
-            Read
-          </Box>
-        </Box>
-        <Box m={1}>
-          <Input
-            type="checkbox"
-            checked={canEdit}
-            onChange={(e) => setEdit((e.target as HTMLInputElement).checked)}
-          />
-          <Box as="label" ms={2}>
-            Edit
-          </Box>
-        </Box>
-      </Box>
-      <FormControl label="Colors">
-        <Select
-          icons={
-            [
-              ...(canCreate ? [{ icon: "add" }] : []),
-              ...(value && canEdit ? [{ icon: "edit" }] : []),
-              ...(canRead && value ? [{ icon: "edit_document" }] : []),
-            ] as SelectIcon[]
-          }
-          value={value}
-          onChange={setValue}
-          options={colors}
-          optionLabel="title"
-          optionValue="code"
-        />
-      </FormControl>
-    </Box>
+    <div style={{ width: 250 }}>
+      <Select
+        multiple
+        autoComplete={false}
+        options={OPTIONS}
+        optionKey={(x) => x.value}
+        optionLabel={(x) => x.title}
+        optionEqual={(o, v) => o.value === v.value}
+        renderOption={({ option }) => <strong>{option.title}</strong>}
+        renderValue={({ option }) => (
+          <Badge bg="primary">
+            <Box d="flex" alignItems="center" g={1}>
+              <span>{option.title}</span>
+              <MaterialIcon icon="close" fontSize="1rem" />
+            </Box>
+          </Badge>
+        )}
+      />
+    </div>
   );
 };
-
-export default SelectStories;

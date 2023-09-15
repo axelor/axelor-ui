@@ -1,521 +1,629 @@
-import React from "react";
-import ReactSelect, {
-  ControlProps,
-  IndicatorsContainerProps,
-  MenuListProps,
-  components,
-  createFilter,
-} from "react-select";
-import CreatableSelect from "react-select/creatable";
+import {
+  FloatingFocusManager,
+  FloatingPortal,
+  autoUpdate,
+  flip,
+  offset,
+  size,
+  useDismiss,
+  useFloating,
+  useId,
+  useInteractions,
+  useListNavigation,
+  useMergeRefs,
+  useRole,
+} from "@floating-ui/react";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
-import { MaterialIcon, MaterialIconProps } from "../../icons/material-icon";
-import { Box } from "../box";
-import { useTheme } from "../styles";
-import { useReactSelectClassNames } from "./react-select";
+import { MaterialIcon } from "../../icons/material-icon";
+import { Badge } from "../badge";
+import { clsx } from "../clsx";
+import { useControlled } from "../hooks";
 
 import styles from "./select.module.scss";
 
-export { components as SelectComponents } from "react-select";
+export type SelectValue<Type, Multiple extends boolean> =
+  | (Multiple extends true ? Type[] : Type)
+  | null
+  | undefined;
 
-export type SelectOption = unknown;
+export type SelectIcon = {
+  key?: string | number;
+  icon: React.ReactNode;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
+};
 
-export interface SelectIcon {
-  icon: MaterialIconProps["icon"];
-  hidden?: boolean;
+export interface SelectOptionProps<Type> {
+  option: Type;
+  active?: boolean;
+}
+
+export interface SelectCustomOption {
+  key: string | number;
+  title: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLElement>;
 }
 
-export interface SelectProps {
+export interface SelectProps<Type, Multiple extends boolean> {
   className?: string;
-  classNamePrefix?: string;
   placeholder?: string;
+  options: Type[];
   autoFocus?: boolean;
-  loading?: boolean;
-  isSelectable?: boolean;
-  isMulti?: boolean;
-  isClearable?: boolean;
-  isCreatable?: boolean;
-  isDisabled?: boolean;
-  isRtl?: boolean;
-  isSearchable?: boolean;
-  isClearOnDelete?: boolean;
-  value: any;
-  disablePortal?: boolean;
-  onInputChange?: (value: any) => void;
-  onChange: (value: any) => void;
-  onFocus?: (e: React.SyntheticEvent) => void;
-  onBlur?: (e: React.SyntheticEvent) => void;
-  onKeyDown?: (e: React.SyntheticEvent) => void;
-  onMenuOpen?: () => void;
-  onMenuClose?: () => void;
-  options?: SelectOption[];
-  addOnOptions?: SelectOption[];
-  noOptionsMessage?: () => string;
-  fetchOptions?: (searchInput: string) => Promise<unknown>;
-  optionLabel?: string | ((option: SelectOption) => string);
-  optionValue?: string | ((option: SelectOption) => string);
-  icons?: Array<SelectIcon>;
-  createOption?: (inputString: string) => React.ReactNode;
-  createOptionPosition?: "first" | "last";
-  onCreate?: (value: SelectOption) => void;
-  isValidNewOption?: (
-    inputValue: string,
-    selectValue: SelectOption[],
-    selectOptions: SelectOption[],
-    accessors: any
-  ) => boolean;
-  components?: any;
+  autoComplete?: boolean;
+  multiple?: Multiple;
+  value?: SelectValue<Type, Multiple>;
+  defaultValue?: SelectValue<Type, Multiple>;
+  open?: boolean;
+  toggleIcon?: SelectIcon | false;
+  clearIcon?: SelectIcon | false;
+  icons?: SelectIcon[];
+  required?: boolean;
+  readOnly?: boolean;
+  disabled?: boolean;
   invalid?: boolean;
+  customOptions?: SelectCustomOption[];
+  onChange?: (value: SelectValue<Type, Multiple>) => void;
+  onOpen?: () => void;
+  onClose?: () => void;
+  onInputChange?: (value: string) => void;
+  optionKey: (option: Type) => string | number;
+  optionLabel: (option: Type) => string;
+  optionEqual: (option: Type, value: Type) => boolean;
+  optionMatch?: (option: Type, text: string) => boolean;
+  renderOption?: (props: SelectOptionProps<Type>) => JSX.Element | null;
+  renderValue?: (option: SelectOptionProps<Type>) => JSX.Element | null;
 }
 
-const ControlContainer = (props: ControlProps<SelectOption, true>) => {
-  const { onMouseDown } = props.innerProps;
-  const { onControlClick } = props.selectProps as any;
-  function handleMouseDown(e: React.MouseEvent<HTMLDivElement>) {
-    if (!e.defaultPrevented) {
-      onControlClick(e);
-      onMouseDown && onMouseDown(e);
-    }
-  }
-
+function isEmpty(value: unknown) {
   return (
-    <components.Control
-      {...props}
-      innerProps={{
-        onMouseDown: handleMouseDown,
-      }}
-    />
+    value === undefined ||
+    value === null ||
+    (typeof value === "string" && value.trim().length === 0) ||
+    (Array.isArray(value) && value.length === 0)
   );
-};
-
-const MenuList = ({ innerProps, ...rest }: MenuListProps) => {
-  return (
-    <components.MenuList
-      {...rest}
-      innerProps={{ ...innerProps, ...(rest.isRtl ? { dir: "rtl" } : {}) }}
-    />
-  );
-};
-
-const IndicatorIcon = ({
-  icon,
-  onMenuClose,
-}: {
-  icon: SelectIcon;
-  onMenuClose?: () => void;
-}) => {
-  const { onClick } = icon;
-
-  const handleMouseDown = React.useCallback(
-    (e: React.MouseEvent<HTMLElement>) => {
-      if (onClick) {
-        e.preventDefault();
-        onMenuClose?.();
-      }
-    },
-    [onClick, onMenuClose]
-  );
-
-  return (
-    <Box d="inline-flex" className={styles.icon} onMouseDown={handleMouseDown}>
-      <MaterialIcon {...icon} />
-    </Box>
-  );
-};
-
-const IndicatorsContainer = (
-  props: IndicatorsContainerProps<SelectOption, true>
-) => {
-  const { onMenuClose } = props.selectProps || {};
-  const icons: SelectIcon[] =
-    (props.selectProps.components as any)?.icons || [];
-  return (
-    icons.length > 0 && (
-      <Box d="flex" className={styles.icons} me={1}>
-        {icons.map(
-          (icon) =>
-            !icon.hidden && (
-              <IndicatorIcon
-                key={icon.icon}
-                icon={icon}
-                onMenuClose={onMenuClose}
-              />
-            )
-        )}
-      </Box>
-    )
-  );
-};
-
-enum OptionsState {
-  FetchNeeded,
-  Scheduled,
-  Loading,
-  Ready,
 }
 
-const defaultFilter = createFilter();
-
-function filterOption(candidate: any, input: any) {
-  return candidate.data.__isAddOn || defaultFilter(candidate, input);
-}
-
-function unaccent(value: string) {
-  if (typeof value === "string") {
-    return value
-      .normalize("NFKD")
-      .replace(/\p{Diacritic}/gu, "")
-      .replace(/./g, function (c) {
-        return (
-          {
-            "’": "'",
-            æ: "ae",
-            Æ: "AE",
-            œ: "oe",
-            Œ: "OE",
-            ð: "d",
-            Ð: "D",
-            ł: "l",
-            Ł: "L",
-            ø: "o",
-            Ø: "O",
-          }[c] || c
-        );
-      });
-  }
-  return value;
-}
-
-export function Select({
-  className,
-  classNamePrefix,
-  autoFocus,
-  placeholder,
-  isMulti,
-  isSelectable = true,
-  isClearable = true,
-  isDisabled = false,
-  isRtl,
-  isCreatable = false,
-  isSearchable = true,
-  loading: _loading,
-  value,
-  disablePortal,
-  onInputChange,
-  onChange,
-  onFocus,
-  onBlur,
-  onKeyDown,
-  onMenuOpen,
-  onMenuClose,
-  options: _options,
-  addOnOptions,
-  noOptionsMessage,
-  fetchOptions,
-  icons,
-  optionLabel = "label",
-  optionValue = "value",
-  createOption,
-  createOptionPosition = "last",
-  onCreate,
-  isValidNewOption,
-  components,
-  invalid,
-  ...props
-}: SelectProps) {
-  const isStaticSelect = !fetchOptions;
-  const [options, setOptions] = React.useState(_options);
-  const [inputText, setInputText] = React.useState("");
-  const [isMenuOpen, setMenuOpen] = React.useState(false);
-  const [optionsState, setOptionsState] = React.useState(
-    isStaticSelect ? OptionsState.Ready : OptionsState.FetchNeeded
-  );
-  const refs = React.useRef<Record<string, boolean>>({});
-  const mounted = React.useRef(false);
-  const timer = React.useRef<any>(null);
-  const menuTimer = React.useRef<any>(null);
-
-  const { dir } = useTheme();
-  const { isClearOnDelete = !isMulti } = props;
-  const rtl = typeof isRtl !== "undefined" ? isRtl : dir === "rtl";
-
-  const setTimer = React.useCallback((callback: any, interval = 500) => {
-    setOptionsState(OptionsState.Scheduled);
-    timer.current = setTimeout(callback, interval);
-  }, []);
-
-  const clearTimer = React.useCallback(() => {
-    setOptionsState(OptionsState.Ready);
-    timer.current && clearTimeout(timer.current);
-  }, []);
-
-  const getOptionLabel = React.useCallback(
-    (option: any) => {
-      if (option.__isNew__) {
-        return option.label;
-      }
-      return typeof optionLabel === "function"
-        ? optionLabel(option)
-        : option[optionLabel];
-    },
-    [optionLabel]
-  );
-  const getOptionValue = React.useCallback(
-    (option: any) =>
-      typeof optionValue === "function"
-        ? optionValue(option)
-        : option[optionValue],
-    [optionValue]
-  );
-
-  const loadOptionsNow = React.useCallback(
-    async (searchString: string) => {
-      try {
-        if (!fetchOptions) return;
-        setOptionsState(OptionsState.Loading);
-        const list = await fetchOptions(searchString);
-        setOptions(list as SelectOption[]);
-      } finally {
-        setOptionsState(OptionsState.Ready);
-      }
-    },
-    [fetchOptions]
-  );
-
-  const loadOptions = React.useCallback(
-    (searchString: string) => {
-      clearTimer();
-      setTimer(() => loadOptionsNow(searchString), searchString ? 300 : 0);
-    },
-    [loadOptionsNow, setTimer, clearTimer]
-  );
-
-  const clearMenuTimer = React.useCallback(() => {
-    clearTimeout(menuTimer.current);
-  }, []);
-
-  const openMenu = React.useCallback(
-    (interval: number) => {
-      clearMenuTimer();
-      menuTimer.current = setTimeout(() => {
-        setMenuOpen(true);
-      }, interval);
-    },
-    [clearMenuTimer]
-  );
-
-  const handleFocus = React.useCallback(
-    (e: React.SyntheticEvent) => {
-      openMenu(refs.current.menuClicked ? 0 : 500);
-      return onFocus && onFocus(e);
-    },
-    [onFocus, openMenu]
-  );
-
-  const handleBlur = React.useCallback(
-    (e: React.SyntheticEvent) => {
-      !isStaticSelect && setOptionsState(OptionsState.FetchNeeded);
-      clearMenuTimer();
-      return onBlur && onBlur(e);
-    },
-    [isStaticSelect, clearMenuTimer, onBlur]
-  );
-
-  const handleChange = React.useCallback(
-    (e: any) => {
-      !isStaticSelect && setOptionsState(OptionsState.FetchNeeded);
-      return onChange && onChange(e);
-    },
-    [isStaticSelect, onChange]
-  );
-
-  const handleInputChange = React.useCallback((value: any) => {
-    setInputText(value);
-  }, []);
-
-  React.useEffect(() => {
-    onInputChange && onInputChange(inputText);
-  }, [onInputChange, inputText]);
-
-  const handleMenuOpen = () => {
-    setMenuOpen(true);
-    onMenuOpen?.();
-  };
-
-  const handleMenuClose = () => {
-    refs.current.menuClicked = false;
-    if (refs.current.controlClicked) {
-      refs.current.controlClicked = false;
-    } else {
-      clearMenuTimer();
-      setMenuOpen(false);
-      onMenuClose?.();
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    !isMenuOpen && (e.detail = 1);
-    const isDelete = isClearOnDelete && e.key === "Delete";
-    if (
-      (isDelete || (!isMulti && isMenuOpen && e.key === "Backspace")) &&
-      value
-    ) {
-      handleChange(null);
-    }
-    if (isDelete) {
-      setInputText("");
-    }
-    if (!(isMenuOpen && e.key === "Enter")) {
-      onKeyDown && onKeyDown(e);
-    }
-  };
-
-  React.useEffect(() => {
-    setOptions(_options);
-  }, [_options]);
-
-  React.useEffect(() => {
-    mounted.current && isMenuOpen && loadOptions(inputText);
-  }, [inputText, isMenuOpen, loadOptions]);
-
-  React.useEffect(() => {
-    mounted.current = true;
-    return () => {
-      mounted.current = false;
-      clearTimer();
-      clearMenuTimer();
-    };
-  }, [clearTimer, clearMenuTimer]);
-
-  const SelectComponent = (isCreatable ? CreatableSelect : ReactSelect) as any;
-
-  const canShowNoOptions = React.useMemo(
-    () => noOptionsMessage && optionsState === OptionsState.Ready,
-    [noOptionsMessage, optionsState]
-  );
-
-  const $options = React.useMemo(() => {
-    const addOptions = (addOnOptions || []).map((option: any) => ({
-      ...option,
-      __isAddOn: true,
-    }));
-    function getOptions() {
-      if (isStaticSelect) return options;
-      return inputText
-        ? (options || []).filter((opt) =>
-            unaccent(getOptionLabel(opt) || "")
-              .toLowerCase()
-              .includes(unaccent(inputText).toLowerCase())
-          )
-        : value
-        ? (options || []).filter(
-            (opt) =>
-              !(isMulti
-                ? value.some(
-                    (x: any) => getOptionValue(x) === getOptionValue(opt)
-                  )
-                : getOptionValue(opt) === getOptionValue(value))
-          )
-        : options;
-    }
-    return [...(getOptions() || []), ...addOptions];
-  }, [
-    isStaticSelect,
+export const Select = forwardRef(function Select<
+  Type,
+  Multiple extends boolean,
+>(props: SelectProps<Type, Multiple>, ref: React.ForwardedRef<HTMLDivElement>) {
+  const {
+    placeholder,
+    autoFocus,
+    autoComplete = true,
+    multiple,
+    className,
     options,
-    addOnOptions,
-    inputText,
+    customOptions,
+    icons = [],
+    required,
+    readOnly,
+    disabled,
+    invalid,
+    optionKey,
+    optionLabel,
+    optionEqual,
+    optionMatch,
+    onOpen,
+    onClose,
+    onChange,
+    onInputChange,
+    renderOption,
+    renderValue,
+  } = props;
+
+  const [value, setValue] = useControlled({
+    name: "Select",
+    prop: "value",
+    state: props.value,
+    defaultState: props.defaultValue,
+  });
+
+  const [open, setOpen] = useControlled({
+    name: "Select",
+    prop: "open",
+    state: props.open,
+  });
+
+  const [inputValue, setInputValue] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  const valueRef = useRef<SelectValue<Type, Multiple>>();
+
+  useEffect(() => {
+    if (valueRef.current === value) return;
+    if (value && !multiple) {
+      setInputValue(optionLabel(value as Type));
+    } else {
+      setInputValue("");
+    }
+    setSearchValue("");
+    onInputChange?.("");
+    valueRef.current = value;
+  }, [multiple, onInputChange, optionLabel, value]);
+
+  const searchOptions = useCallback(
+    (option: Type, text: string) =>
+      optionLabel(option).toLowerCase().startsWith(text.toLowerCase()),
+    [optionLabel],
+  );
+
+  const items = useMemo(() => {
+    const matches = optionMatch ?? searchOptions;
+    return options.filter((option) => matches(option, searchValue));
+  }, [optionMatch, options, searchOptions, searchValue]);
+
+  const handleOpen = useCallback(() => {
+    if (open) return;
+    if (!multiple) {
+      const selected = value
+        ? items.findIndex((x) => optionEqual(x, value as Type))
+        : null;
+      setSelectedIndex(selected ?? null);
+    }
+    setOpen(true);
+    onOpen?.();
+  }, [items, multiple, onOpen, open, optionEqual, setOpen, value]);
+
+  const handleClose = useCallback(() => {
+    if (open) {
+      setOpen(false);
+      onClose?.();
+    }
+  }, [onClose, open, setOpen]);
+
+  useEffect(() => {
+    if (open) {
+      onOpen?.();
+    } else {
+      onClose?.();
+    }
+  }, [onClose, onOpen, open]);
+
+  const { refs, floatingStyles, context } = useFloating<HTMLDivElement>({
+    open,
+    onOpenChange: setOpen,
+    whileElementsMounted: autoUpdate,
+    middleware: [
+      offset(6),
+      flip({ padding: 10 }),
+      size({
+        apply({ rects, availableHeight, elements }) {
+          const width = rects.reference.width;
+          const height = Math.min(350, availableHeight);
+          elements.floating.style.width = `${width}px`;
+          elements.floating.style.maxHeight = `${height}px`;
+        },
+        padding: 10,
+      }),
+    ],
+  });
+
+  const role = useRole(context, { role: "listbox" });
+  const dismiss = useDismiss(context);
+  const listRef = useRef<Array<HTMLElement | null>>([]);
+  const listNav = useListNavigation(context, {
+    listRef,
+    activeIndex,
+    selectedIndex,
+    onNavigate: setActiveIndex,
+    virtual: true,
+    loop: true,
+  });
+
+  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
+    [role, dismiss, listNav],
+  );
+
+  const acceptOption = useCallback(
+    (value: SelectValue<Type, Multiple>, option: Type) => {
+      const selected = [value].flat().filter(Boolean) as Type[];
+      const found = selected.find((item) => optionEqual(item, option));
+      if (found) {
+        return value;
+      }
+      const selection = multiple ? [...selected, option] : option;
+      return selection as SelectValue<Type, Multiple>;
+    },
+    [multiple, optionEqual],
+  );
+
+  const updateValue = useCallback(
+    (option: Type | null) => {
+      const next = option ? acceptOption(value, option) : null;
+      const text = multiple ? "" : option ? optionLabel(option) : "";
+
+      setActiveIndex(null);
+      setInputValue(text);
+      setSearchValue("");
+      handleClose();
+
+      inputRef.current?.focus();
+
+      if (next !== value) {
+        setValue(next);
+        onChange?.(next);
+      }
+    },
+    [
+      acceptOption,
+      handleClose,
+      multiple,
+      onChange,
+      optionLabel,
+      setValue,
+      value,
+    ],
+  );
+
+  const handleInputChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const text = event.target.value.trim();
+      setInputValue(text);
+      setSearchValue(text);
+      onInputChange?.(text);
+      if (text) {
+        handleOpen();
+        setActiveIndex(0);
+      } else if (!multiple) {
+        updateValue(null);
+      }
+    },
+    [handleOpen, multiple, onInputChange, updateValue],
+  );
+
+  const handleInputKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === "Enter" && activeIndex !== null) {
+        event.preventDefault();
+        const option = items[activeIndex];
+        if (option) {
+          updateValue(option);
+        } else {
+          // custom option
+          const ref = listRef.current[activeIndex];
+          if (ref) {
+            handleClose();
+            ref.click();
+          }
+        }
+      }
+
+      // delete the last item from the selection
+      if (multiple && event.key === "Backspace") {
+        if (inputValue) return;
+        if (Array.isArray(value)) {
+          const items = value.slice(0, value.length - 1);
+          const next = items.length
+            ? (items as SelectValue<Type, Multiple>)
+            : null;
+          setValue(next);
+          onChange?.(next);
+        }
+      }
+
+      if (open) return;
+      if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+        event.preventDefault();
+        handleOpen();
+      }
+    },
+    [
+      activeIndex,
+      handleClose,
+      handleOpen,
+      inputValue,
+      items,
+      multiple,
+      onChange,
+      open,
+      setValue,
+      updateValue,
+      value,
+    ],
+  );
+
+  const handleRootKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (autoComplete) return;
+      if (event.target !== event.currentTarget) return;
+      if (event.key === "Enter" && activeIndex !== null) {
+        event.preventDefault();
+        const option = items[activeIndex];
+        if (option) {
+          updateValue(option);
+        }
+      }
+      if (open) return;
+      if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+        event.preventDefault();
+        handleOpen();
+      }
+    },
+    [activeIndex, autoComplete, handleOpen, items, open, updateValue],
+  );
+
+  const rootRef = useMergeRefs([ref, refs.setReference]);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const handleToggleClick = useCallback(() => {
+    if (readOnly || disabled) return;
+    if (open) {
+      handleClose();
+    } else {
+      handleOpen();
+    }
+  }, [disabled, handleClose, handleOpen, open, readOnly]);
+
+  const handleRootClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (disabled || event.isDefaultPrevented()) return;
+      if (inputRef.current) inputRef.current.focus();
+      if (readOnly) return;
+      if (
+        event.target === event.currentTarget ||
+        event.target === inputRef.current ||
+        event.target === contentRef.current ||
+        contentRef.current?.contains(event.target as Node)
+      ) {
+        handleToggleClick();
+      }
+    },
+    [disabled, handleToggleClick, readOnly],
+  );
+
+  const handleClearClick = useCallback(() => {
+    if (readOnly || disabled) return;
+    updateValue(null);
+  }, [disabled, readOnly, updateValue]);
+
+  const toggleIcon = useMemo(() => {
+    if (props.toggleIcon === false) return false;
+    return {
+      icon: <MaterialIcon icon={open ? "arrow_drop_up" : "arrow_drop_down"} />,
+      onClick: handleToggleClick,
+      ...props.toggleIcon,
+    };
+  }, [props.toggleIcon, open, handleToggleClick]);
+
+  const clearIcon = useMemo(() => {
+    if (props.clearIcon === false) return false;
+    return {
+      icon: <MaterialIcon icon="close" fontSize="1rem" />,
+      onClick: handleClearClick,
+      ...props.clearIcon,
+    };
+  }, [props.clearIcon, handleClearClick]);
+
+  const renderMultiple = useCallback(() => {
+    const items = value as Type[] | null;
+    return items?.map((item) => {
+      return (
+        <div key={optionKey(item)} className={styles.tag}>
+          {!!renderValue && renderValue({ option: item })}
+          {!!renderValue || (
+            <Badge
+              bg="secondary"
+              key={optionKey(item)}
+              className={styles.badge}
+            >
+              {optionLabel(item)}
+            </Badge>
+          )}
+        </div>
+      );
+    });
+  }, [optionKey, optionLabel, renderValue, value]);
+
+  const renderSelector = useCallback(() => {
+    if (autoComplete) {
+      return (
+        <input
+          ref={inputRef}
+          type="text"
+          autoFocus={autoFocus}
+          className={styles.input}
+          value={inputValue}
+          readOnly={readOnly || disabled}
+          placeholder={isEmpty(value) ? placeholder : undefined}
+          onChange={handleInputChange}
+          onKeyDown={handleInputKeyDown}
+        />
+      );
+    }
+    if (multiple) return null;
+    if (value) {
+      return (
+        <div className={styles.value}>
+          {!!renderValue && renderValue({ option: value as Type })}
+          {!!renderValue || optionLabel(value as Type)}
+        </div>
+      );
+    }
+    if (placeholder) {
+      return <span className={styles.placeholder}>{placeholder}</span>;
+    }
+    return null;
+  }, [
+    autoComplete,
+    multiple,
     value,
-    isMulti,
-    getOptionLabel,
-    getOptionValue,
+    autoFocus,
+    inputValue,
+    readOnly,
+    disabled,
+    placeholder,
+    handleInputChange,
+    handleInputKeyDown,
+    renderValue,
+    optionLabel,
   ]);
 
-  const hasOption = ($options || []).length > 0;
+  const canClear =
+    clearIcon &&
+    [value].flat().filter(Boolean).length > 0 &&
+    !readOnly &&
+    !disabled;
 
-  const canShowCreate = React.useMemo(
-    () => isCreatable && inputText,
-    [isCreatable, inputText]
-  );
-
-  const menuIsOpen = React.useMemo(() => {
-    return isMenuOpen && (canShowNoOptions || hasOption || canShowCreate);
-  }, [isMenuOpen, canShowNoOptions, hasOption, canShowCreate]);
-
-  const styles = {
-    option: (styles: any, { data }: any) =>
-      data?.__isAddOn || data?.__isNew__
-        ? {
-            ...styles,
-            fontStyle: "italic",
-            paddingLeft: "1.5em",
-            width: "auto",
-          }
-        : styles,
-  };
-
-  const handleControlClick = (e: React.MouseEventHandler<HTMLElement>) => {
-    refs.current.menuClicked = true;
-    if (menuIsOpen) {
-      refs.current.controlClicked = true;
-    }
-  };
-
-  const classNames = useReactSelectClassNames({ invalid });
+  const notValid = useMemo(() => {
+    if (invalid) return true;
+    if (value) return false;
+    if (required) return true;
+    return false;
+  }, [required, invalid, value]);
 
   return (
-    <SelectComponent
-      className={className}
-      classNamePrefix={classNamePrefix}
-      classNames={classNames}
-      menuIsOpen={isSelectable && menuIsOpen}
-      menuPlacement="auto"
-      styles={styles}
-      filterOption={filterOption}
-      {...(!disablePortal && {
-        menuPortalTarget: document.body,
-      })}
-      {...{
-        options: $options,
-        placeholder: placeholder ?? "",
-        isMulti,
-        isDisabled,
-        isRtl: rtl,
-        isClearable,
-        isSearchable,
-        autoFocus,
-        value,
-        onChange: handleChange,
-        inputValue: inputText,
-        onInputChange: handleInputChange,
-        onFocus: handleFocus,
-        onBlur: handleBlur,
-        onKeyDown: handleKeyDown,
-        getOptionLabel,
-        getOptionValue,
-        tabSelectsValue: false,
-        allowCreateWhileLoading: false,
-        closeMenuOnScroll: true,
-        openMenuOnClick: true,
-        onMenuOpen: handleMenuOpen,
-        onMenuClose: handleMenuClose,
-        onControlClick: handleControlClick,
-        noOptionsMessage: noOptionsMessage || (() => ""),
-        components: {
-          Control: ControlContainer,
-          IndicatorsContainer,
-          icons,
-          MenuList,
-          ...components,
-        },
-        ...(isCreatable
-          ? {
-              formatCreateLabel: createOption,
-              createOptionPosition,
-              onCreateOption: onCreate,
-              isValidNewOption,
-            }
-          : {}),
-      }}
-    />
+    <>
+      <div
+        className={clsx(className, styles.select, {
+          [styles.open]: open,
+          [styles.required]: required,
+          [styles.readonly]: readOnly,
+          [styles.disabled]: disabled,
+          [styles.invalid]: notValid,
+        })}
+        autoFocus={autoComplete ? undefined : autoFocus}
+        aria-disabled={disabled ? true : undefined}
+        aria-readonly={readOnly ? true : undefined}
+        {...getReferenceProps({
+          ref: rootRef,
+          tabIndex: autoComplete || disabled ? undefined : 0,
+          onClick: handleRootClick,
+          onKeyDown: handleRootKeyDown,
+        })}
+      >
+        <div ref={contentRef} className={styles.content}>
+          {multiple && renderMultiple()}
+          {renderSelector()}
+        </div>
+        <div className={styles.actions}>
+          {canClear && (
+            <div
+              className={clsx(styles.action, styles.clearIcon)}
+              onClick={clearIcon.onClick}
+            >
+              {clearIcon.icon}
+            </div>
+          )}
+          {icons.map((icon, index) => (
+            <div
+              key={icon.key ?? index}
+              data-index={index}
+              className={clsx(styles.action)}
+              onClick={icon.onClick}
+            >
+              {icon.icon}
+            </div>
+          ))}
+          {toggleIcon && (
+            <div
+              className={clsx(styles.action, styles.toggleIcon)}
+              onClick={toggleIcon.onClick}
+            >
+              {toggleIcon.icon}
+            </div>
+          )}
+        </div>
+      </div>
+      <FloatingPortal>
+        {open && (
+          <FloatingFocusManager
+            context={context}
+            initialFocus={-1}
+            visuallyHiddenDismiss
+          >
+            <div
+              {...getFloatingProps({
+                ref: refs.setFloating,
+                className: styles.list,
+                style: floatingStyles,
+              })}
+            >
+              {items.map((item, index) => (
+                <SelectItem
+                  {...getItemProps({
+                    key: optionKey(item),
+                    ref(node) {
+                      listRef.current[index] = node;
+                    },
+                    onClick() {
+                      updateValue(item);
+                    },
+                  })}
+                  active={activeIndex === index}
+                  selected={selectedIndex === index}
+                >
+                  {!!renderOption || optionLabel(item)}
+                  {!!renderOption &&
+                    renderOption({
+                      option: item,
+                      active: activeIndex === index,
+                    })}
+                </SelectItem>
+              ))}
+              {customOptions?.map((item, index) => (
+                <SelectItem
+                  {...getItemProps({
+                    ref(node) {
+                      listRef.current[items.length + index] = node;
+                    },
+                    onClick(event) {
+                      handleClose();
+                      setActiveIndex(null);
+                      item.onClick?.(event);
+                    },
+                  })}
+                  key={item.key}
+                  active={activeIndex === items.length + index}
+                >
+                  {item.title}
+                </SelectItem>
+              ))}
+            </div>
+          </FloatingFocusManager>
+        )}
+      </FloatingPortal>
+    </>
   );
-}
+}) as unknown as <Type, Multiple extends boolean>(
+  props: SelectProps<Type, Multiple> & {
+    ref?: React.Ref<HTMLDivElement>;
+  },
+) => React.ReactNode;
+
+type SelectItemProps = React.HTMLProps<HTMLDivElement> & {
+  active: boolean;
+  selected?: boolean;
+};
+
+const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
+  function SelectOption(props, ref) {
+    const { active, selected, children, className, ...rest } = props;
+    const id = useId();
+    return (
+      <div
+        ref={ref}
+        role="option"
+        id={id}
+        aria-selected={active}
+        className={clsx(className, styles.option, {
+          [styles.active]: active,
+          [styles.selected]: selected,
+        })}
+        {...rest}
+      >
+        {children}
+      </div>
+    );
+  },
+);
