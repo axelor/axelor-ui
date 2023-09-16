@@ -75,10 +75,10 @@ export interface SelectProps<Type, Multiple extends boolean> {
   onInputChange?: (value: string) => void;
   optionKey: (option: Type) => string | number;
   optionLabel: (option: Type) => string;
-  optionEqual: (option: Type, value: Type) => boolean;
+  optionEqual?: (option: Type, value: Type) => boolean;
   optionMatch?: (option: Type, text: string) => boolean;
   renderOption?: (props: SelectOptionProps<Type>) => JSX.Element | null;
-  renderValue?: (option: SelectOptionProps<Type>) => JSX.Element | null;
+  renderValue?: (props: SelectOptionProps<Type>) => JSX.Element | null;
 }
 
 function isEmpty(value: unknown) {
@@ -109,7 +109,7 @@ export const Select = forwardRef(function Select<
     invalid,
     optionKey,
     optionLabel,
-    optionEqual,
+    optionEqual: isOptionEqual,
     optionMatch,
     onOpen,
     onClose,
@@ -138,6 +138,12 @@ export const Select = forwardRef(function Select<
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const valueRef = useRef<SelectValue<Type, Multiple>>();
+
+  const optionEqual = useCallback(
+    (a: Type, b: Type) =>
+      isOptionEqual?.(a, b) ?? (a === b || optionKey(a) === optionKey(b)),
+    [isOptionEqual, optionKey],
+  );
 
   useEffect(() => {
     if (valueRef.current === value) return;
