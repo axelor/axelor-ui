@@ -123,28 +123,51 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
     });
 
     const [activeElement, setActiveElement] = useState<HTMLElement | null>(
-      null
+      null,
     );
+
+    const scrollIn = useCallback(
+      (element: HTMLElement) => {
+        if (stripElement) {
+          const left = element.offsetLeft;
+          const right = left + element.offsetWidth;
+          const scrollLeft = stripElement.scrollLeft;
+          const scrollRight = scrollLeft + stripElement.clientWidth;
+
+          const diff =
+            right > scrollRight
+              ? right - scrollRight
+              : left < scrollLeft
+              ? -(scrollLeft - left)
+              : 0;
+
+          if (diff) {
+            stripElement.scroll({
+              left: scrollLeft + diff,
+              behavior: "smooth",
+            });
+          }
+        }
+      },
+      [stripElement],
+    );
+
     const setActive = useCallback(
       (id: string | null, element: HTMLElement | null) => {
         setActiveTab(id);
         setActiveElement(element);
         if (element) {
-          element.scrollIntoView({
-            behavior: "smooth",
-            block: "nearest",
-            inline: "nearest",
-          });
+          scrollIn(element);
         }
       },
-      []
+      [scrollIn],
     );
 
     const handleItemClick = useCallback(
       (item: NavTabItem) => {
         onItemClick?.(item);
       },
-      [onItemClick]
+      [onItemClick],
     );
 
     const activateScrollArrows = useCallback(() => {
@@ -162,7 +185,7 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
     const getScrollSize = useCallback(() => {
       if (stripElement && stripElement.firstChild) {
         const elems = Array.from(
-          (stripElement.firstChild as HTMLElement).children
+          (stripElement.firstChild as HTMLElement).children,
         );
         const max = stripElement.clientWidth;
         let size = 0;
@@ -296,7 +319,7 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
         </div>
       </NavTabsContext.Provider>
     );
-  }
+  },
 );
 
 interface NavTabProps {
@@ -319,7 +342,7 @@ function NavTab(props: NavTabProps) {
       onItemClick?.(item);
       onClick?.(e);
     },
-    [element, item, onClick, onItemClick, setActive]
+    [element, item, onClick, onItemClick, setActive],
   );
 
   useEffect(() => {
@@ -353,11 +376,11 @@ function NavTabIcon(props: NavTabProps) {
   const bg = useMemo(() => iconColor && getRGB(iconColor, 0.1), [iconColor]);
   const hoverBg = useMemo(
     () => iconColor && getRGB(iconColor, 0.2),
-    [iconColor]
+    [iconColor],
   );
   const activeBg = useMemo(
     () => iconColor && getRGB(iconColor, 0.2),
-    [iconColor]
+    [iconColor],
   );
   return (
     Icon && (
