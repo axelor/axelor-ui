@@ -128,8 +128,8 @@ devDependencies:
     specifier: ^11.1.1
     version: 11.1.1
   i18next:
-    specifier: ^23.4.6
-    version: 23.4.6
+    specifier: ^23.5.1
+    version: 23.5.1
   prettier:
     specifier: ^3.0.3
     version: 3.0.3
@@ -144,7 +144,7 @@ devDependencies:
     version: 18.2.0(react@18.2.0)
   react-i18next:
     specifier: ^13.2.2
-    version: 13.2.2(i18next@23.4.6)(react-dom@18.2.0)(react@18.2.0)
+    version: 13.2.2(i18next@23.5.1)(react-dom@18.2.0)(react@18.2.0)
   rimraf:
     specifier: ^5.0.1
     version: 5.0.1
@@ -1900,13 +1900,13 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.14.0
+    dev: false
 
   /@babel/runtime@7.22.15:
     resolution: {integrity: sha512-T0O+aa+4w0u06iNmapipJXMV4HoUir03hpx3/YqXXhu9xim3w+dVphjFWl1OH8NbZHw5Lbm9k45drDkgq2VNNA==}
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.14.0
-    dev: true
 
   /@babel/template@7.21.9:
     resolution: {integrity: sha512-MK0X5k8NKOuWRamiEfc3KEJiHMTkGZNUjzMipqCGDDc6ijRl/B7RGSKVGncu4Ro/HdyzzY6cmoXuKI2Gffk7vQ==}
@@ -2012,7 +2012,7 @@ packages:
     resolution: {integrity: sha512-m4HEDZleaaCH+XgDDsPF15Ht6wTLsgDTeR3WYj9Q/k76JtWhrJjcP4+/XlG8LGT/Rol9qUfOIztXeA84ATpqPQ==}
     dependencies:
       '@babel/helper-module-imports': 7.22.5
-      '@babel/runtime': 7.22.11
+      '@babel/runtime': 7.22.15
       '@emotion/hash': 0.9.1
       '@emotion/memoize': 0.8.1
       '@emotion/serialize': 1.1.2
@@ -5060,7 +5060,7 @@ packages:
     resolution: {integrity: sha512-Cg7TFGpIr01vOQNODXOOaGz2NpCU5gl8x1qJFbb6hbZxR7XrcE2vtbAsTAbJ7/xwJtUuJEw8K8Zr/AE0LHlesg==}
     engines: {node: '>=10', npm: '>=6'}
     dependencies:
-      '@babel/runtime': 7.22.11
+      '@babel/runtime': 7.22.15
       cosmiconfig: 7.1.0
       resolve: 1.22.1
     dev: false
@@ -6674,10 +6674,10 @@ packages:
     engines: {node: '>=10.17.0'}
     dev: true
 
-  /i18next@23.4.6:
-    resolution: {integrity: sha512-jBE8bui969Ygv7TVYp0pwDZB7+he0qsU+nz7EcfdqSh+QvKjEfl9YPRQd/KrGiMhTYFGkeuPaeITenKK/bSFDg==}
+  /i18next@23.5.1:
+    resolution: {integrity: sha512-JelYzcaCoFDaa+Ysbfz2JsGAKkrHiMG6S61+HLBUEIPaF40WMwW9hCPymlQGrP+wWawKxKPuSuD71WZscCsWHg==}
     dependencies:
-      '@babel/runtime': 7.22.11
+      '@babel/runtime': 7.22.15
     dev: true
 
   /iconv-lite@0.4.24:
@@ -8233,7 +8233,7 @@ packages:
       react-is: 18.1.0
     dev: true
 
-  /react-i18next@13.2.2(i18next@23.4.6)(react-dom@18.2.0)(react@18.2.0):
+  /react-i18next@13.2.2(i18next@23.5.1)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-+nFUkbRByFwnrfDcYqvzBuaeZb+nACHx+fAWN/pZMddWOCJH5hoc21+Sa/N/Lqi6ne6/9wC/qRGOoQhJa6IkEQ==}
     peerDependencies:
       i18next: '>= 23.2.3'
@@ -8248,7 +8248,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.22.15
       html-parse-stringify: 3.0.1
-      i18next: 23.4.6
+      i18next: 23.5.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: true
