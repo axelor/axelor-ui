@@ -9,8 +9,8 @@ dependencies:
     specifier: ^1.2.1
     version: 1.2.1
   '@fluentui/priority-overflow':
-    specifier: ^9.1.4
-    version: 9.1.4
+    specifier: ^9.1.5
+    version: 9.1.5
   '@fluentui/react-context-selector':
     specifier: ^9.1.31
     version: 9.1.31(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.20.2)
@@ -2372,10 +2372,10 @@ packages:
       '@swc/helpers': 0.4.36
     dev: false
 
-  /@fluentui/priority-overflow@9.1.4:
-    resolution: {integrity: sha512-e/LLsYaWST6r6CMlF7TZn1A7UA+SNVqy+xYGSUEVKZwI44kaR/dgliiI6e6NuI4/BHMzcG/BuMP2QX+uTJaXRQ==}
+  /@fluentui/priority-overflow@9.1.5:
+    resolution: {integrity: sha512-o22tGQIy/6Dx78hgHOwTAvXV8jwGuBzlPeUAKDw3n0FFAEhllh/cqg1TsHW+Zy7zMJAYqWUPZRrXEOI1zxKzIQ==}
     dependencies:
-      '@swc/helpers': 0.4.36
+      '@swc/helpers': 0.5.2
     dev: false
 
   /@fluentui/react-context-selector@9.1.31(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.20.2):
@@ -4303,6 +4303,12 @@ packages:
     resolution: {integrity: sha512-5lxnyLEYFskErRPenYItLRSge5DjrJngYKdVjRSrWfza9G6KkgHEXi0vUZiyUeMU5JfXH1YnvXZzSp8ul88o2Q==}
     dependencies:
       legacy-swc-helpers: /@swc/helpers@0.4.14
+      tslib: 2.6.2
+    dev: false
+
+  /@swc/helpers@0.5.2:
+    resolution: {integrity: sha512-E4KcWTpoLHqwPHLxidpOqQbcrZVgi0rsmmZXUle1jXmJfuIf/UWpczUJ7MZZ5tlxytgJXyp0w4PGkkeLiuIdZw==}
+    dependencies:
       tslib: 2.6.2
     dev: false
 
