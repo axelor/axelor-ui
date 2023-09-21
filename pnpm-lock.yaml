@@ -45,8 +45,8 @@ dependencies:
     specifier: ^13.1.1
     version: 13.1.1(react-dom@18.2.0)(react@18.2.0)
   react-big-calendar:
-    specifier: ^1.8.2
-    version: 1.8.2(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^1.8.4
+    version: 1.8.4(react-dom@18.2.0)(react@18.2.0)
   react-dnd:
     specifier: ^16.0.1
     version: 16.0.1(@types/react@18.2.21)(react@18.2.0)
@@ -8118,13 +8118,13 @@ packages:
       - react-native
     dev: false
 
-  /react-big-calendar@1.8.2(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-L6OcmTGT198eD6VmaK/T6IE6SPYSV2lup//V25huCy3KLgONmEPQbX8/m3XnHYKqCEIoIyU8mzIsSmd8eXQVbw==}
+  /react-big-calendar@1.8.4(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-zo2LDQxWHvcnkvtgzZlxJsCfi6fI8neOSyjG5ntePLO2CAlkhHiwwXgynxIFeWCwJ5LMnhN6tBt03IN4Y0bOzQ==}
     peerDependencies:
       react: ^16.14.0 || ^17 || ^18
       react-dom: ^16.14.0 || ^17 || ^18
     dependencies:
-      '@babel/runtime': 7.22.11
+      '@babel/runtime': 7.22.15
       clsx: 1.2.1
       date-arithmetic: 4.1.0
       dayjs: 1.11.10
@@ -8281,7 +8281,7 @@ packages:
       react: '>=16.3.0'
       react-dom: '>=16.3.0'
     dependencies:
-      '@babel/runtime': 7.22.11
+      '@babel/runtime': 7.22.15
       '@popperjs/core': 2.11.8
       '@restart/hooks': 0.4.8(react@18.2.0)
       '@types/warning': 3.0.0
@@ -9193,7 +9193,7 @@ packages:
     peerDependencies:
       react: '>=15.0.0'
     dependencies:
-      '@babel/runtime': 7.22.11
+      '@babel/runtime': 7.22.15
       '@types/react': 18.2.21
       invariant: 2.2.4
       react: 18.2.0
