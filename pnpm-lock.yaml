@@ -12,8 +12,8 @@ dependencies:
     specifier: ^9.1.5
     version: 9.1.5
   '@fluentui/react-context-selector':
-    specifier: ^9.1.31
-    version: 9.1.31(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.20.2)
+    specifier: ^9.1.34
+    version: 9.1.34(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.20.2)
   '@material-symbols/font-400':
     specifier: ^0.12.0
     version: 0.12.0
@@ -2366,10 +2366,10 @@ packages:
   /@floating-ui/utils@0.1.1:
     resolution: {integrity: sha512-m0G6wlnhm/AX0H12IOWtK8gASEMffnX08RtKkCgTdHb9JpHKGloI7icFfLg9ZmQeavcvR0PKmzxClyuFPSjKWw==}
 
-  /@fluentui/keyboard-keys@9.0.3:
-    resolution: {integrity: sha512-40KBVJ9HzsvmPL3rwYaAvxCacNS0xnTmOt6TLxxrAVgVrZ1X7DLgd8OGFZcWROs0dhHdCk2D51bl4nK8Q1r3mQ==}
+  /@fluentui/keyboard-keys@9.0.4:
+    resolution: {integrity: sha512-hmAZ01M0FAmn5ud6e0oEsckxMyJEIPrSQ+BFbMulZwYyeP7jDTnPEbBj+qKC8CxRduDGPwKeJDllDnYvflkNNA==}
     dependencies:
-      '@swc/helpers': 0.4.36
+      '@swc/helpers': 0.5.2
     dev: false
 
   /@fluentui/priority-overflow@9.1.5:
@@ -2378,17 +2378,17 @@ packages:
       '@swc/helpers': 0.5.2
     dev: false
 
-  /@fluentui/react-context-selector@9.1.31(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.20.2):
-    resolution: {integrity: sha512-JM7uaY2gJvz0WHWE/HxcNgsoAqniGmdI08DYwUPrhUjtZGWpnJMH3cBVG5EeZcub+gEaWk8wnerBLyYAda9fOA==}
+  /@fluentui/react-context-selector@9.1.34(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.20.2):
+    resolution: {integrity: sha512-GkzXUQW+5i78gFCRRuywq+dA+aRQDzgsPznlJE7xRVm4Cz0V7owrYMI4IwWTFld25+QCdj2No1Y3e2+qUys5CQ==}
     peerDependencies:
-      '@types/react': '>=16.8.0 <19.0.0'
-      '@types/react-dom': '>=16.8.0 <19.0.0'
-      react: '>=16.8.0 <19.0.0'
-      react-dom: '>=16.8.0 <19.0.0'
+      '@types/react': '>=16.14.0 <19.0.0'
+      '@types/react-dom': '>=16.14.0 <19.0.0'
+      react: '>=16.14.0 <19.0.0'
+      react-dom: '>=16.14.0 <19.0.0'
       scheduler: ^0.19.0 || ^0.20.0
     dependencies:
-      '@fluentui/react-utilities': 9.13.0(@types/react@18.2.21)(react@18.2.0)
-      '@swc/helpers': 0.4.36
+      '@fluentui/react-utilities': 9.13.3(@types/react@18.2.21)(react@18.2.0)
+      '@swc/helpers': 0.5.2
       '@types/react': 18.2.21
       '@types/react-dom': 18.2.7
       react: 18.2.0
@@ -2396,14 +2396,14 @@ packages:
       scheduler: 0.20.2
     dev: false
 
-  /@fluentui/react-utilities@9.13.0(@types/react@18.2.21)(react@18.2.0):
-    resolution: {integrity: sha512-ySlFrDTR2SbOehXP89doYmafoySrWSwBhWEUWi8iDqkzl/NaPWONTfgED0KgJTsBz4132yJwc9m03KwubPRoIA==}
+  /@fluentui/react-utilities@9.13.3(@types/react@18.2.21)(react@18.2.0):
+    resolution: {integrity: sha512-40zO3PA8DOMIiOjx9eDepsF4NdPw0zVRVO5vNB+N0wxJeGdKBgN2DdXbh1f+GmfjcL5IJZdZYTbFMCim+ROY3w==}
     peerDependencies:
-      '@types/react': '>=16.8.0 <19.0.0'
-      react: '>=16.8.0 <19.0.0'
+      '@types/react': '>=16.14.0 <19.0.0'
+      react: '>=16.14.0 <19.0.0'
     dependencies:
-      '@fluentui/keyboard-keys': 9.0.3
-      '@swc/helpers': 0.4.36
+      '@fluentui/keyboard-keys': 9.0.4
+      '@swc/helpers': 0.5.2
       '@types/react': 18.2.21
       react: 18.2.0
     dev: false
@@ -4292,19 +4292,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /@swc/helpers@0.4.14:
-    resolution: {integrity: sha512-4C7nX/dvpzB7za4Ql9K81xK3HPxCpHMgwTZVyf+9JQ6VUbn9jjZVN7/Nkdz/Ugzs2CSjqnL/UPXroiVBVHUWUw==}
-    dependencies:
-      tslib: 2.6.2
-    dev: false
-
-  /@swc/helpers@0.4.36:
-    resolution: {integrity: sha512-5lxnyLEYFskErRPenYItLRSge5DjrJngYKdVjRSrWfza9G6KkgHEXi0vUZiyUeMU5JfXH1YnvXZzSp8ul88o2Q==}
-    dependencies:
-      legacy-swc-helpers: /@swc/helpers@0.4.14
-      tslib: 2.6.2
-    dev: false
 
   /@swc/helpers@0.5.2:
     resolution: {integrity: sha512-E4KcWTpoLHqwPHLxidpOqQbcrZVgi0rsmmZXUle1jXmJfuIf/UWpczUJ7MZZ5tlxytgJXyp0w4PGkkeLiuIdZw==}
