@@ -84,7 +84,7 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^13.2.2",
     "rimraf": "^5.0.1",
-    "sass": "^1.66.1",
+    "sass": "^1.68.0",
     "storybook": "^7.4.3",
     "typescript": "^5.2.2",
     "vite": "^4.4.9",
