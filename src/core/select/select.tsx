@@ -350,7 +350,11 @@ export const Select = forwardRef(function Select<
         }
       }
       if (open) return;
-      if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+      if (
+        event.key === "ArrowUp" ||
+        event.key === "ArrowDown" ||
+        event.key === " "
+      ) {
         event.preventDefault();
         handleOpen();
       }
