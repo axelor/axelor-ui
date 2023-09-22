@@ -171,15 +171,14 @@ export const Select = forwardRef(function Select<
 
   const handleOpen = useCallback(() => {
     if (open) return;
-    if (!multiple) {
-      const selected = value
-        ? items.findIndex((x) => optionEqual(x, value as Type))
-        : null;
-      setSelectedIndex(selected ?? null);
-    }
+    const item = Array.isArray(value) ? value[value.length - 1] : value;
+    const selected = item
+      ? items.findIndex((x) => optionEqual(x, item as Type))
+      : null;
+    setSelectedIndex(selected ?? null);
     setOpen(true);
     onOpen?.();
-  }, [items, multiple, onOpen, open, optionEqual, setOpen, value]);
+  }, [items, onOpen, open, optionEqual, setOpen, value]);
 
   const handleClose = useCallback(() => {
     if (open) {
