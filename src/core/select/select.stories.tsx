@@ -169,6 +169,7 @@ export const Basic = () => {
     readOnly?: boolean;
     disabled?: boolean;
     autoComplete?: boolean;
+    openOnFocus?: boolean;
   }>({
     autoComplete: false,
   });
@@ -200,6 +201,7 @@ export const Basic = () => {
         {renderCheckBox("readOnly")}
         {renderCheckBox("disabled")}
         {renderCheckBox("autoComplete")}
+        {renderCheckBox("openOnFocus")}
       </Box>
       <Select
         placeholder="Select a value"
@@ -207,6 +209,7 @@ export const Basic = () => {
         required={attrs.required}
         disabled={attrs.disabled}
         autoComplete={attrs.autoComplete}
+        openOnFocus={attrs.openOnFocus}
         options={OPTIONS}
         optionKey={(x) => x.value}
         optionLabel={(x) => x.title}

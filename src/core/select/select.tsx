@@ -10,7 +10,6 @@ import {
   useId,
   useInteractions,
   useListNavigation,
-  useMergeRefs,
   useRole,
 } from "@floating-ui/react";
 import {
@@ -25,7 +24,7 @@ import {
 import { MaterialIcon } from "../../icons/material-icon";
 import { Badge } from "../badge";
 import { clsx } from "../clsx";
-import { useControlled } from "../hooks";
+import { useControlled, useRefs } from "../hooks";
 
 import styles from "./select.module.scss";
 
@@ -61,6 +60,7 @@ export interface SelectProps<Type, Multiple extends boolean> {
   value?: SelectValue<Type, Multiple>;
   defaultValue?: SelectValue<Type, Multiple>;
   open?: boolean;
+  openOnFocus?: boolean | number;
   toggleIcon?: SelectIcon | false;
   clearIcon?: SelectIcon | false;
   icons?: SelectIcon[];
@@ -107,6 +107,7 @@ export const Select = forwardRef(function Select<
     readOnly,
     disabled,
     invalid,
+    openOnFocus,
     optionKey,
     optionLabel,
     optionEqual: isOptionEqual,
@@ -362,7 +363,7 @@ export const Select = forwardRef(function Select<
     [activeIndex, autoComplete, handleOpen, items, open, updateValue],
   );
 
-  const rootRef = useMergeRefs([ref, refs.setReference]);
+  const rootRef = useRefs(ref, refs.setReference);
   const inputRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -391,6 +392,49 @@ export const Select = forwardRef(function Select<
     },
     [disabled, handleToggleClick, readOnly],
   );
+
+  const [focusOnTab, setFocusOnTab] = useState(false);
+  const [focusOnce, setFocusOnce] = useState(true);
+  const [focusNow, setFocusNow] = useState(false);
+
+  const focusDelay = useMemo(
+    () => (typeof openOnFocus === "number" ? openOnFocus : 300),
+    [openOnFocus],
+  );
+
+  const handleBlur = useCallback(() => {
+    setFocusNow(false);
+    setFocusOnTab(Boolean(openOnFocus));
+  }, [openOnFocus]);
+
+  const handleFocus = useCallback(() => {
+    if (openOnFocus && focusOnce) {
+      setFocusNow(true);
+    }
+  }, [focusOnce, openOnFocus]);
+
+  const handleRootKeyUp = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.key === "Tab" && focusOnTab) {
+        setFocusOnTab(false);
+        setFocusNow(true);
+      }
+    },
+    [focusOnTab],
+  );
+
+  useEffect(() => {
+    if (focusNow) {
+      const timer = setTimeout(() => {
+        setFocusOnce(false);
+        setFocusNow(false);
+        handleOpen();
+      }, focusDelay);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [focusDelay, focusNow, handleOpen]);
 
   const handleClearClick = useCallback(() => {
     if (readOnly || disabled) return;
@@ -448,6 +492,8 @@ export const Select = forwardRef(function Select<
           placeholder={isEmpty(value) ? placeholder : undefined}
           onChange={handleInputChange}
           onKeyDown={handleInputKeyDown}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
       );
     }
@@ -468,13 +514,15 @@ export const Select = forwardRef(function Select<
     autoComplete,
     multiple,
     value,
+    placeholder,
     autoFocus,
     inputValue,
     readOnly,
     disabled,
-    placeholder,
     handleInputChange,
     handleInputKeyDown,
+    handleFocus,
+    handleBlur,
     renderValue,
     optionLabel,
   ]);
@@ -510,6 +558,9 @@ export const Select = forwardRef(function Select<
           tabIndex: autoComplete || disabled ? undefined : 0,
           onClick: handleRootClick,
           onKeyDown: handleRootKeyDown,
+          onKeyUp: handleRootKeyUp,
+          onFocus: autoComplete ? undefined : handleFocus,
+          onBlur: autoComplete ? undefined : handleBlur,
         })}
       >
         <div ref={contentRef} className={styles.content}>
