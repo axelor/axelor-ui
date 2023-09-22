@@ -274,7 +274,7 @@ export const Select = forwardRef(function Select<
 
   const handleInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      const text = event.target.value.trim();
+      const text = event.target.value;
       setInputValue(text);
       setSearchValue(text);
       onInputChange?.(text);
