@@ -136,7 +136,6 @@ export const Select = forwardRef(function Select<
   const [inputValue, setInputValue] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const valueRef = useRef<SelectValue<Type, Multiple>>();
 
@@ -169,16 +168,16 @@ export const Select = forwardRef(function Select<
     return options.filter((option) => matches(option, searchValue));
   }, [optionMatch, options, searchOptions, searchValue]);
 
+  const selectedIndex = useMemo(() => {
+    const item = Array.isArray(value) ? value[value.length - 1] : value;
+    return open && item ? items?.findIndex((x) => optionEqual(x, item)) : -1;
+  }, [items, open, optionEqual, value]);
+
   const handleOpen = useCallback(() => {
     if (open) return;
-    const item = Array.isArray(value) ? value[value.length - 1] : value;
-    const selected = item
-      ? items.findIndex((x) => optionEqual(x, item as Type))
-      : null;
-    setSelectedIndex(selected ?? null);
     setOpen(true);
     onOpen?.();
-  }, [items, onOpen, open, optionEqual, setOpen, value]);
+  }, [onOpen, open, setOpen]);
 
   const handleClose = useCallback(() => {
     if (open) {
