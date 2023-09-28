@@ -30,7 +30,7 @@ export function useControlled<T>(options: {
   useEffect(() => {
     if (isControlled || options.defaultState === defaultState) return;
     console.error(
-      `A component is chaning the default ${options.prop} state of an uncontrolled ${options.name} after being initialized.`,
+      `A component is changing the default ${options.prop} state of an uncontrolled ${options.name} after being initialized.`,
     );
   }, [
     defaultState,
