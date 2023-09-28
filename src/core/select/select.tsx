@@ -378,6 +378,10 @@ export const Select = forwardRef(function Select<
     (event: React.MouseEvent<HTMLDivElement>) => {
       if (disabled || event.isDefaultPrevented()) return;
       if (inputRef.current) inputRef.current.focus();
+      if (openOnFocus) {
+        setFocusOnce(false);
+        setFocusNow(false);
+      }
       if (readOnly) return;
       if (
         event.target === event.currentTarget ||
@@ -388,7 +392,7 @@ export const Select = forwardRef(function Select<
         handleToggleClick();
       }
     },
-    [disabled, handleToggleClick, readOnly],
+    [disabled, handleToggleClick, openOnFocus, readOnly],
   );
 
   const [focusOnTab, setFocusOnTab] = useState(false);
