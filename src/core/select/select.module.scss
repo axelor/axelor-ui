@@ -113,6 +113,7 @@
   outline: none;
 }
 
+.select:not(.disabled).open,
 .select:not(.disabled):focus,
 .select:not(.disabled):focus-within {
   border: var(--ax-input-focus-border);
@@ -122,6 +123,7 @@
 .invalid {
   border: var(--ax-input-invalid-border) !important;
 }
+.invalid:not(.disabled).open,
 .invalid:not(.disabled):focus,
 .invalid:not(.disabled):focus-within {
   box-shadow: var(--ax-input-invalid-focus-shadow) !important;

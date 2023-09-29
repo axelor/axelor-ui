@@ -569,7 +569,7 @@ export const Select = forwardRef(function Select<
           {multiple && renderMultiple()}
           {renderSelector()}
         </div>
-        <div className={styles.actions} onClick={handleClose}>
+        <div tabIndex={-1} className={styles.actions} onClick={handleClose}>
           {canClear && (
             <div
               className={clsx(styles.action, styles.clearIcon)}
