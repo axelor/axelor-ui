@@ -85,7 +85,11 @@ export interface NavTabsProps {
 type ContextValue = {
   active: string | null;
   activeElement: HTMLElement | null;
-  setActive: (id: string | null, element: HTMLElement | null) => void;
+  setActive: (
+    id: string | null,
+    element: HTMLElement | null,
+    persist?: boolean,
+  ) => void;
 };
 
 const NavTabsContext = createContext<ContextValue>({
@@ -153,8 +157,12 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
     );
 
     const setActive = useCallback(
-      (id: string | null, element: HTMLElement | null) => {
-        setActiveTab(id);
+      (
+        id: string | null,
+        element: HTMLElement | null,
+        persist = true,
+      ) => {
+        persist && setActiveTab(id);
         setActiveElement(element);
         if (element) {
           scrollIn(element);
@@ -347,7 +355,7 @@ function NavTab(props: NavTabProps) {
 
   useEffect(() => {
     if (isActive) {
-      setActive(item.id, element);
+      setActive(item.id, element, false);
     }
   }, [element, isActive, item.id, setActive]);
 
