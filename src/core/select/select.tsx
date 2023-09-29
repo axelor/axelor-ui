@@ -389,10 +389,22 @@ export const Select = forwardRef(function Select<
         event.target === contentRef.current ||
         contentRef.current?.contains(event.target as Node)
       ) {
-        handleToggleClick();
+        // keep open if input text is set
+        if (autoComplete && inputRef.current?.value) {
+          handleOpen();
+        } else {
+          handleToggleClick();
+        }
       }
     },
-    [disabled, handleToggleClick, openOnFocus, readOnly],
+    [
+      autoComplete,
+      disabled,
+      handleOpen,
+      handleToggleClick,
+      openOnFocus,
+      readOnly,
+    ],
   );
 
   const [focusOnTab, setFocusOnTab] = useState(false);
