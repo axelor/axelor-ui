@@ -174,10 +174,10 @@ export const Select = forwardRef(function Select<
   }, [items, open, optionEqual, value]);
 
   const handleOpen = useCallback(() => {
-    if (open) return;
+    if (open || disabled || readOnly) return;
     setOpen(true);
     onOpen?.();
-  }, [onOpen, open, setOpen]);
+  }, [disabled, onOpen, open, readOnly, setOpen]);
 
   const handleClose = useCallback(() => {
     if (open) {
