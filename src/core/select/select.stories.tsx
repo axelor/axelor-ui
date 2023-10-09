@@ -170,8 +170,10 @@ export const Basic = () => {
     disabled?: boolean;
     autoComplete?: boolean;
     openOnFocus?: boolean;
+    clearOnBlur?: boolean;
   }>({
     autoComplete: false,
+    clearOnBlur: false,
   });
 
   const handleCheckBox = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -202,6 +204,7 @@ export const Basic = () => {
         {renderCheckBox("disabled")}
         {renderCheckBox("autoComplete")}
         {renderCheckBox("openOnFocus")}
+        {renderCheckBox("clearOnBlur")}
       </Box>
       <Select
         placeholder="Select a value"
@@ -210,6 +213,7 @@ export const Basic = () => {
         disabled={attrs.disabled}
         autoComplete={attrs.autoComplete}
         openOnFocus={attrs.openOnFocus}
+        clearOnBlur={attrs.clearOnBlur}
         options={OPTIONS}
         optionKey={(x) => x.value}
         optionLabel={(x) => x.title}

@@ -61,6 +61,7 @@ export interface SelectProps<Type, Multiple extends boolean> {
   defaultValue?: SelectValue<Type, Multiple>;
   open?: boolean;
   openOnFocus?: boolean | number;
+  clearOnBlur?: boolean;
   toggleIcon?: SelectIcon | false;
   clearIcon?: SelectIcon | false;
   icons?: SelectIcon[];
@@ -108,6 +109,7 @@ export const Select = forwardRef(function Select<
     disabled,
     invalid,
     openOnFocus,
+    clearOnBlur,
     optionKey,
     optionLabel,
     optionEqual: isOptionEqual,
@@ -145,17 +147,19 @@ export const Select = forwardRef(function Select<
     [isOptionEqual, optionKey],
   );
 
-  useEffect(() => {
-    if (valueRef.current === value) return;
-    if (value && !multiple) {
-      setInputValue(optionLabel(value as Type));
-    } else {
-      setInputValue("");
-    }
+  const resetInput = useCallback(() => {
+    const text = multiple || isEmpty(value) ? "" : optionLabel(value as Type);
+    setInputValue(text);
     setSearchValue("");
     onInputChange?.("");
-    valueRef.current = value;
   }, [multiple, onInputChange, optionLabel, value]);
+
+  useEffect(() => {
+    if (valueRef.current !== value) {
+      resetInput();
+      valueRef.current = value;
+    }
+  }, [resetInput, value]);
 
   const searchOptions = useCallback(
     (option: Type, text: string) =>
@@ -419,7 +423,10 @@ export const Select = forwardRef(function Select<
   const handleBlur = useCallback(() => {
     setFocusNow(false);
     setFocusOnTab(Boolean(openOnFocus));
-  }, [openOnFocus]);
+    if (clearOnBlur && !open) {
+      resetInput();
+    }
+  }, [clearOnBlur, open, openOnFocus, resetInput]);
 
   const handleFocus = useCallback(() => {
     if (openOnFocus && focusOnce) {
