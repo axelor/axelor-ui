@@ -63,6 +63,7 @@ export interface SelectProps<Type, Multiple extends boolean> {
   open?: boolean;
   openOnFocus?: boolean | number;
   clearOnBlur?: boolean;
+  clearOnEscape?: boolean;
   toggleIcon?: SelectIcon | false;
   clearIcon?: SelectIcon | false;
   icons?: SelectIcon[];
@@ -111,6 +112,7 @@ export const Select = forwardRef(function Select<
     invalid,
     openOnFocus,
     clearOnBlur,
+    clearOnEscape,
     optionKey,
     optionLabel,
     optionEqual: isOptionEqual,
@@ -293,6 +295,9 @@ export const Select = forwardRef(function Select<
 
   const handleInputKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === "Escape" && clearOnEscape) {
+        resetInput();
+      }
       if (event.key === "Enter" && activeIndex !== null) {
         event.preventDefault();
         const option = items[activeIndex];
@@ -329,6 +334,7 @@ export const Select = forwardRef(function Select<
     },
     [
       activeIndex,
+      clearOnEscape,
       handleClose,
       handleOpen,
       inputValue,
@@ -336,6 +342,7 @@ export const Select = forwardRef(function Select<
       multiple,
       onChange,
       open,
+      resetInput,
       setValue,
       updateValue,
       value,
