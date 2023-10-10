@@ -47,6 +47,7 @@ export interface SelectOptionProps<Type> {
 export interface SelectCustomOption {
   key: string | number;
   title: React.ReactNode;
+  disabled?: boolean;
   onClick?: React.MouseEventHandler<HTMLElement>;
 }
 
@@ -660,13 +661,19 @@ export const Select = forwardRef(function Select<
                       listRef.current[items.length + index] = node;
                     },
                     onClick(event) {
+                      if (item.disabled) return;
                       handleClose();
                       setActiveIndex(null);
                       item.onClick?.(event);
                     },
                   })}
                   key={item.key}
-                  active={activeIndex === items.length + index}
+                  className={clsx({ [styles.disabled]: item.disabled })}
+                  disabled={item.disabled}
+                  aria-disabled={item.disabled}
+                  active={
+                    !item.disabled && activeIndex === items.length + index
+                  }
                 >
                   {item.title}
                 </SelectItem>

@@ -204,6 +204,11 @@
     color: var(--bs-dropdown-link-active-color);
     background-color: var(--bs-dropdown-link-active-bg);
   }
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
 }
 
 .tag {

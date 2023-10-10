@@ -326,10 +326,13 @@ export const Multiple: Story = {
 
 export const Async = () => {
   const [options, setOptions] = useState<Fruit[]>([]);
+  const [loading, setLoading] = useState(false);
+
   const [text, setText] = useState("");
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
   const handleInputChange = useCallback((text: string) => {
+    setLoading(true);
     setText(text);
   }, []);
 
@@ -338,6 +341,7 @@ export const Async = () => {
       clearTimeout(timerRef.current);
     }
     timerRef.current = setTimeout(() => {
+      setLoading(false);
       setOptions(
         OPTIONS.filter((x) =>
           x.title.toLowerCase().includes(text.toLowerCase()),
@@ -345,6 +349,22 @@ export const Async = () => {
       );
     }, 300);
   }, [text]);
+
+  const customOptions = useMemo(() => {
+    if (options.length) return [];
+    return [
+      {
+        key: "no-options",
+        title: (
+          <>
+            {loading && <span>Loading...</span>}
+            {loading || <span>No options</span>}
+          </>
+        ),
+        disabled: true,
+      },
+    ];
+  }, [loading, options.length]);
 
   return (
     <div style={{ width: 250 }}>
@@ -356,6 +376,7 @@ export const Async = () => {
         optionEqual={(o, v) => o.value === v.value}
         optionMatch={() => true}
         onInputChange={handleInputChange}
+        customOptions={customOptions}
       />
     </div>
   );
