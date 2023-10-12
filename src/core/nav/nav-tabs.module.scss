@@ -93,6 +93,10 @@
   user-select: none;
 }
 
+.button:not(.active) {
+  width: 0;
+}
+
 .button.active {
   .arrow {
     visibility: visible;
