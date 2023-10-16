@@ -108,6 +108,9 @@ export interface ThemeOptions {
         border?: ThemeElementBorder;
         shadow?: string;
       };
+      placeholder?: {
+        color?: string;
+      };
     };
     Shell?: ThemeElementColors & {
       scrollbar?: { color?: string };

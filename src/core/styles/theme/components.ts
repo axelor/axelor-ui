@@ -4,7 +4,7 @@ import { ThemeElementBorder, ThemeOptions } from "./types";
 function toBorder(
   options: ThemeOptions,
   opts?: ThemeElementBorder,
-  fallback?: ThemeElementBorder
+  fallback?: ThemeElementBorder,
 ) {
   const {
     width = fallback?.width,
@@ -32,14 +32,14 @@ function toShellVars(options: ThemeOptions) {
     "--ax-theme-shell-view-toolbar-padding": opts.view?.toolbar?.padding,
     "--ax-theme-shell-view-toolbar-border": toBorder(
       options,
-      opts.view?.toolbar?.border
+      opts.view?.toolbar?.border,
     ),
     "--ax-theme-shell-view-content-bg": opts.view?.content?.bg,
     "--ax-theme-shell-view-content-color": opts.view?.content?.color,
     "--ax-theme-shell-view-content-padding": opts.view?.content?.padding,
     "--ax-theme-shell-view-content-border": toBorder(
       options,
-      opts.view?.content?.border
+      opts.view?.content?.border,
     ),
   };
 }
@@ -60,7 +60,7 @@ function toPanelVars(options: ThemeOptions) {
     "--ax-theme-panel-header-border": toBorder(
       options,
       opts.header?.border,
-      opts.border
+      opts.border,
     ),
     "--ax-theme-panel-header-padding": opts.header?.padding,
     "--ax-theme-panel-header-title-padding": opts.title?.padding,
@@ -73,7 +73,7 @@ function toPanelVars(options: ThemeOptions) {
     "--ax-theme-panel-footer-border": toBorder(
       options,
       opts.header?.border,
-      opts.border
+      opts.border,
     ),
     "--ax-theme-panel-footer-padding": opts.footer?.padding,
     "--ax-theme-panel-footer-gap": opts.footer?.gap,
@@ -222,12 +222,13 @@ function toInputVars(options: ThemeOptions) {
     "--ax-theme-input-invalid-border": toBorder(options, opts.invalid?.border),
     "--ax-theme-input-invalid-focus-border": toBorder(
       options,
-      opts.invalid_focus?.border
+      opts.invalid_focus?.border,
     ),
     "--ax-theme-input-invalid-focus-shadow": opts.invalid_focus?.shadow,
     "--ax-theme-input-border-radius": opts.border?.radius,
     "--ax-theme-input-border-radius-sm": opts.border_sm?.radius,
     "--ax-theme-input-border-radius-lg": opts.border_lg?.radius,
+    "--ax-theme-input-placeholder-color": opts.placeholder?.color,
   };
 }
 

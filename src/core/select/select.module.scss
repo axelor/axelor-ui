@@ -27,6 +27,10 @@
     --ax-theme-input-border-radius,
     var(--bs-border-radius)
   );
+  --ax-input-placeholder-color: var(
+    --ax-theme-input-placeholder-color,
+    var(--bs-secondary-color)
+  );
 }
 
 .list {
@@ -98,7 +102,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   user-select: none;
-  opacity: 0.6;
+  color: var(--ax-input-placeholder-color);
 }
 
 .select {

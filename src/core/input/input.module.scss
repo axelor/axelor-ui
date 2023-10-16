@@ -42,6 +42,11 @@
     0 0 0 1px #fff,
     0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25)
   );
+
+  --ax-input-placeholder-color: var(
+    --ax-theme-input-placeholder-color,
+    var(--bs-secondary-color)
+  );
 }
 
 .input:not([type="range"]) {
@@ -57,6 +62,9 @@
       border: var(--ax-input-invalid-focus-border);
       box-shadow: var(--ax-input-invalid-focus-shadow);
     }
+  }
+  &::placeholder {
+    color: var(--ax-input-placeholder-color);
   }
 }
 
