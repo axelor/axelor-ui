@@ -113,14 +113,14 @@ export interface GridProps {
   onRowDoubleClick?: (
     e: React.SyntheticEvent,
     row: GridRow,
-    rowIndex: number
+    rowIndex: number,
   ) => void;
   onCellClick?: (
     e: React.SyntheticEvent,
     cell: any,
     cellIndex: number,
     row: GridRow,
-    rowIndex: number
+    rowIndex: number,
   ) => void;
   onRowReorder?: (dragRow: GridRow, hoverRow: GridRow) => void;
   onRecordAdd?: () => void;
@@ -128,20 +128,21 @@ export interface GridProps {
     row: any,
     rowIndex?: number,
     cell?: any,
-    cellIndex?: number
+    cellIndex?: number,
   ) => void;
   onRecordSave?: (
     record: any,
     recordIndex: number,
     columnIndex: number,
     dirty?: boolean,
-    saveFromEdit?: boolean
+    saveFromEdit?: boolean,
   ) => any;
   onRecordDiscard?: (
     record: any,
     recordIndex: number,
-    columnIndex: number
+    columnIndex: number,
   ) => void;
+  onRowSelectionChange?: (rows: number[]) => void;
   translate?: (key: string) => null | string;
   labels?: Record<GridLabel, string>;
 }
@@ -171,7 +172,7 @@ export interface GridRowProps {
     row: GridRow,
     rowIndex: number,
     columnIndex?: number,
-    column?: GridColumn
+    column?: GridColumn,
   ) => void;
   onUpdate?: (rowIndex: number, values: any) => void;
 }
