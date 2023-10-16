@@ -97,6 +97,10 @@
   text-overflow: ellipsis;
 }
 
+.input::placeholder {
+  color: var(--ax-input-placeholder-color);
+}
+
 .placeholder {
   overflow: hidden;
   text-overflow: ellipsis;
