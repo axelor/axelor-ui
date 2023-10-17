@@ -518,7 +518,11 @@ export const Select = forwardRef(function Select<
           className={styles.input}
           value={inputValue ?? ""}
           readOnly={readOnly || disabled}
-          placeholder={inputValue ? undefined : placeholder}
+          placeholder={
+            inputValue || (multiple && !isEmpty(value))
+              ? undefined
+              : placeholder
+          }
           onChange={handleInputChange}
           onKeyDown={handleInputKeyDown}
           onFocus={handleFocus}
