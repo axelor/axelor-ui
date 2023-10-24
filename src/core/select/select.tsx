@@ -659,7 +659,7 @@ export const Select = forwardRef(function Select<
                     },
                   })}
                   active={activeIndex === index}
-                  selected={selectedIndex === index}
+                  selected={!multiple && selectedIndex === index}
                 >
                   {!!renderOption || optionLabel(item)}
                   {!!renderOption &&
