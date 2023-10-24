@@ -64,6 +64,7 @@ export interface SelectProps<Type, Multiple extends boolean> {
   openOnFocus?: boolean | number;
   clearOnBlur?: boolean;
   clearOnEscape?: boolean;
+  disableAutoCloseOnSelect?: boolean;
   toggleIcon?: SelectIcon | false;
   clearIcon?: SelectIcon | false;
   icons?: SelectIcon[];
@@ -113,6 +114,7 @@ export const Select = forwardRef(function Select<
     openOnFocus,
     clearOnBlur,
     clearOnEscape,
+    disableAutoCloseOnSelect,
     optionKey,
     optionLabel,
     optionEqual: isOptionEqual,
@@ -257,7 +259,9 @@ export const Select = forwardRef(function Select<
       setActiveIndex(null);
       setInputValue(text);
       setSearchValue("");
-      handleClose();
+      if (!disableAutoCloseOnSelect) {
+        handleClose();
+      }
 
       inputRef.current?.focus();
 
