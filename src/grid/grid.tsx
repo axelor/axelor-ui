@@ -815,7 +815,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       ],
     );
 
-    const handleNavigation = (event: React.KeyboardEvent<HTMLElement>) => {
+    const handleNavigation = async (
+      event: React.KeyboardEvent<HTMLElement>,
+    ) => {
       const { ctrlKey, shiftKey } = event;
       const key = (() => {
         const { key } = event;
@@ -875,6 +877,15 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           return handleRowClick(event, rows[row], row, col);
         } else if (rows[row] && rows[row].type === ROW_TYPE.ROW) {
           if (props.editRowRenderer) {
+            if (onRecordEdit) {
+              const result = await onRecordEdit(
+                rows[row],
+                row,
+                columns[col],
+                col || -1,
+              );
+              if (result === null) return;
+            }
             return setState((data) => {
               data.editRow = [row, col];
             });

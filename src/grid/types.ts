@@ -129,7 +129,7 @@ export interface GridProps {
     rowIndex?: number,
     cell?: any,
     cellIndex?: number,
-  ) => void;
+  ) => Promise<any>;
   onRecordSave?: (
     record: any,
     recordIndex: number,
