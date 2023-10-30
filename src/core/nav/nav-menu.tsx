@@ -275,8 +275,7 @@ function useNavMenu({
 
   const handleLeave = useCallback(() => {
     setLookup(null);
-    setShowSearch(false);
-  }, [setShowSearch]);
+  }, []);
 
   const handleItemClick = useCallback(
     (item: NavMenuNode) => {
