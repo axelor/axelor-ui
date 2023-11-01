@@ -39,7 +39,6 @@ const TreeNodeContent = React.forwardRef<
                 className={styles.indent}
                 style={{
                   [rtl ? "marginRight" : "marginLeft"]: `${data.level ?? 0}rem`,
-                  width: 20,
                 }}
               >
                 {hasChildren(data) && (
