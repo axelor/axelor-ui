@@ -73,6 +73,12 @@ export interface SelectProps<Type, Multiple extends boolean> {
   disabled?: boolean;
   invalid?: boolean;
   customOptions?: SelectCustomOption[];
+  menuOptions?: {
+    offset?: number;
+    padding?: number;
+    maxWidth?: number;
+    maxHeight?: number;
+  };
   onChange?: (value: SelectValue<Type, Multiple>) => void;
   onOpen?: () => void;
   onClose?: () => void;
@@ -115,6 +121,7 @@ export const Select = forwardRef(function Select<
     clearOnBlur,
     clearOnEscape,
     closeOnSelect = true,
+    menuOptions,
     optionKey,
     optionLabel,
     optionEqual: isOptionEqual,
@@ -207,15 +214,19 @@ export const Select = forwardRef(function Select<
     open,
     onOpenChange: setOpen,
     whileElementsMounted: autoUpdate,
+    placement: "bottom-start",
     middleware: [
-      offset(6),
-      flip({ padding: 10 }),
+      offset(menuOptions?.offset ?? 6),
+      flip({ padding: menuOptions?.padding ?? 10 }),
       size({
         apply({ rects, availableHeight, elements }) {
-          const width = rects.reference.width;
-          const height = Math.min(350, availableHeight);
-          elements.floating.style.width = `${width}px`;
-          elements.floating.style.maxHeight = `${height}px`;
+          const height = menuOptions?.maxHeight ?? availableHeight;
+          const minWidth = rects.reference.width;
+          const maxHeight = Math.min(350, height);
+          const maxWidth = menuOptions?.maxWidth ?? minWidth;
+          elements.floating.style.minWidth = `${minWidth}px`;
+          elements.floating.style.maxWidth = `${maxWidth}px`;
+          elements.floating.style.maxHeight = `${maxHeight}px`;
         },
         padding: 10,
       }),
