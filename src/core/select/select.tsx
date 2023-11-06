@@ -215,6 +215,7 @@ export const Select = forwardRef(function Select<
     onOpenChange: setOpen,
     whileElementsMounted: autoUpdate,
     placement: "bottom-start",
+    strategy: "fixed",
     middleware: [
       offset(menuOptions?.offset ?? 6),
       flip({ padding: menuOptions?.padding ?? 10 }),
@@ -645,8 +646,8 @@ export const Select = forwardRef(function Select<
           )}
         </div>
       </div>
-      <FloatingPortal>
-        {open && (
+      {open && (
+        <FloatingPortal>
           <FloatingFocusManager
             context={context}
             initialFocus={-1}
@@ -707,8 +708,8 @@ export const Select = forwardRef(function Select<
               ))}
             </div>
           </FloatingFocusManager>
-        )}
-      </FloatingPortal>
+        </FloatingPortal>
+      )}
     </>
   );
 }) as unknown as <Type, Multiple extends boolean>(
