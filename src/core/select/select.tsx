@@ -264,14 +264,15 @@ export const Select = forwardRef(function Select<
   );
 
   const updateValue = useCallback(
-    (option: Type | null) => {
+    (option: Type | null, shouldCloseOnSelect = true) => {
       const next = option ? acceptOption(value, option) : null;
       const text = multiple ? "" : option ? optionLabel(option) : "";
 
       setActiveIndex(null);
       setInputValue(text);
       setSearchValue("");
-      if (closeOnSelect) {
+
+      if (closeOnSelect && shouldCloseOnSelect) {
         handleClose();
       }
 
@@ -304,7 +305,7 @@ export const Select = forwardRef(function Select<
         handleOpen();
         setActiveIndex(0);
       } else if (!multiple) {
-        updateValue(null);
+        updateValue(null, false);
       }
     },
     [handleOpen, multiple, onInputChange, updateValue],
