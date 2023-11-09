@@ -86,6 +86,10 @@
   padding: var(--ax-panel-header-title-padding);
 }
 
+.collapse {
+  cursor: pointer;
+}
+
 .more {
   display: flex;
   align-items: center;

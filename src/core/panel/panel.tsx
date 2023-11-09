@@ -40,7 +40,7 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
 
   const [open, setOpen] = useState(!collapsed);
   const [collapseState, setCollapseState] = useState(
-    collapsed ? "exited" : "entered"
+    collapsed ? "exited" : "entered",
   );
 
   const handleToggle = useCallback(() => setOpen((prev) => !prev), []);
@@ -73,7 +73,7 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
         setHeaderShadow(st > trigger.headerShadow);
       }
     },
-    [scrollbar.trigger]
+    [scrollbar.trigger],
   );
 
   useEffect(() => {
@@ -132,6 +132,7 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
       {hasHeader && (
         <Header
           {...moreProps}
+          handleToggle={handleToggle}
           className={clsx({
             [styles.hide]: headerHide,
             [styles.shadow]: headerShadow,
@@ -145,12 +146,25 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
   );
 });
 
-function Header(props: PanelProps) {
-  const { header, toolbar, className, children } = props;
+function Header(props: PanelProps & { handleToggle?: () => void }) {
+  const { header, toolbar, className, children, collapsible, handleToggle } =
+    props;
   return (
     <div className={clsx(styles.header, className)}>
       <div className={styles.headerInner}>
-        {header && <div className={styles.title}>{header}</div>}
+        {header && (
+          <div
+            {...(collapsible &&
+              handleToggle && {
+                onClick: handleToggle,
+              })}
+            className={clsx(styles.title, {
+              [styles.collapse]: collapsible,
+            })}
+          >
+            {header}
+          </div>
+        )}
         {toolbar && (
           <div className={styles.toolbar}>
             <CommandBar {...toolbar} />
