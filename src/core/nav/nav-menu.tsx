@@ -170,7 +170,7 @@ export function NavMenu({
         className,
         styles.nav,
         styles[`mode-${mode}`],
-        styles[`show-${show}`]
+        styles[`show-${show}`],
       )}
       style={style}
     >
@@ -242,12 +242,12 @@ function useNavMenu({
       icon: () => <MaterialIcon icon="search" />,
       items,
     }),
-    [items, searchOptions?.title]
+    [items, searchOptions?.title],
   );
 
   const icons = useMemo(
     () => (searchEnabled ? [searchItem, ...items] : items),
-    [items, searchEnabled, searchItem]
+    [items, searchEnabled, searchItem],
   );
 
   const setShowSearch = useCallback(
@@ -259,7 +259,7 @@ function useNavMenu({
         setLookup(active ? searchItem.id : null);
       }
     },
-    [searchEnabled, searchItem.id, searchOptions, showSearch]
+    [searchEnabled, searchItem.id, searchOptions, showSearch],
   );
 
   useEffect(() => {
@@ -304,7 +304,7 @@ function useNavMenu({
         setLookup(null);
       }
     },
-    [mode, onItemClick, searchItem, setShowSearch]
+    [mode, onItemClick, searchItem, setShowSearch],
   );
 
   const handleIconClick = useCallback(
@@ -318,7 +318,7 @@ function useNavMenu({
       setActive(root);
       setLookup(null);
     },
-    [onItemClick, searchItem, setShowSearch]
+    [onItemClick, searchItem, setShowSearch],
   );
 
   const handleIconHover = useCallback(
@@ -330,7 +330,7 @@ function useNavMenu({
         setShowSearch(false);
       }
     },
-    [searchEnabled, searchItem.id, setShowSearch]
+    [searchEnabled, searchItem.id, setShowSearch],
   );
 
   const handleSearchClick = useCallback(() => {
@@ -339,7 +339,7 @@ function useNavMenu({
 
   const state = useMemo(
     () => ({ active, lookup, selected }),
-    [active, lookup, selected]
+    [active, lookup, selected],
   );
 
   return {
@@ -527,11 +527,11 @@ function MenuIcon({ item, state, onItemClick, onItemHover }: ItemProps) {
   const bg = useMemo(() => iconColor && getRGB(iconColor, 0.1), [iconColor]);
   const hoverBg = useMemo(
     () => iconColor && getRGB(iconColor, 0.2),
-    [iconColor]
+    [iconColor],
   );
   const activeBg = useMemo(
     () => iconColor && getRGB(iconColor, 0.3),
-    [iconColor]
+    [iconColor],
   );
 
   const hover = item.id === state.lookup;
@@ -697,7 +697,7 @@ function SearchMenu({
 
   const items = useMemo(
     () => item.items?.flatMap((x) => flattenItem(x)).flat(),
-    [item]
+    [item],
   );
 
   const filtered = useMemo(() => {
@@ -705,7 +705,7 @@ function SearchMenu({
       return items.filter((item) =>
         filterMenuItem
           ? filterMenuItem(item, text)
-          : item.title.toLowerCase().includes(text.toLowerCase())
+          : item.title.toLowerCase().includes(text.toLowerCase()),
       );
     }
     return [];
@@ -721,7 +721,7 @@ function SearchMenu({
 
   const cancelSearch = useCallback(
     () => onItemClick?.({ id: state.active || "", title: "" }),
-    [onItemClick, state.active]
+    [onItemClick, state.active],
   );
 
   const handleKeyDown = useCallback(
@@ -757,7 +757,7 @@ function SearchMenu({
         e.preventDefault();
       }
     },
-    [cancelSearch, cursor, filtered, onItemClick]
+    [cancelSearch, cursor, filtered, onItemClick],
   );
 
   const handleBlur = useCallback(() => {
