@@ -10,6 +10,8 @@ import { TextField } from "../text-field";
 import { getRGB } from "./utils";
 
 import styles from "./nav-menu.module.scss";
+import { Popper, usePopperTrigger } from "../popper";
+import { Box } from "../box";
 
 export interface NavMenuItem {
   /**
@@ -594,7 +596,13 @@ function MenuIcons({
 
 function MenuItem({ item, state, onItemClick }: ItemProps) {
   const node: NavMenuNode = item;
-  const { icon, tag: Tag, tagColor, title, items = [], onClick } = item;
+  const { icon, tag: Tag, tagColor, title, help, items = [], onClick } = item;
+
+  const {
+    open: popperOpen,
+    targetEl,
+    setTargetEl,
+  } = usePopperTrigger({ trigger: "hover", delay: { open: 500, close: 100 } });
 
   const root = node.rootId || item.id;
   const active = item.id === state.active;
@@ -625,7 +633,7 @@ function MenuItem({ item, state, onItemClick }: ItemProps) {
         [styles.selected]: selected,
       })}
     >
-      <div className={styles.title} onClick={handleClick}>
+      <div className={styles.title} onClick={handleClick} ref={setTargetEl}>
         {hasIcon && <MenuIcon item={item} state={state} />}
         {hasIcon || <div className={styles.icon}></div>}
         <div className={styles.text}>{title}</div>
@@ -638,6 +646,21 @@ function MenuItem({ item, state, onItemClick }: ItemProps) {
           {hasItems && <MaterialIcon icon="keyboard_arrow_down" />}
         </div>
       </div>
+      {help && (
+        <Popper
+          open={popperOpen}
+          target={targetEl}
+          offset={[7, 0]}
+          arrow
+          shadow
+          rounded
+          placement="end"
+        >
+          <Box p={2} style={{ maxWidth: 320 }}>
+            <span dangerouslySetInnerHTML={{ __html: help }} />
+          </Box>
+        </Popper>
+      )}
       {hasItems && (
         <Collapse in={open} mountOnEnter unmountOnExit>
           <MenuItems
