@@ -26,7 +26,7 @@ import { useTranslation } from "./translate";
 export type ResizeHandler = (
   e: React.DragEvent<HTMLElement>,
   column: TYPES.GridColumn,
-  index: number
+  index: number,
 ) => void;
 
 export interface GridHeaderColumnProps extends GridColumnProps {
@@ -37,11 +37,11 @@ export interface GridHeaderColumnProps extends GridColumnProps {
   columns?: TYPES.GridColumn[];
   onGroup?: (e: SyntheticEvent, group: TYPES.GridGroup) => void;
   onUngroup?: (e: SyntheticEvent, group: TYPES.GridGroup) => void;
-  onClick?: (
+  onSort?: (
     e: SyntheticEvent,
     column: TYPES.GridColumn,
     columnIndex: number,
-    sortOrder?: "asc" | "desc"
+    sortOrder?: "asc" | "desc",
   ) => void;
   onShow?: (e: SyntheticEvent, column: TYPES.GridColumn) => void;
   onHide?: (e: SyntheticEvent, column: TYPES.GridColumn) => void;
@@ -92,7 +92,7 @@ function GridHeaderCheckbox({
 }
 
 export const GridHeaderColumn = React.memo(function GridHeaderColumn(
-  props: GridHeaderColumnProps
+  props: GridHeaderColumnProps,
 ) {
   const {
     data,
@@ -102,7 +102,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
     checkType,
     selectionType,
     onCheckAll,
-    onClick,
+    onSort,
     onShow,
     onHide,
     onGroup,
@@ -140,7 +140,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
           </MenuItem>
         );
       },
-    [handleHide]
+    [handleHide],
   );
 
   function renderColumn(column: TYPES.GridColumn, index: number) {
@@ -153,7 +153,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
     }
 
     const canResize = column.name !== "__reorder__" && !column.action;
-    const canSort = column.sortable !== false;
+    const canSort = onSort && column.sortable !== false;
     const hasMenu = Boolean(column.title?.trim());
     return (
       <>
@@ -169,7 +169,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
                 dropdownEl?.contains?.(e.target as Node))
             )
               return;
-            canSort && onClick && onClick(e, data, index);
+            canSort && onSort?.(e, data, index);
           }}
         >
           <Box as="span" flex={1} d="inline-flex" alignItems="center">
@@ -238,7 +238,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
                   />
                 }
                 onClick={(e: SyntheticEvent) =>
-                  onClick?.(e, column, index, "asc")
+                  onSort?.(e, column, index, "asc")
                 }
               >
                 {t("Sort Ascending")}
@@ -247,7 +247,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
               <RenderMenuItem
                 icon={<MaterialIcon fontSize="1.25rem" icon="sort" />}
                 onClick={(e: SyntheticEvent) =>
-                  onClick?.(e, column, index, "desc")
+                  onSort?.(e, column, index, "desc")
                 }
               >
                 {t("Sort Descending")}
@@ -257,7 +257,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
 
           {(onGroup || onUngroup) && (
             <>
-              {canSort && (<MenuDivider />)}
+              {canSort && <MenuDivider />}
 
               <MenuItem
                 onClick={(e: SyntheticEvent) => {
@@ -288,8 +288,8 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
 
           {onHide && (
             <>
-              {(canSort || onGroup || onUngroup) && (<MenuDivider />)}
-              
+              {(canSort || onGroup || onUngroup) && <MenuDivider />}
+
               <MenuItem
                 onClick={(e: SyntheticEvent) => {
                   handleHide();
@@ -308,7 +308,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
           {onShow &&
             columns
               ?.filter(
-                (c) => c.title && c.visible === false && c.hidden !== true
+                (c) => c.title && c.visible === false && c.hidden !== true,
               )
               .map((column) => (
                 <MenuItem
@@ -328,7 +328,9 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
 
           {onCustomize && (
             <>
-              {(canSort || onGroup || onUngroup || onHide || onShow) && (<MenuDivider />)}
+              {(canSort || onGroup || onUngroup || onHide || onShow) && (
+                <MenuDivider />
+              )}
               <MenuItem
                 onClick={(e: SyntheticEvent) => {
                   handleHide();

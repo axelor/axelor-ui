@@ -27,7 +27,7 @@ export interface GridHeaderProps
   onColumnResizeStart?: ResizeHandler;
   onColumnResize?: ResizeHandler;
   onColumnResizeEnd?: ResizeHandler;
-  onColumnClick?: (
+  onColumnSort?: (
     e: React.SyntheticEvent,
     column: TYPES.GridColumn,
     columnIndex: number,
@@ -57,7 +57,7 @@ export const GridHeader = React.memo(function GridHeader(
     rowRenderer,
     onCheckAll,
     onColumnDrop,
-    onColumnClick,
+    onColumnSort,
     onColumnCustomize,
     onColumnShow,
     onColumnHide,
@@ -85,7 +85,7 @@ export const GridHeader = React.memo(function GridHeader(
               groupBy={groupBy}
               columns={allColumns}
               onCheckAll={onCheckAll}
-              onClick={onColumnClick}
+              onSort={onColumnSort}
               onGroup={onColumnGroupAdd}
               onUngroup={onColumnGroupRemove}
               onShow={onColumnShow}

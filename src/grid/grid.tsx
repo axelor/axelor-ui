@@ -1293,11 +1293,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
                         onColumnResizeEnd: handleColumnResizeEnd,
                       }
                     : {}),
-                  ...(allowSorting
-                    ? {
-                        onColumnClick: handleSort,
-                      }
-                    : {}),
+                  ...(allowSorting && {
+                    onColumnSort: handleSort,
+                  }),
                   ...(allowGrouping
                     ? {
                         onColumnDrop: handleGroupColumnDrop,
