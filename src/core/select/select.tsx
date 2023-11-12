@@ -52,6 +52,7 @@ export interface SelectCustomOption {
 }
 
 export interface SelectProps<Type, Multiple extends boolean> {
+  id?: string;
   className?: string;
   placeholder?: string;
   options: Type[];
@@ -107,6 +108,7 @@ export const Select = forwardRef(function Select<
   Multiple extends boolean,
 >(props: SelectProps<Type, Multiple>, ref: React.ForwardedRef<HTMLDivElement>) {
   const {
+    id,
     placeholder,
     autoFocus,
     autoComplete = true,
@@ -548,6 +550,7 @@ export const Select = forwardRef(function Select<
     if (autoComplete) {
       return (
         <input
+          id={id}
           ref={inputRef}
           type="text"
           autoFocus={autoFocus}
@@ -584,6 +587,7 @@ export const Select = forwardRef(function Select<
     multiple,
     value,
     placeholder,
+    id,
     autoFocus,
     inputValue,
     readOnly,
