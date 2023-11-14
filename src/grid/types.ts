@@ -20,6 +20,7 @@ export interface GridColumn {
   renderer?: (props: any) => any;
   $changed?: boolean;
   $css?: string;
+  $headerCss?: string;
 }
 
 export interface GridSortColumn {

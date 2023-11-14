@@ -158,7 +158,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
     return (
       <>
         <span
-          className={classNames(styles.headerColumnTitle, {
+          className={classNames(styles.headerColumnTitle, column.$headerCss, {
             [styles.resizable]: Boolean(onResize),
           })}
           onClick={(e) => {
