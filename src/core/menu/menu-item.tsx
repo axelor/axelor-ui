@@ -29,7 +29,7 @@ export const MenuItem = withStyled(MenuItemBase)(
       <MenuItemBase {...props} ref={ref}>
         <Box d="flex" alignItems="center">
           {startIcon && <Icon as={startIcon} me={1} size="sm" />}
-          <Box d="inline-flex" flexGrow={1}>
+          <Box d="inline-flex" flexGrow={1} style={{minWidth: 0}}>
             {children || text}
           </Box>
           {label && <Box d="inline-flex">{label}</Box>}
