@@ -158,6 +158,7 @@
   height: 100%;
   display: flex;
   align-items: center;
+  background-color: var(--bs-table-th-bg);
   .rtl & {
     right: unset;
     left: 0;
