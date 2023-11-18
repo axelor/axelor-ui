@@ -192,6 +192,7 @@ function toCommandBarVars(options: ThemeOptions) {
     "--ax-theme-command-bar-button-active-border-color":
       opts.button_active?.border?.color,
     "--ax-theme-command-bar-button-active-shadow": opts.button_active?.shadow,
+    "--ax-theme-command-bar-divider-color": opts.divider?.color,
   };
 }
 

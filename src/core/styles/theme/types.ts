@@ -171,6 +171,9 @@ export interface ThemeOptions {
         border?: ThemeElementBorder;
         shadow?: string;
       };
+      divider?: {
+        color?: string;
+      };
     };
     Dropdown?: ThemeElementCommon & {
       item?: ThemeElementColors;
