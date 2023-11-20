@@ -65,7 +65,7 @@ export interface SelectProps<Type, Multiple extends boolean> {
   openOnFocus?: boolean | number;
   clearOnBlur?: boolean;
   clearOnEscape?: boolean;
-  removeOnBackpace?: boolean;
+  removeOnBackspace?: boolean;
   removeOnDelete?: boolean;
   closeOnSelect?: boolean;
   toggleIcon?: SelectIcon | false;
@@ -124,7 +124,7 @@ export const Select = forwardRef(function Select<
     openOnFocus,
     clearOnBlur,
     clearOnEscape,
-    removeOnBackpace = true,
+    removeOnBackspace = true,
     removeOnDelete = true,
     closeOnSelect = true,
     menuOptions,
@@ -352,7 +352,7 @@ export const Select = forwardRef(function Select<
       }
 
       if (
-        (event.key === "Backspace" && removeOnBackpace) ||
+        (event.key === "Backspace" && removeOnBackspace) ||
         (event.key === "Delete" && removeOnDelete)
       ) {
         if (isEmpty(value)) return;
@@ -378,7 +378,7 @@ export const Select = forwardRef(function Select<
       multiple,
       onChange,
       open,
-      removeOnBackpace,
+      removeOnBackspace,
       removeOnDelete,
       resetInput,
       setValue,
