@@ -154,7 +154,11 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
 
     const canResize = column.name !== "__reorder__" && !column.action;
     const canSort = onSort && column.sortable !== false;
-    const hasMenu = Boolean(column.title?.trim());
+    const hasMenu =
+      Boolean(column.title?.trim()) &&
+      Boolean(
+        canSort || onGroup || onUngroup || onShow || onHide || onCustomize,
+      );
     return (
       <>
         <span
