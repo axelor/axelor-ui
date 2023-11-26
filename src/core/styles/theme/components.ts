@@ -217,6 +217,7 @@ function toDropdownVars(options: ThemeOptions) {
 function toInputVars(options: ThemeOptions) {
   const opts = options.components?.Input ?? {};
   return {
+    "--ax-theme-input-padding": opts.padding,
     "--ax-theme-input-border": toBorder(options, opts.border),
     "--ax-theme-input-focus-border": toBorder(options, opts.focus?.border),
     "--ax-theme-input-focus-shadow": opts.focus?.shadow,

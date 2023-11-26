@@ -1,4 +1,5 @@
 .select {
+  --ax-input-padding: var(--ax-theme-input-padding, 0.375rem 0.75rem);
   --ax-input-border: var(
     --ax-theme-input-border,
     1px solid var(--bs-border-color)
@@ -117,7 +118,7 @@
   border: var(--ax-input-border);
   border-radius: var(--ax-input-border-radius);
   color: var(--bs-body-color);
-  padding: 0.375rem 0.75rem;
+  padding: var(--ax-input-padding);
   outline: none;
 }
 

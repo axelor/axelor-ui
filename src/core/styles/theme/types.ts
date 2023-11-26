@@ -92,6 +92,7 @@ export interface ThemeOptions {
   };
   components?: {
     Input?: {
+      padding?: string;
       border?: ThemeElementBorder;
       border_sm?: ThemeElementBorder;
       border_lg?: ThemeElementBorder;
