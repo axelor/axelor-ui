@@ -71,6 +71,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     const {
       editable,
       sortType,
+      rowType = "fixed",
       aggregationType = "group",
       selectionType = "multiple",
     } = props;
@@ -89,6 +90,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       allowRowReorder,
       stickyHeader = true,
       stickyFooter = true,
+      rowHeight,
+      maxRowHeight,
       labels,
     } = props;
     const isRTL = useRTL();
@@ -1278,6 +1281,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             [styles["no-columns"]]: noColumns,
             [styles["has-add-new"]]: Boolean(props.addNewText),
             [styles["has-footer"]]: hasFooter,
+            [styles["variable-rows"]]: rowType === "variable",
             [styles["rtl"]]: isRTL,
           })}
           {...(allowCellSelection
@@ -1346,6 +1350,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             noRecordsText={records.length === 0 ? props.noRecordsText : ""}
             addNewText={props.addNewText}
             {...{
+              rowHeight,
+              maxRowHeight,
               cellRenderer,
               rowRenderer,
               editRowRenderer,

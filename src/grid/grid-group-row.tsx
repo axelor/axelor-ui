@@ -10,7 +10,8 @@ import { useRTL } from "./utils";
 export const GridGroupRow = React.memo(function GridGroupRow(
   props: TYPES.GridRowProps,
 ) {
-  const { className, selected, data, index, width, renderer, onClick } = props;
+  const { className, selected, data, index, width, style, renderer, onClick } =
+    props;
   const { state, record } = data;
   const { title, level, value, total } = record;
   const RowRenderer = renderer || "div";
@@ -25,7 +26,7 @@ export const GridGroupRow = React.memo(function GridGroupRow(
       className={classNames(styles.row, styles.groupRow, className, {
         [styles.selected]: selected,
       })}
-      {...(width && { style: { width } })}
+      {...((width || style) && { style: { width, ...style } })}
     >
       {new Array(level)
         .fill(0)

@@ -21,6 +21,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
     data,
     index: rowIndex,
     selectionType,
+    style,
     renderer,
     cellRenderer,
     onCellClick,
@@ -85,6 +86,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
           [styles.selected]: selected,
           [styles.inner]: draggable,
         })}
+        style={style}
         onDoubleClick={(e) => onDoubleClick && onDoubleClick(e, data, rowIndex)}
       >
         {columns.map((column, index) => {

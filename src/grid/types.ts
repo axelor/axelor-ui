@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from "react";
+import React, { CSSProperties, SyntheticEvent } from "react";
 
 export interface GridColumn {
   id?: string;
@@ -101,6 +101,7 @@ export interface GridProps {
   resizeType?: "live" | "highlight";
   selectionType?: "single" | "multiple";
   aggregationType?: "group" | "all";
+  rowType?: "fixed" | "variable";
   editable?: boolean;
   allowGrouping?: boolean;
   allowSearch?: boolean;
@@ -116,6 +117,8 @@ export interface GridProps {
   allowRowReorder?: boolean;
   stickyHeader?: boolean;
   stickyFooter?: boolean;
+  rowHeight?: number | string;
+  maxRowHeight?: number | string;
   addNewText?: string | React.ReactNode;
   noRecordsText?: string | React.ReactNode;
   cellRenderer?: Renderer;
@@ -174,6 +177,7 @@ export interface GridRowProps {
   draggable?: boolean;
   className?: string;
   children?: any;
+  style?: CSSProperties;
   columns?: GridColumn[];
   selected?: boolean;
   selectedCell?: null | number;

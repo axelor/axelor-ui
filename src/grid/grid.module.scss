@@ -254,6 +254,9 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    .variable-rows & {
+      white-space: wrap;
+    }
   }
 }
 .header .row,

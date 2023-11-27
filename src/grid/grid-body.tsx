@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { CSSProperties, useMemo } from "react";
 import { GridGroupRow } from "./grid-group-row";
 import { GridBodyRow } from "./grid-body-row";
 import { GridFooterRow } from "./grid-footer-row";
@@ -15,6 +15,8 @@ export interface GridBodyProps
     Pick<
       TYPES.GridProps,
       | "selectionType"
+      | "rowHeight"
+      | "maxRowHeight"
       | "noRecordsText"
       | "addNewText"
       | "cellRenderer"
@@ -43,6 +45,8 @@ export function GridBody(props: GridBodyProps) {
     selectedRows,
     selectedCell,
     selectionType,
+    rowHeight,
+    maxRowHeight,
     rowRenderer,
     cellRenderer,
     rowGroupHeaderRenderer,
@@ -96,6 +100,14 @@ export function GridBody(props: GridBodyProps) {
     }
     return <div {...props}>{children}</div>;
   }
+  let style: CSSProperties = {};
+  if (rowHeight) {
+    style.height = rowHeight;
+    style.maxHeight = rowHeight;
+  }
+  if (maxRowHeight) {
+    style.maxHeight = maxRowHeight;
+  }
 
   return render(
     <>
@@ -114,6 +126,7 @@ export function GridBody(props: GridBodyProps) {
           selectedCell:
             selectedCell && selectedCell[0] === index ? selectedCell[1] : null,
           selected: (selectedRows || []).includes(index),
+          style,
           cellRenderer,
           onCellClick,
           onClick: onRowClick,
