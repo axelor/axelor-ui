@@ -254,6 +254,14 @@ function toBadgeVars(options: ThemeOptions) {
   };
 }
 
+function toButtonVars(options: ThemeOptions) {
+  const opts = options.components?.Button ?? {};
+  return {
+    "--ax-theme-btn-padding-x": opts.paddingX ?? opts.padding,
+    "--ax-theme-btn-padding-y": opts.paddingY ?? opts.padding,
+  };
+}
+
 export function toComponentVars(options: ThemeOptions) {
   return {
     ...toShellVars(options),
@@ -265,5 +273,6 @@ export function toComponentVars(options: ThemeOptions) {
     ...toDropdownVars(options),
     ...toInputVars(options),
     ...toBadgeVars(options),
+    ...toButtonVars(options),
   };
 }

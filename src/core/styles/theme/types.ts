@@ -68,6 +68,8 @@ export interface ThemeElementBorder {
 
 export interface ThemeElementSpacing {
   padding?: string;
+  paddingX?: string;
+  paddingY?: string;
   gap?: string;
 }
 
@@ -198,5 +200,6 @@ export interface ThemeOptions {
       light?: { color?: string };
       dark?: { color?: string };
     };
+    Button?: ThemeElementSpacing;
   };
 }

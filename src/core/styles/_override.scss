@@ -66,3 +66,28 @@
 .nav-select {
   --bs-primary: #6a67ff;
 }
+
+.btn {
+  --ax-btn-padding-y: var(--ax-theme-btn-padding-y, 0.375rem);
+  --ax-btn-padding-x: var(--ax-theme-btn-padding-x, 0.75rem);
+  --bs-btn-padding-y: var(--ax-btn-padding-y);
+  --bs-btn-padding-x: var(--ax-btn-padding-x);
+}
+
+.btn-sm {
+  --bs-btn-padding-y: calc(
+    var(--ax-btn-padding-y) - calc(var(--ax-btn-padding-y) / 3)
+  );
+  --bs-btn-padding-x: calc(
+    var(--ax-btn-padding-x) - calc(var(--ax-btn-padding-x) / 3)
+  );
+}
+
+.btn-lg {
+  --bs-btn-padding-y: calc(
+    var(--ax-btn-padding-y) + calc(var(--ax-btn-padding-y) / 3)
+  );
+  --bs-btn-padding-x: calc(
+    var(--ax-btn-padding-x) + calc(var(--ax-btn-padding-x) / 3)
+  );
+}
