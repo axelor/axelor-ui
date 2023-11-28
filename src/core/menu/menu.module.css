@@ -45,6 +45,23 @@
     --ax-theme-dropdown-divider-bg,
     var(--bs-border-color-translucent)
   );
+  --bs-dropdown-padding-x: var(--ax-theme-dropdown-padding-x, 0);
+  --bs-dropdown-padding-y: var(--ax-theme-dropdown-padding-y, 0.5rem);
+  --bs-dropdown-spacer: var(--ax-theme-dropdown-spacer, 0.125rem);
+  --bs-dropdown-item-padding-x: var(--ax-theme-dropdown-item-padding-x, 1rem);
+  --bs-dropdown-item-padding-y: var(
+    --ax-theme-dropdown-item-padding-y,
+    0.25rem
+  );
+  --bs-dropdown-header-color: var(--bs-dropdown-header-color);
+  --bs-dropdown-header-padding-x: var(
+    --ax-theme-dropdown-header-padding-x,
+    1rem
+  );
+  --bs-dropdown-header-padding-y: var(
+    --ax-theme-dropdown-header-padding-y,
+    0.5rem
+  );
 }
 
 .dropdownMenu {

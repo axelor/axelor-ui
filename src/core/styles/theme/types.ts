@@ -179,9 +179,10 @@ export interface ThemeOptions {
       };
     };
     Dropdown?: ThemeElementCommon & {
-      item?: ThemeElementColors;
+      item?: ThemeElementColors & ThemeElementSpacing;
       item_hover?: ThemeElementColors;
       item_active?: ThemeElementColors;
+      header?: ThemeElementColors & ThemeElementSpacing;
       divider?: ThemeElementColors;
     };
     NavSelect?: {

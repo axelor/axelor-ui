@@ -212,6 +212,18 @@ function toDropdownVars(options: ThemeOptions) {
     "--ax-theme-dropdown-link-active-color": opts.item_active?.color,
     "--ax-theme-dropdown-link-active-bg": opts.item_active?.bg,
     "--ax-theme-dropdown-divider-bg": opts.divider?.bg,
+    "--ax-theme-dropdown-padding-x": opts.paddingX ?? opts.padding,
+    "--ax-theme-dropdown-padding-y": opts.paddingY ?? opts.padding,
+    "--ax-theme-dropdown-spacer": opts.gap,
+    "--ax-theme-dropdown-item-padding-x":
+      opts.item?.paddingX ?? opts.item?.padding,
+    "--ax-theme-dropdown-item-padding-y":
+      opts.item?.paddingY ?? opts.item?.padding,
+    "--ax-theme-dropdown-header-color": opts.header?.color,
+    "--ax-theme-dropdown-header-padding-x":
+      opts.header?.paddingX ?? opts.header?.padding,
+    "--ax-theme-dropdown-header-padding-y":
+      opts.header?.paddingY ?? opts.header?.padding,
   };
 }
 
