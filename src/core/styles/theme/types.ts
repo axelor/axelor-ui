@@ -115,6 +115,12 @@ export interface ThemeOptions {
         color?: string;
       };
     };
+    Form?: {
+      padding?: string;
+      gap?: string;
+      rowGap?: string;
+      columnGap?: string;
+    };
     Shell?: ThemeElementColors & {
       scrollbar?: { color?: string };
       sidebar?: ThemeElementCommon;

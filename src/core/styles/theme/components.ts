@@ -275,6 +275,18 @@ function toButtonVars(options: ThemeOptions) {
   };
 }
 
+function toFormVars(options: ThemeOptions) {
+  const opts = options.components?.Form ?? {};
+  const gaps = opts.gap?.trim().split(/\s+/g).filter(Boolean) ?? [];
+  const rowGap = opts.rowGap ?? gaps[0];
+  const colGap = opts.columnGap ?? gaps[1] ?? gaps[0];
+  return {
+    "--ax-theme-form-padding": opts.padding,
+    "--ax-theme-form-row-gap": rowGap,
+    "--ax-theme-form-column-gap": colGap,
+  };
+}
+
 export function toComponentVars(options: ThemeOptions) {
   return {
     ...toShellVars(options),
@@ -287,5 +299,6 @@ export function toComponentVars(options: ThemeOptions) {
     ...toInputVars(options),
     ...toBadgeVars(options),
     ...toButtonVars(options),
+    ...toFormVars(options),
   };
 }
