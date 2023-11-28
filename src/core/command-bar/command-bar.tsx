@@ -114,7 +114,7 @@ export function CommandItem(props: CommandItemProps) {
   }
 
   const isSplit = onClick && items.length > 0 && !showAsMenuItem;
-  const Wrapper = isSplit ? ButtonGroup : Box;
+  const Wrapper = ButtonGroup;
 
   const showArrow = showDownArrow && !isSplit && items.length > 0;
 
@@ -225,7 +225,6 @@ export function CommandItem(props: CommandItemProps) {
           target={target}
           show={show}
           onHide={hideMenu}
-          rounded={false}
           className={styles.menu}
           {...menuProps}
           {...(showAsMenuItem && {

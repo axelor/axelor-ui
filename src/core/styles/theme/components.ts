@@ -183,6 +183,7 @@ function toCommandBarVars(options: ThemeOptions) {
     "--ax-theme-command-bar-button-bg": opts.button?.bg,
     "--ax-theme-command-bar-button-color": opts.button?.color,
     "--ax-theme-command-bar-button-border-color": opts.button?.border?.color,
+    "--ax-theme-command-bar-button-border-radius": opts.button?.border?.radius,
     "--ax-theme-command-bar-button-hover-bg": opts.button_hover?.bg,
     "--ax-theme-command-bar-button-hover-color": opts.button_hover?.color,
     "--ax-theme-command-bar-button-hover-border-color":

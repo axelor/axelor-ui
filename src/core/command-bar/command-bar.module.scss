@@ -17,7 +17,7 @@
   );
   --ax-command-bar-button-hover-bg: var(
     --ax-theme-command-bar-button-hover-bg,
-    rgba(0, 0, 0, 0.1)
+    rgba(0, 0, 0, 0.05)
   );
   --ax-command-bar-button-hover-color: var(
     --ax-theme-command-bar-button-hover-color,
@@ -29,7 +29,7 @@
   );
   --ax-command-bar-button-active-bg: var(
     --ax-theme-command-bar-button-active-bg,
-    rgba(0, 0, 0, 0.15)
+    rgba(0, 0, 0, 0.1)
   );
   --ax-command-bar-button-active-color: var(
     --ax-theme-command-bar-button-active-color,
@@ -43,6 +43,10 @@
     --ax-theme-command-bar-button-active-shadow,
     inset 0 3px 5px rgba(0, 0, 0, 0.1)
   );
+  --ax-command-bar-button-border-radius: var(
+    --ax-theme-command-bar-button-border-radius,
+    var(--bs-border-radius)
+  );
   --ax-command-bar-divider-color: var(
     --ax-theme-command-bar-divider-color,
     var(--bs-border-color)
@@ -55,12 +59,15 @@
 
 .itemWrapper {
   display: flex;
+  &:hover {
+    background-color: var(--ax-command-bar-button-hover-bg);
+  }
 }
 
 .item {
   outline: transparent;
   border: 0;
-  border-radius: 0;
+  border-radius: var(--ax-command-bar-button-border-radius);
   user-select: none;
   box-shadow: none;
   padding: var(--ax-command-bar-button-padding);
@@ -150,6 +157,7 @@
   --bs-btn-active-border-color: var(
     --ax-command-bar-button-active-border-color
   );
+  --bs-btn-border-radius: var(--ax-command-bar-button-border-radius);
   --bs-btn-active-shadow: var(--ax-command-bar-button-active-shadow);
   --bs-btn-disabled-color: var(--ax-command-bar-button-color);
   --bs-btn-disabled-bg: var(--ax-command-bar-button-bg);
