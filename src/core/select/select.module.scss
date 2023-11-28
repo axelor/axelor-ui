@@ -120,6 +120,8 @@
   color: var(--bs-body-color);
   padding: var(--ax-input-padding);
   outline: none;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .select:not(.disabled).open,
