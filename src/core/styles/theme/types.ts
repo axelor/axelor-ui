@@ -98,17 +98,21 @@ export interface ThemeOptions {
       border?: ThemeElementBorder;
       border_sm?: ThemeElementBorder;
       border_lg?: ThemeElementBorder;
+      border_width?: string;
       focus?: {
         border?: ThemeElementBorder;
+        border_width?: string;
         shadow?: string;
       };
       invalid?: {
         color?: string;
         border?: ThemeElementBorder;
+        border_width?: string;
       };
       invalid_focus?: {
         color?: string;
         border?: ThemeElementBorder;
+        border_width?: string;
         shadow?: string;
       };
       placeholder?: {

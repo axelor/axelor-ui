@@ -244,6 +244,11 @@ function toInputVars(options: ThemeOptions) {
     "--ax-theme-input-border-radius-sm": opts.border_sm?.radius,
     "--ax-theme-input-border-radius-lg": opts.border_lg?.radius,
     "--ax-theme-input-placeholder-color": opts.placeholder?.color,
+    "--ax-theme-input-border-width": opts.border_width,
+    "--ax-theme-input-focus-border-width": opts.focus?.border_width,
+    "--ax-theme-input-invalid-border-width": opts.invalid?.border_width,
+    "--ax-theme-input-invalid-focus-border-width":
+      opts.invalid_focus?.border_width,
   };
 }
 

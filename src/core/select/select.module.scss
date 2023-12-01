@@ -32,6 +32,20 @@
     --ax-theme-input-placeholder-color,
     var(--bs-secondary-color)
   );
+
+  --ax-input-border-width: var(--ax-theme-input-border-width, 1px);
+  --ax-input-focus-border-width: var(
+    --ax-theme-input-focus-border-width,
+    var(--ax-input-border-width)
+  );
+  --ax-input-invalid-border-width: var(
+    --ax-theme-input-invalid-border-width,
+    var(--ax-input-border-width)
+  );
+  --ax-input-invalid-focus-border-width: var(
+    --ax-theme-input-invalid-focus-border-width,
+    var(--ax-input-invalid-border-width)
+  );
 }
 
 .list {
@@ -116,6 +130,7 @@
   gap: 0.25rem;
   background-color: var(--bs-body-bg);
   border: var(--ax-input-border);
+  border-width: var(--ax-input-border-width);
   border-radius: var(--ax-input-border-radius);
   color: var(--bs-body-color);
   padding: var(--ax-input-padding);
@@ -128,11 +143,13 @@
 .select:not(.disabled):focus,
 .select:not(.disabled):focus-within {
   border: var(--ax-input-focus-border);
+  border-width: var(--ax-input-focus-border-width);
   box-shadow: var(--ax-input-focus-shadow);
 }
 
 .invalid {
   border: var(--ax-input-invalid-border) !important;
+  border-width: var(--ax-input-invalid-border-width) !important;
 }
 .invalid:not(.disabled).open,
 .invalid:not(.disabled):focus,

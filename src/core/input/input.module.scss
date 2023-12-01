@@ -25,6 +25,20 @@
     0 0 0 0.25rem rgb(var(--bs-danger-rgb), 0.25)
   );
 
+  --ax-input-border-width: var(--ax-theme-input-border-width, 1px);
+  --ax-input-focus-border-width: var(
+    --ax-theme-input-focus-border-width,
+    var(--ax-input-border-width)
+  );
+  --ax-input-invalid-border-width: var(
+    --ax-theme-input-invalid-border-width,
+    var(--ax-input-border-width)
+  );
+  --ax-input-invalid-focus-border-width: var(
+    --ax-theme-input-invalid-focus-border-width,
+    var(--ax-input-invalid-border-width)
+  );
+
   --ax-input-border-radius: var(
     --ax-theme-input-border-radius,
     var(--bs-border-radius)
@@ -71,7 +85,18 @@
 
 .input:not([type="range"], [type="checkbox"], [type="radio"]) {
   padding: var(--ax-input-padding);
+  border-width: var(--ax-input-border-width);
   border-radius: var(--ax-input-border-radius);
+  &:focus {
+    border-width: var(--ax-input-focus-border-width);
+  }
+  &:invalid,
+  &.invalid {
+    border-width: var(--ax-input-invalid-border-width);
+    &:focus {
+      border-width: var(--ax-input-invalid-focus-border-width);
+    }
+  }
   &.input-sm {
     border-radius: var(--ax-input-border-radius-sm);
   }
