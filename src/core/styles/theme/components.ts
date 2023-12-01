@@ -51,8 +51,7 @@ function toPanelVars(options: ThemeOptions) {
     "--ax-theme-panel-bg": opts.bg,
     "--ax-theme-panel-color": opts.color,
 
-    "--ax-theme-panel-border-width": opts.border?.width,
-    "--ax-theme-panel-border-color": opts.border?.color,
+    "--ax-theme-panel-border": toBorder(options, opts.border),
     "--ax-theme-panel-border-radius": opts.border?.radius,
     "--ax-theme-panel-shadow": opts.shadow,
 

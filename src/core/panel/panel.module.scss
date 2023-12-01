@@ -2,13 +2,10 @@
   --ax-panel-bg: var(--ax-theme-panel-bg, var(--bs-body-bg));
   --ax-panel-color: var(--ax-theme-panel-color, var(--bs-body-color));
 
-  --ax-panel-border-width: var(--ax-theme-panel-border-width, 1px);
-  --ax-panel-border-color: var(
-    --ax-theme-panel-border-color,
-    var(--bs-border-color)
+  --ax-panel-border: var(
+    --ax-theme-panel-border,
+    1px solid var(--bs-border-color)
   );
-  --ax-panel-border: var(--ax-panel-border-width) solid
-    var(--ax-panel-border-color);
   --ax-panel-border-radius: var(
     --ax-theme-panel-border-radius,
     var(--bs-border-radius)
@@ -162,7 +159,8 @@
 
 .headerInner {
   transform-origin: top;
-  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+  transition:
+    transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
     box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
 
