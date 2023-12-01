@@ -12,6 +12,7 @@ function toBorder(
     color = fallback?.color,
   } = opts ?? {};
 
+  if (width == "0" || width === "0px") return "none";
   if (width && style && color) {
     return [width, style, findColor(options, color)].join(" ");
   }
