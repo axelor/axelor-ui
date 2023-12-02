@@ -134,9 +134,17 @@
   border-radius: var(--ax-input-border-radius);
   color: var(--bs-body-color);
   padding: var(--ax-input-padding);
+  padding-right: 0.25rem;
   outline: none;
   font-size: 1rem;
   line-height: 1.5;
+}
+
+[dir="rtl"] {
+  .select {
+    padding: var(--ax-input-padding);
+    padding-left: 0.25rem;
+  }
 }
 
 .select:not(.disabled).open,
@@ -173,15 +181,7 @@
 
 .actions {
   display: flex;
-  margin-right: -0.5rem;
   user-select: none;
-}
-
-[dir="rtl"] {
-  .actions {
-    margin-right: 0;
-    margin-left: -0.5rem;
-  }
 }
 
 .action {
