@@ -83,6 +83,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         {...rendererProps}
         className={classNames(styles.row, className, {
           [styles.selected]: selected,
+          [styles.inner]: draggable,
         })}
         onDoubleClick={(e) => onDoubleClick && onDoubleClick(e, data, rowIndex)}
       >

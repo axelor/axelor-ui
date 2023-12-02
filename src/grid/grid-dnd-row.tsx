@@ -4,10 +4,12 @@
 import React from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-import { Box } from "../core";
+import { Box, clsx } from "../core";
 import { MaterialIcon } from "../icons/material-icon";
 
 import * as TYPES from "./types";
+
+import styles from "./grid.module.scss";
 
 const GridDNDRowContext = React.createContext<any>(null);
 
@@ -90,7 +92,7 @@ export function GridDNDRow(props: TYPES.GridRowProps) {
             ref={(ref) => provided.innerRef(ref)}
             style={getStyle(provided.draggableProps.style)}
             children={children}
-            className={className}
+            className={clsx(styles.dndRow, className)}
             data-dragging={snapshot.isDragging ? "true" : undefined}
           />
           <Box as="span" d="none" {...provided.dragHandleProps} />
