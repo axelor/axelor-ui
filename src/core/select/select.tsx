@@ -461,6 +461,9 @@ export const Select = forwardRef(function Select<
   const [focusOnce, setFocusOnce] = useState(true);
   const [focusNow, setFocusNow] = useState(false);
 
+  const hasOptions = options.length + (customOptions?.length ?? 0) > 0;
+  const isDropdownOpen = open && hasOptions;
+
   const focusDelay = useMemo(
     () => (typeof openOnFocus === "number" ? openOnFocus : 300),
     [openOnFocus],
@@ -511,11 +514,11 @@ export const Select = forwardRef(function Select<
   const toggleIcon = useMemo(() => {
     if (props.toggleIcon === false) return false;
     return {
-      icon: <MaterialIcon icon={open ? "arrow_drop_up" : "arrow_drop_down"} />,
+      icon: <MaterialIcon icon={isDropdownOpen ? "arrow_drop_up" : "arrow_drop_down"} />,
       onClick: handleToggleClick,
       ...props.toggleIcon,
     };
-  }, [props.toggleIcon, open, handleToggleClick]);
+  }, [props.toggleIcon, isDropdownOpen, handleToggleClick]);
 
   const clearIcon = useMemo(() => {
     if (props.clearIcon === false) return false;
@@ -669,7 +672,7 @@ export const Select = forwardRef(function Select<
           )}
         </div>
       </div>
-      {open && (
+      {isDropdownOpen && (
         <FloatingPortal>
           <FloatingFocusManager
             context={context}
