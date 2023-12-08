@@ -214,3 +214,11 @@ export interface ThemeOptions {
     Button?: ThemeElementSpacing;
   };
 }
+
+export interface ResponsiveThemeOptions extends ThemeOptions {
+  sm?: ThemeOptions;
+  md?: ThemeOptions;
+  lg?: ThemeOptions;
+  xl?: ThemeOptions;
+  xxl?: ThemeOptions;
+}

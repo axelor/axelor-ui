@@ -10,7 +10,7 @@ import {
 import { ClassValue, cssx } from "../../clsx";
 
 import { adoptStyleSheet } from "./sheet";
-import { ThemeOptions } from "./types";
+import { ResponsiveThemeOptions } from "./types";
 
 import stylesLtr from "../styles.module.scss";
 import stylesRtl from "../styles.rtl.module.scss";
@@ -23,7 +23,7 @@ const STYLES: Record<string, CSSModuleClasses> = {
 export interface ThemeContextValue {
   dir?: string;
   theme?: "light" | "dark";
-  options?: ThemeOptions;
+  options?: ResponsiveThemeOptions;
 }
 
 export interface ThemeProviderProps extends Partial<ThemeContextValue> {
@@ -77,7 +77,7 @@ export function useClassNames() {
   const styles = useStyles();
   return useCallback(
     (...args: ClassValue[]) => cssx(styles, ...args),
-    [styles]
+    [styles],
   );
 }
 
