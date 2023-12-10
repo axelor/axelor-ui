@@ -1,8 +1,8 @@
-import { ReactComponent as BiArrowClockwise } from "bootstrap-icons/icons/arrow-clockwise.svg";
-import { ReactComponent as BiArrowCounterclockwise } from "bootstrap-icons/icons/arrow-counterclockwise.svg";
-import { ReactComponent as BiClipboardCheck } from "bootstrap-icons/icons/clipboard-check.svg";
-import { ReactComponent as BiClipboard } from "bootstrap-icons/icons/clipboard.svg";
-import { ReactComponent as BiScissors } from "bootstrap-icons/icons/scissors.svg";
+import BiArrowClockwise from "bootstrap-icons/icons/arrow-clockwise.svg?react";
+import BiArrowCounterclockwise from "bootstrap-icons/icons/arrow-counterclockwise.svg?react";
+import BiClipboardCheck from "bootstrap-icons/icons/clipboard-check.svg?react";
+import BiClipboard from "bootstrap-icons/icons/clipboard.svg?react";
+import BiScissors from "bootstrap-icons/icons/scissors.svg?react";
 
 import { Menu as AxMenu } from "../menu/menu";
 import { MenuDivider } from "../menu/menu-divider";

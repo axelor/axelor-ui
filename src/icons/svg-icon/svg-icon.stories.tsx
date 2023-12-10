@@ -1,7 +1,7 @@
-import { ReactComponent as BiAlarm } from "bootstrap-icons/icons/alarm.svg";
-import { ReactComponent as BiHeartFill } from "bootstrap-icons/icons/heart-fill.svg";
-import { ReactComponent as BiShop } from "bootstrap-icons/icons/shop.svg";
-import { ReactComponent as BiToggles } from "bootstrap-icons/icons/toggles.svg";
+import BiAlarm from "bootstrap-icons/icons/alarm.svg?react";
+import BiHeartFill from "bootstrap-icons/icons/heart-fill.svg?react";
+import BiShop from "bootstrap-icons/icons/shop.svg?react";
+import BiToggles from "bootstrap-icons/icons/toggles.svg?react";
 
 import { Box } from "../../core";
 import { SvgIcon } from "./svg-icon";

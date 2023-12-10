@@ -1,20 +1,20 @@
+import BiArchive from "bootstrap-icons/icons/archive.svg?react";
+import BiBank from "bootstrap-icons/icons/bank.svg?react";
+import BiCardImage from "bootstrap-icons/icons/card-image.svg?react";
+import BiChevronDown from "bootstrap-icons/icons/chevron-down.svg?react";
+import BiChevronUp from "bootstrap-icons/icons/chevron-up.svg?react";
+import BiInboxFill from "bootstrap-icons/icons/inbox-fill.svg?react";
+import BiMailBox from "bootstrap-icons/icons/mailbox.svg?react";
+import BiSendCheckFill from "bootstrap-icons/icons/send-check-fill.svg?react";
+import BiSendFill from "bootstrap-icons/icons/send-fill.svg?react";
 import React, { ReactElement, useState } from "react";
-import { ReactComponent as BiArchive } from "bootstrap-icons/icons/archive.svg";
-import { ReactComponent as BiCardImage } from "bootstrap-icons/icons/card-image.svg";
-import { ReactComponent as BiBank } from "bootstrap-icons/icons/bank.svg";
-import { ReactComponent as BiChevronUp } from "bootstrap-icons/icons/chevron-up.svg";
-import { ReactComponent as BiChevronDown } from "bootstrap-icons/icons/chevron-down.svg";
-import { ReactComponent as BiSendFill } from "bootstrap-icons/icons/send-fill.svg";
-import { ReactComponent as BiMailBox } from "bootstrap-icons/icons/mailbox.svg";
-import { ReactComponent as BiInboxFill } from "bootstrap-icons/icons/inbox-fill.svg";
-import { ReactComponent as BiSendCheckFill } from "bootstrap-icons/icons/send-check-fill.svg";
 
-import { Collapse } from "../collapse";
 import { Box } from "../box";
+import { Collapse } from "../collapse";
 import { Icon } from "../icon";
-import { List, ListItem } from "./list";
 import { IconProps } from "../icon/icon";
 import { withStyled } from "../styled";
+import { List, ListItem } from "./list";
 
 const config = {
   component: List,

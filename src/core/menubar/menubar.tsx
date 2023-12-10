@@ -1,5 +1,5 @@
-import { ReactComponent as BiCaretLeftFill } from "bootstrap-icons/icons/caret-left-fill.svg";
-import { ReactComponent as BiCaretRightFill } from "bootstrap-icons/icons/caret-right-fill.svg";
+import BiCaretLeftFill from "bootstrap-icons/icons/caret-left-fill.svg?react";
+import BiCaretRightFill from "bootstrap-icons/icons/caret-right-fill.svg?react";
 import React, {
   useCallback,
   useContext,
@@ -29,7 +29,7 @@ const useMenubar = () => useContext(MenubarContext);
 
 function isSubmenu(menuItem: any) {
   return React.Children.toArray(menuItem.props.children).some(
-    (child: any) => child.type === AxMenuItem
+    (child: any) => child.type === AxMenuItem,
   );
 }
 
@@ -265,7 +265,7 @@ function Menu({
           };
 
           const handleMenuKeyDown = (
-            event: React.KeyboardEvent<HTMLElement>
+            event: React.KeyboardEvent<HTMLElement>,
           ) => {
             const { key } = event;
             switch (key) {
@@ -332,14 +332,14 @@ function MenuItem({
         onMouseLeave();
       }
     },
-    [onMouseLeave]
+    [onMouseLeave],
   );
 
   const handleMouseEnter = useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
       selected.current = "submenu";
     },
-    []
+    [],
   );
 
   const handleItemMouseEnter = useCallback(
@@ -347,7 +347,7 @@ function MenuItem({
       selected.current = "item";
       onMouseEnter(event);
     },
-    [onMouseEnter]
+    [onMouseEnter],
   );
 
   const { menubarRef } = useMenubar();
@@ -393,7 +393,7 @@ export const Menubar = withStyled(Box)((props, ref) => {
   const [beforeElements, menus, afterElements] = useMemo(() => {
     const all = React.Children.toArray(children).flat();
     const menuStartIndex = all.findIndex(
-      (item: any) => item && item.type === AxMenu
+      (item: any) => item && item.type === AxMenu,
     );
     return [
       all.slice(0, menuStartIndex),
@@ -413,12 +413,12 @@ export const Menubar = withStyled(Box)((props, ref) => {
       setActive(text);
       setShow(false);
     },
-    [active]
+    [active],
   );
 
   const getCurrentIndex = useCallback(
     () => menus.findIndex((item: any) => item.props.text === active),
-    [menus, active]
+    [menus, active],
   );
 
   const showNext = useCallback(() => {
@@ -461,13 +461,13 @@ export const Menubar = withStyled(Box)((props, ref) => {
         }
       }
     },
-    [rtl, showNext, showPrevious, hideMenu]
+    [rtl, showNext, showPrevious, hideMenu],
   );
 
   const menubarRef = useForwardedRef<HTMLDivElement>(ref);
   const value = useMemo(
     () => ({ rtl, menubarRef, hideMenu }),
-    [rtl, menubarRef, hideMenu]
+    [rtl, menubarRef, hideMenu],
   );
 
   return (

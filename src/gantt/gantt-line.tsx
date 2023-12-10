@@ -1,14 +1,13 @@
-import React from "react";
+import BiCaretDownFill from "bootstrap-icons/icons/caret-down-fill.svg?react";
 import moment, { Dayjs } from "dayjs";
+import React from "react";
 import { DragSourceMonitor, useDrag, useDrop } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
-import { Icon, useTheme } from "../core";
-import { useClassNames } from "../core";
-import { ReactComponent as BiCaretDownFill } from "bootstrap-icons/icons/caret-down-fill.svg";
+import { Icon, useClassNames, useTheme } from "../core";
 
-import { CONFIG, getDateFromOffset } from "./utils";
-import * as TYPES from "./types";
 import classes from "./gantt.module.scss";
+import * as TYPES from "./types";
+import { CONFIG, getDateFromOffset } from "./utils";
 
 function disablePreview(preview: (e: any, options: any) => void) {
   preview(getEmptyImage(), { captureDraggingState: true });

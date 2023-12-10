@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import { Icon, useClassNames, useTheme } from "../core";
 
-import { ReactComponent as BiCaretRightFill } from "bootstrap-icons/icons/caret-right-fill.svg";
-import { ReactComponent as BiCaretLeftFill } from "bootstrap-icons/icons/caret-left-fill.svg";
+import BiCaretLeftFill from "bootstrap-icons/icons/caret-left-fill.svg?react";
+import BiCaretRightFill from "bootstrap-icons/icons/caret-right-fill.svg?react";
 
 import classes from "./gantt.module.scss";
 import * as TYPES from "./types";

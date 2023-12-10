@@ -1,10 +1,10 @@
 /**
  * @title Basic
  */
+import BiRemoveIcon from "bootstrap-icons/icons/x.svg?react";
 import React from "react";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
-import { ReactComponent as BiRemoveIcon } from "bootstrap-icons/icons/x.svg";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { Tree } from "../tree";
 import records from "./data";
 
