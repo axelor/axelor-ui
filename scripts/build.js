@@ -1,9 +1,8 @@
-const glob = require("fast-glob");
-const fse = require("fs-extra");
-const path = require("path");
-const { program } = require("commander");
-
-const ts = require("typescript");
+import { program } from "commander";
+import glob from "fast-glob";
+import fse from "fs-extra";
+import path from "path";
+import ts from "typescript";
 
 async function doBuild(dir, out) {
   const configFile = ts.findConfigFile(dir, ts.sys.fileExists, "tsconfig.json");
@@ -22,7 +21,7 @@ async function doBuild(dir, out) {
   const { options, fileNames, errors } = ts.parseJsonConfigFileContent(
     config,
     ts.sys,
-    dir
+    dir,
   );
 
   options.outDir = out;
@@ -60,7 +59,7 @@ async function doCopy(dir, out) {
   const files = await glob(pattern, { cwd: src, ignore });
 
   files.forEach(
-    async (x) => await fse.copy(path.join(src, x), path.join(out, x))
+    async (x) => await fse.copy(path.join(src, x), path.join(out, x)),
   );
 }
 
