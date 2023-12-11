@@ -756,8 +756,9 @@ function SearchMenu({
       if (e.code === "Enter") {
         if (cursor > -1) {
           const item = filtered[cursor];
-          onItemClick?.(item);
+          item && onItemClick?.(item);
         }
+        return;
       }
       if (e.code === "ArrowUp" || e.code === "ArrowDown") {
         const inc = e.code === "ArrowUp" ? -1 : 1;
