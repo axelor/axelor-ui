@@ -749,23 +749,23 @@ function SearchMenu({
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.code === "Escape") {
+      if (e.key === "Escape") {
         cancelSearch();
         return;
       }
-      if (e.code === "Enter") {
+      if (e.key === "Enter") {
         if (cursor > -1) {
           const item = filtered[cursor];
           item && onItemClick?.(item);
         }
         return;
       }
-      if (e.code === "ArrowUp" || e.code === "ArrowDown") {
-        const inc = e.code === "ArrowUp" ? -1 : 1;
-        const max = e.code === "ArrowUp" ? 0 : filtered.length - 1;
+      if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+        const inc = e.key === "ArrowUp" ? -1 : 1;
+        const max = e.key === "ArrowUp" ? 0 : filtered.length - 1;
 
         const next =
-          e.code === "ArrowUp"
+          e.key === "ArrowUp"
             ? Math.max(max, cursor + inc)
             : Math.min(max, cursor + inc);
 

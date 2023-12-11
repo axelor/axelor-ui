@@ -20,7 +20,7 @@ function SearchColumn({ column }: { column: GridColumn }) {
   const { onSearch }: any = React.useContext(SearchContext);
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.keyCode === 13) {
+    if (e.key === "Enter") {
       e.preventDefault();
       onSearch && onSearch(column, (e.target as HTMLInputElement).value);
     }
