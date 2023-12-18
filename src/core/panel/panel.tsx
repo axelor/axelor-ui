@@ -20,6 +20,7 @@ export interface PanelProps extends React.HTMLProps<HTMLDivElement> {
   };
   collapsible?: boolean;
   collapsed?: boolean;
+  setCollapsed?: (collapsed?: boolean | ((prev?: boolean) => boolean)) => void;
   onToggle?: (collapsed: boolean) => void;
 }
 
@@ -31,6 +32,7 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
     toolbar,
     collapsible = false,
     collapsed = false,
+    setCollapsed,
     onToggle,
     ...restProps
   } = moreProps;
@@ -38,12 +40,14 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
   const hasHeader = Boolean(header || toolbar || collapsible);
   const hasFooter = Boolean(footer);
 
-  const [open, setOpen] = useState(!collapsed);
   const [collapseState, setCollapseState] = useState(
     collapsed ? "exited" : "entered",
   );
 
-  const handleToggle = useCallback(() => setOpen((prev) => !prev), []);
+  const handleToggle = useCallback(
+    () => setCollapsed?.((prev) => !prev),
+    [setCollapsed],
+  );
 
   const onEnter = useCallback(() => setCollapseState("enter"), []);
   const onEntering = useCallback(() => setCollapseState("entering"), []);
@@ -76,10 +80,6 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
     [scrollbar.trigger],
   );
 
-  useEffect(() => {
-    setOpen(!collapsed);
-  }, [collapsed]);
-
   const collapseIcon = collapsible ? (
     <CommandBar
       items={[
@@ -108,7 +108,7 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
 
   const body = collapsible ? (
     <Collapse
-      in={open}
+      in={!collapsed}
       onEnter={onEnter}
       onEntering={onEntering}
       onEntered={onEntered}
