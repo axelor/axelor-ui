@@ -65,6 +65,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
           checked={selected}
           onChange={() => {}}
           m={0}
+          tabIndex={-1}
         />
       );
     }

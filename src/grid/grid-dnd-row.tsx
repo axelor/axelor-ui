@@ -113,6 +113,7 @@ export function GridDNDColumn({
       onClick={onClick}
       style={{ ...props?.style, ...style }}
       {...props}
+      tabIndex={-1}
     >
       <MaterialIcon icon="drag_handle" />
     </Box>

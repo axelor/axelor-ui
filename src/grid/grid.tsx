@@ -846,7 +846,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         ].includes(key)
       )
         return;
-      event.preventDefault();
+      const isTabKey = key === "Tab";
+
+      !isTabKey && event.preventDefault();
 
       const { rows, groupBy } = state;
       const columns = getColumns(state.columns);
@@ -855,8 +857,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       const selectedCols = state.selectedCols || [];
       const isMultipleSelection = selectionType === "multiple";
       const data = rows.map((x) => x.record.id);
+      const isHeaderCell = selectedCols.length > 0;
       let [row, col] = selectedCell.length ? selectedCell : [];
-      let isHeaderCell = selectedCols.length > 0;
 
       if (key === "Enter") {
         const isCheckboxCell = columns[col] && isRowCheck(columns[col]);
@@ -893,7 +895,6 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         }
       }
 
-      const isTabKey = key === "Tab";
       const isEditMode = isTabKey;
       //@ts-ignore
       [row, col] = selectedCell.length ? selectedCell : [];
@@ -907,19 +908,23 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         [col] = selectedCols;
       }
 
+      const prevCol = col;
+      const prevRow = row;
+
+      const maxRow = data.length - 1;
+      const maxCol = columns.length - 1;
+      const isGroupCell =
+        !isHeaderCell && rows[row] && rows[row].type === ROW_TYPE.GROUP_ROW;
+      const isFirstColumn = col === 0;
+      const isLastColumn = col === maxCol;
+      const findRow = () => rows[row];
+      const Helper = navigator(rows, {
+        maxRow,
+        isGroupCell,
+        updateRowState: handleRowStateChange,
+      });
+
       if (!isNull(row) && !isNull(col)) {
-        const maxRow = data.length - 1;
-        const maxCol = columns.length - 1;
-        const isGroupCell =
-          !isHeaderCell && rows[row] && rows[row].type === ROW_TYPE.GROUP_ROW;
-        const isFirstColumn = col === 0;
-        const isLastColumn = col === maxCol;
-        const findRow = () => rows[row];
-        const Helper = navigator(rows, {
-          maxRow,
-          isGroupCell,
-          updateRowState: handleRowStateChange,
-        });
         const moveToStart = () => (col = 0);
         const moveToEnd = () => (col = maxCol);
         const moveUp = () => {
@@ -1006,8 +1011,19 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
         movement[key] && movement[key]();
       } else {
-        [row, col] = [0, 0];
+        [row, col] =
+          isTabKey && shiftKey
+            ? [Helper.findLastVisibleRow(maxRow + 1), maxCol]
+            : [0, 0];
       }
+
+      if (isTabKey && prevRow === row && prevCol === col) {
+        return setState((data) => {
+          data.selectedCell = null;
+        });
+      }
+
+      isTabKey && event.preventDefault();
 
       setState((data) => {
         const checkAndAssign = (
@@ -1200,11 +1216,14 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     React.useEffect(() => {
       if (state.selectedCell) {
-        scrollToCell(state.selectedCell);
+        const hasSelectedCellChanged =
+          String(state.selectedCell) !== String(refs.current.lastSelectedCell);
+        scrollToCell(state.selectedCell, hasSelectedCellChanged);
       } else if (state.selectedRows?.length === 1) {
         const [ind] = state.selectedRows;
         scrollToCell([ind, 0], false);
       }
+      refs.current.lastSelectedCell = state.selectedCell;
     }, [state.selectedCell, state.selectedRows, scrollToCell]);
 
     const noSelection = useMemo(() => [], []);
@@ -1262,7 +1281,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             [styles["rtl"]]: isRTL,
           })}
           {...(allowCellSelection
-            ? { tabIndex: 0, onKeyDown: handleNavigation }
+            ? {
+                tabIndex: 0,
+                onKeyDown: handleNavigation,
+              }
             : {})}
           onScroll={handleScroll}
         >

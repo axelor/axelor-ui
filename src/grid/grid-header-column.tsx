@@ -86,6 +86,7 @@ function GridHeaderCheckbox({
                 onCheckAll((e.target as HTMLInputElement).checked),
             }
           : { defaultChecked: false })}
+        tabIndex={-1}
       />
     </span>
   );
