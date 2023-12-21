@@ -16,7 +16,7 @@ import {
 } from "../core";
 
 import { MaterialIcon } from "../icons/material-icon";
-import { GridColumn, GridColumnProps } from "./grid-column";
+import { GridColumn } from "./grid-column";
 import { GridColumResizer } from "./grid-column-resizer";
 import styles from "./grid.module.scss";
 import * as TYPES from "./types";
@@ -29,7 +29,7 @@ export type ResizeHandler = (
   index: number,
 ) => void;
 
-export interface GridHeaderColumnProps extends GridColumnProps {
+export interface GridHeaderColumnProps extends TYPES.GridColumnProps {
   sort?: null | "asc" | "desc";
   checkType?: "checked" | "unchecked" | "indeterminate";
   selectionType?: TYPES.GridProps["selectionType"];

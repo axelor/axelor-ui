@@ -3,26 +3,7 @@ import { useClassNames } from "../core";
 import * as TYPES from "./types";
 import styles from "./grid.module.scss";
 
-export interface GridColumnProps {
-  data: TYPES.GridColumn;
-  index: number;
-  className?: string;
-  value?: any;
-  record?: TYPES.GridRow['record'];
-  type?: "header" | "footer" | "body";
-  selected?: boolean;
-  focus?: boolean;
-  renderer?: TYPES.Renderer;
-  onUpdate?: TYPES.GridRowProps["onUpdate"];
-  onClick?: (
-    e: React.SyntheticEvent,
-    column: TYPES.GridColumn,
-    columnIndex: number
-  ) => void;
-  children?: React.ReactNode;
-}
-
-export function GridColumn(props: GridColumnProps) {
+export function GridColumn(props: TYPES.GridColumnProps) {
   const { children, className, data, index, selected, renderer, onClick } =
     props;
   const { width, minWidth } = data;

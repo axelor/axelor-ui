@@ -23,6 +23,25 @@ export interface GridColumn {
   $headerCss?: string;
 }
 
+export interface GridColumnProps {
+  data: GridColumn;
+  index: number;
+  className?: string;
+  value?: any;
+  record?: GridRow['record'];
+  type?: "header" | "footer" | "body";
+  selected?: boolean;
+  focus?: boolean;
+  renderer?: Renderer;
+  onUpdate?: GridRowProps["onUpdate"];
+  onClick?: (
+    e: React.SyntheticEvent,
+    column: GridColumn,
+    columnIndex: number
+  ) => void;
+  children?: React.ReactNode;
+}
+
 export interface GridSortColumn {
   name: string;
   order: "asc" | "desc";
