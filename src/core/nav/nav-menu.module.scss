@@ -303,12 +303,6 @@
   }
 }
 
-.menu.search .header {
-  input {
-    border-radius: var(--ax-nav-menu-header-radius);
-  }
-}
-
 .menu.search .itemWrapper.active {
   .item .title {
     background-color: var(--ax-nav-menu-item-active-bg);
@@ -336,6 +330,8 @@
     padding: 0.25rem;
     background: transparent;
     input {
+      padding: 0.375rem 0.75rem;
+      border: 1px solid var(--bs-border-color);
       border-radius: calc(var(--ax-nav-menu-item-radius) - 4px);
     }
   }
