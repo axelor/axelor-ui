@@ -60,6 +60,7 @@ export interface GridRow {
   aggregate?: any;
   record?: any;
   state?: "open" | "close";
+  expand?: boolean;
 }
 
 export interface GridState {
@@ -72,6 +73,7 @@ export interface GridState {
   selectedCell?: null | number[];
   selectedRows?: null | number[];
   selectedCols?: null | number[];
+  ready?: boolean;
 }
 
 export type Renderer = (props: any) => React.ReactElement | null;
@@ -117,6 +119,7 @@ export interface GridProps {
   allowColumnCustomize?: boolean;
   allowColumnHide?: boolean;
   allowRowReorder?: boolean;
+  allowRowExpand?: boolean;
   stickyHeader?: boolean;
   stickyFooter?: boolean;
   rowHeight?: number | string;
@@ -132,6 +135,7 @@ export interface GridProps {
   footerRowRenderer?: Renderer;
   searchRowRenderer?: Renderer;
   searchColumnRenderer?: Renderer;
+  rowDetailsRenderer?: Renderer;
   rowGroupHeaderRenderer?: Renderer;
   rowGroupFooterRenderer?: Renderer;
   onColumnCustomize?: (e: React.SyntheticEvent, column?: GridColumn) => void;
@@ -188,6 +192,7 @@ export interface GridRowProps {
   renderer?: Renderer;
   cellRenderer?: Renderer;
   selectionType?: GridProps["selectionType"];
+  rowDetailsRenderer?: GridProps["rowDetailsRenderer"];
   onSave?: GridProps["onRecordSave"];
   onCancel?: GridProps["onRecordDiscard"];
   onCellClick?: GridProps["onCellClick"];
@@ -201,6 +206,7 @@ export interface GridRowProps {
     columnIndex?: number,
     column?: GridColumn,
   ) => void;
+  onExpand?: (row: GridRow) => void;
   onUpdate?: (rowIndex: number, values: any) => void;
 }
 

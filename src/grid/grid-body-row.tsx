@@ -3,10 +3,11 @@ import { Input } from "../core";
 import { useClassNames } from "../core";
 
 import { GridColumn } from "./grid-column";
-import { isRowCheck } from "./utils";
+import { isRowCheck, isRowExpand } from "./utils";
+import { MaterialIcon } from "../icons/material-icon";
+import { GridDNDRow } from "./grid-dnd-row";
 import * as TYPES from "./types";
 import styles from "./grid.module.scss";
-import { GridDNDRow } from "./grid-dnd-row";
 
 export const GridBodyRow = React.memo(function GridBodyRow(
   props: TYPES.GridRowProps,
@@ -22,11 +23,14 @@ export const GridBodyRow = React.memo(function GridBodyRow(
     index: rowIndex,
     selectionType,
     style,
+    width,
     renderer,
     cellRenderer,
+    rowDetailsRenderer: RowDetails,
     onCellClick,
     onDoubleClick,
     onClick,
+    onExpand,
     onUpdate,
   } = props;
 
@@ -75,6 +79,15 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         />
       );
     }
+    if (isRowExpand(column)) {
+      return (
+        <MaterialIcon
+          className={styles.expandRowIcon}
+          onClick={() => onExpand?.(data)}
+          icon={data.expand ? "arrow_drop_down" : "arrow_right"}
+        />
+      );
+    }
     return value;
   }
 
@@ -84,39 +97,48 @@ export const GridBodyRow = React.memo(function GridBodyRow(
   const DragComponent: any = draggable ? GridDNDRow : React.Fragment;
 
   return (
-    <DragComponent {...(draggable ? { ...props } : {})}>
-      <RowComponent
-        {...rendererProps}
-        className={classNames(styles.row, className, {
-          [styles.selected]: selected,
-          [styles.inner]: draggable,
-        })}
-        style={style}
-        onDoubleClick={(e) => onDoubleClick && onDoubleClick(e, data, rowIndex)}
-      >
-        {columns.map((column, index) => {
+    <>
+      <DragComponent {...(draggable ? { ...props } : {})}>
+        <RowComponent
+          {...rendererProps}
+          className={classNames(styles.row, className, {
+            [styles.selected]: selected,
+            [styles.inner]: draggable,
+          })}
+          style={style}
+          onDoubleClick={(e) =>
+            onDoubleClick && onDoubleClick(e, data, rowIndex)
+          }
+        >
+          {columns.map((column, index) => {
           const rawValue = getColumnRawValue(column);
           const value = getColumnValue(rawValue, column);
-          return (
-            <GridColumn
-              key={column.id ?? column.name}
-              data={column}
-              index={index}
-              type="body"
-              record={data.record}
-              value={value}
-              rawValue={rawValue}
-              focus={editCell === index}
-              selected={selectedCell === index}
-              renderer={column.renderer || cellRenderer}
-              onClick={handleCellClick}
-              onUpdate={handleUpdate}
-            >
-              {renderColumn(column, value)}
-            </GridColumn>
-          );
-        })}
-      </RowComponent>
-    </DragComponent>
+            return (
+              <GridColumn
+                key={column.id ?? column.name}
+                data={column}
+                index={index}
+                type="body"
+                record={data.record}
+                value={value}
+                rawValue={rawValue}
+                focus={editCell === index}
+                selected={selectedCell === index}
+                renderer={column.renderer || cellRenderer}
+                onClick={handleCellClick}
+                onUpdate={handleUpdate}
+              >
+                {renderColumn(column, value)}
+              </GridColumn>
+            );
+          })}
+        </RowComponent>
+      </DragComponent>
+      {RowDetails && data.expand && (
+        <div style={{ width }}>
+          <RowDetails data={data} onClose={() => onExpand?.(data)} />
+        </div>
+      )}
+    </>
   );
 });

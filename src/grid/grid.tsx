@@ -12,6 +12,7 @@ import {
   getColumnWidth,
   getRows,
   isRowCheck,
+  isRowExpand,
   isRowVisible,
   navigator,
   useRTL,
@@ -88,6 +89,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       allowColumnCustomize,
       allowColumnHide,
       allowRowReorder,
+      allowRowExpand,
       stickyHeader = true,
       stickyFooter = true,
       rowHeight,
@@ -117,6 +119,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       footerRowRenderer,
       rowGroupHeaderRenderer,
       rowGroupFooterRenderer,
+      rowDetailsRenderer,
       editRowRenderer,
       editRowColumnRenderer,
       searchRowRenderer,
@@ -153,6 +156,21 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             sortable: false,
             searchable: false,
             width: 32,
+          });
+        }
+        if (
+          allowRowExpand &&
+          !columns.find((col) => col.name === "__expand__")
+        ) {
+          columns.unshift({
+            name: "__expand__",
+            title: "",
+            type: "row-expand",
+            computed: true,
+            editable: false,
+            sortable: false,
+            searchable: false,
+            width: 50,
           });
         }
         if (
@@ -201,7 +219,13 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           });
         }
       });
-    }, [allowCheckboxSelection, allowRowReorder, getContainerWidth, setState]);
+    }, [
+      allowCheckboxSelection,
+      allowRowExpand,
+      allowRowReorder,
+      getContainerWidth,
+      setState,
+    ]);
 
     // handle column sorting
     const handleSort = React.useCallback(
@@ -267,6 +291,19 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             const row = draft.rows.find(($row) => $row.key === key);
             row &&
               (row.state = state || (row.state === "open" ? "close" : "open"));
+          });
+        }
+      },
+      [setState],
+    );
+
+    const handleRowExpandChange = React.useCallback(
+      function handleRowStateChange(row: TYPES.GridRow, expand?: boolean) {
+        if (isDefined(row)) {
+          const { key } = row;
+          return setState((draft) => {
+            const row = draft.rows.find(($row) => $row.key === key);
+            row && (row.expand = expand ?? !row.expand);
           });
         }
       },
@@ -866,6 +903,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
       if (key === "Enter") {
         const isCheckboxCell = columns[col] && isRowCheck(columns[col]);
+        const isExpandCell = columns[col] && isRowExpand(columns[col]);
         if (isHeaderCell) {
           if (isCheckboxCell) {
             //@ts-ignore
@@ -881,6 +919,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           return handleRowStateChange(rows[row]);
         } else if (isCheckboxCell) {
           return handleRowClick(event, rows[row], row, col);
+        } else if (isExpandCell) {
+          return handleRowExpandChange(rows[row]);
         } else if (rows[row] && rows[row].type === ROW_TYPE.ROW) {
           if (props.editRowRenderer) {
             if (onRecordEdit) {
@@ -1361,6 +1401,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
               rowGroupFooterRenderer,
               rowGroupHeaderRenderer,
             }}
+            {...(allowRowExpand && {
+              rowDetailsRenderer,
+              onRowExpand: handleRowExpandChange,
+            })}
             {...(editable
               ? {
                   editRowRenderer,

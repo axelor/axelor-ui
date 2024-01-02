@@ -11,6 +11,7 @@ import Resizing from "./demos/resizing";
 import Searching from "./demos/searching";
 import Selection from "./demos/selection";
 import Sorting from "./demos/sorting";
+import Expanding from "./demos/expanding";
 
 const stories = {
   component: Grid,
@@ -34,6 +35,7 @@ export {
   Reorder,
   Searching,
   Editable,
+  Expanding
 };
 
 export default stories;

@@ -19,6 +19,7 @@ export const isRowVisible = (rows: GridRow[], { parent }: any): boolean => {
 };
 
 export const isRowCheck = (column: GridColumn) => column.type === "row-checked";
+export const isRowExpand = (column: GridColumn) => column.type === "row-expand";
 
 export const getRows = ({
   columns,

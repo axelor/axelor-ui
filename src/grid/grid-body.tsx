@@ -22,6 +22,7 @@ export interface GridBodyProps
       | "cellRenderer"
       | "rowGroupHeaderRenderer"
       | "rowGroupFooterRenderer"
+      | "rowDetailsRenderer"
       | "rowRenderer"
       | "editRowRenderer"
       | "editRowColumnRenderer"
@@ -31,6 +32,7 @@ export interface GridBodyProps
       | "onRowDoubleClick"
       | "onCellClick"
     > {
+  onRowExpand?: (row: TYPES.GridRow) => void;
   onRowMove?: TYPES.GridRowProps["onMove"];
   onRowMoveStart?: TYPES.GridRowProps["onMoveStart"];
   onRowClick?: TYPES.GridRowProps["onClick"];
@@ -51,10 +53,12 @@ export function GridBody(props: GridBodyProps) {
     cellRenderer,
     rowGroupHeaderRenderer,
     rowGroupFooterRenderer,
+    rowDetailsRenderer,
     editRowRenderer,
     editRowColumnRenderer,
     addNewText,
     noRecordsText,
+    onRowExpand,
     onRecordAdd,
     onRecordSave,
     onRecordDiscard,
@@ -131,6 +135,7 @@ export function GridBody(props: GridBodyProps) {
           onCellClick,
           onClick: onRowClick,
           onDoubleClick: onRowDoubleClick,
+          onExpand: onRowExpand,
           onMove: onRowMove,
           onMoveStart: onRowMoveStart,
           onUpdate: onRecordUpdate,
@@ -173,8 +178,10 @@ export function GridBody(props: GridBodyProps) {
 
         return (
           <GridBodyRow
+            width={totalWidth}
             draggable={Boolean(onRowMove)}
             renderer={rowRenderer}
+            rowDetailsRenderer={rowDetailsRenderer}
             {...rowProps}
           />
         );

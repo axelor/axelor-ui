@@ -226,6 +226,13 @@
   }
 }
 
+.expandRowIcon {
+  font-size: 2rem;
+}
+
+.expandRowIcon:hover {
+  background: var(--bs-table-cell-active-bg);
+}
 .groupRow {
   color: var(--bs-table-hover-color);
   padding: var(--bs-table-cell-padding);
