@@ -342,11 +342,11 @@ const modifyData = data
         .map(($item) => ({
           ...$item,
           startToStart: $item.startToStart.filter(
-            (task) => task.id !== item.id
+            (task) => task.id !== item.id,
           ),
         })),
     ],
-    []
+    [],
   );
 
 const schema = {

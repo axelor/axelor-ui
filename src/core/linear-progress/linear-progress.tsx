@@ -19,44 +19,42 @@ const Inner = styled.div<LinearProgressProps & { dir: string }>(
       [styles.indeterminate]: indeterminate,
       [styles[dir]]: dir,
     },
-  ]
+  ],
 );
 
 const Outer = styled.div<LinearProgressProps>(
   () => ["progress"],
   ({ thickness }) => ({
     style: { height: thickness },
-  })
+  }),
 );
 
-export const LinearProgress = withStyled(Outer)(
-  (
-    {
-      indeterminate,
-      striped,
-      animated,
-      value = 0,
-      role = "progressbar",
-      ...props
-    },
-    ref
-  ) => {
-    const { dir = "" } = useTheme();
-    return (
-      <Outer {...props} ref={ref}>
-        <Inner
-          dir={dir}
-          indeterminate={indeterminate}
-          animated={animated}
-          striped={striped}
-          value={value}
-          role={role}
-          style={{ width: `${(value * 100) / 100}%` }}
-          aria-valuenow={value}
-          aria-valuemin={0}
-          aria-valuemax={100}
-        />
-      </Outer>
-    );
-  }
-);
+export const LinearProgress = withStyled(Outer)((
+  {
+    indeterminate,
+    striped,
+    animated,
+    value = 0,
+    role = "progressbar",
+    ...props
+  },
+  ref,
+) => {
+  const { dir = "" } = useTheme();
+  return (
+    <Outer {...props} ref={ref}>
+      <Inner
+        dir={dir}
+        indeterminate={indeterminate}
+        animated={animated}
+        striped={striped}
+        value={value}
+        role={role}
+        style={{ width: `${(value * 100) / 100}%` }}
+        aria-valuenow={value}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      />
+    </Outer>
+  );
+});

@@ -84,14 +84,14 @@ const extractStyle = <T extends StyleProps>(props: T) => {
   Object.entries(props)
     .filter(
       ([name, value]) =>
-        value !== null && value !== undefined && name in SystemConfig
+        value !== null && value !== undefined && name in SystemConfig,
     )
     .map(([name, value]) => {
       const compute = SystemConfig[name as KeyType];
       if (compute) {
         const values = toBreakpoints(value);
         return values.flatMap(([v, b]) =>
-          b && b !== "base" ? compute(v, b) : compute(v)
+          b && b !== "base" ? compute(v, b) : compute(v),
         );
       }
       return {} as ComputeResult;
@@ -124,12 +124,12 @@ const extractProps = <T extends StyleProps>(props: T) => {
 export const useStyleProps = <T extends CSSStyleProps>(props: T) => {
   const { styleProps, otherProps } = useMemo(
     () => extractProps(props),
-    [props]
+    [props],
   );
 
   const { classes, styles } = useMemo(
     () => extractStyle(styleProps),
-    [styleProps]
+    [styleProps],
   );
 
   const { className, style, ...rest } = otherProps;
@@ -137,12 +137,12 @@ export const useStyleProps = <T extends CSSStyleProps>(props: T) => {
 
   const computedClassName = useMemo(
     (): string => classNames(classes),
-    [classes, classNames]
+    [classes, classNames],
   );
 
   const computedStyle = useMemo(
     (): CSSProperties => ({ ...style, ...styles }),
-    [style, styles]
+    [style, styles],
   );
 
   return {

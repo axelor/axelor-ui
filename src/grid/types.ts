@@ -28,7 +28,7 @@ export interface GridColumnProps {
   index: number;
   className?: string;
   value?: any;
-  record?: GridRow['record'];
+  record?: GridRow["record"];
   type?: "header" | "footer" | "body";
   selected?: boolean;
   focus?: boolean;
@@ -37,7 +37,7 @@ export interface GridColumnProps {
   onClick?: (
     e: React.SyntheticEvent,
     column: GridColumn,
-    columnIndex: number
+    columnIndex: number,
   ) => void;
   children?: React.ReactNode;
 }

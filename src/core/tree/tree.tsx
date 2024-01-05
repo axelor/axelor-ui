@@ -33,7 +33,7 @@ function getChildrenList(data: any, parent: any): number[] {
           item.$key,
           ...collectChildrenIds(item.$key),
         ],
-        []
+        [],
       );
   };
   return collectChildrenIds(parent);
@@ -50,7 +50,7 @@ function getParentList(data: any, parent: any): number[] {
           item.$key,
           ...collectParentIds(item.parent),
         ],
-        []
+        [],
       );
   };
   return collectParentIds(parent);
@@ -76,7 +76,7 @@ export function Tree(props: TYPES.TreeProps) {
   const [loading, setLoading] = useState(false);
   const [editNode, setEditNode] = useState<TYPES.TreeNode | null>(null);
   const [sortColumns, setSortColumns] = useState<TYPES.TreeSortColumn[] | null>(
-    null
+    null,
   );
 
   const selectRow = useCallback((index: number) => {
@@ -86,7 +86,7 @@ export function Tree(props: TYPES.TreeProps) {
           return { ...row, selected: true };
         }
         return row.selected ? { ...row, selected: false } : row;
-      })
+      }),
     );
   }, []);
 
@@ -117,7 +117,7 @@ export function Tree(props: TYPES.TreeProps) {
         ];
       });
     },
-    []
+    [],
   );
 
   const handleToggle = useCallback(
@@ -152,12 +152,12 @@ export function Tree(props: TYPES.TreeProps) {
                   expanded: !record.expanded,
                 }
               : (record.childrenList || []).includes(row.$key)
-              ? { ...row, hidden: Boolean(record.expanded) }
-              : row
-          )
+                ? { ...row, hidden: Boolean(record.expanded) }
+                : row,
+          ),
       );
     },
-    [onLoad, sortColumns]
+    [onLoad, sortColumns],
   );
 
   const handleSelect = useCallback(
@@ -169,13 +169,13 @@ export function Tree(props: TYPES.TreeProps) {
         selectRow(index);
       }
     },
-    [handleToggle, selectRow]
+    [handleToggle, selectRow],
   );
 
   const handleDrop = useCallback(
     async function handleDrop(
       { data: dragItem }: { data: TYPES.TreeNode },
-      { data: hoverItem }: { data: TYPES.TreeNode }
+      { data: hoverItem }: { data: TYPES.TreeNode },
     ) {
       setLoading(true);
       try {
@@ -185,17 +185,17 @@ export function Tree(props: TYPES.TreeProps) {
         if (hoverParent.$key !== dragItem.parent && onNodeMove) {
           updatedNode = await onNodeMove(
             dragItem,
-            hoverParent as TYPES.TreeNode
+            hoverParent as TYPES.TreeNode,
           );
         }
         setData((data) => {
           const dragIndex = data.findIndex(
-            (item) => item.$key === dragItem?.$key
+            (item) => item.$key === dragItem?.$key,
           );
           data.splice(dragIndex, 1);
 
           let hoverIndex = data.findIndex(
-            (item) => item.$key === hoverItem?.$key
+            (item) => item.$key === hoverItem?.$key,
           );
           data.splice(hoverIndex + 1, 0, {
             ...updatedNode,
@@ -214,7 +214,7 @@ export function Tree(props: TYPES.TreeProps) {
                 data.splice(dragIndex, 1);
               }
               const hoverIndex = data.findIndex(
-                (item) => item.$key === nextHoverItem.$key
+                (item) => item.$key === nextHoverItem.$key,
               );
               if (hoverIndex > -1) {
                 data.splice(hoverIndex + 1, 0, nextDragItem);
@@ -229,7 +229,7 @@ export function Tree(props: TYPES.TreeProps) {
         setLoading(false);
       }
     },
-    [onNodeMove]
+    [onNodeMove],
   );
 
   const handleNodeEdit = useCallback((record: any) => {
@@ -246,7 +246,7 @@ export function Tree(props: TYPES.TreeProps) {
         return data.map((rec, ind) => (ind === index ? record : rec));
       });
     },
-    [onNodeSave]
+    [onNodeSave],
   );
 
   const handleNodeCancel = useCallback(
@@ -254,7 +254,7 @@ export function Tree(props: TYPES.TreeProps) {
       setEditNode(null);
       onNodeDiscard && onNodeDiscard(record);
     },
-    [onNodeDiscard]
+    [onNodeDiscard],
   );
 
   const handleNavigation = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -298,7 +298,7 @@ export function Tree(props: TYPES.TreeProps) {
             return 0;
           })
         : [...records]
-      ).map(toNode)
+      ).map(toNode),
     );
   }, [records, sortColumns, onSort]);
 
@@ -344,7 +344,7 @@ export function Tree(props: TYPES.TreeProps) {
       <div className={styles.header}>
         {columns.map((column) => {
           const sortColumn = (sortColumns || []).find(
-            (c) => c.name === column.name
+            (c) => c.name === column.name,
           );
           return (
             <TreeHeaderColumn
@@ -380,7 +380,7 @@ export function Tree(props: TYPES.TreeProps) {
                 onSave={handleNodeSave}
                 onCancel={handleNodeCancel}
               />
-            )
+            ),
         )}
       </div>
     </div>

@@ -142,8 +142,8 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
             right > scrollRight
               ? right - scrollRight
               : left < scrollLeft
-              ? -(scrollLeft - left)
-              : 0;
+                ? -(scrollLeft - left)
+                : 0;
 
           if (diff) {
             stripElement.scroll({
@@ -157,11 +157,7 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
     );
 
     const setActive = useCallback(
-      (
-        id: string | null,
-        element: HTMLElement | null,
-        persist = true,
-      ) => {
+      (id: string | null, element: HTMLElement | null, persist = true) => {
         persist && setActiveTab(id);
         setActiveElement(element);
         if (element) {

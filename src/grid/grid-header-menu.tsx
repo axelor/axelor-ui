@@ -27,12 +27,12 @@ export interface GridHeaderMenuProps extends Pick<TYPES.GridState, "groupBy"> {
   onColumnHide?: (e: React.SyntheticEvent, column: TYPES.GridColumn) => void;
   onColumnCustomize?: (
     e: React.SyntheticEvent,
-    column?: TYPES.GridColumn
+    column?: TYPES.GridColumn,
   ) => void;
   onColumnDrop?: DropHandler;
   onColumnGroupRemove?: (
     e: React.SyntheticEvent,
-    group: TYPES.GridGroup
+    group: TYPES.GridGroup,
   ) => void;
 }
 
@@ -49,7 +49,7 @@ const GridGroupTag = ({
 }) => {
   const data = React.useMemo(
     () => ({ name, title, $group: true }),
-    [name, title]
+    [name, title],
   );
   return (
     <GridDragElement
@@ -164,7 +164,10 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
                         );
                       }
                       return (
-                        <CustomMenuItem key={column.id ?? column.name} onClick={toggle}>
+                        <CustomMenuItem
+                          key={column.id ?? column.name}
+                          onClick={toggle}
+                        >
                           {onColumnDrop ? (
                             <GridDragElement
                               className={styles.dragColumn}

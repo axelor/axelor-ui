@@ -37,5 +37,5 @@ export const FocusTrap = React.forwardRef<HTMLElement, FocusTrapProps>(
     return React.cloneElement(children, {
       ref: handleRef,
     });
-  }
+  },
 );

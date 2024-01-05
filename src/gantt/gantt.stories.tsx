@@ -24,18 +24,18 @@ const connectSetTypes: any = {
 
 export const Basic = () => {
   const [records, setRecords] = React.useState<TYPES.GanttRecord[]>(
-    response.data
+    response.data,
   );
   const [view, setView] = React.useState(GANTT_TYPES.MONTH);
   const handleRecordUpdate = React.useCallback(
     (record: TYPES.GanttRecord, changes: Partial<TYPES.GanttRecord>) => {
       setRecords((records) => {
         return records.map((r) =>
-          r.id === record.id ? { ...r, ...changes } : r
+          r.id === record.id ? { ...r, ...changes } : r,
         );
       });
     },
-    []
+    [],
   );
 
   const handleRecordConnect = React.useCallback(
@@ -56,7 +56,7 @@ export const Basic = () => {
         return records;
       });
     },
-    []
+    [],
   );
 
   const handleRecordDisconnect = React.useCallback(
@@ -71,7 +71,7 @@ export const Basic = () => {
             records[index] = {
               ...records[index],
               [set]: ((records[index] as any)[set] || []).filter(
-                (x: TYPES.Record) => `${x.id}` !== `${startId}`
+                (x: TYPES.Record) => `${x.id}` !== `${startId}`,
               ),
             };
             return [...records];
@@ -79,7 +79,7 @@ export const Basic = () => {
           return records;
         });
     },
-    []
+    [],
   );
 
   const classNames = useClassNames();

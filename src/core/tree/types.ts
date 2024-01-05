@@ -39,7 +39,7 @@ export interface TreeProps {
   editNodeRenderer?: TreeNodeProps["editRenderer"];
   onNodeMove?: (
     data: TreeNode,
-    parent: TreeNode
+    parent: TreeNode,
   ) => TreeNode | Promise<TreeNode>;
   onNodeEdit?: (record: any, recordIndex?: number) => void;
   onNodeSave?: (record: any, recordIndex?: number) => any;
@@ -57,7 +57,7 @@ export interface TreeNodeProps {
     e: React.SyntheticEvent,
     data: TreeNode,
     index: number,
-    cellIndex?: number
+    cellIndex?: number,
   ) => any;
   onEdit?: TreeProps["onNodeEdit"];
   onSave?: TreeProps["onNodeSave"];

@@ -21,7 +21,7 @@ function getRGBA(hex: string, opacity: number = 1): string {
   const b = hex.slice(5, 7);
   return `rgba(${parseInt(r, 16)}, ${parseInt(g, 16)}, ${parseInt(
     b,
-    16
+    16,
   )}, ${opacity})`;
 }
 
@@ -138,7 +138,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
             startDate: date,
           });
       },
-    })
+    }),
   );
 
   const [, leftResizeDrag, leftResizePreview] = useDrag(
@@ -153,7 +153,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
             duration,
           });
       },
-    })
+    }),
   );
 
   const [, rightResizeDrag, rightResizePreview] = useDrag(
@@ -166,7 +166,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
             duration,
           });
       },
-    })
+    }),
   );
 
   const [, progressDrag, progressPreview] = useDrag(
@@ -178,7 +178,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
         }
         refs.current.progress = null;
       },
-    })
+    }),
   );
 
   const [, leftConnectDrag, leftConnectPreview] = useDrag({
@@ -453,7 +453,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
           style={{
             [rtl ? "right" : "left"]: Math.min(
               width - 10,
-              Math.max(0, progressWidth - (progressWidth > 5 ? 5 : 0))
+              Math.max(0, progressWidth - (progressWidth > 5 ? 5 : 0)),
             ),
           }}
         ></div>

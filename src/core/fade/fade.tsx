@@ -29,7 +29,7 @@ export const Fade = forwardRef<HTMLElement, FadeProps>(
       unmountOnExit,
       ...props
     },
-    ref
+    ref,
   ) => {
     const nodeRef = useForwardedRef<any>(ref);
     const handleEnter = (isAppearing: boolean) => {
@@ -93,5 +93,5 @@ export const Fade = forwardRef<HTMLElement, FadeProps>(
         }}
       </Transition>
     );
-  }
+  },
 );

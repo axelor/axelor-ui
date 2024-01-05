@@ -47,8 +47,8 @@ const TreeNodeContent = React.forwardRef<
                       data.expanded
                         ? "arrow_drop_down"
                         : rtl
-                        ? "arrow_left"
-                        : "arrow_right"
+                          ? "arrow_left"
+                          : "arrow_right"
                     }
                     className={styles.icon}
                   />
@@ -114,7 +114,7 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
       }
 
       return Boolean(
-        data.droppable && !isOwn() && !isSameParent() && !isChildren()
+        data.droppable && !isOwn() && !isSameParent() && !isChildren(),
       );
     },
     collect: function (monitor) {

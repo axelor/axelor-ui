@@ -11,7 +11,7 @@ export type DistributiveOmit<T, K extends keyof any> = T extends any
  * @deprecated
  */
 export interface OverridableProps<
-  T extends React.ElementType = React.ElementType
+  T extends React.ElementType = React.ElementType,
 > {
   as?: T;
 }
@@ -29,7 +29,7 @@ export type OverridableComponentProps<T extends React.ElementType, P = {}> = P &
 export interface OverridableComponent<T extends React.ElementType, P = {}> {
   <C extends React.ElementType = T>(
     props: OverridableComponentProps<C, P>,
-    context?: any
+    context?: any,
   ): JSX.Element | null;
   displayName?: string;
   propTypes?: React.WeakValidationMap<any>;
@@ -41,7 +41,7 @@ export interface OverridableComponent<T extends React.ElementType, P = {}> {
  * @deprecated
  */
 export function forwardRef<T extends React.ElementType, P>(
-  render: React.ForwardRefRenderFunction<any, OverridableComponentProps<T, P>>
+  render: React.ForwardRefRenderFunction<any, OverridableComponentProps<T, P>>,
 ) {
   return React.forwardRef(render) as unknown as OverridableComponent<T, P>;
 }

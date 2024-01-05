@@ -41,7 +41,7 @@ function GanttView(props: {
 
   const edges = React.useMemo(
     () => getGraphEdges(records, startDate, endDate, hourSize),
-    [records, startDate, endDate, hourSize]
+    [records, startDate, endDate, hourSize],
   );
 
   useEffect(() => {
@@ -109,7 +109,7 @@ export function Gantt({
 
   const config = React.useMemo(
     () => container && getGraphConfig(records, view, container.offsetWidth),
-    [container, records, view]
+    [container, records, view],
   );
   const startDateStr = config?.startDate.format();
   const endDateStr = config?.endDate.format();
@@ -119,7 +119,7 @@ export function Gantt({
       startDateStr && moment(startDateStr),
       endDateStr && moment(endDateStr),
     ],
-    [startDateStr, endDateStr]
+    [startDateStr, endDateStr],
   );
 
   function handleScroll() {
@@ -134,7 +134,7 @@ export function Gantt({
 
   const activeRowIndex = useMemo(
     () => records.findIndex((r) => r.id === activeRow),
-    [records, activeRow]
+    [records, activeRow],
   );
 
   return (

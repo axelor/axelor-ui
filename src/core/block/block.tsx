@@ -11,15 +11,15 @@ export type BlockProps<T extends React.ElementType> = {
 } & React.ComponentPropsWithoutRef<T>;
 
 export type BlockComponent<T extends React.ElementType> = <
-  As extends React.ElementType = T
+  As extends React.ElementType = T,
 >(
-  props: BlockProps<As> & { ref?: BlockRef<As> }
+  props: BlockProps<As> & { ref?: BlockRef<As> },
 ) => JSX.Element | null;
 
 const BlockElement = "div" as const;
 
 export const Block = forwardRef(function BlockComponent<
-  T extends React.ElementType
+  T extends React.ElementType,
 >({ as, classes, className, ...props }: BlockProps<T>, ref: BlockRef<T>) {
   const cls = useClasses(className, classes);
   const Component = as || BlockElement;

@@ -133,13 +133,13 @@ export function GanttBody({
           break;
         case DND_TYPES.PROGRESS:
           const progressElement = dragLine.querySelector(
-            `.${CSS.escape(classes.ganttLineProgress)}`
+            `.${CSS.escape(classes.ganttLineProgress)}`,
           );
           const progressContentElement = dragLine.querySelector(
-            `.${CSS.escape(classes.ganttLineProgressContent)}`
+            `.${CSS.escape(classes.ganttLineProgressContent)}`,
           );
           const labelElement = dragLine.querySelector(
-            `.${CSS.escape(classes.ganttLineProgressLabel)}`
+            `.${CSS.escape(classes.ganttLineProgressLabel)}`,
           );
           const { width } = refs.current.element;
           const value = Math.max(0, Math.min(width, offset.x));
@@ -147,8 +147,8 @@ export function GanttBody({
             0,
             Math.min(
               100,
-              (Math.max(0, value) * 100) / refs.current.element.width
-            )
+              (Math.max(0, value) * 100) / refs.current.element.width,
+            ),
           );
 
           progressElement &&
@@ -175,9 +175,8 @@ export function GanttBody({
                 : clientOffset.x - parentBound.left,
               y: clientOffset.y - parentBound.top,
             };
-            dragLine.style[
-              rtl ? "right" : "left"
-            ] = `${refs.current.element.x}px`;
+            dragLine.style[rtl ? "right" : "left"] =
+              `${refs.current.element.x}px`;
           }
           break;
         case DND_TYPES.CONNECT_START:

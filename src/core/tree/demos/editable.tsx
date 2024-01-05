@@ -98,7 +98,7 @@ function Form({ node, index, columns, onSave, onCancel }: any) {
           ...node,
           data,
         },
-        index
+        index,
       )
     );
   }, [onSave, index, node]);

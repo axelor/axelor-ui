@@ -20,7 +20,7 @@ export function rgbColor(color: ColorParam, tuple?: boolean) {
 export function tintColor(
   color: ColorParam,
   weight: number,
-  white: ColorParam = "white"
+  white: ColorParam = "white",
 ) {
   return Color(color).mix(Color(white), weight);
 }
@@ -28,7 +28,7 @@ export function tintColor(
 export function shadeColor(
   color: ColorParam,
   weight: number,
-  black: ColorParam = "black"
+  black: ColorParam = "black",
 ) {
   return Color(color).mix(Color(black), weight);
 }
@@ -45,7 +45,7 @@ export function colorContrast(
   background: ColorParam,
   colorContrastLight: ColorParam = "white",
   colorContrastDark: ColorParam = "black",
-  minContrastRatio: number = 4.5
+  minContrastRatio: number = 4.5,
 ) {
   let maxRatio = 0;
   let maxRatioColor = null;

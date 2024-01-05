@@ -13,5 +13,5 @@ export const ButtonGroup = styled.div<ButtonGroupProps>(
       [`btn-group-${size}`]: size,
     },
   ],
-  ({ role = "group" }) => ({ role })
+  ({ role = "group" }) => ({ role }),
 );

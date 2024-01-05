@@ -19,5 +19,5 @@ export const Image = styled.img<ImageProps>(
   ({ srcSet, sizes }) => ({
     srcSet: join(srcSet),
     sizes: join(sizes),
-  })
+  }),
 );

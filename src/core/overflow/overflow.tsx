@@ -64,7 +64,7 @@ export const Overflow = forwardRef((props: OverflowProps, ref) => {
     className: clsx(
       styles.overflowMenu,
       styles.overflowingItems,
-      children.props.className
+      children.props.className,
     ),
   });
 

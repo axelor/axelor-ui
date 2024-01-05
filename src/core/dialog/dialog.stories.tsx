@@ -64,7 +64,7 @@ export const Basic = (props: any) => {
             the modal as needed.
           </p>
           <p>
-            <input type="text" autoFocus/>
+            <input type="text" autoFocus />
           </p>
           <p style={{ height: 500 }}></p>
         </DialogContent>

@@ -16,7 +16,7 @@ export const Scrollable = forwardRef<HTMLDivElement, ScrollableProps>(
       [styles.overflowY]: overflowY,
     });
     return <div {...restProps} className={className} ref={ref} />;
-  }
+  },
 );
 
 Scrollable.displayName = "Scrollable";

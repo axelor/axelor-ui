@@ -21,5 +21,5 @@ export const Table = styled.table<TableProps>(
       [`table-${size}`]: size !== "md",
       [`caption-${caption}`]: caption,
     },
-  ]
+  ],
 );

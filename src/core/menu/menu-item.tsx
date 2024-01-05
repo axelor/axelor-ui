@@ -20,22 +20,23 @@ const MenuItemBase = styled.button<MenuItemProps>(
     { active, disabled },
   ],
   ({ disabled, tabIndex }) =>
-    disabled ? { tabIndex: -1, "aria-disabled": true } : { tabIndex }
+    disabled ? { tabIndex: -1, "aria-disabled": true } : { tabIndex },
 );
 
-export const MenuItem = withStyled(MenuItemBase)(
-  ({ startIcon, endIcon, text, label, children, ...props }, ref) => {
-    return (
-      <MenuItemBase {...props} ref={ref}>
-        <Box d="flex" alignItems="center">
-          {startIcon && <Icon as={startIcon} me={1} size="sm" />}
-          <Box d="inline-flex" flexGrow={1} style={{minWidth: 0}}>
-            {children || text}
-          </Box>
-          {label && <Box d="inline-flex">{label}</Box>}
-          {endIcon && <Icon as={endIcon} float="end" ms={1} size="sm" />}
+export const MenuItem = withStyled(MenuItemBase)((
+  { startIcon, endIcon, text, label, children, ...props },
+  ref,
+) => {
+  return (
+    <MenuItemBase {...props} ref={ref}>
+      <Box d="flex" alignItems="center">
+        {startIcon && <Icon as={startIcon} me={1} size="sm" />}
+        <Box d="inline-flex" flexGrow={1} style={{ minWidth: 0 }}>
+          {children || text}
         </Box>
-      </MenuItemBase>
-    );
-  }
-);
+        {label && <Box d="inline-flex">{label}</Box>}
+        {endIcon && <Icon as={endIcon} float="end" ms={1} size="sm" />}
+      </Box>
+    </MenuItemBase>
+  );
+});

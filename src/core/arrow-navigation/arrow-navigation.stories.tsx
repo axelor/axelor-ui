@@ -15,7 +15,7 @@ const CustomButton = styled(Button)(
     m,
     variant,
     style: { width: 75, ...style },
-  })
+  }),
 );
 
 export const Basic = function () {

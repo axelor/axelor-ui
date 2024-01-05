@@ -20,5 +20,5 @@ export const Link = styled.a<LinkProps>(
         : underline
       : undefined,
     textDecoration: underline === false ? "none" : undefined,
-  })
+  }),
 );

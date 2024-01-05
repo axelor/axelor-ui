@@ -51,7 +51,7 @@ function getMomentList(
   endDate: Dayjs,
   hourSize: number,
   compareType?: "hour" | "month" | "day" | "week" | "year",
-  startOfType?: "isoWeek"
+  startOfType?: "isoWeek",
 ): TYPES.GanttHeaderItem[] {
   compareType = compareType || type;
   const list: TYPES.GanttHeaderItem[] = [];
@@ -90,7 +90,7 @@ function getMomentList(
 export function getGraphConfig(
   data: TYPES.GanttRecord[],
   view: TYPES.GanttType,
-  containerWidth: number
+  containerWidth: number,
 ) {
   const config = viewConfig[view];
   const dateData = data.filter((x) => x.startDate);
@@ -99,7 +99,7 @@ export function getGraphConfig(
   const endDates = dateData.map((item) =>
     item.endDate
       ? moment(item.endDate)
-      : moment(item.startDate).add(Number(item.duration || 0), "h")
+      : moment(item.startDate).add(Number(item.duration || 0), "h"),
   );
 
   const minDate = moment.min(startDates) ?? moment();
@@ -192,7 +192,7 @@ export function getGraphEdges(
   data: TYPES.GanttRecord[],
   startDate: Dayjs,
   endDate: Dayjs,
-  hourSize: number
+  hourSize: number,
 ): TYPES.GanttEdge[] {
   const computedData = data.map((record, i) => {
     const plannedDate = moment(record.startDate);
@@ -218,7 +218,7 @@ export function getGraphEdges(
       function checkEdges(
         list: TYPES.Record[] | undefined,
         start: TYPES.GanttEdgeType,
-        end: TYPES.GanttEdgeType
+        end: TYPES.GanttEdgeType,
       ) {
         function prepareEdge(item: TYPES.Record): TYPES.GanttEdge {
           const targetItem = { x, y, height, width };
@@ -251,7 +251,7 @@ export function getGraphEdges(
           };
         }
         edges.push(
-          ...(list || []).map(prepareEdge).filter((item) => Boolean(item))
+          ...(list || []).map(prepareEdge).filter((item) => Boolean(item)),
         );
       }
 
@@ -262,7 +262,7 @@ export function getGraphEdges(
 
       return edges;
     },
-    []
+    [],
   );
 
   return edges;
@@ -272,7 +272,7 @@ export function getHeader(
   type: TYPES.GanttType,
   startDate: Dayjs,
   endDate: Dayjs,
-  hourSize: number
+  hourSize: number,
 ) {
   switch (type) {
     case GANTT_TYPES.WEEK: {
@@ -281,19 +281,19 @@ export function getHeader(
         "ddd DD",
         startDate,
         endDate,
-        hourSize
+        hourSize,
       );
       const weekList = getMomentList(
         "week",
         (current, start, end) =>
           `${current.format("W")}(${start.format("DD/MM/YYYY")} - ${end.format(
-            "DD/MM/YYYY"
+            "DD/MM/YYYY",
           )})`,
         startDate,
         endDate,
         hourSize,
         "day",
-        "isoWeek"
+        "isoWeek",
       );
       return [weekList, dayList];
     }
@@ -303,7 +303,7 @@ export function getHeader(
         "HH:00",
         startDate,
         endDate,
-        hourSize
+        hourSize,
       );
       const dayList = getMomentList(
         "day",
@@ -311,7 +311,7 @@ export function getHeader(
         startDate,
         endDate,
         hourSize,
-        "hour"
+        "hour",
       );
       return [dayList, hoursList];
     }
@@ -323,7 +323,7 @@ export function getHeader(
         startDate,
         endDate,
         hourSize,
-        "day"
+        "day",
       );
       return [monthList, weekList];
     }
@@ -333,7 +333,7 @@ export function getHeader(
         "MMM",
         startDate,
         endDate,
-        hourSize
+        hourSize,
       );
       const yearList = getMomentList(
         "year",
@@ -341,7 +341,7 @@ export function getHeader(
         startDate,
         endDate,
         hourSize,
-        "day"
+        "day",
       );
       return [yearList, monthList];
     }
@@ -354,7 +354,7 @@ export function getDateFromOffset(
   offsetX: number,
   startDate: Dayjs,
   view: TYPES.GanttType,
-  cellSize: number
+  cellSize: number,
 ) {
   const { type } = viewConfig[view];
   const total = Number((offsetX / cellSize).toFixed(0));

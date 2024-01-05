@@ -68,11 +68,11 @@ export function GridBody(props: GridBodyProps) {
         row,
         visible: isRowVisible(rows, row),
       })),
-    [rows]
+    [rows],
   );
   const totalWidth = useMemo(
     () => columns.reduce((total, c) => total + (c.width || 0), 0),
-    [columns]
+    [columns],
   );
 
   const showNoRecords = noRecordsText && !addNewText;
@@ -174,6 +174,6 @@ export function GridBody(props: GridBodyProps) {
       {showNoRecords && (
         <div className={styles.noRecordsText}>{noRecordsText}</div>
       )}
-    </>
+    </>,
   );
 }

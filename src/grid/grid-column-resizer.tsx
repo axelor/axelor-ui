@@ -11,7 +11,7 @@ export function GridColumResizer(props: React.HTMLAttributes<HTMLSpanElement>) {
         isDragging: monitor.isDragging(),
       }),
     }),
-    []
+    [],
   );
   return (
     <span ref={drag} {...props}>

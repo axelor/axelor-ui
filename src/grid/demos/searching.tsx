@@ -27,7 +27,11 @@ function SearchColumn({ column }: { column: GridColumn }) {
   }
 
   return !isRowCheck(column) ? (
-    <Input placeholder={column.title} onKeyDown={handleKeyDown} rounded={false}/>
+    <Input
+      placeholder={column.title}
+      onKeyDown={handleKeyDown}
+      rounded={false}
+    />
   ) : null;
 }
 
@@ -43,14 +47,14 @@ export default function Searching() {
             ((record[column.name] as string) || "")
               .toString()
               .toLowerCase()
-              .includes(`${value}`.toLowerCase())
-          )
+              .includes(`${value}`.toLowerCase()),
+          ),
         );
       } else {
         setRecords([...records_data]);
       }
     },
-    [setRecords]
+    [setRecords],
   );
 
   return (

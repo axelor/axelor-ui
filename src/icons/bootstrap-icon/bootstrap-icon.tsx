@@ -34,5 +34,5 @@ export const BootstrapIcon = forwardRef<HTMLElement, BootstrapIconProps>(
         ref={ref}
       />
     );
-  }
+  },
 );

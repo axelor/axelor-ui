@@ -70,11 +70,11 @@ function Form({
           index,
           currentFocus.current,
           dirty.current,
-          isSaveFromEdit === true
+          isSaveFromEdit === true,
         )
       );
     },
-    [onSave, index]
+    [onSave, index],
   );
 
   React.useEffect(() => {
@@ -94,7 +94,7 @@ function Form({
           onChange: handleChange,
           onSave: handleSave,
         }),
-        [handleSave, handleChange, handleFocus, handleCancel]
+        [handleSave, handleChange, handleFocus, handleCancel],
       )}
     >
       <FocusTrap>
@@ -174,7 +174,7 @@ export default function Editable() {
         return await save(true);
       }
     },
-    []
+    [],
   );
 
   const handleRecordSave = React.useCallback(
@@ -186,15 +186,15 @@ export default function Editable() {
             records.map((_record, i) =>
               (_record.id ? _record.id === record.id : i === index)
                 ? record
-                : _record
-            )
+                : _record,
+            ),
           );
         }
         boxRef.current.style.opacity = null;
         return record;
       });
     },
-    []
+    [],
   );
 
   const handleRecordDiscard = React.useCallback(
@@ -203,7 +203,7 @@ export default function Editable() {
         setRecords((records) => records.filter((record, i) => i !== rowIndex));
       }
     },
-    []
+    [],
   );
 
   return (

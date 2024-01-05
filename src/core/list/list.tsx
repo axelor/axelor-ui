@@ -28,5 +28,5 @@ export const List = styled.ul<ListProps>(
   ],
   ({ as, numbered }) => ({
     as: as ?? numbered ? "ol" : "ul",
-  })
+  }),
 );

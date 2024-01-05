@@ -31,7 +31,7 @@ export interface GridHeaderProps
     e: React.SyntheticEvent,
     column: TYPES.GridColumn,
     columnIndex: number,
-    sortOrder?: "asc" | "desc"
+    sortOrder?: "asc" | "desc",
   ) => void;
   onColumnShow?: GridHeaderMenuProps["onColumnShow"];
   onColumnHide?: GridHeaderMenuProps["onColumnHide"];
@@ -42,7 +42,7 @@ export interface GridHeaderProps
 }
 
 export const GridHeader = React.memo(function GridHeader(
-  props: GridHeaderProps
+  props: GridHeaderProps,
 ) {
   const {
     className,
@@ -74,7 +74,7 @@ export const GridHeader = React.memo(function GridHeader(
       <RowRenderer className={styles.row}>
         {columns.map((column, index) => {
           const sortColumn = (orderBy || []).find(
-            (col) => col.name === column.name
+            (col) => col.name === column.name,
           );
           return (
             <GridHeaderColumn

@@ -35,7 +35,7 @@ export function getNextElement(list: HTMLElement | null, item: HTMLElement) {
 export function navigate(
   elements: HTMLElement[][],
   key: string,
-  rtl?: boolean
+  rtl?: boolean,
 ) {
   if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(key)) {
     return null;

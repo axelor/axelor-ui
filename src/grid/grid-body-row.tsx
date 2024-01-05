@@ -9,7 +9,7 @@ import styles from "./grid.module.scss";
 import { GridDNDRow } from "./grid-dnd-row";
 
 export const GridBodyRow = React.memo(function GridBodyRow(
-  props: TYPES.GridRowProps
+  props: TYPES.GridRowProps,
 ) {
   const {
     draggable,
@@ -33,21 +33,21 @@ export const GridBodyRow = React.memo(function GridBodyRow(
     (values: any) => {
       onUpdate && onUpdate(rowIndex, values);
     },
-    [onUpdate, rowIndex]
+    [onUpdate, rowIndex],
   );
 
   const handleCellClick = React.useCallback(
     function handleCellClick(
       e: React.SyntheticEvent,
       cell: TYPES.GridColumn,
-      cellIndex: number
+      cellIndex: number,
     ) {
       setTimeout(() => {
         onCellClick && onCellClick(e, cell, cellIndex, data, rowIndex);
       }, 50);
       onClick && onClick(e, data, rowIndex, cellIndex, cell);
     },
-    [data, rowIndex, onCellClick, onClick]
+    [data, rowIndex, onCellClick, onClick],
   );
 
   function getColumnValue(column: TYPES.GridColumn) {

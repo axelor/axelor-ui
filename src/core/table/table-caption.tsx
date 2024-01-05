@@ -5,5 +5,5 @@ export interface TableCaptionProps {
 }
 
 export const TableCaption = styled.caption<TableCaptionProps>(
-  ({ placement = "start" }) => [{ [`text-${placement}`]: placement }]
+  ({ placement = "start" }) => [{ [`text-${placement}`]: placement }],
 );

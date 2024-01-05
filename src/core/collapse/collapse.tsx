@@ -30,7 +30,7 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
       onExited,
       ...props
     },
-    ref
+    ref,
   ) => {
     const forwardRef = useForwardedRef(ref);
     const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -156,5 +156,5 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
         }}
       </Transition>
     );
-  }
+  },
 );

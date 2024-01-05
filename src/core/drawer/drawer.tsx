@@ -30,26 +30,23 @@ const DrawerRoot = styled.div<DrawerProps>(({ placement }) => [
 
 const DrawerContent = styled.div<DrawerProps>((props) => [styles.content]);
 
-export const Drawer = withStyled(DrawerContent)(
-  ({ placement = "start", backdrop, open, onClose, ...props }, ref) => {
-    const { dir } = useTheme();
-    return (
-      <Portal>
-        {backdrop && (
-          <Fade in={open}>
-            <DrawerBackdrop onClick={onClose} />
-          </Fade>
-        )}
-        <Slide
-          in={open}
-          direction={mapDrawerPlacement(placement)}
-          unmountOnExit
-        >
-          <DrawerRoot dir={dir} placement={placement}>
-            <DrawerContent ref={ref} {...props} />
-          </DrawerRoot>
-        </Slide>
-      </Portal>
-    );
-  }
-);
+export const Drawer = withStyled(DrawerContent)((
+  { placement = "start", backdrop, open, onClose, ...props },
+  ref,
+) => {
+  const { dir } = useTheme();
+  return (
+    <Portal>
+      {backdrop && (
+        <Fade in={open}>
+          <DrawerBackdrop onClick={onClose} />
+        </Fade>
+      )}
+      <Slide in={open} direction={mapDrawerPlacement(placement)} unmountOnExit>
+        <DrawerRoot dir={dir} placement={placement}>
+          <DrawerContent ref={ref} {...props} />
+        </DrawerRoot>
+      </Slide>
+    </Portal>
+  );
+});

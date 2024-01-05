@@ -76,7 +76,7 @@ export function CommandItem(props: CommandItemProps) {
     (e: any) => {
       if (onClick) onClick(e);
     },
-    [onClick]
+    [onClick],
   );
 
   const showMenu = useCallback(() => {
@@ -93,12 +93,12 @@ export function CommandItem(props: CommandItemProps) {
       if (showAsMenuItem) handleClick(e);
       if (menu.onClick) menu.onClick(e);
     },
-    [showAsMenuItem, hideMenu, handleClick]
+    [showAsMenuItem, hideMenu, handleClick],
   );
 
   const allItemsHidden = useMemo(
     () => items.length > 0 && items.filter((item) => !item.hidden).length === 0,
-    [items]
+    [items],
   );
 
   if (hidden || allItemsHidden) {
@@ -148,10 +148,7 @@ export function CommandItem(props: CommandItemProps) {
           )}
           {items?.length > 0 && (
             <span className={styles.menuItemIcon}>
-              <MaterialIcon
-                icon="arrow_right"
-                className={styles.icon}
-              />
+              <MaterialIcon icon="arrow_right" className={styles.icon} />
             </span>
           )}
         </MenuItem>
@@ -168,7 +165,7 @@ export function CommandItem(props: CommandItemProps) {
                 },
                 classNames({
                   active: checked,
-                })
+                }),
               )}
               disabled={disabled}
               {...buttonProps}

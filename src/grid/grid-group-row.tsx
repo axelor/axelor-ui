@@ -8,7 +8,7 @@ import * as TYPES from "./types";
 import { useRTL } from "./utils";
 
 export const GridGroupRow = React.memo(function GridGroupRow(
-  props: TYPES.GridRowProps
+  props: TYPES.GridRowProps,
 ) {
   const { className, selected, data, index, width, renderer, onClick } = props;
   const { state, record } = data;
@@ -30,7 +30,7 @@ export const GridGroupRow = React.memo(function GridGroupRow(
       {new Array(level)
         .fill(0)
         .map((_, ind) =>
-          ind !== 0 ? <div key={ind} className={styles.groupSpacer} /> : null
+          ind !== 0 ? <div key={ind} className={styles.groupSpacer} /> : null,
         )}
       <div
         onClick={(e) => onClick && data && onClick(e as any, data, index)}

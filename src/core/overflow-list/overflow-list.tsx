@@ -69,9 +69,9 @@ export const OverflowList = forwardRef<HTMLDivElement, OverflowListProps<any>>(
         </div>
       </Overflow>
     );
-  }
+  },
 ) as unknown as <T extends OverflowListItem>(
-  props: OverflowListProps<T> & { ref?: React.ForwardedRef<HTMLDivElement> }
+  props: OverflowListProps<T> & { ref?: React.ForwardedRef<HTMLDivElement> },
 ) => React.ReactElement;
 
 const ListItem = forwardRef<
@@ -82,12 +82,12 @@ const ListItem = forwardRef<
 
   const handleClick = useCallback(
     () => onItemClick?.(item),
-    [item, onItemClick]
+    [item, onItemClick],
   );
 
   const renderProps = useMemo(
     () => ({ item, active: isItemActive?.(item) }),
-    [isItemActive, item]
+    [isItemActive, item],
   );
 
   return (
@@ -98,7 +98,7 @@ const ListItem = forwardRef<
 });
 
 const ListMenuItem = (
-  props: OverflowListItemProps<any> & OverflowListProps<any>
+  props: OverflowListItemProps<any> & OverflowListProps<any>,
 ) => {
   const { item, isItemActive, renderMenuItem: Comp, onItemClick } = props;
   const { id } = item;
@@ -109,7 +109,7 @@ const ListMenuItem = (
 
   const handleClick = useCallback(
     () => onItemClick?.(item),
-    [item, onItemClick]
+    [item, onItemClick],
   );
 
   if (visible) {
@@ -149,7 +149,7 @@ const ListMenu = (props: OverflowListProps<any>) => {
       hideMenu();
       onItemClick?.(item);
     },
-    [hideMenu, onItemClick]
+    [hideMenu, onItemClick],
   );
 
   if (!isOverflowing) {

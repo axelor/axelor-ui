@@ -12,63 +12,61 @@ export interface TextFieldProps extends InputProps {
   description?: string | JSX.Element;
 }
 
-export const TextField = withStyled(Input)<TextFieldProps>(
-  (
-    {
-      label,
-      icons = [],
-      description,
-      required,
-      disabled,
-      invalid,
-      readOnly,
-      ...inputProps
-    },
-    ref
-  ) => {
-    const { dir = "" } = useTheme();
-    const classNames = useClassNames();
-    return (
+export const TextField = withStyled(Input)<TextFieldProps>((
+  {
+    label,
+    icons = [],
+    description,
+    required,
+    disabled,
+    invalid,
+    readOnly,
+    ...inputProps
+  },
+  ref,
+) => {
+  const { dir = "" } = useTheme();
+  const classNames = useClassNames();
+  return (
+    <div
+      className={classNames([styles.container], {
+        [styles.disabled]: disabled,
+        [styles.readonly]: readOnly,
+        [styles[dir]]: dir,
+      })}
+    >
+      {label && (
+        <InputLabel required={required} disabled={disabled} invalid={invalid}>
+          {label}
+        </InputLabel>
+      )}
       <div
-        className={classNames([styles.container], {
-          [styles.disabled]: disabled,
-          [styles.readonly]: readOnly,
-          [styles[dir]]: dir,
-        })}
+        className={classNames([
+          styles.wrapper,
+          {
+            [styles[`icons-${icons.length}`]]: icons.length,
+          },
+        ])}
       >
-        {label && (
-          <InputLabel required={required} disabled={disabled} invalid={invalid}>
-            {label}
-          </InputLabel>
-        )}
-        <div
-          className={classNames([
-            styles.wrapper,
-            {
-              [styles[`icons-${icons.length}`]]: icons.length,
-            },
-          ])}
-        >
-          <Input
-            ref={ref}
-            required={required}
-            disabled={disabled}
-            readOnly={readOnly}
-            invalid={invalid}
-            {...inputProps}
-          />
-          {icons.length > 0 && (
-            <div className={styles.icons}>
-              {icons.map((icon) => (
-                <MaterialIcon key={icon.icon} {...icon} />
-              ))}
-            </div>
-          )}
-        </div>
-        {description && (
-          <InputFeedback invalid={invalid}>{description}</InputFeedback>
+        <Input
+          ref={ref}
+          required={required}
+          disabled={disabled}
+          readOnly={readOnly}
+          invalid={invalid}
+          {...inputProps}
+        />
+        {icons.length > 0 && (
+          <div className={styles.icons}>
+            {icons.map((icon) => (
+              <MaterialIcon key={icon.icon} {...icon} />
+            ))}
+          </div>
         )}
       </div>
-    );
-  }
-);
+      {description && (
+        <InputFeedback invalid={invalid}>{description}</InputFeedback>
+      )}
+    </div>
+  );
+});

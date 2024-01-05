@@ -85,21 +85,21 @@ function reorderCards<T extends Column>({
 
 function KanbanContainer({ columns: columnsProp, readonly }: KanbanProps) {
   const [columns, setColumns] = useState<Column[]>(
-    columnsProp || getDefaultColumns()
+    columnsProp || getDefaultColumns(),
   );
 
   const getColumnIndex = useCallback(
     (columnId: Column["id"]) =>
       columns.findIndex((c) => String(c.id) === String(columnId)),
-    [columns]
+    [columns],
   );
 
   const getRecordIndex = useCallback(
     (recordId: any, columnId: Column["id"]) =>
       columns[getColumnIndex(columnId)]?.records?.findIndex(
-        (r) => String(r.id) === String(recordId)
+        (r) => String(r.id) === String(recordId),
       ),
-    [columns, getColumnIndex]
+    [columns, getColumnIndex],
   );
 
   const onCardMove = useCallback(
@@ -114,7 +114,7 @@ function KanbanContainer({ columns: columnsProp, readonly }: KanbanProps) {
 
       setColumns(updatedColumns);
     },
-    [columns, getRecordIndex]
+    [columns, getRecordIndex],
   );
 
   const onColumnMove = useCallback(
@@ -122,7 +122,7 @@ function KanbanContainer({ columns: columnsProp, readonly }: KanbanProps) {
       const updatedColumns = reorder(columns, getColumnIndex(column.id), index);
       setColumns(updatedColumns);
     },
-    [columns, getColumnIndex]
+    [columns, getColumnIndex],
   );
 
   return (

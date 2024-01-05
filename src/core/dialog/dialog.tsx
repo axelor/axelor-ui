@@ -189,7 +189,7 @@ export const Dialog = withStyled(Box)<DialogProps>((props, ref) => {
                 "modal-sm": size === "sm",
                 "modal-lg": size === "lg",
                 "modal-xl": size === "xl",
-              })
+              }),
             )}
             ref={ref}
           >

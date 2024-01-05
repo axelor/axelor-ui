@@ -50,7 +50,12 @@ export const Basic = () => {
         <IconBox icon="done" fill={fill} />
       </Box>
       <Box d="flex" g={2}>
-        <Input id="fill" type="checkbox" checked={fill} onChange={handleFillChange} />
+        <Input
+          id="fill"
+          type="checkbox"
+          checked={fill}
+          onChange={handleFillChange}
+        />
         <InputLabel htmlFor="fill">Fill</InputLabel>
       </Box>
     </Box>

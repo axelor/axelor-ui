@@ -158,7 +158,7 @@ const items = [
 export function NavMenu() {
   const [mode, setMode] = useState<"accordion" | "icons">("accordion");
   const [show, setShow] = useState<"inline" | "overlay" | "icons" | "none">(
-    "inline"
+    "inline",
   );
 
   const [enableSearch, setEnableSearch] = useState(false);

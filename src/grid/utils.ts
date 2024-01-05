@@ -51,19 +51,19 @@ export const getRows = ({
 export function getColumnWidth(
   column: GridColumn,
   value?: number,
-  isResize = false
+  isResize = false,
 ) {
   return Math.max(
     GRID_CONFIG.COLUMN_MIN_WIDTH,
     isResize ? 0 : column.width || 0,
     column.minWidth || 0,
-    value || 0
+    value || 0,
   );
 }
 
 export function doAggregate(
   data: any[] = [],
-  field: GridColumn
+  field: GridColumn,
 ): number | string {
   if (!field || !field.name || !field.aggregate) return 0;
   const flatData = data.map((x) => {
@@ -80,7 +80,7 @@ export function doAggregate(
       return Number(
         field.aggregate === "avg" && flatData.length
           ? Math.round(total / flatData.length)
-          : total
+          : total,
       ).toFixed(2);
     case "min":
       return Math.min(...flatData);
@@ -94,7 +94,7 @@ export function doAggregate(
 export function doSort(
   data: any[],
   sorts: GridSortColumn[],
-  columns: GridColumn[] = []
+  columns: GridColumn[] = [],
 ) {
   if (!sorts) return data;
   return data.sort((obj1, obj2) => {
@@ -130,7 +130,7 @@ export function doGroup(
   data: any[],
   groups: GridGroup[],
   columns: GridColumn[] = [],
-  level = 1
+  level = 1,
 ) {
   const group = (groups || []).shift();
   if (!group) return data;
@@ -166,7 +166,7 @@ export function doGroup(
         groupData[k].data,
         [...groups],
         columns,
-        level + 1
+        level + 1,
       );
     });
   }
@@ -184,7 +184,7 @@ export function doIndexing(
     columns: GridColumn[];
   },
   parent = null,
-  defaultState = "open"
+  defaultState = "open",
 ): any[] {
   const newData = [];
   const hasAggregation = columns.some((x) => x.aggregate);
@@ -218,7 +218,7 @@ export function doIndexing(
       });
       // child rows
       newData.push(
-        ...doIndexing({ columns, data, rows }, parentId, defaultState)
+        ...doIndexing({ columns, data, rows }, parentId, defaultState),
       );
       // footer row
       hasAggregation &&
@@ -251,7 +251,7 @@ export const navigator = (
     maxRow: number;
     isGroupCell: boolean;
     updateRowState: (row: any, state: "open" | "close") => void;
-  }
+  },
 ) => ({
   findNextVisibleRow: (row: number) => {
     for (let i = row + 1; i <= maxRow; i++) {

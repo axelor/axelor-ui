@@ -118,7 +118,7 @@ const MyButton = styled(Button)(
     m,
     variant,
     textTransform,
-  })
+  }),
 );
 
 export const Positions = () => {

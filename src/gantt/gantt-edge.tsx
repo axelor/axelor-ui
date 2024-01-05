@@ -49,7 +49,7 @@ const Line = React.memo<{
         source: sourceStart,
         target: targetEnd,
       }),
-    [source, target, targetEnd, sourceStart, onDeleteConnector]
+    [source, target, targetEnd, sourceStart, onDeleteConnector],
   );
 
   const isStartPointer = targetEnd === "start";
@@ -80,7 +80,7 @@ const Line = React.memo<{
             className={classNames(
               isStartPointer
                 ? classes.ganttEdgeIconStart
-                : classes.ganttEdgeIconEnd
+                : classes.ganttEdgeIconEnd,
             )}
           />
         )}

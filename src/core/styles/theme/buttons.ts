@@ -50,7 +50,7 @@ export function toButtonVars(
   color: ColorParam,
   outline: boolean,
   white: ColorParam,
-  black: ColorParam
+  black: ColorParam,
 ) {
   if (outline) return buttonOutlineVariant({ background: color, white, black });
   const opts: ButtonOptions = {
@@ -150,7 +150,7 @@ function buttonOutlineVariant(options: ButtonOptions) {
 
 export function createButtonRules(
   options: ThemeOptions,
-  classes: CSSModuleClasses = {}
+  classes: CSSModuleClasses = {},
 ) {
   const { palette = {} } = options;
   const themeColors = findThemeColors({ palette });

@@ -16,5 +16,5 @@ export const InputLabel = styled.label<InputLabelProps>(
       "text-secondary": disabled,
       [styles.required]: required,
     },
-  ]
+  ],
 );

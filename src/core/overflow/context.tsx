@@ -26,7 +26,7 @@ export type OverflowFuncs = {
 export type OverflowContextValue = OverflowState & OverflowFuncs;
 
 export const OverflowContext = createContext<OverflowContextValue | undefined>(
-  undefined
+  undefined,
 ) as Context<OverflowContextValue>;
 
 const defaultValue: OverflowContextValue = {
@@ -40,5 +40,5 @@ const defaultValue: OverflowContextValue = {
 };
 
 export const useOverflowContext = <SelectedValue,>(
-  selector: ContextSelector<OverflowContextValue, SelectedValue>
+  selector: ContextSelector<OverflowContextValue, SelectedValue>,
 ) => useContextSelector(OverflowContext, (ctx = defaultValue) => selector(ctx));

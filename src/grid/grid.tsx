@@ -1125,14 +1125,14 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
                   ) || {}
                 ).clientHeight
               : isDownwards
-              ? -(
-                  (
-                    container.querySelector(
-                      getCssSelector(`.${styles.footer}`),
-                    ) || {}
-                  ).clientHeight || 0
-                )
-              : 0);
+                ? -(
+                    (
+                      container.querySelector(
+                        getCssSelector(`.${styles.footer}`),
+                      ) || {}
+                    ).clientHeight || 0
+                  )
+                : 0);
           const cellYTotalOffset =
             offsetLeft + offsetWidth + verticalScrollbarSize;
           const cellXTotalOffset = offsetTop + offsetHeight;

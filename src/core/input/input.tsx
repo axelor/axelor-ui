@@ -34,5 +34,5 @@ export const Input = styled.input<InputProps>(
       "form-control-lg": large,
     },
   ],
-  ({ type = "text" }) => ({ type })
+  ({ type = "text" }) => ({ type }),
 );

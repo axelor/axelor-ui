@@ -31,7 +31,7 @@ export const Grow = forwardRef<HTMLElement, GrowProps>(
       onExit,
       ...props
     }: GrowProps,
-    ref
+    ref,
   ) => {
     const nodeRef = useForwardedRef<any>(ref);
     const handleEnter = (isAppearing: boolean) => {
@@ -126,5 +126,5 @@ export const Grow = forwardRef<HTMLElement, GrowProps>(
         }}
       </Transition>
     );
-  }
+  },
 );

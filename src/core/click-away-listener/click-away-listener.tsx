@@ -73,7 +73,7 @@ export const ClickAwayListener = ({
         onClickAwayRef.current(event);
       }
     },
-    [getDoc]
+    [getDoc],
   );
 
   React.useEffect(() => {

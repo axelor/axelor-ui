@@ -7,16 +7,16 @@ import { StyleProps, useStyleProps } from "../system";
 export type Merge<P, O> = O extends Array<any>
   ? P
   : keyof O extends never
-  ? P
-  : keyof P extends never
-  ? O
-  : keyof P & keyof O extends never
-  ? O & P
-  : O & Omit<P, keyof O>;
+    ? P
+    : keyof P extends never
+      ? O
+      : keyof P & keyof O extends never
+        ? O & P
+        : O & Omit<P, keyof O>;
 
 export type StyledComponentProps<
   C extends React.ElementType,
-  P extends {}
+  P extends {},
 > = C extends React.ElementType<infer Q>
   ? Merge<React.ComponentProps<C>, Merge<Q, P>>
   : Merge<React.ComponentProps<C>, P>;
@@ -24,7 +24,7 @@ export type StyledComponentProps<
 export interface StyledComponent<C extends React.ElementType, P extends {}>
   extends React.FC<StyledComponentProps<C, P>> {
   <As extends React.ElementType = C>(
-    props: { as?: As } & StyledComponentProps<As, P>
+    props: { as?: As } & StyledComponentProps<As, P>,
   ): JSX.Element | null;
 }
 
@@ -32,7 +32,7 @@ export type StyledConfig<P> = (props: P) => ClassValue[] | Partial<P>;
 
 export interface StyledComponentFactory<
   C extends React.ElementType,
-  P extends {}
+  P extends {},
 > {
   <O extends {}>(
     ...styles: Array<
@@ -48,14 +48,14 @@ export type StyledOptions = {
   shouldForwardProp?: (
     name: string,
     isValid: (name: string) => boolean,
-    component: React.ElementType | "string"
+    component: React.ElementType | "string",
   ) => boolean;
 };
 
 export interface CreateStyled {
   <C extends React.ElementType>(
     component: C,
-    options?: StyledOptions
+    options?: StyledOptions,
   ): StyledComponentFactory<
     C extends StyledComponent<infer T, any> ? T : C,
     C extends StyledComponent<any, infer P> ? P : StyleProps
@@ -158,8 +158,8 @@ export const withStyled =
   <P extends {}>(
     render: (
       props: P & React.ComponentPropsWithoutRef<C>,
-      ref: React.Ref<any>
-    ) => JSX.Element | null
+      ref: React.Ref<any>,
+    ) => JSX.Element | null,
   ) => {
     return forwardRef<any, any>(render) as unknown as keyof P extends never
       ? C
@@ -177,8 +177,8 @@ const styled = new Proxy(createStyled, {
     Reflect.has(target, prop)
       ? Reflect.get(target, prop, receiver)
       : typeof prop === "string"
-      ? target(prop as any)
-      : null,
+        ? target(prop as any)
+        : null,
 }) as Styled;
 
 export default styled;

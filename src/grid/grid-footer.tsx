@@ -20,10 +20,10 @@ export function GridFooter(props: GridFooterProps) {
             ...data,
             [column.name]: doAggregate(records, column),
           }),
-          {}
+          {},
         ),
     }),
-    [columns, records]
+    [columns, records],
   );
 
   return (

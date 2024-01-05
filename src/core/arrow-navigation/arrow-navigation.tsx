@@ -25,7 +25,7 @@ export const ArrowNavigation = React.forwardRef(
   ({ children, enabled = true, selector }: ArrowNavigationProps, ref) => {
     const nodeRef = React.useRef<HTMLElement>();
     const isAutoLayout = [LAYOUT.HORIZONTAL, LAYOUT.VERTICAL].includes(
-      selector as string
+      selector as string,
     );
 
     const { dir } = useTheme();
@@ -108,5 +108,5 @@ export const ArrowNavigation = React.forwardRef(
           tabIndex: 1,
         })
       : children;
-  }
+  },
 );

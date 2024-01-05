@@ -149,7 +149,7 @@ function DrawerDemo({
             style={{ width: 320 }}
           >
             I am drawer
-          </Box>
+          </Box>,
         )}
       </Drawer>
     </Box>

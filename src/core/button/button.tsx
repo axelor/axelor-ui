@@ -18,5 +18,5 @@ export const Button = styled.button<ButtonProps>(
     },
   ],
   ({ as = "button", type = "button", role = "button", disabled }) =>
-    as !== "button" ? { role } : { disabled, type }
+    as !== "button" ? { role } : { disabled, type },
 );

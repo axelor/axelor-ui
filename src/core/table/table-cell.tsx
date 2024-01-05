@@ -14,5 +14,5 @@ export const TableCell = styled.td<TableCellProps>(
       "table-active": selected,
     },
   ],
-  ({ as = "td" }) => ({ as })
+  ({ as = "td" }) => ({ as }),
 );

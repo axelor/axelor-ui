@@ -65,5 +65,5 @@ export const MaterialIcon = forwardRef<HTMLSpanElement, MaterialIconProps>(
         {icon}
       </Box>
     );
-  }
+  },
 );

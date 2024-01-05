@@ -24,7 +24,7 @@ import { useOverflowContext } from "./context";
 
 export function useOverflowContainer<E extends HTMLElement>(
   update: OnUpdateOverflow,
-  options: Omit<ObserveOptions, "onUpdateOverflow">
+  options: Omit<ObserveOptions, "onUpdateOverflow">,
 ) {
   const {
     overflowAxis,
@@ -38,7 +38,7 @@ export function useOverflowContainer<E extends HTMLElement>(
   const updateOverflowItems = update;
 
   const [overflowManager] = useState<OverflowManager>(() =>
-    createOverflowManager()
+    createOverflowManager(),
   );
 
   useEffect(() => {
@@ -81,7 +81,7 @@ export function useOverflowContainer<E extends HTMLElement>(
         overflowManager?.removeItem(item.id);
       };
     },
-    [overflowManager]
+    [overflowManager],
   );
 
   const updateOverflow = useCallback(() => {
@@ -99,7 +99,7 @@ export function useOverflowContainer<E extends HTMLElement>(
         el.removeAttribute(DATA_OVERFLOW_DIVIDER);
       };
     },
-    [overflowManager]
+    [overflowManager],
   );
 
   const registerOverflowMenu = useCallback(
@@ -112,7 +112,7 @@ export function useOverflowContainer<E extends HTMLElement>(
         el.removeAttribute(DATA_OVERFLOW_MENU);
       };
     },
-    [overflowManager]
+    [overflowManager],
   );
 
   return {
@@ -127,7 +127,7 @@ export function useOverflowContainer<E extends HTMLElement>(
 export function useOverflowItem<E extends HTMLElement>(
   id: string,
   priority?: number,
-  groupId?: string
+  groupId?: string,
 ) {
   const ref = useRef<E>(null);
   const registerItem = useOverflowContext((v) => v.registerItem);
@@ -147,7 +147,7 @@ export function useOverflowItem<E extends HTMLElement>(
 }
 
 export function useOverflowDivider<TElement extends HTMLElement>(
-  groupId?: string
+  groupId?: string,
 ) {
   const ref = useRef<TElement>(null);
   const registerDivider = useOverflowContext((v) => v.registerDivider);
@@ -177,7 +177,7 @@ export const useOverflowCount = () =>
 export function useOverflowMenu<TElement extends HTMLElement>(id?: string) {
   const overflowCount = useOverflowCount();
   const registerOverflowMenu = useOverflowContext(
-    (v) => v.registerOverflowMenu
+    (v) => v.registerOverflowMenu,
   );
   const updateOverflow = useOverflowContext((v) => v.updateOverflow);
   const ref = useRef<TElement>(null);

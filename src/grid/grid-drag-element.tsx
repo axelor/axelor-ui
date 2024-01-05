@@ -10,7 +10,7 @@ const DND_TYPES = {
 
 export type DropHandler = (
   destination: TYPES.DropObject,
-  target: TYPES.DropObject
+  target: TYPES.DropObject,
 ) => void;
 
 export interface GridDragElementProps
@@ -22,7 +22,7 @@ export interface GridDragElementProps
 }
 
 const GridDragElementComponent = React.memo(function GridDragElementComponent(
-  props: GridDragElementProps
+  props: GridDragElementProps,
 ) {
   const { canDrag = true, canDrop, className, column, onDrop, ...rest } = props;
   const ref = React.useRef<HTMLDivElement>(null);
@@ -44,7 +44,7 @@ const GridDragElementComponent = React.memo(function GridDragElementComponent(
         }
       },
     }),
-    [canDrag, column, onDrop]
+    [canDrag, column, onDrop],
   );
 
   const [{ isOver, isOverCurrent }, drop] = useDrop(
@@ -75,7 +75,7 @@ const GridDragElementComponent = React.memo(function GridDragElementComponent(
         };
       },
     }),
-    [column]
+    [column],
   );
 
   drag(drop(ref));

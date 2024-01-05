@@ -23,7 +23,7 @@ export type ComputeResult =
 
 export type Compute = (
   value: any,
-  breakpoint?: string
+  breakpoint?: string,
 ) => ComputeResult | ComputeResult[];
 
 export type Config<T> = {

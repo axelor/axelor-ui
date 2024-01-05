@@ -35,5 +35,5 @@ export const Decorate = forwardRef<HTMLElement, DecorateProps>(
       style,
       ref,
     });
-  }
+  },
 );

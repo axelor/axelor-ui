@@ -514,7 +514,11 @@ export const Select = forwardRef(function Select<
   const toggleIcon = useMemo(() => {
     if (props.toggleIcon === false) return false;
     return {
-      icon: <MaterialIcon icon={hasDropdownOpen ? "arrow_drop_up" : "arrow_drop_down"} />,
+      icon: (
+        <MaterialIcon
+          icon={hasDropdownOpen ? "arrow_drop_up" : "arrow_drop_down"}
+        />
+      ),
       onClick: handleToggleClick,
       ...props.toggleIcon,
     };

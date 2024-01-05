@@ -39,7 +39,7 @@ const getDirection = (direction: Direction, dir?: string) => {
 const getTranslateValue = (
   node: HTMLElement,
   directionGiven: Direction,
-  dir?: string
+  dir?: string,
 ) => {
   const view = ownerWindow(node);
   const rect = node.getBoundingClientRect();
@@ -93,7 +93,7 @@ export const Slide = forwardRef<HTMLElement, SlideProps>(
       onExited,
       ...props
     }: SlideProps,
-    ref
+    ref,
   ) => {
     const { dir } = useTheme();
     const nodeRef = useForwardedRef<any>(ref);
@@ -182,5 +182,5 @@ export const Slide = forwardRef<HTMLElement, SlideProps>(
         }}
       </Transition>
     );
-  }
+  },
 );

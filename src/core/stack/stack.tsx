@@ -15,5 +15,5 @@ export const Stack = styled.div<StackProps>(
   ],
   () => ({
     display: "flex",
-  })
+  }),
 );

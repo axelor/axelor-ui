@@ -21,7 +21,7 @@ export const getTransitionStyle = (
   styles: {
     [k in TransitionStatus]?: React.CSSProperties;
   },
-  children: React.ReactElement
+  children: React.ReactElement,
 ): React.CSSProperties => ({
   ...children.props.style,
   ...styles[state],
@@ -41,7 +41,7 @@ export const getTransitionProps = (
     easing?: string | { enter?: string; exit?: string };
     timeout: number | { enter?: number; exit?: number };
     style: Partial<CSSStyleDeclaration>;
-  }
+  },
 ) => {
   const { easing, timeout, style = {} } = options;
   return {
@@ -71,7 +71,7 @@ export const getTransition = (
     easing?: string;
     duration?: string | number;
     delay?: string | number;
-  } = {}
+  } = {},
 ) => {
   const {
     easing = easings.easeInOut,

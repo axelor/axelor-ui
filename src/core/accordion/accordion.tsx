@@ -8,20 +8,21 @@ export interface AccordionHeaderProps {
 }
 
 const AccordionHeaderButton = styled.button<AccordionHeaderProps>(
-  ({ collapsed }) => ["accordion-button", { collapsed }]
+  ({ collapsed }) => ["accordion-button", { collapsed }],
 );
 
-export const AccordionHeader = withStyled(AccordionHeaderButton)(
-  (props, ref) => {
-    const classNames = useClassNames();
-    const className = classNames("accordion-header");
-    return (
-      <h2 className={className}>
-        <AccordionHeaderButton ref={ref} type="button" {...props} />
-      </h2>
-    );
-  }
-);
+export const AccordionHeader = withStyled(AccordionHeaderButton)((
+  props,
+  ref,
+) => {
+  const classNames = useClassNames();
+  const className = classNames("accordion-header");
+  return (
+    <h2 className={className}>
+      <AccordionHeaderButton ref={ref} type="button" {...props} />
+    </h2>
+  );
+});
 
 export type EventKey = string | number;
 
@@ -40,24 +41,25 @@ const AccordionCollapse = styled(Collapse)<AccordionBodyProps>(() => [
   "accordion-collapse",
 ]);
 
-export const AccordionBody = withStyled(AccordionCollapse)(
-  ({ children, ...rest }, ref) => {
-    const classNames = useClassNames();
-    const className = classNames("accordion-body");
-    return (
-      <AccordionCollapse ref={ref} {...rest}>
-        {(state) => {
-          return (
-            <div className={className}>
-              {typeof children === "function" && children(state)}
-              {typeof children !== "function" && children}
-            </div>
-          );
-        }}
-      </AccordionCollapse>
-    );
-  }
-);
+export const AccordionBody = withStyled(AccordionCollapse)((
+  { children, ...rest },
+  ref,
+) => {
+  const classNames = useClassNames();
+  const className = classNames("accordion-body");
+  return (
+    <AccordionCollapse ref={ref} {...rest}>
+      {(state) => {
+        return (
+          <div className={className}>
+            {typeof children === "function" && children(state)}
+            {typeof children !== "function" && children}
+          </div>
+        );
+      }}
+    </AccordionCollapse>
+  );
+});
 
 export interface AccordionProps extends React.HTMLAttributes<HTMLDivElement> {
   flush?: boolean;
@@ -75,10 +77,10 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
       className,
       ...props
     },
-    ref
+    ref,
   ) => {
     const [active, setActive] = useState<EventKey[] | EventKey | undefined>(
-      activeProp || (alwaysOpen ? [] : undefined)
+      activeProp || (alwaysOpen ? [] : undefined),
     );
     const classNames = useClassNames();
     const classes = classNames([
@@ -92,7 +94,7 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
     const handleHeaderOnClick = useCallback(
       (
         event: React.MouseEvent<any>,
-        eventKey: AccordionItemProps["eventKey"]
+        eventKey: AccordionItemProps["eventKey"],
       ) => {
         setActive((active: any) => {
           if (alwaysOpen) {
@@ -104,7 +106,7 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
           }
         });
       },
-      [alwaysOpen]
+      [alwaysOpen],
     );
 
     const children = React.Children.map(childrenProp, (child: any) => {
@@ -147,5 +149,5 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
         {children}
       </div>
     );
-  }
+  },
 );

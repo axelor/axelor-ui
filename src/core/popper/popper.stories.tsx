@@ -48,7 +48,7 @@ export const Dropdown = () => {
       <Popper open={open} target={targetEl} offset={[0, 4]} arrow>
         <ul
           className={classNames(
-            "dropdown-menu show border-0 rounded-0 position-static bg-transparent"
+            "dropdown-menu show border-0 rounded-0 position-static bg-transparent",
           )}
         >
           <li>

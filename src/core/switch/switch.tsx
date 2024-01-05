@@ -14,7 +14,7 @@ const SwitchInput = styled(Input)<SwitchProps>(
     role,
     type: "checkbox",
     pointerEvents: pointerEvents ?? readOnly ? "none" : undefined,
-  })
+  }),
 );
 
 export const Switch = withStyled(SwitchInput)((props, ref) => {

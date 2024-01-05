@@ -14,7 +14,7 @@ export function GridColumn(props: TYPES.GridColumnProps) {
   React.useEffect(() => {
     if (selected && columnRef.current) {
       const focusable = columnRef.current.querySelector(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
       );
       if (focusable) {
         const timer = setTimeout(() => {

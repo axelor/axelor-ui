@@ -26,7 +26,7 @@ export function Kanban({
   const getColumn = useCallback(
     (columnId: string) =>
       columns?.find((c) => String(c.id) === String(columnId)),
-    [columns]
+    [columns],
   );
 
   const handleDragEnd = useCallback(
@@ -62,7 +62,7 @@ export function Kanban({
         });
       }
     },
-    [columns, onCardMove, onColumnMove, getColumn]
+    [columns, onCardMove, onColumnMove, getColumn],
   );
   const classNames = useClassNames();
   return (
