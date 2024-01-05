@@ -651,6 +651,7 @@ function MenuItem({ item, state, onItemClick }: ItemProps) {
           open={popperOpen}
           target={targetEl}
           offset={[7, 0]}
+          className={styles.helpPopover}
           arrow
           shadow
           rounded

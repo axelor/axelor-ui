@@ -280,6 +280,10 @@
   }
 }
 
+.helpPopover {
+  z-index: calc(var(--ax-theme-nav-menu-zIndex, 1000) + 1) !important;
+}
+
 //
 // Search
 //
