@@ -519,7 +519,7 @@ function Menu({ item, state, onItemClick }: ItemProps) {
 }
 
 function UnknownIcon() {
-  return <MaterialIcon icon="question_mark" />;
+  return <MaterialIcon icon="apps" />;
 }
 
 function MenuIcon({ item, state, onItemClick, onItemHover }: ItemProps) {
