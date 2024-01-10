@@ -17,13 +17,20 @@ export const GridSearchRow = React.memo(function GridSearchRow(
 
   return (
     <SearchRow className={clsx(styles.row, styles.searchRow)}>
-      {columns.map((column, index) => (
-        <GridColumn key={column.id ?? column.name} data={column} index={index}>
-          {ColumnRenderer && (
-            <ColumnRenderer column={column} columnIndex={index} />
-          )}
-        </GridColumn>
-      ))}
+      {columns.map((column, index) => {
+        const { $css, ...rest } = column;
+        return (
+          <GridColumn
+            key={column.id ?? column.name}
+            data={rest}
+            index={index}
+          >
+            {ColumnRenderer && (
+              <ColumnRenderer column={rest} columnIndex={index} />
+            )}
+          </GridColumn>
+        );
+      })}
     </SearchRow>
   );
 });
