@@ -35,7 +35,7 @@
 }
 
 .body .dndRow:nth-of-type(odd) .row,
-.body .row:not(.inner):nth-of-type(odd) {
+.body .row:not(:hover):not(.selected):not(.inner):nth-of-type(odd) {
   color: var(--bs-table-striped-color);
   background: var(--bs-table-striped-bg);
 }
