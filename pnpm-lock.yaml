@@ -18,8 +18,8 @@ dependencies:
     specifier: ^9.1.42
     version: 9.1.42(@types/react-dom@18.2.17)(@types/react@18.2.43)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.20.2)
   '@material-symbols/font-400':
-    specifier: ^0.14.2
-    version: 0.14.2
+    specifier: ^0.14.4
+    version: 0.14.4
   '@popperjs/core':
     specifier: ^2.11.8
     version: 2.11.8
@@ -2613,8 +2613,8 @@ packages:
     resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
     dev: true
 
-  /@material-symbols/font-400@0.14.2:
-    resolution: {integrity: sha512-NYnnR90qp8FbruwbFwx59RnEZ0irZRWshfgA930T9cHI4ZUqJgpXk6XvSmTqboYfEHyBwnhjaqKwn+LHmP3u/w==}
+  /@material-symbols/font-400@0.14.4:
+    resolution: {integrity: sha512-cOPccjGllvrhb+Txt+7iRUgT+ZMczTV9HVGtDnhrSH18wSmzuG0ExlDRMB1tgbNay96axcYgl7gfxOgZicaZ+A==}
     dev: false
 
   /@mdx-js/react@2.3.0(react@18.2.0):

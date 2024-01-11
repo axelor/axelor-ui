@@ -40,7 +40,7 @@
     "@floating-ui/react": "^0.26.3",
     "@fluentui/priority-overflow": "^9.1.10",
     "@fluentui/react-context-selector": "^9.1.42",
-    "@material-symbols/font-400": "^0.14.2",
+    "@material-symbols/font-400": "^0.14.4",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.2",
     "bootstrap-icons": "^1.11.2",
