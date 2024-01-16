@@ -56,12 +56,12 @@
     "react-transition-group": "^4.4.5"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^7.6.6",
-    "@storybook/addon-interactions": "^7.6.6",
-    "@storybook/addon-links": "^7.6.6",
-    "@storybook/blocks": "^7.6.6",
-    "@storybook/react": "^7.6.6",
-    "@storybook/react-vite": "^7.6.6",
+    "@storybook/addon-essentials": "^7.6.8",
+    "@storybook/addon-interactions": "^7.6.8",
+    "@storybook/addon-links": "^7.6.8",
+    "@storybook/blocks": "^7.6.8",
+    "@storybook/react": "^7.6.8",
+    "@storybook/react-vite": "^7.6.8",
     "@storybook/testing-library": "^0.2.2",
     "@types/color": "^3.0.6",
     "@types/node": "^20.10.4",
@@ -86,7 +86,7 @@
     "react-i18next": "^13.5.0",
     "rimraf": "^5.0.5",
     "sass": "^1.69.5",
-    "storybook": "^7.6.6",
+    "storybook": "^7.6.8",
     "typescript": "^5.3.3",
     "vite": "^5.0.11",
     "vite-plugin-svgr": "^4.2.0"
