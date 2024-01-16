@@ -83,6 +83,7 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
     canDrag: () => data.draggable === true,
     item: { data, index, type: NODE_TYPE },
   });
+  const timerRef = useRef<number>();
 
   const [{ hovered, highlighted }, dropRef] = useDrop({
     accept: NODE_TYPE,
@@ -125,13 +126,21 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
     },
   });
 
-  function handleEdit(e: React.SyntheticEvent) {
+  function handleClick(e: React.SyntheticEvent) {
+    window.clearTimeout(timerRef.current);
+    timerRef.current = window.setTimeout(() => {
+      onClick?.(e);
+    }, 200);
+  }
+
+  function handleDoubleClick(e: React.SyntheticEvent) {
+    window.clearTimeout(timerRef.current);
     if (onEdit) {
       e.preventDefault();
       e.stopPropagation();
       onEdit(data, index);
     }
-    onDoubleClick && onDoubleClick(e);
+    onDoubleClick?.(e);
   }
 
   dragRef(dropRef(ref));
@@ -141,8 +150,8 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
       className={classNames(className, {
         [styles.hover]: hovered && highlighted,
       })}
-      onClick={onClick}
-      onDoubleClick={handleEdit}
+      onClick={handleClick}
+      onDoubleClick={handleDoubleClick}
     >
       <TreeNodeContent
         {...(index === 0 ? { ref: dragPreviewRef } : {})}
