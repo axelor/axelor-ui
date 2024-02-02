@@ -13,6 +13,7 @@ import {
   useRole,
 } from "@floating-ui/react";
 import {
+  ReactElement,
   forwardRef,
   useCallback,
   useEffect,
@@ -82,6 +83,8 @@ export interface SelectProps<Type, Multiple extends boolean> {
     maxWidth?: number;
     maxHeight?: number;
   };
+  inputStartAdornment?: ReactElement;
+  inputEndAdornment?: ReactElement;
   onChange?: (value: SelectValue<Type, Multiple>) => void;
   onOpen?: () => void;
   onClose?: () => void;
@@ -138,6 +141,8 @@ export const Select = forwardRef(function Select<
     onInputChange,
     renderOption,
     renderValue,
+    inputStartAdornment,
+    inputEndAdornment,
   } = props;
 
   const [value, setValue] = useControlled({
@@ -645,10 +650,12 @@ export const Select = forwardRef(function Select<
         })}
       >
         <div ref={contentRef} className={styles.content}>
+          {inputStartAdornment}
           {multiple && renderMultiple()}
           {renderSelector()}
         </div>
         <div tabIndex={-1} className={styles.actions} onClick={handleClose}>
+          {inputEndAdornment}
           {canClear && (
             <div
               className={clsx(styles.action, styles.clearIcon)}
