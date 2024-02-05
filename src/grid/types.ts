@@ -126,6 +126,7 @@ export interface GridProps {
   editRowRenderer?: Renderer;
   editRowColumnRenderer?: Renderer;
   headerRowRenderer?: Renderer;
+  headerCellRenderer?: Renderer;
   footerRowRenderer?: Renderer;
   searchRowRenderer?: Renderer;
   searchColumnRenderer?: Renderer;

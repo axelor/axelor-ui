@@ -21,6 +21,7 @@ export interface GridHeaderProps
     > {
   className?: string;
   allColumns?: TYPES.GridColumn[];
+  cellRenderer?: TYPES.Renderer;
   rowRenderer?: TYPES.Renderer;
   checkType?: GridHeaderColumnProps["checkType"];
   onCheckAll?: (checked: boolean) => void;
@@ -54,6 +55,7 @@ export const GridHeader = React.memo(function GridHeader(
     groupBy,
     searchRowRenderer,
     searchColumnRenderer,
+    cellRenderer,
     rowRenderer,
     onCheckAll,
     onColumnDrop,
@@ -84,6 +86,7 @@ export const GridHeader = React.memo(function GridHeader(
               sort={sortColumn ? sortColumn.order : null}
               groupBy={groupBy}
               columns={allColumns}
+              renderer={cellRenderer}
               onCheckAll={onCheckAll}
               onSort={onColumnSort}
               onGroup={onColumnGroupAdd}

@@ -112,6 +112,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     const {
       cellRenderer,
       rowRenderer,
+      headerCellRenderer,
       headerRowRenderer,
       footerRowRenderer,
       rowGroupHeaderRenderer,
@@ -1300,6 +1301,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             groupBy={state.groupBy}
             orderBy={state.orderBy}
             columns={displayColumns}
+            cellRenderer={headerCellRenderer}
             rowRenderer={headerRowRenderer}
             checkType={checkType}
             selectionType={selectionType}

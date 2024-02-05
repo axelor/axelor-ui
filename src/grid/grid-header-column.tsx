@@ -35,6 +35,7 @@ export interface GridHeaderColumnProps extends TYPES.GridColumnProps {
   selectionType?: TYPES.GridProps["selectionType"];
   groupBy?: TYPES.GridState["groupBy"];
   columns?: TYPES.GridColumn[];
+  renderer?: TYPES.Renderer;
   onGroup?: (e: SyntheticEvent, group: TYPES.GridGroup) => void;
   onUngroup?: (e: SyntheticEvent, group: TYPES.GridGroup) => void;
   onSort?: (
@@ -102,6 +103,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
     index,
     checkType,
     selectionType,
+    renderer,
     onCheckAll,
     onSort,
     onShow,
@@ -361,6 +363,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
             className: styles.action,
           }
         : {})}
+      renderer={renderer}
       type="header"
       index={index}
       data={data}
