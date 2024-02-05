@@ -35,6 +35,11 @@ export interface NavTabItem {
   icon?: (props: { color?: string }) => JSX.Element | null;
 
   /**
+   * The renderer to customize tab rendering
+   */
+  render?: React.FC<React.HTMLProps<HTMLDivElement>>;
+
+  /**
    * The color for the icon.
    *
    */
@@ -333,7 +338,7 @@ interface NavTabProps {
 
 function NavTab(props: NavTabProps) {
   const { item, onItemClick } = props;
-  const { icon, title, onClick, onAuxClick, onContextMenu } = item;
+  const { icon, title, render, onClick, onAuxClick, onContextMenu } = item;
 
   const { active, setActive } = useTabs();
   const [element, setElement] = useState<HTMLDivElement | null>(null);
@@ -355,8 +360,10 @@ function NavTab(props: NavTabProps) {
     }
   }, [element, isActive, item.id, setActive]);
 
+  const Component = render ?? "div";
+
   return (
-    <div
+    <Component
       ref={setElement}
       className={clsx(styles.tab, {
         [styles.active]: isActive,
@@ -370,7 +377,7 @@ function NavTab(props: NavTabProps) {
         {icon && <NavTabIcon item={item} />}
         <div className={styles.text}>{title}</div>
       </div>
-    </div>
+    </Component>
   );
 }
 
