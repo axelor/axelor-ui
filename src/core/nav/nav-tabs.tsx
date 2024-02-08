@@ -32,12 +32,17 @@ export interface NavTabItem {
   /**
    * The icon to show.
    */
-  icon?: (props: { color?: string }) => JSX.Element | null;
+  icon?: React.FC<{ color?: string }>;
 
   /**
    * The renderer to customize tab rendering
    */
-  render?: React.FC<React.HTMLProps<HTMLDivElement>>;
+  render?: React.FC<{
+    item: NavTabItem;
+    active?: boolean;
+    className?: string;
+    children?: React.ReactNode;
+  }>;
 
   /**
    * The color for the icon.
@@ -360,10 +365,8 @@ function NavTab(props: NavTabProps) {
     }
   }, [element, isActive, item.id, setActive]);
 
-  const Component = render ?? "div";
-
   return (
-    <Component
+    <div
       ref={setElement}
       className={clsx(styles.tab, {
         [styles.active]: isActive,
@@ -373,11 +376,27 @@ function NavTab(props: NavTabProps) {
       onAuxClick={onAuxClick}
       onContextMenu={onContextMenu}
     >
-      <div className={styles.title}>
+      <NavTabInner item={item} active={isActive} />
+    </div>
+  );
+}
+
+function NavTabInner(props: { item: NavTabItem; active?: boolean }) {
+  const { item, active } = props;
+  const { icon, title, render: Title } = item;
+  if (Title) {
+    return (
+      <Title item={item} active={active} className={styles.title}>
         {icon && <NavTabIcon item={item} />}
-        <div className={styles.text}>{title}</div>
-      </div>
-    </Component>
+        {title && <div className={styles.text}>{title}</div>}
+      </Title>
+    );
+  }
+  return (
+    <div className={styles.title}>
+      {icon && <NavTabIcon item={item} />}
+      {title && <div className={styles.text}>{title}</div>}
+    </div>
   );
 }
 
