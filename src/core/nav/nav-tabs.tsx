@@ -51,6 +51,12 @@ export interface NavTabItem {
   iconColor?: string;
 
   /**
+   * Associate any data
+   *
+   */
+  data?: any;
+
+  /**
    * The click handler.
    *
    */
