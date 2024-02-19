@@ -1,5 +1,5 @@
 import React from "react";
-import { Input } from "../core";
+import { Box, Input } from "../core";
 import { useClassNames } from "../core";
 
 import { GridColumn } from "./grid-column";
@@ -26,7 +26,9 @@ export const GridBodyRow = React.memo(function GridBodyRow(
     width,
     renderer,
     cellRenderer,
-    rowDetailsRenderer: RowDetails,
+    detailsRenderer: RowDetails,
+    detailsExpandIcon,
+    detailsCollapseIcon,
     onCellClick,
     onDoubleClick,
     onClick,
@@ -80,12 +82,19 @@ export const GridBodyRow = React.memo(function GridBodyRow(
       );
     }
     if (isRowExpand(column)) {
+      const defaultRenderer = (
+        <MaterialIcon icon={data.expand ? "arrow_drop_down" : "arrow_right"} />
+      );
       return (
-        <MaterialIcon
+        <Box
+          d="inline-flex"
           className={styles.expandRowIcon}
           onClick={() => onExpand?.(data)}
-          icon={data.expand ? "arrow_drop_down" : "arrow_right"}
-        />
+        >
+          {data.expand
+            ? detailsCollapseIcon ?? defaultRenderer
+            : detailsExpandIcon ?? defaultRenderer}
+        </Box>
       );
     }
     return value;

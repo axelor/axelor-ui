@@ -136,6 +136,8 @@ export interface GridProps {
   searchRowRenderer?: Renderer;
   searchColumnRenderer?: Renderer;
   rowDetailsRenderer?: Renderer;
+  rowDetailsExpandIcon?: JSX.Element | null;
+  rowDetailsCollapseIcon?: JSX.Element | null;
   rowGroupHeaderRenderer?: Renderer;
   rowGroupFooterRenderer?: Renderer;
   onColumnCustomize?: (e: React.SyntheticEvent, column?: GridColumn) => void;
@@ -192,7 +194,9 @@ export interface GridRowProps {
   renderer?: Renderer;
   cellRenderer?: Renderer;
   selectionType?: GridProps["selectionType"];
-  rowDetailsRenderer?: GridProps["rowDetailsRenderer"];
+  detailsRenderer?: GridProps["rowDetailsRenderer"];
+  detailsExpandIcon?: GridProps["rowDetailsExpandIcon"];
+  detailsCollapseIcon?: GridProps["rowDetailsCollapseIcon"];
   onSave?: GridProps["onRecordSave"];
   onCancel?: GridProps["onRecordDiscard"];
   onCellClick?: GridProps["onCellClick"];

@@ -23,6 +23,8 @@ export interface GridBodyProps
       | "rowGroupHeaderRenderer"
       | "rowGroupFooterRenderer"
       | "rowDetailsRenderer"
+      | "rowDetailsExpandIcon"
+      | "rowDetailsCollapseIcon"
       | "rowRenderer"
       | "editRowRenderer"
       | "editRowColumnRenderer"
@@ -54,6 +56,8 @@ export function GridBody(props: GridBodyProps) {
     rowGroupHeaderRenderer,
     rowGroupFooterRenderer,
     rowDetailsRenderer,
+    rowDetailsExpandIcon,
+    rowDetailsCollapseIcon,
     editRowRenderer,
     editRowColumnRenderer,
     addNewText,
@@ -104,7 +108,7 @@ export function GridBody(props: GridBodyProps) {
     }
     return <div {...props}>{children}</div>;
   }
-  let style: CSSProperties = {};
+  const style: CSSProperties = {};
   if (rowHeight) {
     style.height = rowHeight;
     style.maxHeight = rowHeight;
@@ -181,7 +185,9 @@ export function GridBody(props: GridBodyProps) {
             width={totalWidth}
             draggable={Boolean(onRowMove)}
             renderer={rowRenderer}
-            rowDetailsRenderer={rowDetailsRenderer}
+            detailsRenderer={rowDetailsRenderer}
+            detailsExpandIcon={rowDetailsExpandIcon}
+            detailsCollapseIcon={rowDetailsCollapseIcon}
             {...rowProps}
           />
         );

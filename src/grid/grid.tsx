@@ -120,6 +120,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       rowGroupHeaderRenderer,
       rowGroupFooterRenderer,
       rowDetailsRenderer,
+      rowDetailsExpandIcon,
+      rowDetailsCollapseIcon,
       editRowRenderer,
       editRowColumnRenderer,
       searchRowRenderer,
@@ -1403,6 +1405,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             }}
             {...(allowRowExpand && {
               rowDetailsRenderer,
+              rowDetailsExpandIcon,
+              rowDetailsCollapseIcon,
               onRowExpand: handleRowExpandChange,
             })}
             {...(editable
