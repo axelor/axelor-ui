@@ -1224,10 +1224,23 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         return {
           ...draft,
           ...restoreGridSelection({ ...draft, rows: newRows }, draft.rows),
-          rows: newRows,
+          rows: allowRowExpand
+            ? newRows.map((row) => {
+                const oldRow = draft.rows.find((r) => r.key === row.key);
+                return { ...row, expand: oldRow?.expand ?? row.expand };
+              })
+            : newRows,
         };
       });
-    }, [setState, records, columns, sortType, $orderBy, state.groupBy]);
+    }, [
+      setState,
+      records,
+      columns,
+      sortType,
+      $orderBy,
+      state.groupBy,
+      allowRowExpand,
+    ]);
 
     React.useEffect(() => {
       if (!containerRef.current) return;
