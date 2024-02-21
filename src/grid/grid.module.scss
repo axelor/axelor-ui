@@ -34,18 +34,18 @@
   cursor: pointer;
 }
 
-.body .dndRow:nth-of-type(odd) .row,
-.body .row:not(:hover):not(.selected):not(.inner):nth-of-type(odd) {
+.body > .dndRow:nth-of-type(odd) > .row,
+.body > .row:not(:hover):not(.selected):not(.inner):nth-of-type(odd) {
   color: var(--bs-table-striped-color);
   background: var(--bs-table-striped-bg);
 }
 
-.body .row:hover {
+.body > .row:hover {
   background: var(--bs-table-hover-bg);
   color: var(--bs-table-hover-color);
 }
 
-.body .row.selected {
+.body > .row.selected {
   background: var(--bs-table-active-bg);
   color: var(--bs-table-active-color);
 }
