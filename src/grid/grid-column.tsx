@@ -36,7 +36,14 @@ export function GridColumn(props: TYPES.GridColumnProps) {
         [styles.center]: ["row-checked"].includes(data.type || ""),
         [styles.selected]: selected,
       })}
-      style={{ maxWidth: $width, width: $width }}
+      style={
+        $width > 0
+          ? {
+              width: $width,
+              maxWidth: $width,
+            }
+          : { flex: 1 }
+      }
     >
       {children && typeof children === "object" ? (
         children
