@@ -144,7 +144,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         </RowComponent>
       </DragComponent>
       {RowDetails && data.expand && (
-        <div style={{ width }}>
+        <div data-row-details={`${data.key}`} style={{ width }}>
           <RowDetails data={data} onClose={() => onExpand?.(data)} />
         </div>
       )}

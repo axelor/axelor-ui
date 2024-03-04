@@ -172,7 +172,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             editable: false,
             sortable: false,
             searchable: false,
-            width: 50,
+            width: 40,
           });
         }
         if (
