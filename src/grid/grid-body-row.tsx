@@ -51,11 +51,16 @@ export const GridBodyRow = React.memo(function GridBodyRow(
     [data, rowIndex, onCellClick, onClick],
   );
 
-  function getColumnValue(column: TYPES.GridColumn) {
-    const value = data.record[column.name];
+  function getColumnValue(rawValue: any, column: TYPES.GridColumn) {
     return column.formatter
-      ? column.formatter(column, value, data.record)
-      : value;
+      ? column.formatter(column, rawValue, data.record)
+      : rawValue;
+  }
+
+  function getColumnRawValue(column: TYPES.GridColumn) {
+    return column.valueGetter
+      ? column.valueGetter(column, data.record)
+      : data.record[column.name];
   }
 
   function renderColumn(column: TYPES.GridColumn, value: any) {
@@ -90,7 +95,8 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         onDoubleClick={(e) => onDoubleClick && onDoubleClick(e, data, rowIndex)}
       >
         {columns.map((column, index) => {
-          const value = getColumnValue(column);
+          const rawValue = getColumnRawValue(column);
+          const value = getColumnValue(rawValue, column);
           return (
             <GridColumn
               key={column.id ?? column.name}
@@ -99,6 +105,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
               type="body"
               record={data.record}
               value={value}
+              rawValue={rawValue}
               focus={editCell === index}
               selected={selectedCell === index}
               renderer={column.renderer || cellRenderer}

@@ -17,6 +17,7 @@ export interface GridColumn {
   action?: boolean;
   aggregate?: "sum" | "min" | "max" | "avg" | "count";
   formatter?: (column: GridColumn, value: any, record: any) => any;
+  valueGetter?: (column: GridColumn, record: any) => any;
   renderer?: (props: any) => any;
   $changed?: boolean;
   $css?: string;
@@ -28,6 +29,7 @@ export interface GridColumnProps {
   index: number;
   className?: string;
   value?: any;
+  rawValue?: any;
   record?: GridRow["record"];
   type?: "header" | "footer" | "body";
   selected?: boolean;
