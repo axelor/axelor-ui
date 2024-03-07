@@ -103,6 +103,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       onRowDoubleClick,
       onRowReorder,
       onRowSelectionChange,
+      onRowExpand,
       onCellClick,
       onRecordAdd,
       onRecordEdit,
@@ -303,13 +304,14 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       function handleRowStateChange(row: TYPES.GridRow, expand?: boolean) {
         if (isDefined(row)) {
           const { key } = row;
+          onRowExpand?.(row, expand ?? !row.expand);
           return setState((draft) => {
             const row = draft.rows.find(($row) => $row.key === key);
             row && (row.expand = expand ?? !row.expand);
           });
         }
       },
-      [setState],
+      [setState, onRowExpand],
     );
 
     // handle group row toggle, row selection
@@ -1227,7 +1229,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           rows: allowRowExpand
             ? newRows.map((row) => {
                 const oldRow = draft.rows.find((r) => r.key === row.key);
-                return { ...row, expand: oldRow?.expand ?? row.expand };
+                return {
+                  ...row,
+                  expand: row.record?._expand ?? oldRow?.expand ?? row.expand,
+                };
               })
             : newRows,
         };

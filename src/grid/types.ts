@@ -175,6 +175,7 @@ export interface GridProps {
     columnIndex: number,
   ) => void;
   onRowSelectionChange?: (rows: number[]) => void;
+  onRowExpand?: (row: GridRow, expanded?: boolean) => void;
   translate?: (key: string) => null | string;
   labels?: Record<GridLabel, string>;
 }
@@ -210,7 +211,7 @@ export interface GridRowProps {
     columnIndex?: number,
     column?: GridColumn,
   ) => void;
-  onExpand?: (row: GridRow) => void;
+  onExpand?: (row: GridRow, expand?: boolean) => void;
   onUpdate?: (rowIndex: number, values: any) => void;
 }
 
