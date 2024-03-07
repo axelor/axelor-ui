@@ -99,6 +99,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     const isRTL = useRTL();
 
     const {
+      hasRowExpanded,
       onRowClick,
       onRowDoubleClick,
       onRowReorder,
@@ -1231,13 +1232,16 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
                 const oldRow = draft.rows.find((r) => r.key === row.key);
                 return {
                   ...row,
-                  expand: row.record?._expand ?? oldRow?.expand ?? row.expand,
+                  expand: hasRowExpanded
+                    ? hasRowExpanded(row)
+                    : oldRow?.expand ?? row.expand,
                 };
               })
             : newRows,
         };
       });
     }, [
+      hasRowExpanded,
       setState,
       records,
       columns,

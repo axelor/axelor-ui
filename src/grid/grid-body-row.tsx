@@ -89,7 +89,10 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         <Box
           d="inline-flex"
           className={styles.expandRowIcon}
-          onClick={() => onExpand?.(data)}
+          onClick={(e) => {
+            e.preventDefault();
+            onExpand?.(data)
+          }}
         >
           {data.expand
             ? detailsCollapseIcon ?? defaultRenderer

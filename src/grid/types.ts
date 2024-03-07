@@ -140,6 +140,7 @@ export interface GridProps {
   rowDetailsCollapseIcon?: JSX.Element | null;
   rowGroupHeaderRenderer?: Renderer;
   rowGroupFooterRenderer?: Renderer;
+  hasRowExpanded?: (row: GridRow) => boolean;
   onColumnCustomize?: (e: React.SyntheticEvent, column?: GridColumn) => void;
   onRowClick?: (e: React.SyntheticEvent, row: any, rowIndex: number) => void;
   onRowDoubleClick?: (
