@@ -226,6 +226,10 @@
   }
 }
 
+.detailsRow {
+  border-bottom: 1px solid var(--bs-table-border-color);
+}
+
 .expandRowIcon:hover {
   background: var(--bs-table-cell-active-bg);
 }

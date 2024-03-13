@@ -91,7 +91,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
           className={styles.expandRowIcon}
           onClick={(e) => {
             e.preventDefault();
-            onExpand?.(data)
+            onExpand?.(data);
           }}
         >
           {data.expand
@@ -123,8 +123,8 @@ export const GridBodyRow = React.memo(function GridBodyRow(
           }
         >
           {columns.map((column, index) => {
-          const rawValue = getColumnRawValue(column);
-          const value = getColumnValue(rawValue, column);
+            const rawValue = getColumnRawValue(column);
+            const value = getColumnValue(rawValue, column);
             return (
               <GridColumn
                 key={column.id ?? column.name}
@@ -147,8 +147,17 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         </RowComponent>
       </DragComponent>
       {RowDetails && data.expand && (
-        <div data-row-details={`${data.key}`} style={{ width }}>
-          <RowDetails data={data} onClose={() => onExpand?.(data, Boolean(!data.expand))} />
+        <div
+          className={styles.detailsRow}
+          data-row-details={`${data.key}`}
+          {...(width && {
+            style: { width: width + 2 }, // border width of 2
+          })}
+        >
+          <RowDetails
+            data={data}
+            onClose={() => onExpand?.(data, Boolean(!data.expand))}
+          />
         </div>
       )}
     </>
