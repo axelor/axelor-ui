@@ -327,6 +327,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         const isSelectBox = e.key === "Enter" || cell?.type === "row-checked";
 
         // toggle group row
+        if (cell && isRowExpand(cell)) return;
         if (row.type === "group-row") {
           const { key } = row;
           return setState((draft) => {
