@@ -324,7 +324,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         cellIndex: number | null = null,
         cell?: TYPES.GridColumn,
       ) => {
-        const isSelectBox = e.key === "Enter" || cell?.type === "row-checked";
+        const isCheckbox = cell?.type === "row-checked";
+        const isSelectBox = e.key === "Enter" || isCheckbox;
 
         // toggle group row
         if (cell && isRowExpand(cell)) return;
@@ -420,7 +421,17 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
             // row selection with cell click
             if (allowCellSelection) {
-              _selectedCell = cellIndex !== null ? [rowIndex, cellIndex] : [];
+              const shouldDeselectCell =
+                isCheckbox &&
+                (draft.selectedRows || []).includes(rowIndex)
+
+              if (shouldDeselectCell) {
+                (e.target as HTMLElement)?.blur?.();
+              }
+              _selectedCell =
+                cellIndex !== null && !shouldDeselectCell
+                  ? [rowIndex, cellIndex]
+                  : [];
             }
 
             // if no shift/control operation performed
