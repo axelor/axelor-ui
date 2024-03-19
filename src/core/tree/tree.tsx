@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useEffect, useMemo } from "react";
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
 
 import { TreeHeaderColumn } from "./tree-column";
 import { RootDroppable, TreeNode } from "./tree-node";
@@ -80,6 +86,7 @@ export function Tree(props: TYPES.TreeProps) {
   const [sortColumns, setSortColumns] = useState<TYPES.TreeSortColumn[] | null>(
     null,
   );
+  const loadedRef = useRef<Record<string, boolean>>({});
 
   const selectRow = useCallback((index: number) => {
     setData((data) =>
@@ -124,32 +131,35 @@ export function Tree(props: TYPES.TreeProps) {
 
   const handleToggle = useCallback(
     async function handleToggle(record: any, index: number, isHover = false) {
-      if (!record.loaded && record.children && onLoad) {
-        record.loaded = true;
+      if (!loadedRef.current[record.$key] && record.children && onLoad) {
+        loadedRef.current[record.$key] = true;
         try {
           setLoading(true);
           const children = await onLoad(record, sortColumns || []);
-          setData((data) => [
-            ...data.slice(0, index + 1),
-            ...children.map((item: any) => ({
-              ...toNode(item),
-              parent: record.$key,
-            })),
-            ...data.slice(index + 1),
-          ]);
+          setData((data) => {
+            const index = data.findIndex((item) => item.$key === record.$key);
+            return [
+              ...data.slice(0, index + 1),
+              ...children.map((item: any) => ({
+                ...toNode(item),
+                parent: record.$key,
+              })),
+              ...data.slice(index + 1),
+            ];
+          });
         } finally {
           setLoading(false);
         }
       }
+      loadedRef.current[record.$key] = true;
       const updateKey = isHover ? "hover" : "selected";
       setData((data) =>
         data
           .map((row) => (row[updateKey] ? { ...row, [updateKey]: false } : row))
-          .map((row, i) =>
-            i === index
+          .map((row) =>
+            row.$key === record.$key
               ? {
                   ...row,
-                  loaded: true,
                   [updateKey]: true,
                   expanded: !record.expanded,
                 }
@@ -291,6 +301,9 @@ export function Tree(props: TYPES.TreeProps) {
   };
 
   useEffect(() => {
+    // reset loaded state
+    loadedRef.current = {};
+
     const [sortColumn] = sortColumns || [];
     setData(
       (sortColumn && !onSort
@@ -322,7 +335,7 @@ export function Tree(props: TYPES.TreeProps) {
       const parentList = getParentList(data, item.parent);
       return {
         ...item,
-        ...(item.loaded
+        ...(loadedRef.current[item.$key]
           ? {
               children: childrenList.length ? true : false,
             }
@@ -386,7 +399,9 @@ export function Tree(props: TYPES.TreeProps) {
               />
             ),
         )}
-        {droppable && <RootDroppable text={droppableText} onDrop={handleDrop} />}
+        {droppable && (
+          <RootDroppable text={droppableText} onDrop={handleDrop} />
+        )}
       </div>
     </div>
   );
