@@ -63,17 +63,26 @@
   min-height: 1rem;
   align-items: center;
 
-  &.selected {
-    background: var(--bs-table-active-bg);
-    color: var(--bs-table-active-color);
-  }
-  &:hover,
+  &:hover:not(.dragging),
   &.hover {
     background: var(--bs-table-hover-bg);
     color: var(--bs-table-hover-color);
   }
+  &.selected {
+    background: var(--bs-table-active-bg);
+    color: var(--bs-table-active-color);
+  }
   &.edit {
     z-index: 1;
+  }
+}
+
+.rootNode {
+  & > * {
+    visibility: hidden;
+  }
+  &.active > * {
+    visibility: visible;
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
 import { Box } from "../box";
@@ -73,15 +73,20 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
     onEdit,
     onToggle,
     onDrop,
+    onSelect,
     onClick,
     onDoubleClick,
   } = props;
   const ref = useRef(null);
   const classNames = useClassNames();
-  const [, dragRef, dragPreviewRef] = useDrag({
+  const [{ isDragging }, dragRef, dragPreviewRef] = useDrag({
     type: NODE_TYPE,
     canDrag: () => data.draggable === true,
     item: { data, index, type: NODE_TYPE },
+
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
   });
   const timerRef = useRef<number>();
 
@@ -144,10 +149,16 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
   }
 
   dragRef(dropRef(ref));
+
+  useEffect(() => {
+    isDragging && onSelect?.({} as any, {} as any, index);
+  }, [index, onSelect, isDragging]);
+
   return (
     <div
       ref={ref}
       className={classNames(className, {
+        [styles.dragging]: isDragging,
         [styles.hover]: hovered && highlighted,
       })}
       onClick={handleClick}
@@ -160,6 +171,56 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
         textRenderer={textRenderer}
       />
     </div>
+  );
+}
+
+export function RootDroppable({
+  text,
+  onDrop,
+}: {
+  text?: TYPES.TreeProps["droppableText"];
+  onDrop: TYPES.TreeNodeProps["onDrop"];
+}) {
+  const classNames = useClassNames();
+
+  const [{ highlighted }, dropRef] = useDrop({
+    accept: NODE_TYPE,
+    hover(item: any) {
+      return true;
+    },
+    drop(item: TYPES.TreeNode) {
+      onDrop &&
+        onDrop(item, {
+          data: {
+            data: null,
+          },
+        });
+    },
+    canDrop({ data }: { data: TYPES.TreeNode }) {
+      const { parent } = data;
+      return Boolean(parent);
+    },
+    collect: function (monitor) {
+      return {
+        highlighted: monitor.canDrop(),
+        hovered: monitor.isOver(),
+      };
+    },
+  });
+
+  return (
+    <Box
+      pt={1}
+      d="flex"
+      ref={dropRef}
+      className={classNames(styles.rootNode, {
+        [styles.active]: highlighted,
+      })}
+    >
+      <Box d="flex" flex={1} alignItems={"center"} justifyContent={"center"}>
+        {text ?? "Drop here"}
+      </Box>
+    </Box>
   );
 }
 
@@ -200,6 +261,7 @@ export const TreeNode = React.memo(function TreeNode({
         onClick={(e: React.SyntheticEvent) => {
           onSelect && onSelect(e, data, index);
         }}
+        onSelect={onSelect}
         {...(editRenderer ? { onEdit } : {})}
         onDrop={onDrop}
         onToggle={onToggle}

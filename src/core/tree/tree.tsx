@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 
 import { TreeHeaderColumn } from "./tree-column";
-import { TreeNode } from "./tree-node";
+import { RootDroppable, TreeNode } from "./tree-node";
 import { useClassNames } from "../styles";
 import * as TYPES from "./types";
 import styles from "./tree.module.scss";
@@ -60,6 +60,8 @@ export function Tree(props: TYPES.TreeProps) {
   const {
     className,
     sortable,
+    droppable,
+    droppableText,
     onLoad,
     onSort,
     onNodeMove,
@@ -180,6 +182,7 @@ export function Tree(props: TYPES.TreeProps) {
       setLoading(true);
       try {
         const hoverParent = hoverItem;
+        const hasDroppedOnRoot = droppable && hoverItem.data === null;
 
         let updatedNode = { ...dragItem };
         if (hoverParent.$key !== dragItem.parent && onNodeMove) {
@@ -194,9 +197,10 @@ export function Tree(props: TYPES.TreeProps) {
           );
           data.splice(dragIndex, 1);
 
-          let hoverIndex = data.findIndex(
-            (item) => item.$key === hoverItem?.$key,
-          );
+          const hoverIndex = hasDroppedOnRoot
+            ? data.length - 1
+            : data.findIndex((item) => item.$key === hoverItem?.$key);
+
           data.splice(hoverIndex + 1, 0, {
             ...updatedNode,
             parent: hoverParent.$key,
@@ -229,7 +233,7 @@ export function Tree(props: TYPES.TreeProps) {
         setLoading(false);
       }
     },
-    [onNodeMove],
+    [droppable, onNodeMove],
   );
 
   const handleNodeEdit = useCallback((record: any) => {
@@ -382,6 +386,7 @@ export function Tree(props: TYPES.TreeProps) {
               />
             ),
         )}
+        {droppable && <RootDroppable text={droppableText} onDrop={handleDrop} />}
       </div>
     </div>
   );

@@ -32,6 +32,8 @@ export interface TreeProps {
   records: any[];
   columns: TreeColumn[];
   sortable?: boolean;
+  droppable?: boolean;
+  droppableText?: string | JSX.Element;
   onSort?: (sortColumns?: TreeSortColumn[]) => void;
   onLoad?: (data: TreeNode, sortColumns?: TreeSortColumn[]) => any;
   textRenderer?: TreeNodeProps["renderer"];
