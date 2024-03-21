@@ -151,9 +151,6 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         <div
           className={styles.detailsRow}
           data-row-details={`${data.key}`}
-          {...(width && {
-            style: { width: width + 2 }, // border width of 2
-          })}
         >
           <RowDetails
             data={data}
