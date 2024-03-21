@@ -20,11 +20,11 @@ export interface GridBodyProps
       | "noRecordsText"
       | "addNewText"
       | "cellRenderer"
+      | "hasRowExpanded"
       | "rowGroupHeaderRenderer"
       | "rowGroupFooterRenderer"
       | "rowDetailsRenderer"
       | "rowDetailsExpandIcon"
-      | "rowDetailsCollapseIcon"
       | "rowRenderer"
       | "editRowRenderer"
       | "editRowColumnRenderer"
@@ -51,13 +51,13 @@ export function GridBody(props: GridBodyProps) {
     selectionType,
     rowHeight,
     maxRowHeight,
+    hasRowExpanded,
     rowRenderer,
     cellRenderer,
     rowGroupHeaderRenderer,
     rowGroupFooterRenderer,
     rowDetailsRenderer,
     rowDetailsExpandIcon,
-    rowDetailsCollapseIcon,
     editRowRenderer,
     editRowColumnRenderer,
     addNewText,
@@ -185,9 +185,9 @@ export function GridBody(props: GridBodyProps) {
             width={totalWidth}
             draggable={Boolean(onRowMove)}
             renderer={rowRenderer}
+            hasExpanded={hasRowExpanded}
             detailsRenderer={rowDetailsRenderer}
             detailsExpandIcon={rowDetailsExpandIcon}
-            detailsCollapseIcon={rowDetailsCollapseIcon}
             {...rowProps}
           />
         );

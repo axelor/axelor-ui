@@ -123,7 +123,6 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       rowGroupFooterRenderer,
       rowDetailsRenderer,
       rowDetailsExpandIcon,
-      rowDetailsCollapseIcon,
       editRowRenderer,
       editRowColumnRenderer,
       searchRowRenderer,
@@ -1244,16 +1243,13 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
                 const oldRow = draft.rows.find((r) => r.key === row.key);
                 return {
                   ...row,
-                  expand: hasRowExpanded
-                    ? hasRowExpanded(row)
-                    : oldRow?.expand ?? row.expand,
+                  expand: oldRow?.expand ?? row.expand,
                 };
               })
             : newRows,
         };
       });
     }, [
-      hasRowExpanded,
       setState,
       records,
       columns,
@@ -1438,9 +1434,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
               rowGroupHeaderRenderer,
             }}
             {...(allowRowExpand && {
+              hasRowExpanded,
               rowDetailsRenderer,
               rowDetailsExpandIcon,
-              rowDetailsCollapseIcon,
               onRowExpand: handleRowExpandChange,
             })}
             {...(editable

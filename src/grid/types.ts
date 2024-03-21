@@ -136,8 +136,11 @@ export interface GridProps {
   searchRowRenderer?: Renderer;
   searchColumnRenderer?: Renderer;
   rowDetailsRenderer?: Renderer;
-  rowDetailsExpandIcon?: JSX.Element | null;
-  rowDetailsCollapseIcon?: JSX.Element | null;
+  rowDetailsExpandIcon?: ({
+    expand,
+  }: {
+    expand: boolean;
+  }) => React.ReactElement;
   rowGroupHeaderRenderer?: Renderer;
   rowGroupFooterRenderer?: Renderer;
   hasRowExpanded?: (row: GridRow) => boolean;
@@ -195,10 +198,10 @@ export interface GridRowProps {
   editCell?: number | null;
   renderer?: Renderer;
   cellRenderer?: Renderer;
+  hasExpanded?: GridProps["hasRowExpanded"];
   selectionType?: GridProps["selectionType"];
   detailsRenderer?: GridProps["rowDetailsRenderer"];
   detailsExpandIcon?: GridProps["rowDetailsExpandIcon"];
-  detailsCollapseIcon?: GridProps["rowDetailsCollapseIcon"];
   onSave?: GridProps["onRecordSave"];
   onCancel?: GridProps["onRecordDiscard"];
   onCellClick?: GridProps["onCellClick"];

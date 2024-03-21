@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Box, Input } from "../core";
 import { useClassNames } from "../core";
 
@@ -26,15 +26,17 @@ export const GridBodyRow = React.memo(function GridBodyRow(
     width,
     renderer,
     cellRenderer,
+    hasExpanded,
     detailsRenderer: RowDetails,
-    detailsExpandIcon,
-    detailsCollapseIcon,
+    detailsExpandIcon: ExpandIcon,
     onCellClick,
     onDoubleClick,
     onClick,
     onExpand,
     onUpdate,
   } = props;
+
+  const expanded = hasExpanded ? hasExpanded(data) : data.expand;
 
   const handleUpdate = React.useCallback(
     (values: any) => {
@@ -82,21 +84,20 @@ export const GridBodyRow = React.memo(function GridBodyRow(
       );
     }
     if (isRowExpand(column)) {
-      const defaultRenderer = (
-        <MaterialIcon icon={data.expand ? "arrow_drop_down" : "arrow_right"} />
-      );
       return (
         <Box
           d="inline-flex"
           className={styles.expandRowIcon}
           onClick={(e) => {
             e.preventDefault();
-            onExpand?.(data);
+            onExpand?.(data, !expanded);
           }}
         >
-          {data.expand
-            ? detailsCollapseIcon ?? defaultRenderer
-            : detailsExpandIcon ?? defaultRenderer}
+          {ExpandIcon ? (
+            <ExpandIcon expand={Boolean(expanded)} />
+          ) : (
+            <MaterialIcon icon={expanded ? "arrow_drop_down" : "arrow_right"} />
+          )}
         </Box>
       );
     }
@@ -146,7 +147,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
           })}
         </RowComponent>
       </DragComponent>
-      {RowDetails && data.expand && (
+      {RowDetails && expanded && (
         <div
           className={styles.detailsRow}
           data-row-details={`${data.key}`}
@@ -156,7 +157,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         >
           <RowDetails
             data={data}
-            onClose={() => onExpand?.(data, Boolean(!data.expand))}
+            onClose={() => onExpand?.(data, Boolean(!expanded))}
           />
         </div>
       )}
