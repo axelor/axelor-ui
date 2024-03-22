@@ -18,11 +18,11 @@ dependencies:
     specifier: ^9.1.56
     version: 9.1.56(@types/react-dom@18.2.22)(@types/react@18.2.67)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)
   '@material-symbols/font-400':
-    specifier: ^0.14.5
-    version: 0.14.5
+    specifier: ^0.17.1
+    version: 0.17.1
   '@material-symbols/metadata':
-    specifier: ^0.14.5
-    version: 0.14.5
+    specifier: ^0.17.1
+    version: 0.17.1
   '@popperjs/core':
     specifier: ^2.11.8
     version: 2.11.8
@@ -2755,12 +2755,12 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
 
-  /@material-symbols/font-400@0.14.5:
-    resolution: {integrity: sha512-i6+fZpG0GxzJsbC19DS/fna1oYsTEUaRcTFR8SiVHAQ0xjRlA7qSFEfkpFLG0GBEe17zMwjg7gj3Xm78RDg2Zw==}
+  /@material-symbols/font-400@0.17.1:
+    resolution: {integrity: sha512-/th3kTwMV9H5BcnjUf3gmZRSu31tR3INKJutjDPSMXuX9d/BQmdambNIDCZs/3jMCFchWHUpxWqFoWThf1laYA==}
     dev: false
 
-  /@material-symbols/metadata@0.14.5:
-    resolution: {integrity: sha512-4MDw9vB9w1OoQ/w6oY6CzWaWovk00SFwv2UkpcN+R1uiVROqmEKU1nNd3XtzBOvoD8GibLVA+oFKJWv3lQH5Fw==}
+  /@material-symbols/metadata@0.17.1:
+    resolution: {integrity: sha512-mDkEF23dCJbS+zRzBvmfQVhYg9KW+hcw3g4f09BMJFnxrZO0j2QICC5ddOWxVM/Yzez1IAE2dkl7pspHkOUAzw==}
     dev: false
 
   /@mdx-js/react@3.0.1(@types/react@18.2.67)(react@18.2.0):
