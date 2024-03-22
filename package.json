@@ -36,7 +36,7 @@
     "react-dom": "^18.2.0-0"
   },
   "dependencies": {
-    "@emotion/is-prop-valid": "^1.2.1",
+    "@emotion/is-prop-valid": "^1.2.2",
     "@floating-ui/react": "^0.26.3",
     "@fluentui/priority-overflow": "^9.1.10",
     "@fluentui/react-context-selector": "^9.1.42",
