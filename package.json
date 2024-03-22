@@ -39,7 +39,7 @@
     "@emotion/is-prop-valid": "^1.2.2",
     "@floating-ui/react": "^0.26.3",
     "@fluentui/priority-overflow": "^9.1.11",
-    "@fluentui/react-context-selector": "^9.1.42",
+    "@fluentui/react-context-selector": "^9.1.56",
     "@material-symbols/font-400": "^0.14.5",
     "@material-symbols/metadata": "^0.14.5",
     "@popperjs/core": "^2.11.8",
