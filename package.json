@@ -88,7 +88,7 @@
     "sass": "^1.72.0",
     "storybook": "^7.6.8",
     "typescript": "^5.3.3",
-    "vite": "^5.0.11",
+    "vite": "^5.2.3",
     "vite-plugin-svgr": "^4.2.0"
   },
   "packageManager": "pnpm@8.12.0+sha256.553e4eb0e2a2c9abcb419b3262bdc7aee8ae3c42e2301a1807d44575786160c9",
