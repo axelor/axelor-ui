@@ -21,7 +21,7 @@ build_package:
     - tags
   before_script:
     - corepack enable
-    - corepack prepare pnpm@8.12.0 --activate
+    - corepack prepare pnpm@8.15.5 --activate
   script:
     - pnpm install
     - pnpm build

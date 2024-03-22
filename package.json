@@ -91,7 +91,7 @@
     "vite": "^5.2.3",
     "vite-plugin-svgr": "^4.2.0"
   },
-  "packageManager": "pnpm@8.12.0+sha256.553e4eb0e2a2c9abcb419b3262bdc7aee8ae3c42e2301a1807d44575786160c9",
+  "packageManager": "pnpm@8.15.5+sha256.4b4efa12490e5055d59b9b9fc9438b7d581a6b7af3b5675eb5c5f447cee1a589",
   "pnpm": {
     "peerDependencyRules": {
       "ignoreMissing": [
