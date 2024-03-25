@@ -49,10 +49,12 @@ export const Input = styled.input<InputProps>(
 export const AdornedInput = forwardRef<
   HTMLInputElement,
   ComponentProps<typeof Input> & {
+    startAdornment?: JSX.Element;
     endAdornment?: JSX.Element;
   }
 >((props, ref) => {
   const {
+    startAdornment,
     endAdornment,
     type = "text",
     invalid,
@@ -63,7 +65,7 @@ export const AdornedInput = forwardRef<
   } = props;
   const classNames = useClassNames();
 
-  if (!endAdornment) {
+  if (!startAdornment && !endAdornment) {
     return (
       <Input
         ref={ref}
@@ -87,8 +89,11 @@ export const AdornedInput = forwardRef<
         className,
       )}
     >
+      {startAdornment && (
+        <span className={styles.adornment}>{startAdornment}</span>
+      )}
       <Input ref={ref} type={type} {...inputProps} />
-      <span className={styles.endAdornment}>{endAdornment}</span>
+      {endAdornment && <span className={styles.adornment}>{endAdornment}</span>}
     </span>
   );
 });
