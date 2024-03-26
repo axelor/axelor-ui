@@ -158,7 +158,8 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
     const canResize = column.name !== "__reorder__" && !column.action;
     const canSort = onSort && column.sortable !== false;
     const hasMenu =
-      Boolean(column.title?.trim()) &&
+      !column.action &&
+      Boolean(column.title) &&
       Boolean(
         canSort || onGroup || onUngroup || onShow || onHide || onCustomize,
       );
@@ -180,7 +181,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
           }}
         >
           <Box as="span" flex={1} d="inline-flex" alignItems="center">
-            <span>{column.title}</span>
+            <span>{column.action ? " " : column.title}</span>
             {canSort && sort && (
               <Box d="inline-flex" ms={1} as="span">
                 <MaterialIcon

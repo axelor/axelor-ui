@@ -146,7 +146,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         ) {
           columns.unshift({
             name: "__select__",
-            title: "",
+            action: true,
             type: "row-checked",
             computed: true,
             editable: false,
@@ -1262,7 +1262,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       return (
         displayColumns.every(
           (col) =>
-            (col as any).action ||
+            col.action ||
             col.type === "row-checked" ||
             (col.width && col.width < 50),
         ) || displayColumns.length === 0
