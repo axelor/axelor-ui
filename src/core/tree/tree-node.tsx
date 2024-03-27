@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
 import { Box } from "../box";
@@ -89,6 +89,7 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
     }),
   });
   const timerRef = useRef<number>();
+  const toggleRef = useRef<number | null>(null);
 
   const [{ hovered, highlighted }, dropRef] = useDrop({
     accept: NODE_TYPE,
@@ -100,8 +101,11 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
       function isChildren() {
         return childrenList.includes(data.$key);
       }
-      if (!data.expanded && !isSame() && !isChildren()) {
-        onToggle && onToggle(data, index, true);
+      if (!data.expanded && !isSame() && !isChildren() && !toggleRef.current) {
+        toggleRef.current = window.setTimeout(async () => {
+          await onToggle?.(data, index, true);
+          toggleRef.current = null;
+        }, 500);
       }
     },
     drop(item: TYPES.TreeNode) {
@@ -148,11 +152,28 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
     onDoubleClick?.(e);
   }
 
+  const handleDragLeave = useCallback(() => {
+    setTimeout(() => {
+      if (toggleRef.current) {
+        window.clearTimeout(toggleRef.current);
+        toggleRef.current = null;
+      }
+    });
+  }, []);
+
   dragRef(dropRef(ref));
 
   useEffect(() => {
     isDragging && onSelect?.({} as any, {} as any, index);
   }, [index, onSelect, isDragging]);
+
+  useEffect(() => {
+    // cleanup
+    return () => {
+      window.clearTimeout(timerRef.current);
+      toggleRef.current && window.clearTimeout(toggleRef.current);
+    };
+  }, []);
 
   return (
     <div
@@ -163,6 +184,7 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
       })}
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
+      onDragLeave={handleDragLeave}
     >
       <TreeNodeContent
         {...(index === 0 ? { ref: dragPreviewRef } : {})}
