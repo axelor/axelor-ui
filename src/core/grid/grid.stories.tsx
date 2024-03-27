@@ -6,8 +6,8 @@ const config = {
   title: "Layout/Grid",
 };
 
-const Container = styled(Box)(({ display = "grid" }) => ({ display }));
-const Cell = styled(Box)(({ border = true, p = 2 }) => ({ border, p }));
+const Container = styled.div(({ display = "grid" }) => ({ display }));
+const Cell = styled.div(({ border = true, p = 2 }) => ({ border, p }));
 
 export const Basic = () => {
   return (

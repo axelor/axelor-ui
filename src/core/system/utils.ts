@@ -5,7 +5,7 @@ export const isNumber = (value: any) => typeof value === "number";
 export const isString = (value: any) => typeof value === "string";
 
 export const isNumeric = (value: any) =>
-  isString(value) && value - parseFloat(value) + 1 >= 0;
+  isString(value) && +value - parseFloat(value) + 1 >= 0;
 
 export const isUnitSize = (value: any) =>
   isString(value) && parseFloat(value).toString() !== value;
