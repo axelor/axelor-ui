@@ -166,12 +166,14 @@ export function useOverflowDivider<TElement extends HTMLElement>(
 
 export const useOverflowCount = () =>
   useOverflowContext((v) => {
-    return Object.entries(v.itemVisibility).reduce((acc, [id, visible]) => {
-      if (!visible) {
-        acc++;
-      }
-      return acc;
-    }, 0);
+    return v.hasOverflow
+      ? Object.entries(v.itemVisibility).reduce((acc, [id, visible]) => {
+          if (!visible) {
+            acc++;
+          }
+          return acc;
+        }, 0)
+      : 0;
   });
 
 export function useOverflowMenu<TElement extends HTMLElement>(id?: string) {

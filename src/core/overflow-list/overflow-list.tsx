@@ -48,7 +48,7 @@ export const OverflowList = forwardRef<HTMLDivElement, OverflowListProps<any>>(
   (props, ref) => {
     const { style, className, items, overflowProps } = props;
     return (
-      <Overflow {...overflowProps} ref={ref}>
+      <Overflow key={items.length} {...overflowProps} ref={ref}>
         <div
           className={clsx(styles.list, className, {
             [styles.vertical]: overflowProps?.overflowAxis === "vertical",

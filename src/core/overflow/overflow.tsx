@@ -1,5 +1,5 @@
 import { ObserveOptions, OnUpdateOverflow } from "@fluentui/priority-overflow";
-import React, { cloneElement, forwardRef, useCallback } from "react";
+import React, { cloneElement, forwardRef, useCallback, useRef } from "react";
 import { clsx } from "../clsx";
 import { OverflowContext, OverflowState } from "./context";
 import { updateVisibilityAttribute, useOverflowContainer } from "./hooks";
@@ -23,6 +23,7 @@ export const Overflow = forwardRef((props: OverflowProps, ref) => {
     padding,
   } = props;
 
+  const childrenRef = useRef<HTMLDivElement>();
   const [overflowState, setOverflowState] = React.useState<OverflowState>({
     hasOverflow: false,
     itemVisibility: {},
@@ -38,7 +39,10 @@ export const Overflow = forwardRef((props: OverflowProps, ref) => {
 
     setOverflowState(() => {
       return {
-        hasOverflow: data.invisibleItems.length > 0,
+        hasOverflow:
+          // is container visible by checking it's offsetWidth 
+          (childrenRef.current?.offsetWidth ?? 0) > 0 &&
+          data.invisibleItems.length > 0,
         itemVisibility,
         groupVisibility,
       };
@@ -60,7 +64,7 @@ export const Overflow = forwardRef((props: OverflowProps, ref) => {
   });
 
   const clonedChild = cloneElement(children, {
-    ref: useRefs(containerRef, ref),
+    ref: useRefs(childrenRef, containerRef, ref),
     className: clsx(
       styles.overflowMenu,
       styles.overflowingItems,
