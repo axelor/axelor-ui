@@ -1,7 +1,7 @@
 /**
  * @title Row Reorder
  */
-import React from "react";
+import React, { useEffect } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 import { Box, clsx } from "../core";
@@ -96,10 +96,23 @@ export function GridDNDRow(props: TYPES.GridRowProps) {
             data-dragging={snapshot.isDragging ? "true" : undefined}
           />
           <Box as="span" d="none" {...provided.dragHandleProps} />
+          {snapshot.isDragging && <DisableScrolling />}
         </GridDNDRowContext.Provider>
       )}
     </Draggable>
   );
+}
+
+function DisableScrolling() {
+  useEffect(() => {
+    const cb = (e: WheelEvent) => e.preventDefault();
+
+    window.addEventListener("wheel", cb, { passive: false });
+    return () => {
+      window.removeEventListener("wheel", cb);
+    };
+  }, []);
+  return null;
 }
 
 export function GridDNDColumn({
