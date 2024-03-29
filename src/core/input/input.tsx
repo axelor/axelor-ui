@@ -1,4 +1,4 @@
-import { ComponentProps, forwardRef } from "react";
+import { ComponentProps, forwardRef, useState } from "react";
 import { useClassNames } from "..";
 import styled from "../styled";
 
@@ -46,54 +46,59 @@ export const Input = styled.input<InputProps>(
   ({ type = "text" }) => ({ type }),
 );
 
-export const AdornedInput = forwardRef<
-  HTMLInputElement,
-  ComponentProps<typeof Input> & {
-    startAdornment?: JSX.Element;
-    endAdornment?: JSX.Element;
-  }
->((props, ref) => {
-  const {
-    startAdornment,
-    endAdornment,
-    type = "text",
-    invalid,
-    large,
-    small,
-    className,
-    ...inputProps
-  } = props;
-  const classNames = useClassNames();
+type AdornedInputProps = ComponentProps<typeof Input> & {
+  startAdornment?: JSX.Element;
+  endAdornment?: JSX.Element;
+};
 
-  if (!startAdornment && !endAdornment) {
+const AdornedInputComponent = forwardRef<HTMLInputElement, AdornedInputProps>(
+  (props, ref) => {
+    const {
+      startAdornment,
+      endAdornment,
+      type = "text",
+      invalid,
+      large,
+      small,
+      className,
+      ...inputProps
+    } = props;
+    const classNames = useClassNames();
+    const [focused, setFocused] = useState(false);
+
     return (
-      <Input
-        ref={ref}
-        type={type}
-        invalid={invalid}
-        large={large}
-        small={small}
-        className={className}
-        {...inputProps}
-      />
+      <span
+        className={classNames(
+          styles.adorned,
+          styles.input,
+          focused && styles.focus,
+          formClass(type),
+          inputClassNames(invalid, large, small),
+          className,
+        )}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+      >
+        {startAdornment && (
+          <span className={styles.adornment}>{startAdornment}</span>
+        )}
+        <Input ref={ref} type={type} {...inputProps} />
+        {endAdornment && (
+          <span className={styles.adornment}>{endAdornment}</span>
+        )}
+      </span>
     );
-  }
+  },
+);
 
-  return (
-    <span
-      className={classNames(
-        styles.adorned,
-        styles.input,
-        formClass(type),
-        inputClassNames(invalid, large, small),
-        className,
-      )}
-    >
-      {startAdornment && (
-        <span className={styles.adornment}>{startAdornment}</span>
-      )}
-      <Input ref={ref} type={type} {...inputProps} />
-      {endAdornment && <span className={styles.adornment}>{endAdornment}</span>}
-    </span>
-  );
-});
+export const AdornedInput = forwardRef<HTMLInputElement, AdornedInputProps>(
+  (props, ref) => {
+    const { startAdornment, endAdornment, ...inputProps } = props;
+
+    return startAdornment || endAdornment ? (
+      <AdornedInputComponent {...props} ref={ref} />
+    ) : (
+      <Input {...inputProps} ref={ref} />
+    );
+  },
+);

@@ -132,6 +132,11 @@
   & input {
     border: none !important;
   }
+
+  &.focus:not(.invalid) {
+    border: var(--ax-input-focus-border);
+    border-width: var(--ax-input-border-width);
+  }
 }
 
 .adornment {
