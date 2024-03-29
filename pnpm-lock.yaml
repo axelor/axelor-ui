@@ -158,7 +158,7 @@ devDependencies:
     specifier: ^5.4.3
     version: 5.4.3
   vite:
-    specifier: ^5.2.3
+    specifier: ^5.2.7
     version: 5.2.7(@types/node@20.11.30)(sass@1.72.0)
   vite-plugin-svgr:
     specifier: ^4.2.0
