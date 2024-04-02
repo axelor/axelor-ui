@@ -10,7 +10,7 @@ cache: &global_cache
 
 build_package:
   stage: build
-  image: node:18-bullseye
+  image: node:20-bullseye
   cache:
     <<: *global_cache
   artifacts:
