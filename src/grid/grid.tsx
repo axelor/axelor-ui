@@ -300,6 +300,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       [setState],
     );
 
+    const hasCustomRowExpand = Boolean(hasRowExpanded);
     const handleRowExpandChange = React.useCallback(
       function handleRowStateChange(row: TYPES.GridRow, expand?: boolean) {
         if (isDefined(row)) {
@@ -307,11 +308,16 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           onRowExpand?.(row, expand ?? !row.expand);
           return setState((draft) => {
             const row = draft.rows.find(($row) => $row.key === key);
-            row && (row.expand = expand ?? !row.expand);
+            // if row expand is managed by parent
+            if (hasCustomRowExpand) {
+              row && ((row as any).updated = Date.now());
+            } else {
+              row && (row.expand = expand ?? !row.expand);
+            }
           });
         }
       },
-      [setState, onRowExpand],
+      [setState, hasCustomRowExpand, onRowExpand],
     );
 
     // handle group row toggle, row selection
@@ -421,8 +427,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             // row selection with cell click
             if (allowCellSelection) {
               const shouldDeselectCell =
-                isCheckbox &&
-                (draft.selectedRows || []).includes(rowIndex)
+                isCheckbox && (draft.selectedRows || []).includes(rowIndex);
 
               if (shouldDeselectCell) {
                 (e.target as HTMLElement)?.blur?.();
