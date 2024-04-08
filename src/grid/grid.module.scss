@@ -231,6 +231,10 @@
   border-bottom: var(--bs-table-body-border, 1px solid var(--bs-table-border-color));
 }
 
+.expandRowIcon.disabled {
+  opacity: 0.25;
+}
+
 .expandRowIcon:hover {
   background: var(--bs-table-cell-active-bg);
 }

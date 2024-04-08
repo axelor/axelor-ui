@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Box, Input } from "../core";
+import { Box, Input, clsx } from "../core";
 import { useClassNames } from "../core";
 
 import { GridColumn } from "./grid-column";
@@ -36,7 +36,10 @@ export const GridBodyRow = React.memo(function GridBodyRow(
     onUpdate,
   } = props;
 
-  const expanded = hasExpanded ? hasExpanded(data) : data.expand;
+  const expanded = useMemo(
+    () => (hasExpanded ? hasExpanded(data) : data.expand),
+    [data, hasExpanded],
+  );
 
   const handleUpdate = React.useCallback(
     (values: any) => {
@@ -84,13 +87,16 @@ export const GridBodyRow = React.memo(function GridBodyRow(
       );
     }
     if (isRowExpand(column)) {
+      const disabled = expanded === null;
       return (
         <Box
           d="inline-flex"
-          className={styles.expandRowIcon}
+          className={clsx(styles.expandRowIcon, {
+            [styles.disabled]: disabled,
+          })}
           onClick={(e) => {
             e.preventDefault();
-            onExpand?.(data, !expanded);
+            !disabled && onExpand?.(data, !expanded);
           }}
         >
           {ExpandIcon ? (
@@ -148,10 +154,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         </RowComponent>
       </DragComponent>
       {RowDetails && expanded && (
-        <div
-          className={styles.detailsRow}
-          data-row-details={`${data.key}`}
-        >
+        <div className={styles.detailsRow} data-row-details={`${data.key}`}>
           <RowDetails
             data={data}
             onClose={() => onExpand?.(data, Boolean(!expanded))}

@@ -143,7 +143,7 @@ export interface GridProps {
   }) => React.ReactElement;
   rowGroupHeaderRenderer?: Renderer;
   rowGroupFooterRenderer?: Renderer;
-  hasRowExpanded?: (row: GridRow) => boolean;
+  hasRowExpanded?: (row: GridRow) => boolean | null; // null is for disability check
   onColumnCustomize?: (e: React.SyntheticEvent, column?: GridColumn) => void;
   onRowClick?: (e: React.SyntheticEvent, row: any, rowIndex: number) => void;
   onRowDoubleClick?: (
