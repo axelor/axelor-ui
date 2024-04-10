@@ -114,6 +114,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
   const rendererProps = renderer ? props : {};
   const classNames = useClassNames();
   const DragComponent: any = draggable ? GridDNDRow : React.Fragment;
+  const borderWidth = 1;
 
   return (
     <>
@@ -154,7 +155,15 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         </RowComponent>
       </DragComponent>
       {RowDetails && expanded && (
-        <div className={styles.detailsRow} data-row-details={`${data.key}`}>
+        <div
+          className={styles.detailsRow}
+          data-row-details={`${data.key}`}
+          {...(width && {
+            style: {
+              width: width + borderWidth * 2, // add left + right border width
+            },
+          })}
+        >
           <RowDetails
             data={data}
             onClose={() => onExpand?.(data, Boolean(!expanded))}
