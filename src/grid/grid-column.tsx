@@ -1,11 +1,30 @@
-import React from "react";
+import React, { memo } from "react";
 import { useClassNames } from "../core";
 import * as TYPES from "./types";
 import styles from "./grid.module.scss";
 
-export function GridColumn(props: TYPES.GridColumnProps) {
-  const { children, className, data, index, selected, renderer, onClick } =
-    props;
+export const GridColumn = memo(function GridColumn(
+  props: TYPES.GridColumnProps & {
+    renderChildren?: (
+      column: TYPES.GridColumn,
+      value: TYPES.GridColumnProps["value"],
+    ) => React.ReactNode;
+  },
+) {
+  const {
+    children: _children,
+    className,
+    data,
+    value,
+    index,
+    selected,
+    renderer,
+    renderChildren,
+    onClick,
+  } = props;
+
+  const children = renderChildren ? renderChildren(data, value) : _children;
+
   const { width, minWidth } = data;
   const ColumnComponent = renderer || "div";
   const rendererProps = renderer ? props : {};
@@ -52,4 +71,4 @@ export function GridColumn(props: TYPES.GridColumnProps) {
       )}
     </ColumnComponent>
   );
-}
+});

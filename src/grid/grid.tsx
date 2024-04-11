@@ -1267,6 +1267,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     React.useEffect(() => {
       if (!containerRef.current) return;
       let cancelled = false;
+      let id = 0;
       let lastWidth = getContainerWidth();
 
       // observe resize for grid container
@@ -1276,13 +1277,26 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           const currentWidth = getContainerWidth();
           if (currentWidth !== lastWidth) {
             lastWidth = currentWidth;
-            sizingColumns();
+            if (
+              "requestAnimationFrame" in window &&
+              "cancelAnimationFrame" in window
+            ) {
+              window.cancelAnimationFrame(id);
+              id = window.requestAnimationFrame(() => {
+                sizingColumns();
+              });
+            } else {
+              sizingColumns();
+            }
           }
         }, 300),
       );
       observeGrid.observe(containerRef.current);
       return () => {
         cancelled = true;
+        if ("cancelAnimationFrame" in window) {
+          window.cancelAnimationFrame(id);
+        }
         observeGrid.disconnect();
       };
     }, [getContainerWidth, sizingColumns]);

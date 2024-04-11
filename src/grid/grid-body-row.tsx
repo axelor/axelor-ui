@@ -74,41 +74,46 @@ export const GridBodyRow = React.memo(function GridBodyRow(
       : data.record[column.name];
   }
 
-  function renderColumn(column: TYPES.GridColumn, value: any) {
-    if (isRowCheck(column)) {
-      return (
-        <Input
-          type={selectionType === "single" ? "radio" : "checkbox"}
-          checked={selected}
-          onChange={() => {}}
-          m={0}
-          tabIndex={-1}
-        />
-      );
-    }
-    if (isRowExpand(column)) {
-      const disabled = expanded === null;
-      return (
-        <Box
-          d="inline-flex"
-          className={clsx(styles.expandRowIcon, {
-            [styles.disabled]: disabled,
-          })}
-          onClick={(e) => {
-            e.preventDefault();
-            !disabled && onExpand?.(data, !expanded);
-          }}
-        >
-          {ExpandIcon ? (
-            <ExpandIcon expand={Boolean(expanded)} />
-          ) : (
-            <MaterialIcon icon={expanded ? "arrow_drop_down" : "arrow_right"} />
-          )}
-        </Box>
-      );
-    }
-    return value;
-  }
+  const renderColumn = React.useCallback(
+    (column: TYPES.GridColumn, value: any) => {
+      if (isRowCheck(column)) {
+        return (
+          <Input
+            type={selectionType === "single" ? "radio" : "checkbox"}
+            checked={selected}
+            onChange={() => {}}
+            m={0}
+            tabIndex={-1}
+          />
+        );
+      }
+      if (isRowExpand(column)) {
+        const disabled = expanded === null;
+        return (
+          <Box
+            d="inline-flex"
+            className={clsx(styles.expandRowIcon, {
+              [styles.disabled]: disabled,
+            })}
+            onClick={(e) => {
+              e.preventDefault();
+              !disabled && onExpand?.(data, !expanded);
+            }}
+          >
+            {ExpandIcon ? (
+              <ExpandIcon expand={Boolean(expanded)} />
+            ) : (
+              <MaterialIcon
+                icon={expanded ? "arrow_drop_down" : "arrow_right"}
+              />
+            )}
+          </Box>
+        );
+      }
+      return value;
+    },
+    [ExpandIcon, data, expanded, onExpand, selected, selectionType],
+  );
 
   const RowComponent = renderer || "div";
   const rendererProps = renderer ? props : {};
@@ -147,9 +152,8 @@ export const GridBodyRow = React.memo(function GridBodyRow(
                 renderer={column.renderer || cellRenderer}
                 onClick={handleCellClick}
                 onUpdate={handleUpdate}
-              >
-                {renderColumn(column, value)}
-              </GridColumn>
+                renderChildren={renderColumn}
+              />
             );
           })}
         </RowComponent>

@@ -108,14 +108,17 @@ export function GridBody(props: GridBodyProps) {
     }
     return <div {...props}>{children}</div>;
   }
-  const style: CSSProperties = {};
-  if (rowHeight) {
-    style.height = rowHeight;
-    style.maxHeight = rowHeight;
-  }
-  if (maxRowHeight) {
-    style.maxHeight = maxRowHeight;
-  }
+  const style = useMemo(() => {
+    const style: CSSProperties = {};
+    if (rowHeight) {
+      style.height = rowHeight;
+      style.maxHeight = rowHeight;
+    }
+    if (maxRowHeight) {
+      style.maxHeight = maxRowHeight;
+    }
+    return style;
+  }, [rowHeight, maxRowHeight]);
 
   return render(
     <>
