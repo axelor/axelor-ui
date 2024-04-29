@@ -173,7 +173,6 @@ export function CommandItem(props: CommandItemProps) {
               <span
                 className={clsx(styles.title, {
                   [styles.iconEnd]: iconSide === "end",
-                  [styles.iconOnly]: iconOnly,
                 })}
               >
                 {imageProps?.src && (
