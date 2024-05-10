@@ -1,13 +1,14 @@
-import BiCaretDownFill from "bootstrap-icons/icons/caret-down-fill.svg?react";
 import moment, { Dayjs } from "dayjs";
-import React from "react";
+import React, { useCallback } from "react";
 import { DragSourceMonitor, useDrag, useDrop } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
-import { Icon, useClassNames, useTheme } from "../core";
 
-import classes from "./gantt.module.scss";
+import { useClassNames, useTheme } from "../core";
+import { BootstrapIcon } from "../icons/bootstrap-icon";
+
 import * as TYPES from "./types";
 import { CONFIG, getDateFromOffset } from "./utils";
+import classes from "./gantt.module.scss";
 
 function disablePreview(preview: (e: any, options: any) => void) {
   preview(getEmptyImage(), { captureDraggingState: true });
@@ -55,7 +56,10 @@ function VirtualLine({
       }}
       className={classes.virtualLine}
     >
-      <Icon as={BiCaretDownFill} className={classes.virtualLineIcon} />
+      <BootstrapIcon
+        icon={"caret-down-fill"}
+        className={classes.virtualLineIcon}
+      />
     </div>
   );
 }
@@ -117,6 +121,20 @@ export const GanttLine = React.memo(function GanttLine(props: {
   const setVirtualLineTarget = (target: TYPES.GanttVirtualLinePoint) =>
     setVirtualLine((line) => ({ ...line, target }));
 
+  const getLineData = useCallback(() => {
+    const line = refs.current.element;
+    return {
+      duration: (line.width / hourSize).toFixed(2),
+      startDate: getDateFromOffset(line.x, startDate, view, cellSize),
+      endDate: getDateFromOffset(
+        line.x + line.width,
+        startDate,
+        view,
+        cellSize,
+      ),
+    };
+  }, [cellSize, hourSize, startDate, view]);
+
   const getDragProps = (type: string, options?: any) => ({
     type,
     item: {
@@ -130,12 +148,12 @@ export const GanttLine = React.memo(function GanttLine(props: {
 
   const [, drag, linePreview] = useDrag(
     getDragProps(DND_TYPES.LINE, {
-      end: (item: TYPES.GanttDragItem, monitor: DragSourceMonitor) => {
-        const line = refs.current.element;
-        const date = getDateFromOffset(line.x, startDate, view, cellSize);
+      end: () => {
+        const line = getLineData();
         onUpdate &&
           onUpdate(data, {
-            startDate: date,
+            startDate: line.startDate,
+            endDate: line.endDate,
           });
       },
     }),
@@ -143,14 +161,12 @@ export const GanttLine = React.memo(function GanttLine(props: {
 
   const [, leftResizeDrag, leftResizePreview] = useDrag(
     getDragProps(DND_TYPES.RESIZE_LEFT, {
-      end: (item: TYPES.GanttDragItem, monitor: DragSourceMonitor) => {
-        const line = refs.current.element;
-        const date = getDateFromOffset(line.x, startDate, view, cellSize);
-        const duration = (line.width / hourSize).toFixed(2);
+      end: () => {
+        const line = getLineData();
         onUpdate &&
           onUpdate(data, {
-            startDate: date,
-            duration,
+            startDate: line.startDate,
+            duration: line.duration,
           });
       },
     }),
@@ -158,12 +174,12 @@ export const GanttLine = React.memo(function GanttLine(props: {
 
   const [, rightResizeDrag, rightResizePreview] = useDrag(
     getDragProps(DND_TYPES.RESIZE_RIGHT, {
-      end: (item: TYPES.GanttDragItem, monitor: DragSourceMonitor) => {
-        const line = refs.current.element;
-        const duration = (line.width / hourSize).toFixed(2);
+      end: () => {
+        const line = getLineData();
         onUpdate &&
           onUpdate(data, {
-            duration,
+            duration: line.duration,
+            endDate: line.endDate,
           });
       },
     }),
@@ -171,7 +187,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
 
   const [, progressDrag, progressPreview] = useDrag(
     getDragProps(DND_TYPES.PROGRESS, {
-      end: (item: TYPES.GanttDragItem, monitor: DragSourceMonitor) => {
+      end: () => {
         const { progress } = refs.current;
         if (progress !== null) {
           onUpdate && onUpdate(data, { progress });
