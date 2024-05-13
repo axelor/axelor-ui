@@ -1,7 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { MaterialIcon, MaterialIconProps } from "../../icons/material-icon";
-import { Box } from "../box";
-import { Button } from "../button";
+import { Button, ButtonProps } from "../button";
 import { ButtonGroup } from "../button-group";
 import { clsx } from "../clsx";
 import { Image } from "../image";
@@ -15,6 +14,7 @@ export interface CommandItemProps {
   text?: string;
   subtext?: string;
   description?: string;
+  variant?: ButtonProps["variant"];
   menuProps?: { arrow?: boolean; rounded?: boolean };
   imageProps?: {
     src: string;
@@ -51,6 +51,7 @@ export function CommandItem(props: CommandItemProps) {
     text,
     subtext,
     description,
+    variant = "light",
     menuProps,
     imageProps,
     icon: Icon,
@@ -156,7 +157,7 @@ export function CommandItem(props: CommandItemProps) {
         <Wrapper className={clsx(styles.itemWrapper, className)}>
           {hasContent && (
             <Button
-              variant="light"
+              variant={variant}
               title={description}
               className={clsx(
                 styles.item,
@@ -199,7 +200,7 @@ export function CommandItem(props: CommandItemProps) {
           )}
           {isSplit && (
             <Button
-              variant="light"
+              variant={variant}
               className={clsx(styles.item, styles.split, {
                 [styles.open]: show,
               })}
