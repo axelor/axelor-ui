@@ -554,7 +554,8 @@ export const Select = forwardRef(function Select<
   }, [optionKey, optionLabel, renderValue, value]);
 
   const renderSelector = useCallback(() => {
-    if (autoComplete) {
+    const shouldShowEmptyBox = readOnly && isEmpty(value);
+    if (autoComplete || shouldShowEmptyBox) {
       return (
         <input
           id={id}
