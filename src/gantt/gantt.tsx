@@ -11,20 +11,23 @@ import classes from "./gantt.module.scss";
 import * as TYPES from "./types";
 import { getGraphConfig, getGraphEdges, getHeader } from "./utils";
 
-function GanttView(props: {
-  view: TYPES.GanttType;
-  activeRowIndex: number;
-  records: TYPES.GanttRecord[];
-  startDate: Dayjs;
-  endDate: Dayjs;
-  hourSize: number;
-  cellSize: number;
-  onRecordUpdate?: TYPES.GanttProps["onRecordUpdate"];
-  onRecordConnect?: TYPES.GanttProps["onRecordConnect"];
-  onRecordDisconnect?: TYPES.GanttProps["onRecordDisconnect"];
-}) {
+function GanttView(
+  props: Pick<
+    TYPES.GanttProps,
+    "config" | "onRecordUpdate" | "onRecordConnect" | "onRecordDisconnect"
+  > & {
+    view: TYPES.GanttType;
+    activeRowIndex: number;
+    records: TYPES.GanttRecord[];
+    startDate: Dayjs;
+    endDate: Dayjs;
+    hourSize: number;
+    cellSize: number;
+  },
+) {
   const {
     view,
+    config,
     records,
     activeRowIndex,
     startDate,
@@ -71,6 +74,7 @@ function GanttView(props: {
                 key={i}
                 index={i}
                 view={view}
+                config={config}
                 startDate={startDate}
                 endDate={endDate}
                 hourSize={hourSize}
@@ -95,6 +99,7 @@ export function Gantt({
   records,
   view,
   items,
+  config,
   onRecordView,
   onRecordUpdate,
   onRecordConnect,
@@ -107,12 +112,12 @@ export function Gantt({
   const rtl = dir === "rtl";
   const classNames = useClassNames();
 
-  const config = React.useMemo(
+  const graphConfig = React.useMemo(
     () => container && getGraphConfig(records, view, container.offsetWidth),
     [container, records, view],
   );
-  const startDateStr = config?.startDate.format();
-  const endDateStr = config?.endDate.format();
+  const startDateStr = graphConfig?.startDate.format();
+  const endDateStr = graphConfig?.endDate.format();
 
   const [startDate, endDate] = React.useMemo(
     () => [
@@ -154,17 +159,18 @@ export function Gantt({
         className={classes.container}
         onScroll={handleScroll}
       >
-        {config && startDate && endDate && (
+        {graphConfig && startDate && endDate && (
           <div
             className={classes.gantt}
             style={{
-              width: config.totalWidth,
+              width: graphConfig.totalWidth,
             }}
           >
             <GanttView
               view={view}
-              hourSize={config.hourSize}
-              cellSize={config.cellWidth}
+              config={config}
+              hourSize={graphConfig.hourSize}
+              cellSize={graphConfig.cellWidth}
               startDate={startDate}
               endDate={endDate}
               activeRowIndex={activeRowIndex}

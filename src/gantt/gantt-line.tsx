@@ -72,6 +72,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
   endDate: Dayjs;
   view: TYPES.GanttType;
   data: TYPES.GanttRecord;
+  config?: TYPES.GanttProps["config"];
   onUpdate?: TYPES.GanttProps["onRecordUpdate"];
   onConnect?: TYPES.GanttProps["onRecordConnect"];
 }) {
@@ -97,11 +98,18 @@ export const GanttLine = React.memo(function GanttLine(props: {
     hourSize,
     cellSize,
     view,
+    config,
     data,
     onUpdate,
     onConnect,
   } = props;
   const { id, duration, $color } = data;
+  const {
+    progress: allowProgress = true,
+    duration: allowDuration = true,
+    startDate: allowStartDate = true,
+    endDate: allowEndDate = true,
+  } = config || {};
 
   const { x, y, width } = (() => {
     const diffHours = moment
@@ -150,11 +158,12 @@ export const GanttLine = React.memo(function GanttLine(props: {
     getDragProps(DND_TYPES.LINE, {
       end: () => {
         const line = getLineData();
-        onUpdate &&
-          onUpdate(data, {
-            startDate: line.startDate,
-            endDate: line.endDate,
+        if (allowStartDate || allowEndDate) {
+          onUpdate?.(data, {
+            ...(allowStartDate && { startDate: line.startDate }),
+            ...(allowEndDate && { endDate: line.endDate }),
           });
+        }
       },
     }),
   );
@@ -163,11 +172,12 @@ export const GanttLine = React.memo(function GanttLine(props: {
     getDragProps(DND_TYPES.RESIZE_LEFT, {
       end: () => {
         const line = getLineData();
-        onUpdate &&
-          onUpdate(data, {
-            startDate: line.startDate,
-            duration: line.duration,
+        if (allowStartDate || allowDuration) {
+          onUpdate?.(data, {
+            ...(allowStartDate && { startDate: line.startDate }),
+            ...(allowDuration && { duration: line.duration }),
           });
+        }
       },
     }),
   );
@@ -176,11 +186,12 @@ export const GanttLine = React.memo(function GanttLine(props: {
     getDragProps(DND_TYPES.RESIZE_RIGHT, {
       end: () => {
         const line = getLineData();
-        onUpdate &&
-          onUpdate(data, {
-            duration: line.duration,
-            endDate: line.endDate,
+        if (allowDuration || allowEndDate) {
+          onUpdate?.(data, {
+            ...(allowDuration && { duration: line.duration }),
+            ...(allowEndDate && { endDate: line.endDate }),
           });
+        }
       },
     }),
   );
@@ -189,8 +200,8 @@ export const GanttLine = React.memo(function GanttLine(props: {
     getDragProps(DND_TYPES.PROGRESS, {
       end: () => {
         const { progress } = refs.current;
-        if (progress !== null) {
-          onUpdate && onUpdate(data, { progress });
+        if (allowProgress && progress !== null) {
+          onUpdate?.(data, { progress });
         }
         refs.current.progress = null;
       },
@@ -380,25 +391,27 @@ export const GanttLine = React.memo(function GanttLine(props: {
             : {}),
         }}
       >
-        <div
-          ref={progressElement}
-          className={classes.ganttLineProgress}
-          style={{
-            height: CONFIG.LINE_HEIGHT,
-            width: `${progress}%`,
-          }}
-        >
+        {allowProgress && (
           <div
-            className={classes.ganttLineProgressContent}
+            ref={progressElement}
+            className={classes.ganttLineProgress}
             style={{
-              ...(rtl ? { right: `${progress}%` } : { left: `${progress}%` }),
+              height: CONFIG.LINE_HEIGHT,
+              width: `${progress}%`,
             }}
           >
-            <div className={classes.ganttLineProgressLabel}>
-              {`${progress > 0 ? Math.round(progress) : "0"}%`}
+            <div
+              className={classes.ganttLineProgressContent}
+              style={{
+                ...(rtl ? { right: `${progress}%` } : { left: `${progress}%` }),
+              }}
+            >
+              <div className={classes.ganttLineProgressLabel}>
+                {`${progress > 0 ? Math.round(progress) : "0"}%`}
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <div
           ref={leftConnectRef}
           className={classNames(classes.ganttConnector, {
@@ -463,16 +476,18 @@ export const GanttLine = React.memo(function GanttLine(props: {
           <span>{data.name}</span>
         </div>
 
-        <div
-          ref={progressDrag}
-          className={classes.ganttLineProgressIndicator}
-          style={{
-            [rtl ? "right" : "left"]: Math.min(
-              width - 10,
-              Math.max(0, progressWidth - (progressWidth > 5 ? 5 : 0)),
-            ),
-          }}
-        ></div>
+        {allowProgress && (
+          <div
+            ref={progressDrag}
+            className={classes.ganttLineProgressIndicator}
+            style={{
+              [rtl ? "right" : "left"]: Math.min(
+                width - 10,
+                Math.max(0, progressWidth - (progressWidth > 5 ? 5 : 0)),
+              ),
+            }}
+          ></div>
+        )}
       </div>
 
       {virtualLine && virtualLine.source && virtualLine.target && (

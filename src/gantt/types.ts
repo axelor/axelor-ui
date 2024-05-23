@@ -79,11 +79,19 @@ export interface ConnectProps {
   target: GanttEdgeType;
 }
 
+export type GanttConfig = {
+  progress?: boolean;
+  startDate?: boolean;
+  endDate?: boolean;
+  duration?: boolean;
+};
+
 export interface GanttProps {
   className?: string;
   view: GanttType;
   items: GanttField[];
   records: GanttRecord[];
+  config?: GanttConfig;
   onRecordView?: (record: GanttRecord, index?: number) => any;
   onRecordUpdate?: (record: GanttRecord, changes?: any) => any;
   onRecordConnect?: (connectProps: ConnectProps) => any;
