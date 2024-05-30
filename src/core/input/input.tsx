@@ -1,4 +1,4 @@
-import { ComponentProps, forwardRef, useState } from "react";
+import { ComponentProps, ComponentType, forwardRef, useState } from "react";
 import { Box, useClassNames } from "..";
 import styled from "../styled";
 
@@ -49,6 +49,7 @@ export const Input = styled.input<InputProps>(
 type AdornedInputProps = ComponentProps<typeof Input> & {
   startAdornment?: JSX.Element;
   endAdornment?: JSX.Element;
+  InputComponent?: ComponentType;
 };
 
 const AdornedInputComponent = forwardRef<HTMLInputElement, AdornedInputProps>(
@@ -56,6 +57,7 @@ const AdornedInputComponent = forwardRef<HTMLInputElement, AdornedInputProps>(
     const {
       startAdornment,
       endAdornment,
+      InputComponent = Input,
       type = "text",
       invalid,
       large,
@@ -264,7 +266,7 @@ const AdornedInputComponent = forwardRef<HTMLInputElement, AdornedInputProps>(
         {startAdornment && (
           <div className={styles.adornment}>{startAdornment}</div>
         )}
-        <Input
+        <InputComponent
           ref={ref}
           type={type}
           {...inputProps}
@@ -280,12 +282,17 @@ const AdornedInputComponent = forwardRef<HTMLInputElement, AdornedInputProps>(
 
 export const AdornedInput = forwardRef<HTMLInputElement, AdornedInputProps>(
   (props, ref) => {
-    const { startAdornment, endAdornment, ...inputProps } = props;
+    const {
+      startAdornment,
+      endAdornment,
+      InputComponent = Input,
+      ...inputProps
+    } = props;
 
     return startAdornment || endAdornment ? (
       <AdornedInputComponent {...props} ref={ref} />
     ) : (
-      <Input {...inputProps} ref={ref} />
+      <InputComponent {...inputProps} ref={ref} />
     );
   },
 );
