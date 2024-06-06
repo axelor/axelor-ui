@@ -102,6 +102,11 @@ export interface GridProps {
   state: GridState;
   setState: (state: GridState | GridStateHandler) => void;
   sortType?: "live" | "state";
+  sortHandler?: (
+    records: GridProps["records"],
+    sortColumns: GridSortColumn[],
+    allColumns: GridColumn[],
+  ) => any[];
   resizeType?: "live" | "highlight";
   selectionType?: "single" | "multiple";
   aggregationType?: "group" | "all";

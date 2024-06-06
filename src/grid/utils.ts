@@ -1,6 +1,12 @@
 import { useTheme } from "../core";
 
-import { GridColumn, GridGroup, GridRow, GridSortColumn } from "./types";
+import {
+  GridColumn,
+  GridGroup,
+  GridProps,
+  GridRow,
+  GridSortColumn,
+} from "./types";
 
 export const GRID_CONFIG = {
   COLUMN_MIN_WIDTH: 100,
@@ -27,17 +33,21 @@ export const getRows = ({
   groupBy,
   records,
   rows,
+  sortFn,
 }: {
   columns: GridColumn[];
   orderBy: undefined | null | GridSortColumn[];
   groupBy: undefined | null | GridGroup[];
   records: any[];
   rows: GridRow[];
+  sortFn?: GridProps["sortHandler"];
 }) => {
   let data = [...records];
 
   if (orderBy && orderBy.length) {
-    data = doSort(data, [...orderBy], columns);
+    data = sortFn
+      ? sortFn(data, [...orderBy], columns)
+      : doSort(data, [...orderBy], columns);
   }
   if (groupBy && groupBy.length) {
     data = doGroup(data, [...groupBy], columns);

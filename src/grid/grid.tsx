@@ -72,6 +72,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     const {
       editable,
       sortType,
+      sortHandler: sortFn,
       rowType = "fixed",
       aggregationType = "group",
       selectionType = "multiple",
@@ -1238,6 +1239,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           orderBy: $orderBy,
           groupBy: state.groupBy,
           rows: [],
+          sortFn,
         });
 
         return {
@@ -1259,6 +1261,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       records,
       columns,
       sortType,
+      sortFn,
       $orderBy,
       state.groupBy,
       allowRowExpand,
