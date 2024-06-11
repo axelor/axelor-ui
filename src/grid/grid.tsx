@@ -66,7 +66,6 @@ function restoreGridSelection(
 export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
   (props, ref) => {
     const containerRef = React.useRef<any>();
-    const refs = React.useRef<any>({});
 
     const { className, state, setState, columns, records } = props;
     const {
@@ -132,6 +131,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
     const handleRef = useRefs(containerRef, ref);
     const totalRows = state.rows.length;
+    const refs = React.useRef<any>({
+      initScrollbar: totalRows > 0,
+    });
 
     const getContainerWidth = React.useCallback(() => {
       const container = containerRef.current;
@@ -1145,6 +1147,15 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           header.classList.remove(styles.shadow);
         }
       }
+
+      const saveScrollbar = () =>
+        setState((draft) => {
+          draft.scrollbar = [(e.target as HTMLElement).scrollTop ?? 0];
+        });
+
+      // lazy save scrollbar position
+      window.clearTimeout(refs.current.saveScrollbarId);
+      refs.current.saveScrollbarId = window.setTimeout(saveScrollbar, 300);
     };
 
     const scrollToCell = React.useCallback(
@@ -1323,6 +1334,14 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       });
       sizingColumns();
     }, [setState, columns, sizingColumns]);
+
+    React.useEffect(() => {
+      const container = containerRef.current;
+      if (refs.current.initScrollbar && container) {
+        refs.current.initScrollbar = false;
+        container.scrollTop = state.scrollbar?.[0] ?? 0;
+      }
+    }, [state.scrollbar]);
 
     React.useEffect(() => {
       if (state.selectedCell) {
