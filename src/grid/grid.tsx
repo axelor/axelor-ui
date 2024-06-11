@@ -1245,15 +1245,16 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         return {
           ...draft,
           ...restoreGridSelection({ ...draft, rows: newRows }, draft.rows),
-          rows: allowRowExpand
-            ? newRows.map((row) => {
-                const oldRow = draft.rows.find((r) => r.key === row.key);
-                return {
-                  ...row,
-                  expand: oldRow?.expand ?? row.expand,
-                };
-              })
-            : newRows,
+          rows: newRows.map((row) => {
+            const oldRow = draft.rows.find((r) => r.key === row.key);
+            if (oldRow?.state && oldRow.state !== row.state) {
+              row = { ...row, state: oldRow.state };
+            }
+            if (allowRowExpand) {
+              row = { ...row, expand: oldRow?.expand ?? row.expand };
+            }
+            return row;
+          }),
         };
       });
     }, [
@@ -1305,9 +1306,20 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     }, [getContainerWidth, sizingColumns]);
 
     React.useEffect(() => {
-      // exclude hide columns
+      // set columns and restore prev column state
       setState((draft) => {
-        draft.columns = [...columns];
+        draft.columns = [...columns].map((col) => {
+          const prevColState = draft.columns?.find((c) => c.name === col.name);
+          return {
+            ...prevColState,
+            ...col,
+            // if column width is fixed and it's customized previously
+            ...(col.computed &&
+              prevColState?.width && {
+                width: prevColState.width,
+              }),
+          };
+        });
       });
       sizingColumns();
     }, [setState, columns, sizingColumns]);
