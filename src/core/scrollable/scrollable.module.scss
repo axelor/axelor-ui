@@ -35,8 +35,7 @@ $width: 6px;
     --ax-theme-shell-scrollbar-color,
     var(--bs-border-color)
   );
-  scrollbar-color: var(--scrollbar-color) transparent;
-  scrollbar-width: auto;
+
   &::-webkit-scrollbar {
     width: $width;
     height: $width;
@@ -59,9 +58,17 @@ $width: 6px;
   }
 
   &:not(:hover) {
-    scrollbar-color: transparent transparent;
     &::-webkit-scrollbar-thumb {
       background-color: transparent;
+    }
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    scrollbar-color: var(--scrollbar-color) transparent;
+    scrollbar-width: auto;
+
+    &:not(:hover) {
+      scrollbar-color: transparent transparent;
     }
   }
 }
