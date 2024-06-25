@@ -763,12 +763,18 @@ function SearchMenu({
       }
       if (e.key === "ArrowUp" || e.key === "ArrowDown") {
         const inc = e.key === "ArrowUp" ? -1 : 1;
-        const max = e.key === "ArrowUp" ? 0 : filtered.length - 1;
+        const min = 0;
+        const max = filtered.length - 1;
+        const index = cursor + inc;
 
         const next =
           e.key === "ArrowUp"
-            ? Math.max(max, cursor + inc)
-            : Math.min(max, cursor + inc);
+            ? index < min
+              ? max
+              : Math.max(min, index)
+            : index > max
+              ? min
+              : Math.min(max, index);
 
         setCursor(next);
 
