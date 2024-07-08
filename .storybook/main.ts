@@ -4,17 +4,17 @@ import { mergeConfig } from "vite";
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.stories.tsx"],
+
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
+    "@chromatic-com/storybook"
   ],
+
   framework: {
     name: "@storybook/react-vite",
     options: {},
-  },
-  docs: {
-    autodocs: "tag",
   },
   core: {
     disableTelemetry: true,
@@ -40,6 +40,10 @@ const config: StorybookConfig = {
       },
     });
   },
+
+  typescript: {
+    reactDocgen: "react-docgen-typescript"
+  }
 };
 
 export default config;

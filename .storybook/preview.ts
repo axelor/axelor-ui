@@ -3,7 +3,7 @@ import { WithTheme } from "./decorators/with-theme";
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: "^on[A-Z].*" },
+    actions: {},
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -50,6 +50,7 @@ const preview: Preview = {
     },
   },
   decorators: [WithTheme],
+  tags: ["autodocs"],
 };
 
 export default preview;
