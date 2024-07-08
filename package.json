@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.2.2",
-    "@floating-ui/react": "^0.26.10",
+    "@floating-ui/react": "^0.26.19",
     "@fluentui/priority-overflow": "^9.1.11",
     "@fluentui/react-context-selector": "^9.1.56",
     "@material-symbols/font-400": "^0.17.1",
