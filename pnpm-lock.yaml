@@ -12,8 +12,8 @@ dependencies:
     specifier: ^0.26.19
     version: 0.26.19(react-dom@18.2.0)(react@18.2.0)
   '@fluentui/priority-overflow':
-    specifier: ^9.1.11
-    version: 9.1.11
+    specifier: ^9.1.13
+    version: 9.1.13
   '@fluentui/react-context-selector':
     specifier: ^9.1.63
     version: 9.1.63(@types/react-dom@18.2.23)(@types/react@18.2.74)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)
@@ -2061,8 +2061,8 @@ packages:
       '@swc/helpers': 0.5.7
     dev: false
 
-  /@fluentui/priority-overflow@9.1.11:
-    resolution: {integrity: sha512-sdrpavvKX2kepQ1d6IaI3ObLq5SAQBPRHPGx2+wiMWL7cEx9vGGM0fmeicl3soqqmM5uwCmWnZk9QZv9XOY98w==}
+  /@fluentui/priority-overflow@9.1.13:
+    resolution: {integrity: sha512-yDojVpkhBZTXOYExrCgW1GXbw3x9pYIS617xlNJIc2t06Cd3H32y2p51QXFt94sBmlVyAvPu7UKBHaq1Yw7u+w==}
     dependencies:
       '@swc/helpers': 0.5.7
     dev: false
