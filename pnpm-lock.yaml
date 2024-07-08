@@ -131,8 +131,8 @@ devDependencies:
     specifier: ^11.2.0
     version: 11.2.0
   i18next:
-    specifier: ^23.10.1
-    version: 23.10.1
+    specifier: ^23.11.5
+    version: 23.11.5
   prettier:
     specifier: ^3.2.5
     version: 3.2.5
@@ -146,8 +146,8 @@ devDependencies:
     specifier: ^18.3.1
     version: 18.3.1(react@18.3.1)
   react-i18next:
-    specifier: ^14.1.0
-    version: 14.1.0(i18next@23.10.1)(react-dom@18.3.1)(react@18.3.1)
+    specifier: ^14.1.2
+    version: 14.1.2(i18next@23.11.5)(react-dom@18.3.1)(react@18.3.1)
   rimraf:
     specifier: ^6.0.1
     version: 6.0.1
@@ -5153,8 +5153,8 @@ packages:
     engines: {node: '>=16.17.0'}
     dev: true
 
-  /i18next@23.10.1:
-    resolution: {integrity: sha512-NDiIzFbcs3O9PXpfhkjyf7WdqFn5Vq6mhzhtkXzj51aOcNuPNcTwuYNuXCpHsanZGHlHKL35G7huoFeVic1hng==}
+  /i18next@23.11.5:
+    resolution: {integrity: sha512-41pvpVbW9rhZPk5xjCX2TPJi2861LEig/YRhUkY+1FQ2IQPS0bKUDYnEqY8XPPbB48h1uIwLnP9iiEfuSl20CA==}
     dependencies:
       '@babel/runtime': 7.24.1
     dev: true
@@ -6258,8 +6258,8 @@ packages:
       react-is: 18.1.0
     dev: true
 
-  /react-i18next@14.1.0(i18next@23.10.1)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-3KwX6LHpbvGQ+sBEntjV4sYW3Zovjjl3fpoHbUwSgFHf0uRBcbeCBLR5al6ikncI5+W0EFb71QXZmfop+J6NrQ==}
+  /react-i18next@14.1.2(i18next@23.11.5)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-FSIcJy6oauJbGEXfhUgVeLzvWBhIBIS+/9c6Lj4niwKZyGaGb4V4vUbATXSlsHJDXXB+ociNxqFNiFuV1gmoqg==}
     peerDependencies:
       i18next: '>= 23.2.3'
       react: '>= 16.8.0'
@@ -6273,7 +6273,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.24.1
       html-parse-stringify: 3.0.1
-      i18next: 23.10.1
+      i18next: 23.11.5
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     dev: true
