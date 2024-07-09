@@ -46,8 +46,8 @@ export const Basic = () => {
         <IconBox icon="menu" fill={fill} />
         <IconBox icon="close" fill={fill} />
         <IconBox icon="settings" fill={fill} />
-        <IconBox icon="expand_more" fill={fill} />
-        <IconBox icon="done" fill={fill} />
+        <IconBox icon="keyboard_arrow_down" fill={fill} />
+        <IconBox icon="check" fill={fill} />
       </Box>
       <Box d="flex" g={2}>
         <Input

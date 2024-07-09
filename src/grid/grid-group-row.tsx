@@ -44,7 +44,7 @@ export const GridGroupRow = React.memo(function GridGroupRow(
               ? isRTL
                 ? "chevron_right"
                 : "chevron_right"
-              : "expand_more"
+              : "keyboard_arrow_down"
           }
         />
         {title} : {value} ({total} {t("items")})
