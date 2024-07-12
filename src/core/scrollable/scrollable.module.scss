@@ -59,9 +59,9 @@ $width: 6px;
   }
 
   &:not(:hover) {
+    scrollbar-color: transparent transparent;
     &::-webkit-scrollbar-thumb {
       background-color: transparent;
     }
-    scrollbar-color: transparent transparent;
   }
 }

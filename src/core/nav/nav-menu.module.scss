@@ -225,6 +225,7 @@
   display: none;
   flex-direction: column;
   flex-grow: 1;
+  min-height: 0;
 
   border-radius: var(--ax-nav-menu-item-radius);
   background-color: var(--ax-nav-menu-bg);
@@ -253,8 +254,7 @@
   &.active {
     display: flex;
   }
-
-  min-height: 0;
+  
 }
 
 .menu,
