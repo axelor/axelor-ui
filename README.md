@@ -15,7 +15,7 @@ $ sudo apt-get install -y nodejs
 # Alternatively, `nvm` can be used as a Node Version Manager
 $ curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
 $ source ~/.profile
-$ nvm install 18
+$ nvm install 20
 
 # pnpm
 $ corepack enable
