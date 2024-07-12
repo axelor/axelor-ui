@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ReactPortal, useEffect, useState } from "react";
 import * as React from "react";
 import { createPortal } from "react-dom";
 
@@ -10,7 +10,7 @@ export interface PortalProps {
 export const Portal = ({
   container = document.body,
   children,
-}: PortalProps) => {
+}: PortalProps): ReactPortal | null => {
   const [mountNode, setMountNode] = useState<Element | null>(null);
   useEffect(() => {
     let node = container;
