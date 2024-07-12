@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { Fragment, useCallback, useMemo, useState } from "react";
 import { MaterialIcon, MaterialIconProps } from "../../icons/material-icon";
 import { Button, ButtonProps } from "../button";
 import { ButtonGroup } from "../button-group";
@@ -35,8 +35,10 @@ export interface CommandItemProps {
   showDownArrow?: boolean;
   showAsMenuItem?: boolean;
   className?: string;
-  render?: (props: CommandItemProps) => JSX.Element | null;
+  render?: (props: RenderCommandItemProps) => JSX.Element | null;
 }
+
+export type RenderCommandItemProps = Omit<CommandItemProps, "key">;
 
 export interface CommandBarProps {
   items: CommandItemProps[];
@@ -46,7 +48,7 @@ export interface CommandBarProps {
   iconOnly?: boolean;
 }
 
-export function CommandItem(props: CommandItemProps) {
+export function CommandItem(props: RenderCommandItemProps) {
   const {
     text,
     subtext,
@@ -228,8 +230,9 @@ export function CommandItem(props: CommandItemProps) {
             placement: "end-top",
           })}
         >
-          {items.map((item) => {
-            const { key, divider, hidden, render } = item;
+          {items.map((itemProp) => {
+            const { key, ...item } = itemProp;
+            const { divider, hidden, render } = item;
 
             if (hidden) {
               return null;
@@ -242,14 +245,18 @@ export function CommandItem(props: CommandItemProps) {
             const itemProps = {
               ...item,
               showAsMenuItem: true,
-              onClick: (e: any) => handleMenuClick(e, item),
+              onClick: (e: any) => handleMenuClick(e, itemProp),
             };
 
             if (render) {
-              return render({ ...itemProps, render: undefined });
+              return (
+                <Fragment key={key}>
+                  {render({ ...itemProps, render: undefined })}
+                </Fragment>
+              );
             }
 
-            return <CommandItem {...itemProps} />;
+            return <CommandItem key={key} {...itemProps} />;
           })}
         </Menu>
       )}
@@ -261,8 +268,9 @@ export function CommandBar(props: CommandBarProps) {
   const { className, iconOnly, iconProps = {}, items = [] } = props;
   return (
     <div className={clsx(className, styles.bar)}>
-      {items.map(({ iconProps: icon, menuProps, ...item }) => (
+      {items.map(({ key, iconProps: icon, menuProps, ...item }) => (
         <CommandItem
+          key={key}
           iconOnly={iconOnly}
           iconProps={{ ...iconProps, ...icon } as MaterialIconProps}
           menuProps={{
