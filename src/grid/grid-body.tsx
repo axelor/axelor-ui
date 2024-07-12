@@ -128,7 +128,6 @@ export function GridBody(props: GridBodyProps) {
         }
 
         let rowProps: any = {
-          key: row.key,
           index,
           columns,
           data: row,
@@ -166,6 +165,7 @@ export function GridBody(props: GridBodyProps) {
         if (row.type === "group-row") {
           return (
             <GridGroupRow
+              key={row.key}
               width={totalWidth}
               renderer={rowGroupHeaderRenderer}
               {...rowProps}
@@ -176,6 +176,7 @@ export function GridBody(props: GridBodyProps) {
         if (row.type === "footer-row") {
           return (
             <GridFooterRow
+              key={row.key}
               width={totalWidth}
               renderer={rowGroupFooterRenderer}
               {...rowProps}
@@ -185,6 +186,7 @@ export function GridBody(props: GridBodyProps) {
 
         return (
           <GridBodyRow
+            key={row.key}
             width={totalWidth}
             draggable={Boolean(onRowMove)}
             renderer={rowRenderer}

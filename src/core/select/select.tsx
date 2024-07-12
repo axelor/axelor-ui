@@ -664,14 +664,14 @@ export const Select = forwardRef(function Select<
               {clearIcon.icon}
             </div>
           )}
-          {icons.map((icon, index) => (
+          {icons.map(({ key, icon, onClick }, index) => (
             <div
-              key={icon.key ?? index}
+              key={key ?? index}
               data-index={index}
               className={clsx(styles.action)}
-              onClick={icon.onClick}
+              onClick={onClick}
             >
-              {icon.icon}
+              {icon}
             </div>
           ))}
           {toggleIcon && (
@@ -699,28 +699,32 @@ export const Select = forwardRef(function Select<
                 style: floatingStyles,
               })}
             >
-              {items.map((item, index) => (
-                <SelectItem
-                  {...getItemProps({
-                    key: optionKey(item),
-                    ref(node) {
-                      listRef.current[index] = node;
-                    },
-                    onClick() {
-                      updateValue(item);
-                    },
-                  })}
-                  active={activeIndex === index}
-                  selected={!multiple && selectedIndex === index}
-                >
-                  {!!renderOption || optionLabel(item)}
-                  {!!renderOption &&
-                    renderOption({
-                      option: item,
-                      active: activeIndex === index,
-                    })}
-                </SelectItem>
-              ))}
+              {items.map((item, index) => {
+                const { key, ...itemProps } = getItemProps({
+                  key: optionKey(item),
+                  ref(node) {
+                    listRef.current[index] = node;
+                  },
+                  onClick() {
+                    updateValue(item);
+                  },
+                });
+                return (
+                  <SelectItem
+                    key={key as string}
+                    {...itemProps}
+                    active={activeIndex === index}
+                    selected={!multiple && selectedIndex === index}
+                  >
+                    {!!renderOption || optionLabel(item)}
+                    {!!renderOption &&
+                      renderOption({
+                        option: item,
+                        active: activeIndex === index,
+                      })}
+                  </SelectItem>
+                );
+              })}
               {customOptions?.map((item, index) => (
                 <SelectItem
                   {...getItemProps({
