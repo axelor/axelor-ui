@@ -95,8 +95,13 @@ export const GridBodyRow = React.memo(function GridBodyRow(
             className={clsx(styles.expandRowIcon, {
               [styles.disabled]: disabled,
             })}
+            onDoubleClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation();
+            }}
             onClick={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               !disabled && onExpand?.(data, !expanded);
             }}
           >
