@@ -1,3 +1,5 @@
+import { BootstrapIcon, BootstrapIconName } from "../../icons/bootstrap-icon";
+import { Box } from "../box";
 import { clsx } from "../clsx";
 import styled, { withStyled } from "../styled";
 import { useClassNames } from "../styles";
@@ -19,7 +21,7 @@ export interface AlertLinkProps {
   children?: React.ReactNode;
 }
 
-const HeaderRoot = styled.h4<AlertHeaderProps>();
+const HeaderRoot = styled.strong<AlertHeaderProps>();
 
 export const AlertHeader = withStyled(HeaderRoot)((props, ref) => {
   const { className, children, ...rest } = props;
@@ -55,14 +57,34 @@ const AlertRoot = styled.div<AlertProps>();
 
 export const Alert = withStyled(AlertRoot)((props, ref) => {
   const { className, children, variant = "info", ...rest } = props;
-  const classNames = useClassNames();
+
+  const icons: Partial<Record<TVariant, BootstrapIconName>> = {
+    success: "check-circle",
+    info: "info-circle",
+    warning: "exclamation-triangle",
+    danger: "x-circle",
+  };
+
   return (
-    <AlertRoot
+    <Box
       ref={ref}
-      className={clsx(className, classNames("alert", `alert-${variant}`))}
+      className={className}
+      d="flex"
+      flexDirection="row"
+      alignItems="baseline"
+      p={3}
+      rounded={2}
+      borderStart={true}
+      borderWidth={5}
+      bgColor={`${variant}-subtle`}
+      borderColor={`${variant}`}
+      color={`${variant}-emphasis`}
       {...rest}
     >
-      {children}
-    </AlertRoot>
+      {icons[variant] && <BootstrapIcon icon={icons[variant]} />}
+      <Box ms={2} alignSelf="center">
+        {children}
+      </Box>
+    </Box>
   );
 });
