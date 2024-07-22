@@ -224,6 +224,7 @@ function toDropdownVars(options: ThemeOptions) {
       opts.header?.paddingX ?? opts.header?.padding,
     "--ax-theme-dropdown-header-padding-y":
       opts.header?.paddingY ?? opts.header?.padding,
+    "--ax-theme-dropdown-zindex": opts.zIndex,
   };
 }
 

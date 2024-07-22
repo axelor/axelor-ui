@@ -87,6 +87,7 @@
     --ax-theme-dropdown-link-active-bg,
     var(--bs-primary)
   );
+  --bs-dropdown-zindex: var(--ax-theme-dropdown-zindex, 1060);
 }
 
 .input {
@@ -211,6 +212,7 @@
   border-radius: var(--bs-dropdown-border-radius);
   box-shadow: var(--bs-dropdown-box-shadow);
   overflow-y: auto;
+  z-index: var(--bs-dropdown-zindex);
 }
 
 .list:empty {

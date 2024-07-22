@@ -10,6 +10,10 @@
   visibility: hidden;
 }
 
+.popper {
+  z-index: var(--ax-theme-dropdown-zindex, 1060);
+}
+
 .wrapper {
   position: relative;
 }

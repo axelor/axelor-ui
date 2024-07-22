@@ -194,6 +194,7 @@ export interface ThemeOptions {
       item_active?: ThemeElementColors;
       header?: ThemeElementColors & ThemeElementSpacing;
       divider?: ThemeElementColors;
+      zIndex?: number;
     };
     NavSelect?: {
       item?: ThemeElementCommon;
