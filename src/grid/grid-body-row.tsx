@@ -36,8 +36,8 @@ export const GridBodyRow = React.memo(function GridBodyRow(
     onUpdate,
   } = props;
 
-  const expanded = useMemo(
-    () => (hasExpanded ? hasExpanded(data) : data.expand),
+  const expandState = useMemo(
+    () => (hasExpanded ? hasExpanded(data) : { expand: Boolean(data.expand) }),
     [data, hasExpanded],
   );
 
@@ -88,36 +88,34 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         );
       }
       if (isRowExpand(column)) {
-        const disabled = expanded === null;
+        const { expand, disable } = expandState;
         return (
           <Box
             d="inline-flex"
             className={clsx(styles.expandRowIcon, {
-              [styles.disabled]: disabled,
+              [styles.disabled]: disable,
             })}
             onDoubleClick={(e) => {
-              e.preventDefault()
+              e.preventDefault();
               e.stopPropagation();
             }}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              !disabled && onExpand?.(data, !expanded);
+              !disable && onExpand?.(data, !expand);
             }}
           >
             {ExpandIcon ? (
-              <ExpandIcon expand={Boolean(expanded)} />
+              <ExpandIcon {...expandState} />
             ) : (
-              <MaterialIcon
-                icon={expanded ? "arrow_drop_down" : "arrow_right"}
-              />
+              <MaterialIcon icon={expand ? "arrow_drop_down" : "arrow_right"} />
             )}
           </Box>
         );
       }
       return value;
     },
-    [ExpandIcon, data, expanded, onExpand, selected, selectionType],
+    [ExpandIcon, data, expandState, onExpand, selected, selectionType],
   );
 
   const RowComponent = renderer || "div";
@@ -163,7 +161,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
           })}
         </RowComponent>
       </DragComponent>
-      {RowDetails && expanded && (
+      {RowDetails && expandState?.expand && (
         <div
           className={styles.detailsRow}
           data-row-details={`${data.key}`}
@@ -175,7 +173,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         >
           <RowDetails
             data={data}
-            onClose={() => onExpand?.(data, Boolean(!expanded))}
+            onClose={() => onExpand?.(data, Boolean(!expandState?.expand))}
           />
         </div>
       )}
