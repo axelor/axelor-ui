@@ -1325,7 +1325,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             ...prevColState,
             ...col,
             // if column width is fixed and it's customized previously
-            ...(col.computed &&
+            ...(col.computed && !col.width &&
               prevColState?.width && {
                 width: prevColState.width,
               }),
