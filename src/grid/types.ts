@@ -154,6 +154,8 @@ export interface GridProps {
     children?: boolean;
   };
   onColumnCustomize?: (e: React.SyntheticEvent, column?: GridColumn) => void;
+  onBeforeColumnResize?: (column: GridColumn) => void;
+  onAfterColumnResize?: (column: GridColumn) => void;
   onRowClick?: (e: React.SyntheticEvent, row: any, rowIndex: number) => void;
   onRowDoubleClick?: (
     e: React.SyntheticEvent,

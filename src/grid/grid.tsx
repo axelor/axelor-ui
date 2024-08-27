@@ -110,6 +110,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       onRecordEdit,
       onRecordSave,
       onRecordDiscard,
+      onBeforeColumnResize,
+      onAfterColumnResize,
       onColumnCustomize,
     } = props;
 
@@ -536,6 +538,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         e: React.DragEvent<HTMLElement>,
         column: TYPES.GridColumn,
       ) {
+        onBeforeColumnResize?.(column);
         const ctx = (e.target as HTMLElement).cloneNode(true) as HTMLElement;
         ctx.style.display = "none";
         e.dataTransfer.setDragImage(ctx, 0, 0);
@@ -572,7 +575,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         container.classList.add(styles.resizingColumns);
         container.appendChild(refs.current.style);
       },
-      [],
+      [onBeforeColumnResize],
     );
 
     const handleColumnResize = React.useCallback(
@@ -629,6 +632,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         });
         sizingColumns();
 
+        onAfterColumnResize?.({ ...column, width });
         // clear styles/dataTransfer
         const body = container.querySelector(getCssSelector(`.${styles.body}`));
         body.style.minWidth = null;
@@ -638,7 +642,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         refs.current.event?.unsubscribe?.();
         refs.current.event = {};
       },
-      [setState, sizingColumns],
+      [setState, onAfterColumnResize, sizingColumns],
     );
 
     const handleColumnHide = React.useCallback(
@@ -1325,7 +1329,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             ...prevColState,
             ...col,
             // if column width is fixed and it's customized previously
-            ...(col.computed && !col.width &&
+            ...(col.computed &&
+              !col.width &&
               prevColState?.width && {
                 width: prevColState.width,
               }),
