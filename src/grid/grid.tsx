@@ -601,9 +601,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           true,
         );
         refs.current.style.innerHTML = `
-          .${styles.resizingColumns} .${getCssSelector(
-            styles.column,
-          )}:nth-child(${index + 1}) {
+          ${getCssSelector(`
+            .${styles.resizingColumns} > * > * > .${styles.column}:nth-child(${index + 1}),
+            .${styles.resizingColumns} > * > * > * > .${styles.column}:nth-child(${index + 1})
+          `)} {
             width: ${width}px !important;
             min-width: ${width}px !important;
           }
