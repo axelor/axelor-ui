@@ -125,6 +125,7 @@ export interface GridProps {
   allowColumnHide?: boolean;
   allowRowReorder?: boolean;
   allowRowExpand?: boolean;
+  allowRowDND?: boolean; // enable row drag & drop
   stickyHeader?: boolean;
   stickyFooter?: boolean;
   rowHeight?: number | string;

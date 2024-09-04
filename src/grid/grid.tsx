@@ -78,6 +78,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     } = props;
     const {
       allowSelection,
+      allowRowDND,
       allowCellFocus = true,
       allowSorting,
       allowSearch,
@@ -1481,6 +1482,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             selectionType={selectionType}
             noRecordsText={records.length === 0 ? props.noRecordsText : ""}
             addNewText={props.addNewText}
+            allowRowDND={allowRowDND}
             {...{
               rowHeight,
               maxRowHeight,

@@ -21,6 +21,7 @@ export interface GridBodyProps
       | "addNewText"
       | "cellRenderer"
       | "hasRowExpanded"
+      | "allowRowDND"
       | "rowGroupHeaderRenderer"
       | "rowGroupFooterRenderer"
       | "rowDetailsRenderer"
@@ -51,6 +52,7 @@ export function GridBody(props: GridBodyProps) {
     selectionType,
     rowHeight,
     maxRowHeight,
+    allowRowDND,
     hasRowExpanded,
     rowRenderer,
     cellRenderer,
@@ -94,7 +96,7 @@ export function GridBody(props: GridBodyProps) {
       ...(showNoRecords ? { style: { width: totalWidth + 2 } } : {}),
       className: styles.body,
     };
-    if (onRowMove) {
+    if (onRowMove || allowRowDND) {
       return (
         <GridDNDContainer
           {...props}
