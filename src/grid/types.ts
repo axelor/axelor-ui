@@ -141,14 +141,18 @@ export interface GridProps {
   searchRowRenderer?: Renderer;
   searchColumnRenderer?: Renderer;
   rowDetailsRenderer?: Renderer;
-  rowDetailsExpandIcon?: ({
-    expand,
-  }: {
+  rowDetailsExpandIcon?: (props: {
     expand: boolean;
+    disable?: boolean;
+    children?: boolean;
   }) => React.ReactElement;
   rowGroupHeaderRenderer?: Renderer;
   rowGroupFooterRenderer?: Renderer;
-  hasRowExpanded?: (row: GridRow) => boolean | null; // null is for disability check
+  hasRowExpanded?: (row: GridRow) => {
+    expand: boolean;
+    disable?: boolean;
+    children?: boolean;
+  };
   onColumnCustomize?: (e: React.SyntheticEvent, column?: GridColumn) => void;
   onRowClick?: (e: React.SyntheticEvent, row: any, rowIndex: number) => void;
   onRowDoubleClick?: (
