@@ -570,6 +570,7 @@ export const Select = forwardRef(function Select<
           id={id}
           ref={inputRef}
           type="text"
+          autoComplete="off"
           autoFocus={autoFocus}
           className={styles.input}
           value={inputValue ?? ""}
