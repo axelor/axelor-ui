@@ -5,6 +5,7 @@ export interface GridColumn {
   name: string;
   type?: string;
   title?: string;
+  help?: string;
   width?: number;
   minWidth?: number;
   visible?: boolean;

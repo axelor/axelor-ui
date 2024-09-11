@@ -169,6 +169,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
           className={classNames(styles.headerColumnTitle, column.$headerCss, {
             [styles.resizable]: Boolean(onResize),
           })}
+          title={column.help || column.title}
           onClick={(e) => {
             const dropdownEl = targetRef.current;
             if (
