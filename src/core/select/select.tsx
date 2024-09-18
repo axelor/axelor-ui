@@ -15,6 +15,7 @@ import {
 import {
   ReactElement,
   forwardRef,
+  startTransition,
   useCallback,
   useEffect,
   useMemo,
@@ -324,6 +325,9 @@ export const Select = forwardRef(function Select<
 
   const handleInputKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (open && event.key === "Tab") {
+        startTransition(() => handleClose());
+      }
       if (event.key === "Escape" && clearOnEscape) {
         resetInput();
       }
