@@ -42,7 +42,6 @@
     "@fluentui/react-context-selector": "^9.1.63",
     "@material-symbols/font-400": "^0.23.0",
     "@material-symbols/metadata": "^0.23.0",
-    "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "color": "^4.2.3",

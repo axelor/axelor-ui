@@ -26,9 +26,6 @@ importers:
       '@material-symbols/metadata':
         specifier: ^0.23.0
         version: 0.23.0
-      '@popperjs/core':
-        specifier: ^2.11.8
-        version: 2.11.8
       bootstrap:
         specifier: ^5.3.3
         version: 5.3.3(@popperjs/core@2.11.8)

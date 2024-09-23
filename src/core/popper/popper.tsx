@@ -1,10 +1,19 @@
-import { createPopper, Instance, Placement } from "@popperjs/core";
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  arrow as arrowMiddleware,
+  autoUpdate,
+  flip,
+  hide,
+  offset as offsetMiddleware,
+  Placement,
+  useFloating,
+} from "@floating-ui/react";
+import { useEffect, useRef, useState } from "react";
 
 import { Box } from "../box";
 import { Fade } from "../fade";
 import { Portal } from "../portal";
 
+import { clsx } from "../clsx";
 import { useClassNames, useTheme } from "../styles";
 import { TBackground, TForeground } from "../system";
 import { TransitionProps } from "../transitions";
@@ -63,96 +72,13 @@ const PlacementMapping: Record<PopperPlacement, Placement> = {
   "bottom-end": "bottom-end",
 };
 
-const PopperWrapper = ({
+export const Popper = ({
   open,
   target,
   placement: popperPlacement = "bottom",
-  strategy = "absolute",
   offset,
-  arrow,
-  shadow,
-  border,
-  children,
+  strategy = "absolute",
   className,
-  ...props
-}: PopperProps) => {
-  const instance = useRef<Instance | null>(null);
-  const [wrapperEl, setWrapperEl] = useState<HTMLDivElement | null>(null);
-  const { dir } = useTheme();
-
-  const placement = PlacementMapping[popperPlacement];
-  const [skidding = 0, distance = 0] = offset || [];
-
-  const enabled = Boolean(offset) || Boolean(arrow);
-  const arrowEnabled = Boolean(arrow);
-
-  const modifiers = useMemo(() => {
-    const arrowPadding = arrowEnabled ? 8.5 : 0; // match with .arrow diagonal (12 * Math.sqrt(2) / 2)
-    return [
-      { name: "preventOverflow" },
-      { name: "flip" },
-      { name: "hide" },
-      {
-        name: "offset",
-        enabled,
-        options: {
-          offset: [skidding - arrowPadding, distance + arrowPadding],
-        },
-      },
-      {
-        name: "arrow",
-        enabled: arrowEnabled,
-        options: {
-          padding: arrowPadding,
-        },
-      },
-    ];
-  }, [skidding, distance, enabled, arrowEnabled]);
-
-  useEffect(() => {
-    instance.current?.forceUpdate();
-  });
-
-  useEffect(() => {
-    if (!open || target === null || wrapperEl === null) {
-      return undefined;
-    }
-
-    instance.current = createPopper(target, wrapperEl, {
-      placement,
-      strategy,
-      modifiers,
-    });
-
-    return () => {
-      instance.current?.destroy();
-      instance.current = null;
-    };
-  }, [target, wrapperEl, open, placement, strategy, modifiers]);
-
-  const classNames = useClassNames();
-
-  if (target === null) return null;
-
-  return (
-    <div
-      ref={setWrapperEl}
-      className={classNames(styles.popper, className, {
-        "drop-shadow-md": shadow,
-        [styles.border]: border,
-      })}
-      {...(dir === "rtl" ? { dir: "rtl" } : {})}
-      {...props}
-      style={{ position: "fixed" }}
-    >
-      {children}
-    </div>
-  );
-};
-
-export const Popper = ({
-  open,
-  placement = "bottom",
   arrow,
   rounded = true,
   shadow = true,
@@ -166,7 +92,49 @@ export const Popper = ({
   disablePortal,
   ...props
 }: PopperProps) => {
+  const { dir } = useTheme();
+  const classNames = useClassNames();
+
   const [exited, setExited] = useState(true);
+
+  const placement = PlacementMapping[popperPlacement];
+  const [skidding = 0, distance = 0] = offset || [];
+  const arrowPadding = arrow ? 8.5 : 0; // match with .arrow diagonal (12 * Math.sqrt(2) / 2)
+
+  const arrowRef = useRef<HTMLSpanElement | null>(null);
+  const {
+    x,
+    y,
+    refs,
+    middlewareData,
+    strategy: floatingStrategy,
+    update,
+    placement: currentPlacement,
+  } = useFloating({
+    placement,
+    strategy,
+    middleware: [
+      offsetMiddleware({
+        mainAxis: distance + arrowPadding,
+        crossAxis: skidding,
+      }),
+      flip(),
+      hide(),
+      ...(arrow ? [arrowMiddleware({ element: arrowRef })] : []),
+    ],
+  });
+
+  useEffect(() => {
+    if (target) {
+      refs.setReference(target);
+    }
+  }, [target, refs]);
+
+  useEffect(() => {
+    if (refs.reference.current && refs.floating.current && open) {
+      return autoUpdate(refs.reference.current, refs.floating.current, update);
+    }
+  }, [refs, update, open]);
 
   const handleEnter = () => {
     setExited(false);
@@ -176,33 +144,58 @@ export const Popper = ({
     setExited(true);
   };
 
-  const render = () => {
-    return (
-      <Box
-        className={styles.wrapper}
-        role={role}
-        bg={bg}
-        color={color}
-        rounded={rounded}
-      >
-        <div className={styles.content}>{children}</div>
-        {arrow && <span data-popper-arrow className={styles.arrow}></span>}
-      </Box>
-    );
-  };
+  const side = currentPlacement.split("-")[0];
 
-  if (exited && !open) {
-    return null;
-  }
+  const staticSide = {
+    top: "bottom",
+    right: "left",
+    bottom: "top",
+    left: "right",
+  }[side] as string;
+
+  const renderContent = (
+    <Box
+      className={styles.wrapper}
+      role={role}
+      bg={bg}
+      color={color}
+      rounded={rounded}
+    >
+      <div>{children}</div>
+      {arrow && (
+        <span
+          ref={arrowRef}
+          className={clsx(
+            "AxPopper_arrow",
+            styles.arrow,
+            styles[`${staticSide}-arrow`],
+          )}
+          style={{
+            left: middlewareData?.arrow?.x ?? "",
+            top: middlewareData?.arrow?.y ?? "",
+            right: "",
+            bottom: "",
+            [staticSide]: `${-(arrowRef?.current?.offsetWidth ?? 0) / 2}px`,
+          }}
+        />
+      )}
+    </Box>
+  );
+
+  if (target === null) return null;
+  if (exited && !open) return null;
 
   const wrapper = (
-    <PopperWrapper
-      placement={placement}
-      arrow={arrow}
-      shadow={shadow}
-      border={border}
-      open={open || !exited}
+    <div
+      ref={refs.setFloating}
+      className={classNames(styles.popper, className, {
+        "drop-shadow-md": shadow,
+        [styles.border]: border,
+      })}
+      data-popper-placement={currentPlacement}
+      {...(dir === "rtl" ? { dir: "rtl" } : {})}
       {...props}
+      style={{ position: floatingStrategy, top: y ?? "", left: x ?? "" }}
     >
       {Transition ? (
         <Transition
@@ -211,12 +204,12 @@ export const Popper = ({
           onEnter={handleEnter}
           onExited={handleExited}
         >
-          {render()}
+          {renderContent}
         </Transition>
       ) : (
-        render()
+        renderContent
       )}
-    </PopperWrapper>
+    </div>
   );
 
   return disablePortal ? (
