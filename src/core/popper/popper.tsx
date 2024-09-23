@@ -55,6 +55,7 @@ export interface PopperProps {
     | React.ExoticComponent<TransitionProps>
     | React.FunctionComponent<TransitionProps>;
   disablePortal?: boolean;
+  contentClassName?: string;
 }
 
 const PlacementMapping: Record<PopperPlacement, Placement> = {
@@ -90,6 +91,7 @@ export const Popper = ({
   transition: Transition = Fade,
   children,
   disablePortal,
+  contentClassName,
   ...props
 }: PopperProps) => {
   const { dir } = useTheme();
@@ -161,7 +163,7 @@ export const Popper = ({
       color={color}
       rounded={rounded}
     >
-      <div>{children}</div>
+      <div className={contentClassName}>{children}</div>
       {arrow && (
         <span
           ref={arrowRef}

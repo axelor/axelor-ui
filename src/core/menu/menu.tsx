@@ -9,7 +9,12 @@ import styles from "./menu.module.css";
 export interface MenuProps
   extends Pick<
     PopperProps,
-    "placement" | "container" | "offset" | "arrow" | "transition"
+    | "placement"
+    | "container"
+    | "offset"
+    | "arrow"
+    | "transition"
+    | "contentClassName"
   > {
   target?: HTMLElement | null;
   flip?: boolean;
@@ -45,6 +50,7 @@ export const Menu = withStyled(MenuContent)((
     rounded,
     transition,
     bg = "body",
+    contentClassName,
     ...props
   },
   ref,
@@ -60,6 +66,7 @@ export const Menu = withStyled(MenuContent)((
       border={border}
       rounded={rounded}
       transition={transition}
+      contentClassName={contentClassName}
       role="menu"
       bg={bg}
     >

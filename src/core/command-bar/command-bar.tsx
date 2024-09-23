@@ -15,7 +15,7 @@ export interface CommandItemProps {
   subtext?: string;
   description?: string;
   variant?: ButtonProps["variant"];
-  menuProps?: { arrow?: boolean; rounded?: boolean };
+  menuProps?: { arrow?: boolean; rounded?: boolean; contentClassName?: string };
   imageProps?: {
     src: string;
     alt: string;
@@ -43,7 +43,7 @@ export type RenderCommandItemProps = Omit<CommandItemProps, "key">;
 export interface CommandBarProps {
   items: CommandItemProps[];
   className?: string;
-  menuProps?: { arrow?: boolean; rounded?: boolean };
+  menuProps?: { arrow?: boolean; rounded?: boolean; contentClassName?: string };
   iconProps?: Omit<MaterialIconProps, "icon">;
   iconOnly?: boolean;
 }
