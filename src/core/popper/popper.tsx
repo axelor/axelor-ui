@@ -110,9 +110,11 @@ export const Popper = ({
     refs,
     middlewareData,
     strategy: floatingStrategy,
-    update,
     placement: currentPlacement,
   } = useFloating({
+    whileElementsMounted: (referenceEl, floatingEl, update) => {
+      return autoUpdate(referenceEl, floatingEl, update);
+    },
     placement,
     strategy,
     middleware: [
@@ -131,12 +133,6 @@ export const Popper = ({
       refs.setReference(target);
     }
   }, [target, refs]);
-
-  useEffect(() => {
-    if (refs.reference.current && refs.floating.current && open) {
-      return autoUpdate(refs.reference.current, refs.floating.current, update);
-    }
-  }, [refs, update, open]);
 
   const handleEnter = () => {
     setExited(false);
