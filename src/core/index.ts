@@ -36,6 +36,7 @@ export * from "./overflow-list";
 export * from "./panel";
 export * from "./popper";
 export * from "./portal";
+export * from "./rating";
 export * from "./scrollable";
 export * from "./select";
 export * from "./slide";
