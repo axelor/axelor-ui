@@ -14,10 +14,12 @@ import {
 } from "@floating-ui/react";
 import {
   ReactElement,
+  RefObject,
   forwardRef,
   startTransition,
   useCallback,
   useEffect,
+  useImperativeHandle,
   useMemo,
   useRef,
   useState,
@@ -39,6 +41,12 @@ export type SelectIcon = {
   key?: string | number;
   icon: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
+};
+
+export type SelectRefHandler = {
+  open: () => void;
+  close: () => void;
+  isOpen: () => boolean;
 };
 
 export interface SelectOptionProps<Type> {
@@ -86,6 +94,7 @@ export interface SelectProps<Type, Multiple extends boolean> {
   };
   inputStartAdornment?: ReactElement;
   inputEndAdornment?: ReactElement;
+  selectRef?: RefObject<SelectRefHandler>;
   onChange?: (value: SelectValue<Type, Multiple>) => void;
   onOpen?: () => void;
   onClose?: () => void;
@@ -131,6 +140,7 @@ export const Select = forwardRef(function Select<
     removeOnBackspace = true,
     removeOnDelete = true,
     closeOnSelect = true,
+    selectRef,
     menuOptions,
     optionKey,
     optionLabel,
@@ -630,6 +640,16 @@ export const Select = forwardRef(function Select<
     if (required) return true;
     return false;
   }, [required, invalid, value]);
+
+  useImperativeHandle(
+    selectRef,
+    () => ({
+      isOpen: () => Boolean(open),
+      open: handleOpen,
+      close: handleClose,
+    }),
+    [open, handleOpen, handleClose],
+  );
 
   return (
     <>
