@@ -28,6 +28,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "build": "node scripts/build.js . -o dist",
+    "typecheck": "tsc --noEmit",
     "clean": "rimraf dist",
     "lint": "eslint src"
   },
