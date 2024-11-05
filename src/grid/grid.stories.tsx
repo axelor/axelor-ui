@@ -35,7 +35,7 @@ export {
   Reorder,
   Searching,
   Editable,
-  Expanding
+  Expanding,
 };
 
 export default stories;

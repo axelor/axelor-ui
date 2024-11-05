@@ -4,22 +4,21 @@ import { ClassValue } from "../clsx";
 import { useClassNames } from "../styles";
 import { StyleProps, useStyleProps } from "../system";
 
-export type Merge<P, O> = O extends Array<any>
-  ? P
-  : keyof O extends never
+export type Merge<P, O> =
+  O extends Array<any>
     ? P
-    : keyof P extends never
-      ? O
-      : keyof P & keyof O extends never
-        ? O & P
-        : O & Omit<P, keyof O>;
+    : keyof O extends never
+      ? P
+      : keyof P extends never
+        ? O
+        : keyof P & keyof O extends never
+          ? O & P
+          : O & Omit<P, keyof O>;
 
-export type StyledComponentProps<
-  C extends React.ElementType,
-  P extends {},
-> = C extends React.ElementType<infer Q>
-  ? Merge<React.ComponentProps<C>, Merge<Q, P>>
-  : Merge<React.ComponentProps<C>, P>;
+export type StyledComponentProps<C extends React.ElementType, P extends {}> =
+  C extends React.ElementType<infer Q>
+    ? Merge<React.ComponentProps<C>, Merge<Q, P>>
+    : Merge<React.ComponentProps<C>, P>;
 
 export interface StyledComponent<C extends React.ElementType, P extends {}>
   extends React.FC<StyledComponentProps<C, P>> {

@@ -13,7 +13,7 @@ const SwitchInput = styled(Input)<SwitchProps>(
   ({ readOnly, pointerEvents, role = "switch" }) => ({
     role,
     type: "checkbox",
-    pointerEvents: pointerEvents ?? readOnly ? "none" : undefined,
+    pointerEvents: (pointerEvents ?? readOnly) ? "none" : undefined,
   }),
 );
 

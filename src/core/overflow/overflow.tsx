@@ -40,7 +40,7 @@ export const Overflow = forwardRef((props: OverflowProps, ref) => {
     setOverflowState(() => {
       return {
         hasOverflow:
-          // is container visible by checking it's offsetWidth 
+          // is container visible by checking it's offsetWidth
           (childrenRef.current?.offsetWidth ?? 0) > 0 &&
           data.invisibleItems.length > 0,
         itemVisibility,
