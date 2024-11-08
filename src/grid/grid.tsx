@@ -29,6 +29,29 @@ function debounce(func: () => void, timeout: number = 300) {
   };
 }
 
+function throttle(func: (...args: any) => void, timeout = 300) {
+  let throttled = false;
+  let savedArgs: any = null;
+
+  return (...args: any) => {
+    if (throttled) {
+      savedArgs = args;
+      return;
+    }
+
+    func(...args);
+    throttled = true;
+
+    setTimeout(() => {
+      if (savedArgs) {
+        func(...savedArgs);
+        savedArgs = null;
+      }
+      throttled = false;
+    }, timeout);
+  };
+}
+
 const isDefined = (val: any) => val !== undefined;
 const isNull = (value: any) => !isDefined(value) || value === null;
 const getColumns = (columns: TYPES.GridColumn[]) =>
@@ -580,7 +603,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     );
 
     const handleColumnResize = React.useCallback(
-      function handleColumnResize(
+      throttle(function handleColumnResize(
         e: React.DragEvent<HTMLElement>,
         column: TYPES.GridColumn,
         index: number,
@@ -610,7 +633,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           }
         `;
         refs.current.event.width = width;
-      },
+      }, 10),
       [isRTL],
     );
 
