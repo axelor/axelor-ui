@@ -2,6 +2,7 @@ export * from "./accordion";
 export * from "./alert";
 export * from "./arrow-navigation";
 export * from "./badge";
+export * from "./barcode";
 export * from "./block";
 export * from "./box";
 export * from "./button";

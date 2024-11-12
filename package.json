@@ -51,6 +51,7 @@
     "dayjs": "^1.11.11",
     "focus-trap": "^7.5.4",
     "immer": "^10.1.1",
+    "jsbarcode": "^3.11.6",
     "qrcode": "^1.5.4",
     "react-beautiful-dnd": "^13.1.1",
     "react-dnd": "^16.0.1",
