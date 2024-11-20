@@ -83,7 +83,7 @@
     "eslint-plugin-react-refresh": "^0.4.14",
     "fast-glob": "^3.3.2",
     "fs-extra": "^11.2.0",
-    "i18next": "^23.11.5",
+    "i18next": "^23.16.8",
     "prettier": "^3.3.3",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
