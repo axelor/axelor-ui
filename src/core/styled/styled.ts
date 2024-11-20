@@ -160,9 +160,9 @@ export const withStyled =
       ref: React.Ref<any>,
     ) => JSX.Element | null,
   ) => {
-    return forwardRef<any, any>(render) as unknown as keyof P extends never
-      ? C
-      : StyledComponent<C, P>;
+    return forwardRef<any, any>(
+      render as React.ForwardRefRenderFunction<any, React.PropsWithoutRef<any>>,
+    ) as unknown as keyof P extends never ? C : StyledComponent<C, P>;
   };
 
 type Styled = CreateStyled & {

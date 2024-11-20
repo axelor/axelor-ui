@@ -1,3 +1,4 @@
+import { ValidationMap, WeakValidationMap } from "prop-types";
 import * as React from "react";
 
 /**
@@ -32,8 +33,8 @@ export interface OverridableComponent<T extends React.ElementType, P = {}> {
     context?: any,
   ): JSX.Element | null;
   displayName?: string;
-  propTypes?: React.WeakValidationMap<any>;
-  contextTypes?: React.ValidationMap<any>;
+  propTypes?: WeakValidationMap<any>;
+  contextTypes?: ValidationMap<any>;
   defaultProps?: Partial<Omit<P, keyof OverridableProps>>;
 }
 
@@ -41,7 +42,10 @@ export interface OverridableComponent<T extends React.ElementType, P = {}> {
  * @deprecated
  */
 export function forwardRef<T extends React.ElementType, P>(
-  render: React.ForwardRefRenderFunction<any, OverridableComponentProps<T, P>>,
+  render: React.ForwardRefRenderFunction<
+    any,
+    React.PropsWithoutRef<OverridableComponentProps<T, P>>
+  >,
 ) {
   return React.forwardRef(render) as unknown as OverridableComponent<T, P>;
 }
