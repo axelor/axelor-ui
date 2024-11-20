@@ -218,7 +218,7 @@ export function RootDroppable({
           },
         });
     },
-    canDrop({ data }: { data: TYPES.TreeNode }) {
+    canDrop({ data }: TYPES.TreeNode) {
       const { parent } = data;
       return Boolean(parent);
     },
