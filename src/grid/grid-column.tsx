@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, MouseEventHandler, useCallback, useMemo } from "react";
 import { useClassNames } from "../core";
 import * as TYPES from "./types";
 import styles from "./grid.module.scss";
@@ -30,6 +30,11 @@ export const GridColumn = memo(function GridColumn(
   const rendererProps = renderer ? props : {};
   const columnRef = React.useRef<HTMLDivElement | null>(null);
 
+  const handleClick = useCallback<MouseEventHandler>(
+    (e) => onClick?.(e, data, index),
+    [onClick, data, index],
+  );
+
   React.useEffect(() => {
     if (selected && columnRef.current) {
       const focusable = columnRef.current.querySelector(
@@ -45,30 +50,40 @@ export const GridColumn = memo(function GridColumn(
   }, [selected]);
 
   const classNames = useClassNames();
+
   const $width = Math.max(width || 0, minWidth || 0);
+  const style = useMemo(
+    () =>
+      $width > 0
+        ? {
+            width: $width,
+            maxWidth: $width,
+          }
+        : { flex: 1 },
+    [$width],
+  );
+  const $children = useMemo(
+    () =>
+      children && typeof children === "object" ? (
+        children
+      ) : (
+        <span>{children}</span>
+      ),
+    [children],
+  );
+
   return (
     <ColumnComponent
       {...(renderer ? {} : { ref: columnRef })}
       {...rendererProps}
-      onClick={(e) => onClick && onClick(e, data, index)}
+      onClick={handleClick}
       className={classNames(styles.column, className, data.$css, {
         [styles.center]: ["row-checked"].includes(data.type || ""),
         [styles.selected]: selected,
       })}
-      style={
-        $width > 0
-          ? {
-              width: $width,
-              maxWidth: $width,
-            }
-          : { flex: 1 }
-      }
+      style={style}
     >
-      {children && typeof children === "object" ? (
-        children
-      ) : (
-        <span>{children}</span>
-      )}
+      {$children}
     </ColumnComponent>
   );
 });
