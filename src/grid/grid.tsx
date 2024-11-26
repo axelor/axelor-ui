@@ -18,17 +18,6 @@ import {
   useRTL,
 } from "./utils";
 
-function debounce(func: () => void, timeout: number = 300) {
-  let timer: any;
-  return (...args: any) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      //@ts-ignore
-      func.apply(this, args);
-    }, timeout);
-  };
-}
-
 function throttle(func: (...args: any) => void, timeout = 300) {
   let throttled = false;
   let savedArgs: any = null;
@@ -1316,7 +1305,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
 
       // observe resize for grid container
       const observeGrid = new ResizeObserver(
-        debounce(() => {
+        throttle(() => {
           if (cancelled) return;
           const currentWidth = getContainerWidth();
           if (currentWidth !== lastWidth) {
