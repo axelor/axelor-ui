@@ -74,55 +74,61 @@ export const GridBodyRow = React.memo(function GridBodyRow(
       : data.record[column.name];
   }
 
-  const renderColumn = React.useCallback(
-    (column: TYPES.GridColumn, value: any) => {
-      if (isRowCheck(column)) {
-        return (
-          <Input
-            type={selectionType === "single" ? "radio" : "checkbox"}
-            checked={selected}
-            onChange={() => {}}
-            m={0}
-            tabIndex={-1}
-          />
-        );
-      }
-      if (isRowExpand(column)) {
-        const { expand, disable } = expandState;
-        return (
-          <Box
-            d="inline-flex"
-            className={clsx(styles.expandRowIcon, {
-              [styles.disabled]: disable,
-            })}
-            onDoubleClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              !disable && onExpand?.(data, !expand);
-            }}
-          >
-            {ExpandIcon ? (
-              <ExpandIcon {...expandState} />
-            ) : (
-              <MaterialIcon icon={expand ? "arrow_drop_down" : "arrow_right"} />
-            )}
-          </Box>
-        );
-      }
-      return value;
-    },
-    [ExpandIcon, data, expandState, onExpand, selected, selectionType],
+  const renderCheckbox = React.useCallback(
+    () => (
+      <Input
+        type={selectionType === "single" ? "radio" : "checkbox"}
+        checked={selected}
+        onChange={() => {}}
+        m={0}
+        tabIndex={-1}
+      />
+    ),
+    [selectionType, selected],
   );
+
+  const renderExpandIcon = React.useCallback(() => {
+    const { expand, disable } = expandState;
+    return (
+      <Box
+        d="inline-flex"
+        className={clsx(styles.expandRowIcon, {
+          [styles.disabled]: disable,
+        })}
+        onDoubleClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          !disable && onExpand?.(data, !expand);
+        }}
+      >
+        {ExpandIcon ? (
+          <ExpandIcon {...expandState} />
+        ) : (
+          <MaterialIcon icon={expand ? "arrow_drop_down" : "arrow_right"} />
+        )}
+      </Box>
+    );
+  }, [ExpandIcon, data, expandState, onExpand]);
 
   const RowComponent = renderer || "div";
   const rendererProps = renderer ? props : {};
   const classNames = useClassNames();
   const DragComponent: any = draggable ? GridDNDRow : React.Fragment;
   const borderWidth = 1;
+
+  function collectColumnProps(column: TYPES.GridColumn, value: any) {
+    if (isRowCheck(column)) {
+      return { renderChildren: renderCheckbox };
+    }
+    if (isRowExpand(column)) {
+      return { renderChildren: renderExpandIcon };
+    }
+    return { children: value };
+  }
 
   return (
     <>
@@ -155,7 +161,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
                 renderer={column.renderer || cellRenderer}
                 onClick={handleCellClick}
                 onUpdate={handleUpdate}
-                renderChildren={renderColumn}
+                {...collectColumnProps(column, value)}
               />
             );
           })}
