@@ -7,7 +7,7 @@ import { useClassNames, useTheme } from "../core";
 import { BootstrapIcon } from "../icons/bootstrap-icon";
 
 import * as TYPES from "./types";
-import { CONFIG, getDateFromOffset } from "./utils";
+import { CONFIG, getCellHeight, getDateFromOffset, getLineHeight } from "./utils";
 import classes from "./gantt.module.scss";
 
 function disablePreview(preview: (e: any, options: any) => void) {
@@ -115,11 +115,9 @@ export const GanttLine = React.memo(function GanttLine(props: {
     const diffHours = moment
       .duration(moment(data.startDate).diff(startDate))
       .asHours();
-
+    const cellHeight = getCellHeight();
     const width = Number((Number(duration) * hourSize).toFixed(0));
-    const y =
-      CONFIG.CELL_HEIGHT * index +
-      (CONFIG.CELL_HEIGHT - CONFIG.LINE_HEIGHT) / 2;
+    const y = cellHeight * index + (cellHeight - getLineHeight()) / 2;
     const x = Number((diffHours * hourSize).toFixed(0));
     return { x, y, width };
   })();
@@ -381,7 +379,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
           top: y,
           position: "absolute",
           width,
-          height: CONFIG.LINE_HEIGHT,
+          height: getLineHeight(),
           ...(rtl ? { right: x } : { left: x }),
           ...($color
             ? {
@@ -396,7 +394,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
             ref={progressElement}
             className={classes.ganttLineProgress}
             style={{
-              height: CONFIG.LINE_HEIGHT,
+              height: getLineHeight(),
               width: `${progress}%`,
             }}
           >

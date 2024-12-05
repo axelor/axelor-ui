@@ -2,7 +2,8 @@
 
 $spacing: 0.25rem;
 $border: 1px;
-$blockHeight: 30px;
+$blockHeight: 1.875rem;
+$cellHeight: 2.25rem;
 
 .gantt {
   --gantt-border-color: var(--bs-border-color);
@@ -60,7 +61,7 @@ $blockHeight: 30px;
 }
 
 .ganttRow {
-  height: 2.25rem;
+  height: $cellHeight;
   display: flex;
   border-bottom: $border solid var(--gantt-border-color);
   &.active {
@@ -323,7 +324,7 @@ $blockHeight: 30px;
 
 .tableBodyRow {
   display: flex;
-  height: 2.25rem;
+  height: $cellHeight;
   border-bottom: $border solid var(--bs-table-border-color);
   cursor: pointer;
 
@@ -351,4 +352,9 @@ $blockHeight: 30px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+:export {
+  cellHeight: $cellHeight;
+  blockHeight: $blockHeight;
 }

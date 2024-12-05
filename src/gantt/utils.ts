@@ -6,6 +6,7 @@ import isoWeek from "dayjs/plugin/isoWeek";
 import minMax from "dayjs/plugin/minMax";
 import utc from "dayjs/plugin/utc";
 import * as TYPES from "./types";
+import styles from "./gantt.module.scss";
 
 moment.extend(advancedFormat);
 moment.extend(isSameOrAfter);
@@ -17,9 +18,27 @@ moment.extend(isoWeek);
 const CONNECT_FINISH = "finish";
 const CONNECT_START = "start";
 
+function memoizeValue<T>(getValue: () => T) {
+  let value: T;
+  return (): T => value ?? (value = getValue());
+}
+
+const getFontSize = memoizeValue<number>(() =>
+  parseFloat(
+    getComputedStyle(document.body).getPropertyValue("--bs-body-font-size") ??
+      16,
+  ),
+);
+
+export const getCellHeight = memoizeValue<number>(
+  () => getFontSize() * parseFloat(styles.cellHeight ?? 36),
+);
+
+export const getLineHeight = memoizeValue<number>(
+  () => getFontSize() * parseFloat(styles.blockHeight ?? 30),
+);
+
 export const CONFIG = {
-  LINE_HEIGHT: 30,
-  CELL_HEIGHT: 36,
   DND_TYPES: {
     LINE: "LINE",
     PROGRESS: "PROGRESS",
@@ -199,11 +218,10 @@ export function getGraphEdges(
     const width = Number((Number(record.duration) * hourSize).toFixed(0));
     const diffHours = moment.duration(plannedDate.diff(startDate)).asHours();
     const x = Number((diffHours * hourSize).toFixed(0));
-    const y = CONFIG.CELL_HEIGHT * i;
-
+    const y = getCellHeight() * i;
     return {
       record,
-      height: CONFIG.LINE_HEIGHT,
+      height: getLineHeight(),
       width,
       x,
       y,
