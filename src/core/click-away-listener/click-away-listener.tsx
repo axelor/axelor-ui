@@ -38,7 +38,7 @@ export const ClickAwayListener = ({
       }
     };
 
-  // @ts-expect-error
+  // @ts-expect-error ref
   const handleRef = useRefs(children?.ref, nodeRef);
 
   const handleClickAway = React.useCallback(

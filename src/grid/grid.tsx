@@ -948,7 +948,6 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         const isExpandCell = columns[col] && isRowExpand(columns[col]);
         if (isHeaderCell) {
           if (isCheckboxCell) {
-            //@ts-ignore
             const [checkbox] = (
               event.target as HTMLElement
             ).getElementsByTagName("input");
@@ -982,7 +981,6 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       }
 
       const isEditMode = isTabKey;
-      //@ts-ignore
       [row, col] = selectedCell.length ? selectedCell : [];
       // first focus attempt with tab in editable mode (open group)
       if (isEditMode && groupBy && groupBy.length) {

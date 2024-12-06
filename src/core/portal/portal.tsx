@@ -15,6 +15,7 @@ export const Portal = ({
   useEffect(() => {
     let node = container;
     if (typeof container === "function") {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
       node = (container as Function)();
     }
     setMountNode(node);

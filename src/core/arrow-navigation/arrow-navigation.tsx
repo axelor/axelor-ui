@@ -98,7 +98,7 @@ export const ArrowNavigation = React.forwardRef(
       }
     }
 
-    // @ts-expect-error
+    // @ts-expect-error ref
     const handleRef = useRefs(ref, children?.ref, nodeRef);
 
     return enabled

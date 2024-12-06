@@ -86,13 +86,14 @@ export function doAggregate(
   switch (field.aggregate) {
     case "count":
     case "sum":
-    case "avg":
+    case "avg": {
       const total = flatData.reduce((total, val) => total + Number(val), 0);
       return Number(
         field.aggregate === "avg" && flatData.length
           ? Math.round(total / flatData.length)
           : total,
       ).toFixed(2);
+    }
     case "min":
       return Math.min(...flatData);
     case "max":

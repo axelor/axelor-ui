@@ -127,7 +127,7 @@ export const Positions = () => {
   const [menuProps, setMenuProps] = useState<Partial<MenuProps>>({});
   const refs = useRef<{
     timer?: number;
-    clicked: Boolean;
+    clicked: boolean;
   }>({
     clicked: false,
   });

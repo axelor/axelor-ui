@@ -4,7 +4,7 @@ export function ownerDocument(node: Node | null | undefined): Document {
 
 export function isElementDisabled(element: HTMLElement): boolean {
   return (
-    // @ts-ignore
+    // @ts-expect-error disabled
     element.disabled || `${element.getAttribute("aria-disabled")}` === "true"
   );
 }
