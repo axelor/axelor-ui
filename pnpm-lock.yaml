@@ -15,8 +15,8 @@ importers:
         specifier: ^0.26.28
         version: 0.26.28(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@fluentui/priority-overflow':
-        specifier: ^9.1.13
-        version: 9.1.13
+        specifier: ^9.1.14
+        version: 9.1.14
       '@fluentui/react-context-selector':
         specifier: ^9.1.69
         version: 9.1.69(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(scheduler@0.23.2)
@@ -511,8 +511,8 @@ packages:
   '@fluentui/keyboard-keys@9.0.8':
     resolution: {integrity: sha512-iUSJUUHAyTosnXK8O2Ilbfxma+ZyZPMua5vB028Ys96z80v+LFwntoehlFsdH3rMuPsA8GaC1RE7LMezwPBPdw==}
 
-  '@fluentui/priority-overflow@9.1.13':
-    resolution: {integrity: sha512-yDojVpkhBZTXOYExrCgW1GXbw3x9pYIS617xlNJIc2t06Cd3H32y2p51QXFt94sBmlVyAvPu7UKBHaq1Yw7u+w==}
+  '@fluentui/priority-overflow@9.1.14':
+    resolution: {integrity: sha512-tIH8EhvjZF4MhxSjqrWOyodrQQW+RlVZqxuNFQF5OWRdSqcIK8g+Z+UbC5fYHQooCgVsthk2mFurfGMKFtf9ug==}
 
   '@fluentui/react-context-selector@9.1.69':
     resolution: {integrity: sha512-g29PE3cya7vY85o1ZwYMhPtkUyb7Q14UdrBCeEUr7+KjTPKMbkF27GKh0fAwwFuh9talvmI6fEVkJ9odYI6Dog==}
@@ -2785,7 +2785,7 @@ snapshots:
     dependencies:
       '@swc/helpers': 0.5.7
 
-  '@fluentui/priority-overflow@9.1.13':
+  '@fluentui/priority-overflow@9.1.14':
     dependencies:
       '@swc/helpers': 0.5.7
 
