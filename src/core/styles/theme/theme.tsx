@@ -22,7 +22,8 @@ const STYLES: Record<string, CSSModuleClasses> = {
 
 export interface ThemeContextValue {
   dir?: string;
-  theme?: "light" | "dark";
+  theme?: string;
+  mode?: "light" | "dark";
   options?: ResponsiveThemeOptions;
 }
 
@@ -39,7 +40,11 @@ export function ThemeProvider({
   children,
 }: ThemeProviderProps) {
   const curr = useContext(ThemeContext);
-  const value = useMemo(() => ({ ...curr, dir, theme }), [curr, dir, theme]);
+  const mode = options?.palette?.mode ?? "light";
+  const value = useMemo(
+    () => ({ ...curr, mode, dir, theme }),
+    [mode, curr, dir, theme],
+  );
   const classes = useStyles();
 
   useEffect(() => {

@@ -1,4 +1,5 @@
 export interface ThemePalette {
+  mode?: "light" | "dark";
   // common colors
   blue?: string;
   indigo?: string;
