@@ -176,6 +176,28 @@ function toNavTabsVars(options: ThemeOptions) {
   };
 }
 
+function toNavTreeVars(options: ThemeOptions) {
+  const opts = options.components?.NavTree ?? {};
+  return {
+    "--ax-theme-nav-tree-item-radius": opts.item?.border?.radius,
+    "--ax-theme-nav-tree-item-padding": opts.item?.padding,
+    "--ax-theme-nav-tree-item-gap": opts.item?.gap,
+
+    "--ax-theme-nav-tree-item-focus-bg": opts.item_focus?.bg,
+    "--ax-theme-nav-tree-item-focus-color": opts.item_focus?.color,
+    "--ax-theme-nav-tree-item-focus-shadow": opts.item_focus?.shadow,
+
+    "--ax-theme-nav-tree-item-hover-bg": opts.item_hover?.bg,
+    "--ax-theme-nav-tree-item-hover-color": opts.item_hover?.color,
+
+    "--ax-theme-nav-tree-item-selected-bg": opts.item_selected?.bg,
+    "--ax-theme-nav-tree-item-selected-color": opts.item_selected?.color,
+
+    "--ax-theme-nav-tree-item-active-bg": opts.item_active?.bg,
+    "--ax-theme-nav-tree-item-active-color": opts.item_active?.color,
+  };
+}
+
 function toCommandBarVars(options: ThemeOptions) {
   const opts = options.components?.CommandBar ?? {};
   return {
@@ -300,6 +322,7 @@ export function toComponentVars(options: ThemeOptions) {
     ...toTableVars(options),
     ...toNavMenuVars(options),
     ...toNavTabsVars(options),
+    ...toNavTreeVars(options),
     ...toCommandBarVars(options),
     ...toDropdownVars(options),
     ...toInputVars(options),

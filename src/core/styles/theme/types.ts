@@ -176,6 +176,18 @@ export interface ThemeOptions {
         height?: string;
       };
     };
+    NavTree?: ThemeElementCommon & {
+      item?: ThemeElementColors &
+        ThemeElementSpacing & {
+          border?: ThemeElementBorder;
+        };
+      item_focus?: ThemeElementColors & {
+        shadow?: string;
+      };
+      item_hover?: ThemeElementColors;
+      item_active?: ThemeElementColors;
+      item_selected?: ThemeElementColors;
+    };
     CommandBar?: {
       button?: ThemeElementCommon;
       button_hover?: ThemeElementColors & {
