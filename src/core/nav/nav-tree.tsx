@@ -121,7 +121,7 @@ const defaultVisible = () => true;
 
 function NavTreeNodes(props: NavTreeNodesProps) {
   const { items, ...rest } = props;
-  const { isVisible = defaultVisible } = props;
+  const { isVisible = defaultVisible, level } = props;
 
   const nodes = useMemo(
     () =>
@@ -133,12 +133,13 @@ function NavTreeNodes(props: NavTreeNodesProps) {
 
   return (
     <div className={styles.nodes}>
-      {nodes.map(([item, descendants]) => (
+      {nodes.map(([item, descendants], index) => (
         <NavTreeNode
           {...rest}
           key={item.id}
           item={item}
           descendants={descendants}
+          focusable={level === 0 && index === 0}
         />
       ))}
     </div>
@@ -149,6 +150,7 @@ type NavTreeNodeProps = NavTreeSharedProps & {
   item: NavTreeItem;
   descendants: NavTreeItem[];
   level: number;
+  focusable: boolean;
 };
 
 const EMPTY: NavTreeItem[] = [];
@@ -162,6 +164,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
     expanded = EMPTY,
     checkbox,
     descendants,
+    focusable,
     onActiveChange,
     onSelectedChange,
     onExpandedChange,
@@ -316,7 +319,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
       style={style}
     >
       <div
-        tabIndex={0}
+        tabIndex={focusable ? 0 : -1}
         className={styles.content}
         onKeyDown={handleKeyDown}
         onClick={handleClick}
