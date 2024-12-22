@@ -23,6 +23,12 @@ export type NavTreeTitleProps = {
   expanded: boolean;
 };
 
+export type NavTreeArrowProps = {
+  expanded?: boolean;
+  expanding?: boolean;
+  onClick: React.MouseEventHandler<HTMLDivElement>;
+};
+
 export type NavTreeSharedProps = {
   active?: NavTreeItem | null;
   selected?: NavTreeItem[];
@@ -33,11 +39,9 @@ export type NavTreeSharedProps = {
   onSelectedChange?: (items: NavTreeItem[]) => void;
   onExpandedChange?: (items: NavTreeItem[]) => void;
   onItemClick?: (item: NavTreeItem) => void;
-  onItemToggle?: (
-    item: NavTreeItem,
-    isExpanded: boolean,
-  ) => void | Promise<void>;
+  onItemToggle?: (item: NavTreeItem, isExpanded: boolean) => void;
   renderTitle?: (props: NavTreeTitleProps) => React.ReactNode;
+  renderArrow?: (props: NavTreeArrowProps) => React.ReactNode;
 };
 
 export type NavTreeProps = NavTreeSharedProps & {
@@ -171,6 +175,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
     onItemClick,
     onItemToggle,
     renderTitle: Title = NavTreeTitle,
+    renderArrow: Arrow = NavTreeArrow,
   } = props;
 
   const hasChildren = useMemo(() => !!item.items, [item.items]);
@@ -211,7 +216,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
       ? items.filter((x) => x.id !== item.id)
       : [...items, item];
     setExpanding(true);
-    const res = onItemToggle?.(item, !isExpanded);
+    const res = onItemToggle?.(item, !isExpanded) as unknown;
     if (res instanceof Promise) {
       res.finally(() => {
         onExpandedChange?.(newExpanded);
@@ -222,6 +227,14 @@ function NavTreeNode(props: NavTreeNodeProps) {
       setExpanding(false);
     }
   }, [expanded, isExpanded, item, onExpandedChange, onItemToggle]);
+
+  const handleArrowClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      toggle();
+    },
+    [toggle],
+  );
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLElement>) => {
@@ -326,22 +339,11 @@ function NavTreeNode(props: NavTreeNodeProps) {
       >
         <div className={styles.icon}>
           {hasChildren && (
-            <div
-              className={clsx(styles.toggle, {
-                [styles.expanded]: isExpanded,
-              })}
-              onClick={toggle}
-            >
-              {isExpanding && (
-                <MaterialIcon
-                  className={styles.wait}
-                  icon="progress_activity"
-                />
-              )}
-              {isExpanding || (
-                <MaterialIcon className={styles.arrow} icon="chevron_right" />
-              )}
-            </div>
+            <Arrow
+              expanded={isExpanded}
+              expanding={isExpanding}
+              onClick={handleArrowClick}
+            />
           )}
         </div>
         {checkbox && (
@@ -376,4 +378,23 @@ function NavTreeTitle(props: NavTreeTitleProps) {
   const { item } = props;
   const { title } = item;
   return <div className={styles.title}>{title}</div>;
+}
+
+export function NavTreeArrow(props: NavTreeArrowProps) {
+  const { expanded, expanding, onClick } = props;
+  return (
+    <div
+      className={clsx(styles.toggle, {
+        [styles.expanded]: expanded,
+      })}
+      onClick={onClick}
+    >
+      {expanding && (
+        <MaterialIcon className={styles.wait} icon="progress_activity" />
+      )}
+      {expanding || (
+        <MaterialIcon className={styles.arrow} icon="chevron_right" />
+      )}
+    </div>
+  );
 }
