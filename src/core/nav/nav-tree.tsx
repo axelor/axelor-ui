@@ -57,6 +57,7 @@ export type NavTreeSharedProps = NavTreeState & {
 export type NavTreeProps = NavTreeSharedProps & {
   items: NavTreeItem[];
   filterText?: string;
+  [`aria-label`]?: string;
 };
 
 function useTreeState(props: NavTreeState) {
@@ -183,6 +184,8 @@ function NavTreeC(
     setExpanded,
   } = useTree(props);
 
+  const ariaLabel = props["aria-label"];
+
   const handleActiveChange = useCallback(
     (item: NavTreeItem | null) => {
       setActive(item);
@@ -208,7 +211,7 @@ function NavTreeC(
   );
 
   return (
-    <div className={styles.tree} ref={ref}>
+    <div className={styles.tree} ref={ref} role="tree" aria-label={ariaLabel}>
       <NavTreeNodes
         {...props}
         level={0}
@@ -439,6 +442,10 @@ function NavTreeNode(props: NavTreeNodeProps) {
         className={styles.content}
         onKeyDown={handleKeyDown}
         onClick={handleClick}
+        role="treeitem"
+        aria-level={level + 1}
+        aria-expanded={hasChildren ? isExpanded : undefined}
+        data-item-id={item.id}
       >
         <div className={styles.icon}>
           {hasChildren && (
