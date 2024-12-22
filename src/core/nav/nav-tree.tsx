@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { MaterialIcon } from "../../icons/material-icon";
 import { clsx } from "../clsx";
@@ -29,12 +29,15 @@ export type NavTreeArrowProps = {
   onClick: React.MouseEventHandler<HTMLDivElement>;
 };
 
-export type NavTreeSharedProps = {
+export type NavTreeState = {
   active?: NavTreeItem | null;
   selected?: NavTreeItem[];
   expanded?: NavTreeItem[];
+};
+
+export type NavTreeSharedProps = NavTreeState & {
   checkbox?: boolean;
-  isVisible?: (item: NavTreeItem, descendants: NavTreeItem[]) => boolean;
+  filter?: (item: NavTreeItem) => boolean;
   onActiveChange?: (item: NavTreeItem | null) => void;
   onSelectedChange?: (items: NavTreeItem[]) => void;
   onExpandedChange?: (items: NavTreeItem[]) => void;
@@ -46,28 +49,129 @@ export type NavTreeSharedProps = {
 
 export type NavTreeProps = NavTreeSharedProps & {
   items: NavTreeItem[];
+  filterText?: string;
 };
 
-export function NavTree(props: NavTreeProps) {
-  const { onActiveChange, onSelectedChange, onExpandedChange } = props;
-
-  const [active, setActive] = useControlled({
+function useTreeState(props: NavTreeState) {
+  const [active = null, setActive] = useControlled({
     name: "NavTree",
     prop: "active",
     state: props.active,
   });
 
-  const [selected, setSelected] = useControlled({
+  const [selected = EMPTY, setSelected] = useControlled({
     name: "NavTree",
     prop: "selected",
     state: props.selected,
   });
 
-  const [expanded, setExpanded] = useControlled({
+  const [expanded = EMPTY, setExpanded] = useControlled({
     name: "NavTree",
     prop: "expanded",
     state: props.expanded,
   });
+
+  return {
+    active,
+    setActive,
+    selected,
+    setSelected,
+    expanded,
+    setExpanded,
+  };
+}
+
+function filterTree(
+  items: NavTreeItem[],
+  filter: (item: NavTreeItem) => boolean,
+): NavTreeItem[] {
+  return items
+    .map((item) => {
+      const newItem = { ...item };
+      if (newItem.items) {
+        newItem.items = filterTree(newItem.items, filter);
+      }
+      return newItem;
+    })
+    .filter((item) => filter(item) || (item.items && item.items.length > 0));
+}
+
+function findParents(items: NavTreeItem[]) {
+  const parents: NavTreeItem[] = [];
+  items.forEach((item) => {
+    if (item.items) {
+      parents.push(item);
+      parents.push(...findParents(item.items));
+    }
+  });
+  return parents;
+}
+
+function useTree(props: NavTreeProps) {
+  const { items, filterText, filter } = props;
+
+  const mainState = useTreeState(props);
+  const tempState = useTreeState({});
+
+  const filtered = useMemo(
+    () => (filter ? filterTree(items, filter) : items),
+    [items, filter],
+  );
+
+  const textRef = useRef(filterText);
+
+  useEffect(() => {
+    textRef.current = filterText;
+  }, [filterText]);
+
+  const isMain = !filterText;
+  const isTemp = textRef.current === filterText;
+
+  const active = useMemo(() => {
+    const last = textRef.current;
+    if (filtered === items) return mainState.active;
+    if (last === filterText) return tempState.active;
+  }, [filterText, filtered, items, mainState.active, tempState.active]);
+
+  const selected = useMemo(() => {
+    if (isMain) return mainState.selected;
+    if (isTemp) return tempState.selected;
+    return [];
+  }, [isMain, isTemp, mainState.selected, tempState.selected]);
+
+  const expanded = useMemo(() => {
+    if (isMain) return mainState.expanded;
+    if (isTemp) return tempState.expanded;
+    return findParents(filtered).filter((x) => x.items!.length > 0);
+  }, [filtered, isMain, isTemp, mainState.expanded, tempState.expanded]);
+
+  const setActive = isMain ? mainState.setActive : tempState.setActive;
+  const setSelected = isMain ? mainState.setSelected : tempState.setSelected;
+  const setExpanded = isMain ? mainState.setExpanded : tempState.setExpanded;
+
+  return {
+    items: isMain ? items : filtered,
+    active,
+    setActive,
+    selected,
+    setSelected,
+    expanded,
+    setExpanded,
+  };
+}
+
+export function NavTree(props: NavTreeProps) {
+  const { onActiveChange, onSelectedChange, onExpandedChange } = props;
+
+  const {
+    items,
+    active,
+    selected,
+    expanded,
+    setActive,
+    setSelected,
+    setExpanded,
+  } = useTree(props);
 
   const handleActiveChange = useCallback(
     (item: NavTreeItem | null) => {
@@ -78,17 +182,17 @@ export function NavTree(props: NavTreeProps) {
   );
 
   const handleSelectedChange = useCallback(
-    (items: NavTreeItem[]) => {
-      setSelected(items);
-      onSelectedChange?.(items);
+    (newSelected: NavTreeItem[]) => {
+      setSelected(newSelected);
+      onSelectedChange?.(newSelected);
     },
     [onSelectedChange, setSelected],
   );
 
   const handleExpandedChange = useCallback(
-    (items: NavTreeItem[]) => {
-      setExpanded(items);
-      onExpandedChange?.(items);
+    (newExpanded: NavTreeItem[]) => {
+      setExpanded(newExpanded);
+      onExpandedChange?.(newExpanded);
     },
     [onExpandedChange, setExpanded],
   );
@@ -98,6 +202,7 @@ export function NavTree(props: NavTreeProps) {
       <NavTreeNodes
         {...props}
         level={0}
+        items={items}
         active={active}
         selected={selected}
         expanded={expanded}
@@ -121,28 +226,16 @@ function getAllDescendants(item: NavTreeItem): NavTreeItem[] {
   return descendants;
 }
 
-const defaultVisible = () => true;
-
 function NavTreeNodes(props: NavTreeNodesProps) {
   const { items, ...rest } = props;
-  const { isVisible = defaultVisible, level } = props;
-
-  const nodes = useMemo(
-    () =>
-      items
-        .map((item) => [item, getAllDescendants(item)] as const)
-        .filter(([item, descendants]) => isVisible(item, descendants)),
-    [isVisible, items],
-  );
-
+  const { level } = props;
   return (
     <div className={styles.nodes}>
-      {nodes.map(([item, descendants], index) => (
+      {items.map((item, index) => (
         <NavTreeNode
           {...rest}
           key={item.id}
           item={item}
-          descendants={descendants}
           focusable={level === 0 && index === 0}
         />
       ))}
@@ -152,7 +245,6 @@ function NavTreeNodes(props: NavTreeNodesProps) {
 
 type NavTreeNodeProps = NavTreeSharedProps & {
   item: NavTreeItem;
-  descendants: NavTreeItem[];
   level: number;
   focusable: boolean;
 };
@@ -167,7 +259,6 @@ function NavTreeNode(props: NavTreeNodeProps) {
     selected = EMPTY,
     expanded = EMPTY,
     checkbox,
-    descendants,
     focusable,
     onActiveChange,
     onSelectedChange,
@@ -189,6 +280,8 @@ function NavTreeNode(props: NavTreeNodeProps) {
     () => selected?.some((i) => i.id === item.id),
     [item.id, selected],
   );
+
+  const descendants = useMemo(() => getAllDescendants(item), [item]);
 
   const selectedDescendants = useMemo(
     () => descendants.filter((desc) => selected.some((s) => s.id === desc.id)),

@@ -116,15 +116,9 @@ function RenderNavTree(props: Story["args"]) {
     }
   }, []);
 
-  const isVisible = useCallback(
-    (item: NavTreeItem, descendants: NavTreeItem[]) => {
-      return (
-        item.title.toLowerCase().includes(text.toLowerCase()) ||
-        descendants.some((descendant) =>
-          descendant.title.toLowerCase().includes(text.toLowerCase()),
-        )
-      );
-    },
+  const filter = useCallback(
+    (item: NavTreeItem) =>
+      item.title.toLowerCase().includes(text.toLowerCase()),
     [text],
   );
 
@@ -142,7 +136,8 @@ function RenderNavTree(props: Story["args"]) {
         <Tree
           {...props}
           items={items}
-          isVisible={isVisible}
+          filter={filter}
+          filterText={text}
           onItemToggle={handleToggle}
         />
       </Box>
