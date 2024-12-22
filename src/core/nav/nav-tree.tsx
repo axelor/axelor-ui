@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import { MaterialIcon } from "../../icons/material-icon";
 import { clsx } from "../clsx";
@@ -160,7 +167,10 @@ function useTree(props: NavTreeProps) {
   };
 }
 
-export function NavTree(props: NavTreeProps) {
+function NavTreeC(
+  props: NavTreeProps,
+  ref: React.ForwardedRef<HTMLDivElement>,
+) {
   const { onActiveChange, onSelectedChange, onExpandedChange } = props;
 
   const {
@@ -198,7 +208,7 @@ export function NavTree(props: NavTreeProps) {
   );
 
   return (
-    <div className={styles.tree}>
+    <div className={styles.tree} ref={ref}>
       <NavTreeNodes
         {...props}
         level={0}
@@ -466,6 +476,8 @@ function NavTreeNode(props: NavTreeNodeProps) {
     </div>
   );
 }
+
+export const NavTree = forwardRef<HTMLDivElement, NavTreeProps>(NavTreeC);
 
 function NavTreeTitle(props: NavTreeTitleProps) {
   const { item } = props;
