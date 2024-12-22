@@ -48,7 +48,23 @@ export type NavTreeSharedProps = NavTreeState & {
   onActiveChange?: (item: NavTreeItem | null) => void;
   onSelectedChange?: (items: NavTreeItem[]) => void;
   onExpandedChange?: (items: NavTreeItem[]) => void;
-  onItemClick?: (item: NavTreeItem) => void;
+  onItemClick?: (
+    e: React.MouseEvent<HTMLDivElement>,
+    item: NavTreeItem,
+  ) => void;
+  onItemKeyDown?: (
+    e: React.KeyboardEvent<HTMLDivElement>,
+    item: NavTreeItem,
+  ) => void;
+  onItemKeyUp?: (
+    e: React.KeyboardEvent<HTMLDivElement>,
+    item: NavTreeItem,
+  ) => void;
+  onItemFocus?: (
+    e: React.FocusEvent<HTMLDivElement>,
+    item: NavTreeItem,
+  ) => void;
+  onItemBlur?: (e: React.FocusEvent<HTMLDivElement>, item: NavTreeItem) => void;
   onItemToggle?: (item: NavTreeItem, isExpanded: boolean) => void;
   renderTitle?: (props: NavTreeTitleProps) => React.ReactNode;
   renderArrow?: (props: NavTreeArrowProps) => React.ReactNode;
@@ -277,6 +293,10 @@ function NavTreeNode(props: NavTreeNodeProps) {
     onSelectedChange,
     onExpandedChange,
     onItemClick,
+    onItemKeyDown,
+    onItemKeyUp,
+    onItemFocus,
+    onItemBlur,
     onItemToggle,
     renderTitle: Title = NavTreeTitle,
     renderArrow: Arrow = NavTreeArrow,
@@ -343,7 +363,12 @@ function NavTreeNode(props: NavTreeNodeProps) {
   );
 
   const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLElement>) => {
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      onItemKeyDown?.(e, item);
+      if (e.defaultPrevented) {
+        return;
+      }
+
       // toggle on arrow keys
       if (hasChildren) {
         if (e.key === "ArrowRight" && !isExpanded) toggle();
@@ -374,17 +399,41 @@ function NavTreeNode(props: NavTreeNodeProps) {
         e.currentTarget.querySelector("input")?.click();
       }
     },
-    [hasChildren, isExpanded, toggle],
+    [hasChildren, isExpanded, item, onItemKeyDown, toggle],
   );
 
-  const handleClick = useCallback(() => {
-    // if not checkbox, select the item
-    if (!checkbox) {
-      onSelectedChange?.([item]);
-    }
-    onActiveChange?.(item);
-    onItemClick?.(item);
-  }, [checkbox, item, onActiveChange, onItemClick, onSelectedChange]);
+  const handleKeyUp = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      onItemKeyUp?.(e, item);
+    },
+    [item, onItemKeyUp],
+  );
+
+  const handleFocus = useCallback(
+    (e: React.FocusEvent<HTMLDivElement>) => {
+      onItemFocus?.(e, item);
+    },
+    [item, onItemFocus],
+  );
+
+  const handleBlur = useCallback(
+    (e: React.FocusEvent<HTMLDivElement>) => {
+      onItemBlur?.(e, item);
+    },
+    [item, onItemBlur],
+  );
+
+  const handleClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      // if not checkbox, select the item
+      if (!checkbox) {
+        onSelectedChange?.([item]);
+      }
+      onActiveChange?.(item);
+      onItemClick?.(e, item);
+    },
+    [checkbox, item, onActiveChange, onItemClick, onSelectedChange],
+  );
 
   const handleCheckboxChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -441,6 +490,9 @@ function NavTreeNode(props: NavTreeNodeProps) {
         tabIndex={focusable ? 0 : -1}
         className={styles.content}
         onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyUp}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         onClick={handleClick}
         role="treeitem"
         aria-level={level + 1}
