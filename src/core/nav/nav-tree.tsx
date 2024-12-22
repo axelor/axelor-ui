@@ -17,6 +17,7 @@ export type NavTreeItem = {
 
 export type NavTreeTitleProps = {
   item: NavTreeItem;
+  level: number;
   active: boolean;
   selected: boolean;
   expanded: boolean;
@@ -92,6 +93,7 @@ export function NavTree(props: NavTreeProps) {
     <div className={styles.tree}>
       <NavTreeNodes
         {...props}
+        level={0}
         active={active}
         selected={selected}
         expanded={expanded}
@@ -103,7 +105,11 @@ export function NavTree(props: NavTreeProps) {
   );
 }
 
-function NavTreeNodes(props: NavTreeProps) {
+type NavTreeNodesProps = NavTreeProps & {
+  level: number;
+};
+
+function NavTreeNodes(props: NavTreeNodesProps) {
   const { items, ...rest } = props;
   return (
     <div className={styles.nodes}>
@@ -116,6 +122,7 @@ function NavTreeNodes(props: NavTreeProps) {
 
 type NavTreeNodeProps = NavTreeSharedProps & {
   item: NavTreeItem;
+  level: number;
 };
 
 function getAllDescendants(item: NavTreeItem): NavTreeItem[] {
@@ -131,6 +138,7 @@ const EMPTY: NavTreeItem[] = [];
 function NavTreeNode(props: NavTreeNodeProps) {
   const {
     item,
+    level,
     active,
     selected = EMPTY,
     expanded = EMPTY,
@@ -285,6 +293,14 @@ function NavTreeNode(props: NavTreeNodeProps) {
     [allDescendants, isVisible, item],
   );
 
+  const style = useMemo(
+    () =>
+      ({
+        "--nav-tree-item-indent": level,
+      }) as React.CSSProperties,
+    [level],
+  );
+
   if (isHidden) return null;
 
   return (
@@ -293,6 +309,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
         [styles.active]: isActive,
         [styles.selected]: isSelected,
       })}
+      style={style}
     >
       <div
         tabIndex={0}
@@ -333,6 +350,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
         )}
         <Title
           item={item}
+          level={level}
           active={isActive}
           selected={isSelected}
           expanded={isExpanded}
@@ -340,7 +358,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
       </div>
       {hasChildren && (
         <Collapse in={isExpanded} mountOnEnter unmountOnExit>
-          <NavTreeNodes {...props} items={item.items!} />
+          <NavTreeNodes {...props} items={item.items!} level={level + 1} />
         </Collapse>
       )}
     </div>

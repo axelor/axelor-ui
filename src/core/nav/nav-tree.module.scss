@@ -1,6 +1,7 @@
 .tree {
   --ax-nav-tree-item-radius: var(--ax-theme-nav-tree-item-radius, 0.5rem);
   --ax-nav-tree-item-padding: var(--ax-theme-nav-tree-item-padding, 0.5rem);
+  --ax-nav-tree-item-indent: var(--ax-theme-nav-tree-item-indent, 1.5rem);
   --ax-nav-tree-item-gap: var(--ax-theme-nav-tree-item-gap, 0.25rem);
 
   --ax-nav-tree-item-focus-shadow: var(
@@ -48,9 +49,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--ax-nav-tree-item-gap);
-  .nodes {
-    margin: 0 1.5rem;
-  }
 }
 
 .node {
@@ -66,6 +64,10 @@
   align-items: center;
   gap: 0.25rem;
   padding: var(--ax-nav-tree-item-padding);
+  padding-left: calc(
+    var(--ax-nav-tree-item-padding) +
+      calc(var(--ax-nav-tree-item-indent) * var(--nav-tree-item-indent))
+  );
   border-radius: var(--ax-nav-tree-item-radius);
   cursor: pointer;
   outline: 0;
@@ -142,6 +144,13 @@
 }
 
 [dir="rtl"] {
+  .content {
+    padding-left: unset;
+    padding-right: calc(
+      var(--ax-nav-tree-item-padding) +
+        calc(var(--ax-nav-tree-item-indent) * var(--nav-tree-item-indent))
+    );
+  }
   .toggle {
     transform: rotate(180deg);
   }

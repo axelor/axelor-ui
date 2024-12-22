@@ -181,6 +181,7 @@ function toNavTreeVars(options: ThemeOptions) {
   return {
     "--ax-theme-nav-tree-item-radius": opts.item?.border?.radius,
     "--ax-theme-nav-tree-item-padding": opts.item?.padding,
+    "--ax-theme-nav-tree-item-indent": opts.item?.indent,
     "--ax-theme-nav-tree-item-gap": opts.item?.gap,
 
     "--ax-theme-nav-tree-item-focus-bg": opts.item_focus?.bg,

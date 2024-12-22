@@ -180,6 +180,7 @@ export interface ThemeOptions {
       item?: ThemeElementColors &
         ThemeElementSpacing & {
           border?: ThemeElementBorder;
+          indent?: string;
         };
       item_focus?: ThemeElementColors & {
         shadow?: string;
