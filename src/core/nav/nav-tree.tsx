@@ -109,22 +109,6 @@ type NavTreeNodesProps = NavTreeProps & {
   level: number;
 };
 
-function NavTreeNodes(props: NavTreeNodesProps) {
-  const { items, ...rest } = props;
-  return (
-    <div className={styles.nodes}>
-      {items.map((item) => (
-        <NavTreeNode {...rest} key={item.id} item={item} />
-      ))}
-    </div>
-  );
-}
-
-type NavTreeNodeProps = NavTreeSharedProps & {
-  item: NavTreeItem;
-  level: number;
-};
-
 function getAllDescendants(item: NavTreeItem): NavTreeItem[] {
   const descendants: NavTreeItem[] = [item];
   item.items?.forEach((child) => {
@@ -132,6 +116,40 @@ function getAllDescendants(item: NavTreeItem): NavTreeItem[] {
   });
   return descendants;
 }
+
+const defaultVisible = () => true;
+
+function NavTreeNodes(props: NavTreeNodesProps) {
+  const { items, ...rest } = props;
+  const { isVisible = defaultVisible } = props;
+
+  const nodes = useMemo(
+    () =>
+      items
+        .map((item) => [item, getAllDescendants(item)] as const)
+        .filter(([item, descendants]) => isVisible(item, descendants)),
+    [isVisible, items],
+  );
+
+  return (
+    <div className={styles.nodes}>
+      {nodes.map(([item, descendants]) => (
+        <NavTreeNode
+          {...rest}
+          key={item.id}
+          item={item}
+          descendants={descendants}
+        />
+      ))}
+    </div>
+  );
+}
+
+type NavTreeNodeProps = NavTreeSharedProps & {
+  item: NavTreeItem;
+  descendants: NavTreeItem[];
+  level: number;
+};
 
 const EMPTY: NavTreeItem[] = [];
 
@@ -143,7 +161,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
     selected = EMPTY,
     expanded = EMPTY,
     checkbox,
-    isVisible,
+    descendants,
     onActiveChange,
     onSelectedChange,
     onExpandedChange,
@@ -164,28 +182,22 @@ function NavTreeNode(props: NavTreeNodeProps) {
     [item.id, selected],
   );
 
-  // Calculate checkbox state
-  const allDescendants = useMemo(
-    () => (hasChildren ? getAllDescendants(item) : [item]),
-    [hasChildren, item],
-  );
   const selectedDescendants = useMemo(
-    () =>
-      allDescendants.filter((desc) => selected.some((s) => s.id === desc.id)),
-    [allDescendants, selected],
+    () => descendants.filter((desc) => selected.some((s) => s.id === desc.id)),
+    [descendants, selected],
   );
 
   const isIndeterminate = useMemo(
     () =>
       hasChildren &&
       selectedDescendants.length > 0 &&
-      selectedDescendants.length < allDescendants.length,
-    [allDescendants.length, hasChildren, selectedDescendants.length],
+      selectedDescendants.length < descendants.length,
+    [descendants.length, hasChildren, selectedDescendants.length],
   );
 
   const isChecked = useMemo(
-    () => selectedDescendants.length === allDescendants.length,
-    [allDescendants.length, selectedDescendants.length],
+    () => selectedDescendants.length === descendants.length,
+    [descendants.length, selectedDescendants.length],
   );
 
   const [isExpanding, setExpanding] = useState(false);
@@ -256,7 +268,6 @@ function NavTreeNode(props: NavTreeNodeProps) {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       e.stopPropagation();
 
-      const descendants = getAllDescendants(item);
       let newSelected: NavTreeItem[];
 
       if (e.target.checked) {
@@ -276,7 +287,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
 
       onSelectedChange?.(newSelected);
     },
-    [item, onSelectedChange, selected],
+    [descendants, onSelectedChange, selected],
   );
 
   const checkboxRef = useCallback(
@@ -288,11 +299,6 @@ function NavTreeNode(props: NavTreeNodeProps) {
     [isIndeterminate],
   );
 
-  const isHidden = useMemo(
-    () => (isVisible ? !isVisible(item, allDescendants) : false),
-    [allDescendants, isVisible, item],
-  );
-
   const style = useMemo(
     () =>
       ({
@@ -300,8 +306,6 @@ function NavTreeNode(props: NavTreeNodeProps) {
       }) as React.CSSProperties,
     [level],
   );
-
-  if (isHidden) return null;
 
   return (
     <div
