@@ -188,6 +188,9 @@ export interface ThemeOptions {
       item_hover?: ThemeElementColors;
       item_active?: ThemeElementColors;
       item_selected?: ThemeElementColors;
+      checkbox_focus?: ThemeElementColors & {
+        shadow?: string;
+      };
     };
     CommandBar?: {
       button?: ThemeElementCommon;

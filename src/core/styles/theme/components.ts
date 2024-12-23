@@ -196,6 +196,8 @@ function toNavTreeVars(options: ThemeOptions) {
 
     "--ax-theme-nav-tree-item-active-bg": opts.item_active?.bg,
     "--ax-theme-nav-tree-item-active-color": opts.item_active?.color,
+
+    "--ax-theme-nav-tree-checkbox-focus-shadow": opts.checkbox_focus?.shadow,
   };
 }
 
