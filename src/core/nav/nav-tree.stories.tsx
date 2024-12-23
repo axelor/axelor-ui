@@ -298,6 +298,7 @@ export const NavTree: Story = {
   args: {
     items: ITEMS,
     checkbox: true,
+    selectOnClick: true,
   },
   render: RenderNavTree,
 };

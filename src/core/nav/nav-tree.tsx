@@ -52,6 +52,7 @@ export type NavTreeState = {
 export type NavTreeSharedProps = NavTreeState & {
   checkbox?: boolean;
   menu?: boolean;
+  selectOnClick?: boolean;
   filter?: (item: NavTreeItem) => boolean;
   onActiveChange?: (item: NavTreeItem | null) => void;
   onSelectedChange?: (items: NavTreeItem[]) => void;
@@ -299,6 +300,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
     expanded = EMPTY,
     checkbox,
     focusable,
+    selectOnClick = menu,
     onActiveChange,
     onSelectedChange,
     onExpandedChange,
@@ -436,8 +438,9 @@ function NavTreeNode(props: NavTreeNodeProps) {
 
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
+      if (e.defaultPrevented) return;
       // if not checkbox, select the item
-      if (!checkbox) {
+      if (!checkbox || selectOnClick) {
         onSelectedChange?.([item]);
       }
       // if menu, toggle the item
@@ -454,6 +457,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
       onActiveChange,
       onItemClick,
       onSelectedChange,
+      selectOnClick,
       toggle,
     ],
   );
