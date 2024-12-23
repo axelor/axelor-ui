@@ -36,6 +36,13 @@ export type NavTreeArrowProps = {
   onClick: React.MouseEventHandler<HTMLDivElement>;
 };
 
+export type NavTreeCheckboxProps = {
+  checked: boolean;
+  indeterminate?: boolean;
+  tabIndex: number;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+};
+
 export type NavTreeState = {
   active?: NavTreeItem | null;
   selected?: NavTreeItem[];
@@ -44,6 +51,7 @@ export type NavTreeState = {
 
 export type NavTreeSharedProps = NavTreeState & {
   checkbox?: boolean;
+  menu?: boolean;
   filter?: (item: NavTreeItem) => boolean;
   onActiveChange?: (item: NavTreeItem | null) => void;
   onSelectedChange?: (items: NavTreeItem[]) => void;
@@ -282,6 +290,7 @@ const EMPTY: NavTreeItem[] = [];
 
 function NavTreeNode(props: NavTreeNodeProps) {
   const {
+    menu,
     item,
     level,
     active,
@@ -429,10 +438,22 @@ function NavTreeNode(props: NavTreeNodeProps) {
       if (!checkbox) {
         onSelectedChange?.([item]);
       }
+      // if menu, toggle the item
+      if (menu) {
+        toggle();
+      }
       onActiveChange?.(item);
       onItemClick?.(e, item);
     },
-    [checkbox, item, onActiveChange, onItemClick, onSelectedChange],
+    [
+      checkbox,
+      item,
+      menu,
+      onActiveChange,
+      onItemClick,
+      onSelectedChange,
+      toggle,
+    ],
   );
 
   const handleCheckboxChange = useCallback(
@@ -478,6 +499,18 @@ function NavTreeNode(props: NavTreeNodeProps) {
     [level],
   );
 
+  const renderArrow = () => (
+    <div className={styles.icon}>
+      {hasChildren && (
+        <Arrow
+          expanded={isExpanded}
+          expanding={isExpanding}
+          onClick={handleArrowClick}
+        />
+      )}
+    </div>
+  );
+
   return (
     <div
       className={clsx(styles.node, {
@@ -499,15 +532,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
         aria-expanded={hasChildren ? isExpanded : undefined}
         data-item-id={item.id}
       >
-        <div className={styles.icon}>
-          {hasChildren && (
-            <Arrow
-              expanded={isExpanded}
-              expanding={isExpanding}
-              onClick={handleArrowClick}
-            />
-          )}
-        </div>
+        {menu || renderArrow()}
         {checkbox && (
           <div className={styles.checkbox}>
             <Input
@@ -519,13 +544,16 @@ function NavTreeNode(props: NavTreeNodeProps) {
             />
           </div>
         )}
-        <Title
-          item={item}
-          level={level}
-          active={isActive}
-          selected={isSelected}
-          expanded={isExpanded}
-        />
+        <div className={styles.title}>
+          <Title
+            item={item}
+            level={level}
+            active={isActive}
+            selected={isSelected}
+            expanded={isExpanded}
+          />
+        </div>
+        {menu && renderArrow()}
       </div>
       {hasChildren && (
         <Collapse in={isExpanded} mountOnEnter unmountOnExit>
@@ -541,7 +569,7 @@ export const NavTree = forwardRef<HTMLDivElement, NavTreeProps>(NavTreeC);
 function NavTreeTitle(props: NavTreeTitleProps) {
   const { item } = props;
   const { title } = item;
-  return <div className={styles.title}>{title}</div>;
+  return <div>{title}</div>;
 }
 
 export function NavTreeArrow(props: NavTreeArrowProps) {

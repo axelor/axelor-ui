@@ -143,6 +143,10 @@
   }
 }
 
+.title {
+  flex: 1;
+}
+
 [dir="rtl"] {
   .content {
     padding-left: unset;
