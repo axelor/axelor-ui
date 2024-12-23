@@ -76,6 +76,7 @@ export type NavTreeSharedProps = NavTreeState & {
   onItemToggle?: (item: NavTreeItem, isExpanded: boolean) => void;
   renderTitle?: (props: NavTreeTitleProps) => React.ReactNode;
   renderArrow?: (props: NavTreeArrowProps) => React.ReactNode;
+  renderCheckbox?: (props: NavTreeCheckboxProps) => React.ReactNode;
 };
 
 export type NavTreeProps = NavTreeSharedProps & {
@@ -309,6 +310,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
     onItemToggle,
     renderTitle: Title = NavTreeTitle,
     renderArrow: Arrow = NavTreeArrow,
+    renderCheckbox: Checkbox = NavTreeCheckbox,
   } = props;
 
   const hasChildren = useMemo(() => !!item.items, [item.items]);
@@ -482,15 +484,6 @@ function NavTreeNode(props: NavTreeNodeProps) {
     [descendants, onSelectedChange, selected],
   );
 
-  const checkboxRef = useCallback(
-    (input: HTMLInputElement | null) => {
-      if (input) {
-        input.indeterminate = !!isIndeterminate;
-      }
-    },
-    [isIndeterminate],
-  );
-
   const style = useMemo(
     () =>
       ({
@@ -535,11 +528,10 @@ function NavTreeNode(props: NavTreeNodeProps) {
         {menu || renderArrow()}
         {checkbox && (
           <div className={styles.checkbox}>
-            <Input
+            <Checkbox
               tabIndex={-1}
-              type="checkbox"
+              indeterminate={!!isIndeterminate}
               checked={isChecked}
-              ref={checkboxRef}
               onChange={handleCheckboxChange}
             />
           </div>
@@ -570,6 +562,29 @@ function NavTreeTitle(props: NavTreeTitleProps) {
   const { item } = props;
   const { title } = item;
   return <div>{title}</div>;
+}
+
+function NavTreeCheckbox(props: NavTreeCheckboxProps) {
+  const { tabIndex, checked, indeterminate, onChange } = props;
+
+  const checkboxRef = useCallback(
+    (input: HTMLInputElement | null) => {
+      if (input) {
+        input.indeterminate = !!indeterminate;
+      }
+    },
+    [indeterminate],
+  );
+
+  return (
+    <Input
+      tabIndex={tabIndex}
+      type="checkbox"
+      checked={checked}
+      ref={checkboxRef}
+      onChange={onChange}
+    />
+  );
 }
 
 export function NavTreeArrow(props: NavTreeArrowProps) {
