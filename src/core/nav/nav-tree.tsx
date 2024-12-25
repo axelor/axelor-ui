@@ -61,6 +61,10 @@ export type NavTreeSharedProps = NavTreeState & {
     e: React.MouseEvent<HTMLDivElement>,
     item: NavTreeItem,
   ) => void;
+  onItemDoubleClick?: (
+    e: React.MouseEvent<HTMLDivElement>,
+    item: NavTreeItem,
+  ) => void;
   onItemKeyDown?: (
     e: React.KeyboardEvent<HTMLDivElement>,
     item: NavTreeItem,
@@ -305,6 +309,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
     onSelectedChange,
     onExpandedChange,
     onItemClick,
+    onItemDoubleClick,
     onItemKeyDown,
     onItemKeyUp,
     onItemFocus,
@@ -462,6 +467,21 @@ function NavTreeNode(props: NavTreeNodeProps) {
     ],
   );
 
+  const handleMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    // on double click, prevent text selection
+    if (e.detail > 1) {
+      e.preventDefault();
+    }
+  }, []);
+
+  const handleDoubleClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (e.defaultPrevented) return;
+      onItemDoubleClick?.(e, item);
+    },
+    [item, onItemDoubleClick],
+  );
+
   const handleCheckboxChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       e.stopPropagation();
@@ -524,6 +544,8 @@ function NavTreeNode(props: NavTreeNodeProps) {
         onFocus={handleFocus}
         onBlur={handleBlur}
         onClick={handleClick}
+        onDoubleClick={handleDoubleClick}
+        onMouseDown={handleMouseDown}
         role="treeitem"
         aria-level={level + 1}
         aria-expanded={hasChildren ? isExpanded : undefined}
