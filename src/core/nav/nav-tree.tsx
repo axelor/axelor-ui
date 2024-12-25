@@ -51,8 +51,9 @@ export type NavTreeState = {
 
 export type NavTreeSharedProps = NavTreeState & {
   checkbox?: boolean;
-  menu?: boolean;
   selectOnClick?: boolean;
+  toggleOnClick?: boolean;
+  arrowPosition?: "start" | "end";
   filter?: (item: NavTreeItem) => boolean;
   onActiveChange?: (item: NavTreeItem | null) => void;
   onSelectedChange?: (items: NavTreeItem[]) => void;
@@ -296,7 +297,6 @@ const EMPTY: NavTreeItem[] = [];
 
 function NavTreeNode(props: NavTreeNodeProps) {
   const {
-    menu,
     item,
     level,
     active,
@@ -304,7 +304,9 @@ function NavTreeNode(props: NavTreeNodeProps) {
     expanded = EMPTY,
     checkbox,
     focusable,
-    selectOnClick = menu,
+    selectOnClick,
+    toggleOnClick,
+    arrowPosition,
     onActiveChange,
     onSelectedChange,
     onExpandedChange,
@@ -449,7 +451,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
         onSelectedChange?.([item]);
       }
       // if menu, toggle the item
-      if (menu) {
+      if (toggleOnClick) {
         toggle();
       }
       onActiveChange?.(item);
@@ -458,12 +460,12 @@ function NavTreeNode(props: NavTreeNodeProps) {
     [
       checkbox,
       item,
-      menu,
       onActiveChange,
       onItemClick,
       onSelectedChange,
       selectOnClick,
       toggle,
+      toggleOnClick,
     ],
   );
 
@@ -551,7 +553,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
         aria-expanded={hasChildren ? isExpanded : undefined}
         data-item-id={item.id}
       >
-        {menu || renderArrow()}
+        {arrowPosition !== "end" && renderArrow()}
         {checkbox && (
           <div className={styles.checkbox}>
             <Checkbox
@@ -571,7 +573,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
             expanded={isExpanded}
           />
         </div>
-        {menu && renderArrow()}
+        {arrowPosition === "end" && renderArrow()}
       </div>
       {hasChildren && (
         <Collapse in={isExpanded} mountOnEnter unmountOnExit>

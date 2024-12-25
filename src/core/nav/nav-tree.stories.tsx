@@ -307,7 +307,8 @@ export const NavTreeMenu: Story = {
   args: {
     items: MENUS,
     checkbox: false,
-    menu: true,
+    arrowPosition: "end",
+    toggleOnClick: true,
     renderTitle(props) {
       const { item } = props;
       const { title } = item;
