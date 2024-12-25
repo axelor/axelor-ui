@@ -1,6 +1,8 @@
 import {
+  createContext,
   forwardRef,
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -51,6 +53,7 @@ export type NavTreeState = {
 
 export type NavTreeSharedProps = NavTreeState & {
   checkbox?: boolean;
+  expandSingle?: boolean;
   selectOnClick?: boolean;
   toggleOnClick?: boolean;
   arrowPosition?: "start" | "end";
@@ -120,6 +123,20 @@ function useTreeState(props: NavTreeState) {
   };
 }
 
+type TreeContextState = {
+  items: NavTreeItem[];
+  active?: NavTreeItem | null;
+  selected: NavTreeItem[];
+  expanded: NavTreeItem[];
+};
+
+const TreeContext = createContext<TreeContextState>({
+  items: [],
+  active: null,
+  selected: [],
+  expanded: [],
+});
+
 function filterTree(
   items: NavTreeItem[],
   filter: (item: NavTreeItem) => boolean,
@@ -144,6 +161,28 @@ function findParents(items: NavTreeItem[]) {
     }
   });
   return parents;
+}
+
+function findAncestors(items: NavTreeItem[], item: NavTreeItem) {
+  const ancestors: NavTreeItem[] = [];
+  const parents: Record<string, NavTreeItem> = {};
+  const process = (node: NavTreeItem) => {
+    node.items?.forEach((x) => {
+      parents[x.id] = node;
+      process(x);
+    });
+  };
+
+  // prepare child -> parent map
+  items.forEach(process);
+
+  let parent = parents[item.id];
+  while (parent) {
+    ancestors.push(parent);
+    parent = parents[parent.id];
+  }
+
+  return ancestors;
 }
 
 function useTree(props: NavTreeProps) {
@@ -203,6 +242,7 @@ function NavTreeC(
   props: NavTreeProps,
   ref: React.ForwardedRef<HTMLDivElement>,
 ) {
+  const { filterText, expandSingle } = props;
   const { onActiveChange, onSelectedChange, onExpandedChange } = props;
 
   const {
@@ -243,17 +283,20 @@ function NavTreeC(
 
   return (
     <div className={styles.tree} ref={ref} role="tree" aria-label={ariaLabel}>
-      <NavTreeNodes
-        {...props}
-        level={0}
-        items={items}
-        active={active}
-        selected={selected}
-        expanded={expanded}
-        onActiveChange={handleActiveChange}
-        onSelectedChange={handleSelectedChange}
-        onExpandedChange={handleExpandedChange}
-      />
+      <TreeContext.Provider value={{ items, active, selected, expanded }}>
+        <NavTreeNodes
+          {...props}
+          level={0}
+          items={items}
+          active={active}
+          selected={selected}
+          expanded={expanded}
+          expandSingle={expandSingle && !filterText}
+          onActiveChange={handleActiveChange}
+          onSelectedChange={handleSelectedChange}
+          onExpandedChange={handleExpandedChange}
+        />
+      </TreeContext.Provider>
     </div>
   );
 }
@@ -304,6 +347,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
     expanded = EMPTY,
     checkbox,
     focusable,
+    expandSingle,
     selectOnClick,
     toggleOnClick,
     arrowPosition,
@@ -356,23 +400,40 @@ function NavTreeNode(props: NavTreeNodeProps) {
 
   const [isExpanding, setExpanding] = useState(false);
 
+  const { items: treeItems } = useContext(TreeContext);
+
   const toggle = useCallback(() => {
     const items = expanded ?? [];
     const newExpanded = isExpanded
       ? items.filter((x) => x.id !== item.id)
       : [...items, item];
+
+    const nextExpanded = isExpanded
+      ? newExpanded
+      : expandSingle
+        ? [...findAncestors(treeItems, item), item]
+        : newExpanded;
+
     setExpanding(true);
     const res = onItemToggle?.(item, !isExpanded) as unknown;
     if (res instanceof Promise) {
       res.finally(() => {
-        onExpandedChange?.(newExpanded);
+        onExpandedChange?.(nextExpanded);
         setExpanding(false);
       });
     } else {
-      onExpandedChange?.(newExpanded);
+      onExpandedChange?.(nextExpanded);
       setExpanding(false);
     }
-  }, [expanded, isExpanded, item, onExpandedChange, onItemToggle]);
+  }, [
+    expanded,
+    expandSingle,
+    isExpanded,
+    item,
+    treeItems,
+    onItemToggle,
+    onExpandedChange,
+  ]);
 
   const handleArrowClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
