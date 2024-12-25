@@ -57,6 +57,15 @@ export type NavTreeSharedProps = NavTreeState & {
   selectOnClick?: boolean;
   toggleOnClick?: boolean;
   arrowPosition?: "start" | "end";
+  className?: string;
+  classes?: {
+    node?: string;
+    nodes?: string;
+    content?: string;
+    title?: string;
+    arrow?: string;
+    checkbox?: string;
+  };
   filter?: (item: NavTreeItem) => boolean;
   onActiveChange?: (item: NavTreeItem | null) => void;
   onSelectedChange?: (items: NavTreeItem[]) => void;
@@ -241,7 +250,7 @@ function NavTreeC(
   props: NavTreeProps,
   ref: React.ForwardedRef<HTMLDivElement>,
 ) {
-  const { filterText, expandSingle } = props;
+  const { className, filterText, expandSingle } = props;
   const { onActiveChange, onSelectedChange, onExpandedChange } = props;
 
   const {
@@ -281,7 +290,12 @@ function NavTreeC(
   );
 
   return (
-    <div className={styles.tree} ref={ref} role="tree" aria-label={ariaLabel}>
+    <div
+      className={clsx(styles.tree, className)}
+      ref={ref}
+      role="tree"
+      aria-label={ariaLabel}
+    >
       <TreeContext.Provider value={{ items, active, selected, expanded }}>
         <NavTreeNodes
           {...props}
@@ -314,9 +328,9 @@ function getAllDescendants(item: NavTreeItem): NavTreeItem[] {
 
 function NavTreeNodes(props: NavTreeNodesProps) {
   const { items, ...rest } = props;
-  const { level } = props;
+  const { level, classes } = props;
   return (
-    <div className={styles.nodes}>
+    <div className={clsx(styles.nodes, classes?.nodes)}>
       {items.map((item, index) => (
         <NavTreeNode
           {...rest}
@@ -350,6 +364,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
     selectOnClick,
     toggleOnClick,
     arrowPosition,
+    classes,
     onActiveChange,
     onSelectedChange,
     onExpandedChange,
@@ -494,7 +509,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
     (e: React.FocusEvent<HTMLDivElement>) => {
       onItemFocus?.(e, item);
       if (e.defaultPrevented) return;
-      onActiveChange?.(item)
+      onActiveChange?.(item);
     },
     [item, onActiveChange, onItemFocus],
   );
@@ -582,7 +597,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
   );
 
   const renderArrow = () => (
-    <div className={styles.icon}>
+    <div className={clsx(styles.icon, classes?.arrow)}>
       {hasChildren && (
         <Arrow
           expanded={isExpanded}
@@ -595,7 +610,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
 
   return (
     <div
-      className={clsx(styles.node, {
+      className={clsx(styles.node, classes?.node, {
         [styles.active]: isActive,
         [styles.selected]: isSelected,
       })}
@@ -603,7 +618,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
     >
       <div
         tabIndex={!active && focusable ? 0 : active?.id === item.id ? 0 : -1}
-        className={styles.content}
+        className={clsx(styles.content, classes?.content)}
         onKeyDown={handleKeyDown}
         onKeyUp={handleKeyUp}
         onFocus={handleFocus}
@@ -618,7 +633,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
       >
         {arrowPosition !== "end" && renderArrow()}
         {checkbox && (
-          <div className={styles.checkbox}>
+          <div className={clsx(styles.checkbox, classes?.checkbox)}>
             <Checkbox
               tabIndex={-1}
               indeterminate={!!isIndeterminate}
@@ -627,7 +642,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
             />
           </div>
         )}
-        <div className={styles.title}>
+        <div className={clsx(styles.title, classes?.title)}>
           <Title
             item={item}
             level={level}
