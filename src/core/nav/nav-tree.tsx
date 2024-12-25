@@ -458,6 +458,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
 
       // move focus
       if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
         const tree = e.currentTarget.closest(`.${styles.tree}`);
         const items = tree?.querySelectorAll(`.${styles.content}`);
         const elems = [...(items ?? [])];

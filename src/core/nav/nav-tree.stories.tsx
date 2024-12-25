@@ -281,7 +281,7 @@ function RenderNavTree(props: NavTreeProps) {
           onChange={handleChange}
         />
       </Box>
-      <Box border p={2}>
+      <Box border p={2} style={{ height: 600 }} overflow="auto">
         <Tree
           {...props}
           items={items}
