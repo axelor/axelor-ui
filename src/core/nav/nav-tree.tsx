@@ -206,10 +206,9 @@ function useTree(props: NavTreeProps) {
   const isTemp = textRef.current === filterText;
 
   const active = useMemo(() => {
-    const last = textRef.current;
-    if (filtered === items) return mainState.active;
-    if (last === filterText) return tempState.active;
-  }, [filterText, filtered, items, mainState.active, tempState.active]);
+    if (isMain) return mainState.active;
+    if (isTemp) return tempState.active;
+  }, [isMain, isTemp, mainState.active, tempState.active]);
 
   const selected = useMemo(() => {
     if (isMain) return mainState.selected;
@@ -494,8 +493,10 @@ function NavTreeNode(props: NavTreeNodeProps) {
   const handleFocus = useCallback(
     (e: React.FocusEvent<HTMLDivElement>) => {
       onItemFocus?.(e, item);
+      if (e.defaultPrevented) return;
+      onActiveChange?.(item)
     },
-    [item, onItemFocus],
+    [item, onActiveChange, onItemFocus],
   );
 
   const handleBlur = useCallback(
@@ -601,7 +602,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
       style={style}
     >
       <div
-        tabIndex={focusable ? 0 : -1}
+        tabIndex={!active && focusable ? 0 : active?.id === item.id ? 0 : -1}
         className={styles.content}
         onKeyDown={handleKeyDown}
         onKeyUp={handleKeyUp}
