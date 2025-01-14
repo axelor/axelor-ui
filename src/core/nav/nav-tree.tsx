@@ -588,6 +588,13 @@ function NavTreeNode(props: NavTreeNodeProps) {
     [item, onItemDoubleClick],
   );
 
+  const handleCheckboxDoubleClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      e.preventDefault();
+    },
+    [],
+  );
+
   const handleCheckboxChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       e.stopPropagation();
@@ -660,7 +667,10 @@ function NavTreeNode(props: NavTreeNodeProps) {
       >
         {arrowPosition !== "end" && renderArrow()}
         {checkbox && (
-          <div className={clsx(styles.checkbox, classes?.checkbox)}>
+          <div
+            className={clsx(styles.checkbox, classes?.checkbox)}
+            onDoubleClick={handleCheckboxDoubleClick}
+          >
             <Checkbox
               tabIndex={-1}
               indeterminate={!!isIndeterminate}
