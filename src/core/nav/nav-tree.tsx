@@ -493,6 +493,13 @@ function NavTreeNode(props: NavTreeNodeProps) {
         const inc = e.key === "ArrowDown" ? 1 : -1;
         const next = elems[index + inc] as HTMLElement;
         next?.focus();
+
+        // make next item active
+        const nodeId = next.dataset.itemId;
+        const node = treeItems.find((x) => x.id === nodeId);
+        if (node) {
+          onActiveChange?.(node);
+        }
       }
 
       // on enter key, make the item active
@@ -508,7 +515,15 @@ function NavTreeNode(props: NavTreeNodeProps) {
         e.currentTarget.querySelector("input")?.click();
       }
     },
-    [hasChildren, isExpanded, item, onItemKeyDown, toggle],
+    [
+      hasChildren,
+      isExpanded,
+      item,
+      onActiveChange,
+      onItemKeyDown,
+      toggle,
+      treeItems,
+    ],
   );
 
   const handleKeyUp = useCallback(
@@ -521,10 +536,8 @@ function NavTreeNode(props: NavTreeNodeProps) {
   const handleFocus = useCallback(
     (e: React.FocusEvent<HTMLDivElement>) => {
       onItemFocus?.(e, item);
-      if (e.defaultPrevented) return;
-      onActiveChange?.(item);
     },
-    [item, onActiveChange, onItemFocus],
+    [item, onItemFocus],
   );
 
   const handleBlur = useCallback(
