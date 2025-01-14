@@ -56,6 +56,7 @@ export type NavTreeSharedProps = NavTreeState & {
   expandSingle?: boolean;
   selectOnClick?: boolean;
   toggleOnClick?: boolean;
+  selectChildren?: "visible";
   arrowPosition?: "start" | "end";
   className?: string;
   classes?: {
@@ -318,11 +319,16 @@ type NavTreeNodesProps = NavTreeProps & {
   level: number;
 };
 
-function getAllDescendants(item: NavTreeItem): NavTreeItem[] {
+function getDescendants(
+  item: NavTreeItem,
+  expanded?: NavTreeItem[],
+): NavTreeItem[] {
   const descendants: NavTreeItem[] = [item];
-  item.items?.forEach((child) => {
-    descendants.push(...getAllDescendants(child));
-  });
+  if (!expanded || expanded.some((x) => x.id === item.id)) {
+    item.items?.forEach((child) => {
+      descendants.push(...getDescendants(child, expanded));
+    });
+  }
   return descendants;
 }
 
@@ -363,6 +369,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
     expandSingle,
     selectOnClick,
     toggleOnClick,
+    selectChildren,
     arrowPosition,
     classes,
     onActiveChange,
@@ -392,10 +399,14 @@ function NavTreeNode(props: NavTreeNodeProps) {
     [item.id, selected],
   );
 
-  const descendants = useMemo(() => getAllDescendants(item), [item]);
+  const descendants = useMemo(() => {
+    return selectChildren === "visible"
+      ? getDescendants(item, expanded)
+      : getDescendants(item);
+  }, [expanded, item, selectChildren]);
 
   const selectedDescendants = useMemo(
-    () => descendants.filter((desc) => selected.some((s) => s.id === desc.id)),
+    () => selected.filter((desc) => descendants.some((s) => s.id === desc.id)),
     [descendants, selected],
   );
 
@@ -578,14 +589,15 @@ function NavTreeNode(props: NavTreeNodeProps) {
         ];
       } else {
         // Remove this item and all descendants
+        const allDescendants = getDescendants(item);
         newSelected = selected.filter(
-          (s) => !descendants.some((desc) => desc.id === s.id),
+          (s) => !allDescendants.some((desc) => desc.id === s.id),
         );
       }
 
       onSelectedChange?.(newSelected);
     },
-    [descendants, onSelectedChange, selected],
+    [descendants, item, onSelectedChange, selected],
   );
 
   const style = useMemo(
