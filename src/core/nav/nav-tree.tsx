@@ -213,24 +213,26 @@ function useTree(props: NavTreeProps) {
   }, [filterText]);
 
   const isMain = !filterText;
-  const isTemp = textRef.current === filterText;
 
   const active = useMemo(() => {
+    const isTemp = textRef.current === filterText;
     if (isMain) return mainState.active;
     if (isTemp) return tempState.active;
-  }, [isMain, isTemp, mainState.active, tempState.active]);
+  }, [filterText, isMain, mainState.active, tempState.active]);
 
   const selected = useMemo(() => {
+    const isTemp = textRef.current === filterText;
     if (isMain) return mainState.selected;
     if (isTemp) return tempState.selected;
     return [];
-  }, [isMain, isTemp, mainState.selected, tempState.selected]);
+  }, [filterText, isMain, mainState.selected, tempState.selected]);
 
   const expanded = useMemo(() => {
+    const isTemp = textRef.current === filterText;
     if (isMain) return mainState.expanded;
     if (isTemp) return tempState.expanded;
     return findParents(filtered).filter((x) => x.items!.length > 0);
-  }, [filtered, isMain, isTemp, mainState.expanded, tempState.expanded]);
+  }, [filterText, filtered, isMain, mainState.expanded, tempState.expanded]);
 
   const setActive = isMain ? mainState.setActive : tempState.setActive;
   const setSelected = isMain ? mainState.setSelected : tempState.setSelected;
