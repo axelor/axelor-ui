@@ -26,7 +26,6 @@ export type GanttRecord = {
   id: number;
   name?: string;
   data?: Record; // original record
-  user?: Record | null;
   parent?: Record | null;
   startDate?: string;
   endDate?: string;
