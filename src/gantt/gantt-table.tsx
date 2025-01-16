@@ -106,7 +106,7 @@ export function GanttTable(props: {
             key={ind}
             index={ind}
             items={items}
-            data={record}
+            data={record.data ?? record}
             active={String(activeRow) === String(record.id)}
             onView={onView}
             onClick={setActiveRow}
