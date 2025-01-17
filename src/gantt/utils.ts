@@ -234,11 +234,11 @@ export function getGraphEdges(
         record;
 
       function checkEdges(
-        list: TYPES.Record[] | undefined,
+        list: TYPES.GanttData[] | undefined,
         start: TYPES.GanttEdgeType,
         end: TYPES.GanttEdgeType,
       ) {
-        function prepareEdge(item: TYPES.Record): TYPES.GanttEdge {
+        function prepareEdge(item: TYPES.GanttData): TYPES.GanttEdge {
           const targetItem = { x, y, height, width };
           const sourceItem =
             computedData.find((e) => e.record.id === item.id) || targetItem;

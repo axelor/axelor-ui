@@ -23,14 +23,15 @@ const connectSetTypes: any = {
 };
 
 export const Basic = () => {
-  const [records, setRecords] = React.useState<TYPES.GanttRecord[]>(
-    response.data,
+  const [records, setRecords] = React.useState<TYPES.GanttRecord[]>(() =>
+    response.data.map((taskData: any) => ({ ...taskData, taskData })),
   );
+
   const [view, setView] = React.useState(GANTT_TYPES.MONTH);
   const handleRecordUpdate = React.useCallback(
-    (record: TYPES.GanttRecord, changes: Partial<TYPES.GanttRecord>) => {
-      setRecords((records) => {
-        return records.map((r) =>
+    (record: TYPES.GanttData, changes: Partial<TYPES.GanttRecord>) => {
+      setRecords((_records) => {
+        return _records.map((r) =>
           r.id === record.id ? { ...r, ...changes } : r,
         );
       });
@@ -40,20 +41,20 @@ export const Basic = () => {
 
   const handleRecordConnect = React.useCallback(
     ({ startId, finishId, source, target }: TYPES.ConnectProps) => {
-      setRecords((records) => {
+      setRecords((_records) => {
         const set = connectSetTypes[`${source}_${target}`];
-        const index = records.findIndex((r) => r.id === finishId);
-        const oldSet: TYPES.Record[] = (records[index] as any)[set] || [];
+        const index = _records.findIndex((r) => r.id === finishId);
+        const oldSet: TYPES.GanttData[] = (_records[index] as any)[set] || [];
         if (!oldSet.find((obj) => obj.id === startId)) {
-          records[index] = {
-            ...records[index],
-            [set]: ((records[index] as any)[set] || []).concat([
+          _records[index] = {
+            ..._records[index],
+            [set]: ((_records[index] as any)[set] || []).concat([
               { id: startId },
             ]),
           };
-          return [...records];
+          return [..._records];
         }
-        return records;
+        return _records;
       });
     },
     [],
@@ -62,22 +63,23 @@ export const Basic = () => {
   const handleRecordDisconnect = React.useCallback(
     ({ startId, finishId, source, target }: TYPES.ConnectProps) => {
       const flag = window.confirm("Are you sure want to remove?");
-      flag &&
-        setRecords((records) => {
+      if (flag) {
+        setRecords((_records) => {
           const set = connectSetTypes[`${source}_${target}`];
-          const index = records.findIndex((r) => r.id === finishId);
-          const oldSet: TYPES.Record[] = (records[index] as any)[set] || [];
+          const index = _records.findIndex((r) => r.id === finishId);
+          const oldSet: TYPES.GanttData[] = (_records[index] as any)[set] || [];
           if (oldSet.find((obj) => obj.id === startId)) {
-            records[index] = {
-              ...records[index],
-              [set]: ((records[index] as any)[set] || []).filter(
-                (x: TYPES.Record) => `${x.id}` !== `${startId}`,
+            _records[index] = {
+              ..._records[index],
+              [set]: ((_records[index] as any)[set] || []).filter(
+                (x: TYPES.GanttData) => `${x.id}` !== `${startId}`,
               ),
             };
-            return [...records];
+            return [..._records];
           }
-          return records;
+          return _records;
         });
+      }
     },
     [],
   );

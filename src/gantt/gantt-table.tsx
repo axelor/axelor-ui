@@ -45,31 +45,31 @@ const GanttTableBodyRow = React.memo(function GanttTableBodyRow({
   onView,
   index,
   items,
-  data,
+  record,
 }: {
   active: boolean;
   index: number;
   onClick: (index: number) => void;
-  data: TYPES.GanttRecord;
+  record: TYPES.GanttRecord;
   items: TYPES.GanttProps["items"];
   onView?: TYPES.GanttProps["onRecordView"];
 }) {
+  const { taskData: data } = record;
   const classNames = useClassNames();
   return (
     <div
       className={classNames(classes.tableBodyRow, {
         [classes.active]: active,
       })}
-      onClick={(e) => onClick(data.id)}
-      onDoubleClick={() => onView?.(data, index)}
+      onClick={() => onClick(data.id)}
+      onDoubleClick={() => onView?.(record, index)}
     >
       {items.map((item) => {
-        const value: any = (data as any)[item.name];
         const $value = item.formatter
-          ? item.formatter(item, (data as any)[item.name], data)
-          : value;
+          ? item.formatter(item, data[item.name], data)
+          : data[item.name];
         function renderer() {
-          const Component: any = item.renderer;
+          const Component = item.renderer!;
           return <Component field={item} data={data} value={$value} />;
         }
         return (
@@ -106,7 +106,7 @@ export function GanttTable(props: {
             key={ind}
             index={ind}
             items={items}
-            data={record.data ?? record}
+            record={record}
             active={String(activeRow) === String(record.id)}
             onView={onView}
             onClick={setActiveRow}

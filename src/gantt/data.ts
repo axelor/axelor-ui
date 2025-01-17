@@ -1,3 +1,5 @@
+import { GanttData } from "./types";
+
 const response = {
   status: 0,
   offset: 0,
@@ -406,7 +408,7 @@ const DATA = {
     const field = schema.data.fields.find((f) => f.name === item.name);
     const attrs: any = {};
     if (field?.type === "MANY_TO_ONE" && field.targetName) {
-      attrs.formatter = (field: any, value: any, data: any) => {
+      attrs.formatter = (field: any, value: any, data: GanttData) => {
         return value && value[field.targetName];
       };
     }
