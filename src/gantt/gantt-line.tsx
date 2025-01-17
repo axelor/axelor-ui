@@ -103,7 +103,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
     onUpdate,
     onConnect,
   } = props;
-  const { id, duration, $color } = data;
+  const { id, duration, $color, taskData } = data;
   const {
     progress: allowProgress = true,
     duration: allowDuration = true,
@@ -157,7 +157,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
       end: () => {
         const line = getLineData();
         if (allowStartDate || allowEndDate) {
-          onUpdate?.(data, {
+          onUpdate?.(taskData, {
             ...(allowStartDate && { startDate: line.startDate }),
             ...(allowEndDate && { endDate: line.endDate }),
           });
@@ -171,7 +171,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
       end: () => {
         const line = getLineData();
         if (allowStartDate || allowDuration) {
-          onUpdate?.(data, {
+          onUpdate?.(taskData, {
             ...(allowStartDate && { startDate: line.startDate }),
             ...(allowDuration && { duration: line.duration }),
           });
@@ -185,7 +185,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
       end: () => {
         const line = getLineData();
         if (allowDuration || allowEndDate) {
-          onUpdate?.(data, {
+          onUpdate?.(taskData, {
             ...(allowDuration && { duration: line.duration }),
             ...(allowEndDate && { endDate: line.endDate }),
           });
@@ -199,7 +199,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
       end: () => {
         const { progress } = refs.current;
         if (allowProgress && progress !== null) {
-          onUpdate?.(data, { progress });
+          onUpdate?.(taskData, { progress });
         }
         refs.current.progress = null;
       },

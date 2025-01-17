@@ -1,20 +1,27 @@
 import React from "react";
 
-export type Record = {
+export type GanttData = {
   id: number;
+  [k: string]: any;
 };
 export type GanttType = "year" | "month" | "week" | "day";
 export type GanttField = {
   name: string;
   title?: string;
   width?: number;
-  formatter?: (field: GanttField, value: any, data: GanttRecord) => any;
-  renderer?: React.FC<{
-    data: GanttRecord;
-    field: GanttField;
-    value: string | number;
-  }>;
+  formatter?: (field: GanttField, value: any, data: GanttData) => any;
+  renderer?: React.JSXElementConstructor<GanttFieldRenderer>;
 };
+
+export type GanttFieldRenderer = {
+  /** The original record */
+  data: GanttData;
+  /** the field to render */
+  field: GanttField;
+  /** the formatted record value */
+  value: any;
+};
+
 export type GanttHeaderItem = {
   title: string;
   width: number;
@@ -23,21 +30,50 @@ export type GanttHeaderItem = {
 };
 
 export type GanttRecord = {
+  /**
+   * The task id
+   */
   id: number;
+  /**
+   * The name of the task
+   */
   name?: string;
-  data?: Record; // original record
-  parent?: Record | null;
+  /**
+   * The parent record
+   */
+  parent?: GanttData | null;
+  /**
+   * The date when a task is scheduled to begin.
+   */
   startDate?: string;
+  /**
+   * The date when a task is scheduled to be completed.
+   */
   endDate?: string;
+  /**
+   * The task duration.
+   */
   duration?: number | string;
+  /**
+   * The task progress
+   */
   progress?: number | string;
+  /**
+   * The task sequence
+   */
   sequence?: number;
-  startToStart?: Record[];
-  startToFinish?: Record[];
-  finishToStart?: Record[];
-  finishToFinish?: Record[];
+  startToStart?: GanttData[];
+  startToFinish?: GanttData[];
+  finishToStart?: GanttData[];
+  finishToFinish?: GanttData[];
+  /**
+   * Sets the color (background-color) of the task
+   */
   $color?: string;
-  _children?: number[];
+  /**
+   * The original record
+   */
+  taskData: GanttData;
 };
 
 export type GanttEdgeType = "start" | "finish";
@@ -91,8 +127,21 @@ export interface GanttProps {
   items: GanttField[];
   records: GanttRecord[];
   config?: GanttConfig;
-  onRecordView?: (record: GanttRecord, index?: number) => any;
-  onRecordUpdate?: (record: GanttRecord, changes?: any) => any;
-  onRecordConnect?: (connectProps: ConnectProps) => any;
-  onRecordDisconnect?: (connectProps: ConnectProps) => any;
+  /**
+   * Called on task double click
+   * @param record the original record
+   * @param index the record index
+   */
+  onRecordView?: (record: GanttData, index?: number) => void;
+  /**
+   * Called when task drag&drop ends
+   * @param record the original record
+   * @param changes the changes made on the task
+   */
+  onRecordUpdate?: (
+    record: GanttData,
+    changes: Partial<GanttRecord>,
+  ) => Promise<void> | void;
+  onRecordConnect?: (connectProps: ConnectProps) => Promise<void> | void;
+  onRecordDisconnect?: (connectProps: ConnectProps) => Promise<void> | void;
 }
