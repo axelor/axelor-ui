@@ -195,6 +195,23 @@ function findAncestors(items: NavTreeItem[], item: NavTreeItem) {
   return ancestors;
 }
 
+function findDescendants(
+  item: NavTreeItem,
+  expanded?: NavTreeItem[],
+): NavTreeItem[] {
+  const descendants: NavTreeItem[] = [item];
+  if (!expanded || expanded.some((x) => x.id === item.id)) {
+    item.items?.forEach((child) => {
+      descendants.push(...findDescendants(child, expanded));
+    });
+  }
+  return descendants;
+}
+
+function findVisible(items: NavTreeItem[], expanded: NavTreeItem[]) {
+  return items.flatMap((item) => findDescendants(item, expanded));
+}
+
 function useTree(props: NavTreeProps) {
   const { items, filterText, filter } = props;
 
@@ -321,19 +338,6 @@ type NavTreeNodesProps = NavTreeProps & {
   level: number;
 };
 
-function getDescendants(
-  item: NavTreeItem,
-  expanded?: NavTreeItem[],
-): NavTreeItem[] {
-  const descendants: NavTreeItem[] = [item];
-  if (!expanded || expanded.some((x) => x.id === item.id)) {
-    item.items?.forEach((child) => {
-      descendants.push(...getDescendants(child, expanded));
-    });
-  }
-  return descendants;
-}
-
 function NavTreeNodes(props: NavTreeNodesProps) {
   const { items, ...rest } = props;
   const { level, classes } = props;
@@ -403,8 +407,8 @@ function NavTreeNode(props: NavTreeNodeProps) {
 
   const descendants = useMemo(() => {
     return selectChildren === "visible"
-      ? getDescendants(item, expanded)
-      : getDescendants(item);
+      ? findDescendants(item, expanded)
+      : findDescendants(item);
   }, [expanded, item, selectChildren]);
 
   const selectedDescendants = useMemo(
@@ -428,6 +432,11 @@ function NavTreeNode(props: NavTreeNodeProps) {
   const [isExpanding, setExpanding] = useState(false);
 
   const { items: treeItems } = useContext(TreeContext);
+
+  const visibleItems = useMemo(
+    () => findVisible(treeItems, expanded),
+    [expanded, treeItems],
+  );
 
   const latestExpandedRef = useRef(expanded);
   const latestItemsRef = useRef(treeItems);
@@ -482,19 +491,17 @@ function NavTreeNode(props: NavTreeNodeProps) {
       // move focus
       if (e.key === "ArrowDown" || e.key === "ArrowUp") {
         e.preventDefault();
-        const tree = e.currentTarget.closest(`.${styles.tree}`);
-        const items = tree?.querySelectorAll(`.${styles.content}`);
-        const elems = [...(items ?? [])];
-        const index = elems.indexOf(e.currentTarget);
-        const inc = e.key === "ArrowDown" ? 1 : -1;
-        const next = elems[index + inc] as HTMLElement;
-        next?.focus();
-
-        // make next item active
-        const nodeId = next.dataset.itemId;
-        const node = treeItems.find((x) => x.id === nodeId);
-        if (node) {
-          onActiveChange?.(node);
+        const index = visibleItems.findIndex((x) => x.id === item.id);
+        const nextIndex = e.key === "ArrowDown" ? index + 1 : index - 1;
+        if (nextIndex >= 0 && nextIndex < visibleItems.length) {
+          const nextItem = visibleItems[nextIndex];
+          const next = e.currentTarget
+            ?.closest('[role="tree"]')
+            ?.querySelector(`[data-item-id="${nextItem.id}"]`) as HTMLElement;
+          next?.scrollIntoView?.({ block: "nearest" });
+          next?.focus?.();
+          // make next item active
+          onActiveChange?.(nextItem);
         }
       }
 
@@ -518,7 +525,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
       onActiveChange,
       onItemKeyDown,
       toggle,
-      treeItems,
+      visibleItems,
     ],
   );
 
@@ -607,7 +614,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
         ];
       } else {
         // Remove this item and all descendants
-        const allDescendants = getDescendants(item);
+        const allDescendants = findDescendants(item);
         newSelected = selected.filter(
           (s) => !allDescendants.some((desc) => desc.id === s.id),
         );
