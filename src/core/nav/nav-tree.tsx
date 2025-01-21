@@ -429,37 +429,33 @@ function NavTreeNode(props: NavTreeNodeProps) {
 
   const { items: treeItems } = useContext(TreeContext);
 
+  const latestExpandedRef = useRef(expanded);
+  const latestItemsRef = useRef(treeItems);
+
+  latestExpandedRef.current = expanded;
+  latestItemsRef.current = treeItems;
+
   const toggle = useCallback(() => {
-    const items = expanded ?? [];
-    const newExpanded = isExpanded
-      ? items.filter((x) => x.id !== item.id)
-      : [...items, item];
-
-    const nextExpanded = isExpanded
-      ? newExpanded
-      : expandSingle
-        ? [...findAncestors(treeItems, item), item]
-        : newExpanded;
-
+    if (isExpanding) return;
     setExpanding(true);
-    const res = onItemToggle?.(item, !isExpanded) as unknown;
-    if (res instanceof Promise) {
-      res.finally(() => {
-        onExpandedChange?.(nextExpanded);
-        setExpanding(false);
-      });
-    } else {
+    Promise.resolve(onItemToggle?.(item, !isExpanded)).finally(() => {
+      const currentItems = latestItemsRef.current ?? [];
+      const currentExpanded = latestExpandedRef.current ?? [];
+      const nextExpanded = isExpanded
+        ? currentExpanded.filter((x) => x.id !== item.id)
+        : expandSingle
+          ? [...findAncestors(currentItems, item), item]
+          : [...currentExpanded, item];
       onExpandedChange?.(nextExpanded);
       setExpanding(false);
-    }
+    });
   }, [
-    expanded,
     expandSingle,
     isExpanded,
+    isExpanding,
     item,
-    treeItems,
-    onItemToggle,
     onExpandedChange,
+    onItemToggle,
   ]);
 
   const handleArrowClick = useCallback(
