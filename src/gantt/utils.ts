@@ -25,8 +25,7 @@ function memoizeValue<T>(getValue: () => T) {
 
 const getFontSize = memoizeValue<number>(() =>
   parseFloat(
-    getComputedStyle(document.body).getPropertyValue("--bs-body-font-size") ??
-      16,
+    getComputedStyle(document.body).fontSize || "16px",
   ),
 );
 
