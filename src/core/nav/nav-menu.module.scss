@@ -215,6 +215,11 @@
 .items {
   display: flex;
   flex-direction: column;
+  &:not(:hover) {
+    &::-webkit-scrollbar-thumb {
+      background: var(--scrollbar-color);
+    }
+  }
 }
 
 .subItems {
