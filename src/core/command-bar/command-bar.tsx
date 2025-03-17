@@ -31,6 +31,9 @@ export interface CommandItemProps {
   onClick?: React.EventHandler<
     React.MouseEvent<HTMLElement, MouseEvent> | React.KeyboardEvent<HTMLElement>
   >;
+  onDoubleClick?: React.EventHandler<
+    React.MouseEvent<HTMLElement, MouseEvent> | React.KeyboardEvent<HTMLElement>
+  >;
   items?: CommandItemProps[];
   showDownArrow?: boolean;
   showAsMenuItem?: boolean;
@@ -65,6 +68,7 @@ export function CommandItem(props: RenderCommandItemProps) {
     divider,
     hidden,
     render,
+    onDoubleClick,
     onClick,
     items = [],
     showDownArrow = false,
@@ -77,9 +81,13 @@ export function CommandItem(props: RenderCommandItemProps) {
 
   const handleClick = useCallback(
     (e: any) => {
-      if (onClick) onClick(e);
+      if (e.detail === 2) {
+        onDoubleClick?.(e);
+      } else {
+        onClick?.(e);
+      }
     },
-    [onClick],
+    [onDoubleClick, onClick],
   );
 
   const showMenu = useCallback(() => {
@@ -94,7 +102,11 @@ export function CommandItem(props: RenderCommandItemProps) {
     (e: any, menu: CommandItemProps) => {
       hideMenu();
       if (showAsMenuItem) handleClick(e);
-      if (menu.onClick) menu.onClick(e);
+      if (e.detail === 2) {
+        menu.onDoubleClick?.(e);
+      } else {
+        menu.onClick?.(e);
+      }
     },
     [showAsMenuItem, hideMenu, handleClick],
   );
