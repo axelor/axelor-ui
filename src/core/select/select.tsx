@@ -590,10 +590,12 @@ export const Select = forwardRef(function Select<
               ? undefined
               : placeholder
           }
-          onChange={handleInputChange}
-          onKeyDown={handleInputKeyDown}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
+          {...(!readOnly && {
+            onChange: handleInputChange,
+            onKeyDown: handleInputKeyDown,
+            onFocus: handleFocus,
+            onBlur: handleBlur,
+          })}
         />
       );
     }
@@ -664,15 +666,16 @@ export const Select = forwardRef(function Select<
         autoFocus={autoComplete ? undefined : autoFocus}
         aria-disabled={disabled ? true : undefined}
         aria-readonly={readOnly ? true : undefined}
-        {...getReferenceProps({
-          ref: rootRef,
-          tabIndex: autoComplete || disabled ? undefined : 0,
-          onClick: handleRootClick,
-          onKeyDown: handleRootKeyDown,
-          onKeyUp: handleRootKeyUp,
-          onFocus: autoComplete ? undefined : handleFocus,
-          onBlur: autoComplete ? undefined : handleBlur,
-        })}
+        {...(!readOnly &&
+          getReferenceProps({
+            ref: rootRef,
+            tabIndex: autoComplete || disabled ? undefined : 0,
+            onClick: handleRootClick,
+            onKeyDown: handleRootKeyDown,
+            onKeyUp: handleRootKeyUp,
+            onFocus: autoComplete ? undefined : handleFocus,
+            onBlur: autoComplete ? undefined : handleBlur,
+          }))}
       >
         <div ref={contentRef} className={styles.content}>
           {inputStartAdornment}
