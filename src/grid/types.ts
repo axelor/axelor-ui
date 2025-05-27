@@ -93,8 +93,7 @@ export type GridLabel =
   | "Hide"
   | "Show"
   | "Customize..."
-  | "Groups"
-  | "No records found.";
+  | "Groups";
 
 export interface GridProps {
   className?: string;
