@@ -97,6 +97,7 @@ export type GridLabel =
 
 export interface GridProps {
   className?: string;
+  style?: CSSProperties;
   records: any[];
   columns: any[];
   state: GridState;

@@ -108,6 +108,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       rowHeight,
       maxRowHeight,
       labels,
+      style,
     } = props;
     const isRTL = useRTL();
 
@@ -1433,6 +1434,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
                 onKeyDown: handleNavigation,
               }
             : {})}
+          style={style}
           onScroll={handleScroll}
         >
           <GridHeader
