@@ -452,7 +452,7 @@ function Icons(props: VariantProps) {
     handleIconHover,
   } = useNavMenu(props);
 
-  const { searchOptions } = props;
+  const { headerSmall, searchOptions } = props;
   const hover = showSearch ? searchItem.id : state.lookup;
 
   return (
@@ -467,6 +467,7 @@ function Icons(props: VariantProps) {
         show="icons"
         state={state}
         items={icons}
+        header={headerSmall}
         onItemClick={handleIconClick}
         onItemHover={handleIconHover}
       />
@@ -577,7 +578,7 @@ function MenuIcons({
   onItemHover,
 }: VariantProps & { state: ItemProps["state"] }) {
   return (
-    <Scrollable>
+    <Scrollable className={styles.menusIcon}>
       <div className={styles.icons}>
         {header && <div className={styles.iconsHeader}>{header}</div>}
         {items.map((item) => (

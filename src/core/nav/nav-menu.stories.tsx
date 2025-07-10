@@ -155,6 +155,18 @@ const items = [
   },
 ];
 
+const Header = (
+  <Box>
+    <h3>Header</h3>
+  </Box>
+);
+
+const SmallHeader = (
+  <Box>
+    <h6>SH</h6>
+  </Box>
+);
+
 export function NavMenu() {
   const [mode, setMode] = useState<"accordion" | "icons">("accordion");
   const [show, setShow] = useState<"inline" | "overlay" | "icons" | "none">(
@@ -162,6 +174,7 @@ export function NavMenu() {
   );
 
   const [enableSearch, setEnableSearch] = useState(false);
+  const [hasHeader, setHasHeader] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
 
   const handleModeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -267,6 +280,17 @@ export function NavMenu() {
           Show
         </Box>
       </Box>
+      <Box d="flex" g={2}>
+        <strong>Header:</strong>
+        <Box as="label" d="flex" g={2}>
+          <input
+            type="checkbox"
+            checked={hasHeader}
+            onChange={() => setHasHeader(!hasHeader)}
+          />
+          Show
+        </Box>
+      </Box>
       <Box d="flex" style={{ maxWidth: 600, height: 500 }} border p={2} g={2}>
         <Box d="flex" border>
           <SideMenu
@@ -275,6 +299,10 @@ export function NavMenu() {
             searchOptions={searchOptions}
             searchActive={showSearch}
             items={items}
+            {...(hasHeader && {
+              header: Header,
+              headerSmall: SmallHeader,
+            })}
           />
         </Box>
         <Box flex={1} border></Box>

@@ -68,6 +68,7 @@ export interface ThemeElementBorder {
 }
 
 export interface ThemeElementSpacing {
+  margin?: string;
   padding?: string;
   paddingX?: string;
   paddingY?: string;
@@ -151,7 +152,8 @@ export interface ThemeOptions {
     NavMenu?: ThemeElementCommon & {
       width?: string;
       zIndex?: number;
-      header?: ThemeElementColors & ThemeElementSpacing;
+      borderRight?: string;
+      header?: ThemeElementColors & ThemeElementSpacing & { border?: ThemeElementBorder };
       item?: ThemeElementColors &
         ThemeElementSpacing & { border?: ThemeElementBorder };
       item_hover?: ThemeElementColors;

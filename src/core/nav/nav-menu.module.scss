@@ -1,5 +1,7 @@
 .nav {
   --ax-nav-menu-bg: var(--ax-theme-nav-menu-bg, var(--bs-body-bg));
+  --ax-nav-menu-color: var(--ax-theme-nav-menu-color, var(--bs-body-color));
+  --ax-nav-menu-right-border: var(--ax-theme-nav-menu-right-border, none);
   --ax-nav-menu-border-color: var(
     --ax-theme-nav-menu-border-color,
     var(--bs-border-color)
@@ -11,16 +13,11 @@
   --ax-nav-menu-shadow: var(--ax-theme-nav-menu-shadow, var(--bs-box-shadow));
   --ax-nav-menu-width: var(--ax-theme-nav-menu-width, 16rem);
   --ax-nav-menu-zIndex: var(--ax-theme-nav-menu-zIndex, 1000);
+  --ax-nav-menu-radius: var(--ax-theme-nav-menu-radius, 1rem);
 
-  --ax-nav-menu-header-bg: var(
-    --ax-theme-nav-menu-header-bg,
-    var(--bs-secondary-bg)
-  );
-  --ax-nav-menu-header-color: var(
-    --ax-theme-nav-menu-header-color,
-    var(--bs-secondary-bg)
-  );
-  --ax-nav-menu-header-radius: var(--ax-theme-nav-menu-header-radius, 1rem);
+  --ax-nav-menu-header-bg: var(--ax-theme-nav-menu-header-bg, inherit);
+  --ax-nav-menu-header-padding: var(--ax-theme-nav-menu-header-padding, 0.5rem);
+  --ax-nav-menu-header-color: var(--ax-theme-nav-menu-header-color, inherit);
 
   --ax-nav-menu-icons-width: var(--ax-theme-nav-menu-icons-width, auto);
   --ax-nav-menu-icons-bg: var(--ax-theme-nav-menu-icons-bg, transparent);
@@ -83,6 +80,12 @@
 }
 
 .accordion,
+.menus.search,
+.nav.show-icons .accordion .menus {
+  margin: var(--ax-theme-nav-menu-margin);
+}
+
+.accordion,
 .buttons {
   display: flex;
   .menus {
@@ -111,6 +114,18 @@
   flex: 1;
   &.hide {
     display: none !important;
+  }
+}
+
+.menus,
+.menusIcon {
+  background-color: var(--ax-nav-menu-bg);
+  color: var(--ax-nav-menu-color);
+  border-right: var(--ax-nav-menu-right-border);
+
+  [dir="rtl"] & {
+    border-right: none;
+    border-left: var(--ax-nav-menu-right-border);
   }
 }
 
@@ -232,16 +247,16 @@
   flex-grow: 1;
   min-height: 0;
 
-  border-radius: var(--ax-nav-menu-item-radius);
+  border-radius: var(--ax-nav-menu-radius);
   background-color: var(--ax-nav-menu-bg);
 
   .header {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem;
+    padding: var(--ax-nav-menu-header-padding);
     background-color: var(--ax-nav-menu-header-bg);
-    border-radius: var(--ax-nav-menu-header-radius);
+    color: var(--ax-nav-menu-header-color);
 
     .icon {
       background-color: transparent;
@@ -326,8 +341,6 @@
   right: 0;
   max-height: 100% !important;
   border: var(--ax-nav-menu-border);
-  border-radius: var(--ax-nav-menu-item-radius);
-  background-color: var(--ax-nav-menu-bg);
   box-shadow: var(--ax-nav-menu-shadow);
   z-index: calc(var(--ax-nav-menu-zIndex) + 1) !important;
 
@@ -379,19 +392,25 @@
     left: 0;
     right: 0;
     border: var(--ax-nav-menu-border);
-    border-radius: var(--ax-nav-menu-item-radius);
+    border-radius: var(--ax-nav-menu-radius);
     background-color: var(--ax-nav-menu-bg);
     box-shadow: var(--ax-nav-menu-shadow);
     z-index: var(--ax-nav-menu-zIndex);
+  }
+  
+  .menusHeader {
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
   }
 }
 
 .menusHeader {
   display: flex;
   align-items: center;
-  border-top-left-radius: var(--ax-nav-menu-header-radius);
-  border-top-right-radius: var(--ax-nav-menu-header-radius);
-  padding: 0.5rem;
+  justify-content: center;
+  background-color: var(--ax-nav-menu-header-bg);
+  color: var(--ax-nav-menu-header-color);
+  padding: var(--ax-nav-menu-header-padding);
 }
 
 // end accordion mode
@@ -421,7 +440,7 @@
 .nav.mode-icons .buttons.hover {
   .menus {
     box-shadow: var(--ax-nav-menu-shadow);
-    border-radius: var(--ax-nav-menu-item-radius);
+    border-radius: var(--ax-nav-menu-radius);
     border-color: var(--ax-nav-menu-border-color);
   }
 }
@@ -440,7 +459,7 @@
     left: 0;
     right: 0;
     border: var(--ax-nav-menu-border);
-    border-radius: var(--ax-nav-menu-item-radius);
+    border-radius: var(--ax-nav-menu-radius);
     background-color: var(--ax-nav-menu-bg);
     box-shadow: var(--ax-nav-menu-shadow);
     z-index: var(--ax-nav-menu-zIndex);

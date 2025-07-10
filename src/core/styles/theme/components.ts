@@ -24,8 +24,6 @@ function toShellVars(options: ThemeOptions) {
     "--ax-theme-shell-bg": opts.bg,
     "--ax-theme-shell-color": opts.color,
     "--ax-theme-shell-scrollbar-color": opts.scrollbar?.color,
-    "--ax-theme-shell-sidebar-bg": opts.sidebar?.bg,
-    "--ax-theme-shell-sidebar-color": opts.sidebar?.color,
     "--ax-theme-shell-sidebar-padding": opts.sidebar?.padding,
     "--ax-theme-shell-sidebar-border": toBorder(options, opts.sidebar?.border),
     "--ax-theme-shell-view-toolbar-bg": opts.view?.toolbar?.bg,
@@ -112,13 +110,18 @@ function toNavMenuVars(options: ThemeOptions) {
   const opts = options.components?.NavMenu ?? {};
   return {
     "--ax-theme-nav-menu-bg": opts.bg,
+    "--ax-theme-nav-menu-color": opts.color,
+    "--ax-theme-nav-menu-right-border": opts.borderRight,
+    "--ax-theme-nav-menu-margin": opts.margin,
     "--ax-theme-nav-menu-border-color": opts.border?.color,
     "--ax-theme-nav-menu-border": toBorder(options, opts.border),
     "--ax-theme-nav-menu-shadow": opts.shadow,
     "--ax-theme-nav-menu-width": opts.width,
     "--ax-theme-nav-menu-zIndex": opts.zIndex,
+    "--ax-theme-nav-menu-radius": opts.border?.radius,
 
     "--ax-theme-nav-menu-header-bg": opts.header?.bg,
+    "--ax-theme-nav-menu-header-padding": opts.header?.padding,
     "--ax-theme-nav-menu-header-color": opts.header?.color,
 
     "--ax-theme-nav-menu-icons-width": opts.buttons?.width,
