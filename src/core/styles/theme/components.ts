@@ -27,6 +27,7 @@ function toShellVars(options: ThemeOptions) {
     "--ax-theme-shell-sidebar-padding": opts.sidebar?.padding,
     "--ax-theme-shell-sidebar-border": toBorder(options, opts.sidebar?.border),
     "--ax-theme-shell-view-toolbar-bg": opts.view?.toolbar?.bg,
+    "--ax-theme-shell-view-toolbar-gap": opts.view?.toolbar?.gap,
     "--ax-theme-shell-view-toolbar-color": opts.view?.toolbar?.color,
     "--ax-theme-shell-view-toolbar-padding": opts.view?.toolbar?.padding,
     "--ax-theme-shell-view-toolbar-border": toBorder(
