@@ -318,8 +318,7 @@
   }
 }
 
-.menu.search .item {
-  background-color: transparent;
+.menu.search .item .title {
   &:hover {
     background-color: var(--ax-nav-menu-item-hover-bg);
     color: var(--ax-nav-menu-item-hover-color);
