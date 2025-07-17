@@ -3,7 +3,7 @@ import { Box, Popper, useClassNames, usePopperTrigger } from "../core";
 import * as TYPES from "./types";
 
 import { GridColumn } from "./grid-column";
-import { capitalizeWord } from "./utils";
+import { capitalizeWord, getNumberScale } from "./utils";
 import { useTranslation } from "./translate";
 import styles from "./grid.module.scss";
 
@@ -55,12 +55,18 @@ function GridFooterRowColumn(
   const { index, selected, data: column, row } = props;
 
   const textValue = React.useMemo(() => {
-    if (!column.aggregate) {
+    if (!column.aggregate || !row.aggregate || row.aggregate[column.name] == null) {
       return null;
     }
     let _value = row.aggregate[column.name];
     if (column.aggregate && column.formatter) {
-      _value = column.formatter(column, _value, { [column.name]: _value });
+      _value = column.formatter(
+        { ...column, scale: getNumberScale(_value) },
+        _value,
+        {
+          [column.name]: _value,
+        },
+      );
     }
     return _value;
   }, [column, row]);

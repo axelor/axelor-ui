@@ -27,6 +27,33 @@ export const isRowVisible = (rows: GridRow[], { parent }: any): boolean => {
 export const isRowCheck = (column: GridColumn) => column.type === "row-checked";
 export const isRowExpand = (column: GridColumn) => column.type === "row-expand";
 
+/**
+ * Retrieves the raw value of a given record's column. It uses {@link GridColumn.valueGetter}
+ * if provided; otherwise, it directly retrieves the value from the record.
+ *
+ * @param {GridRow["record"]} record - The record object that contains the column value.
+ * @param {GridColumn} column - The column to extract from the record object.
+ * @return {*} The raw value of the specified column from the provided record.
+ */
+function getRawValue(record: GridRow["record"], column: GridColumn) {
+  return column.valueGetter
+    ? column.valueGetter(column, record)
+    : record?.[column.name];
+}
+
+/**
+ * Retrieves the formatted value of a given record's column. It uses {@link GridColumn.formatter}
+ * if provided; otherwise, it returns the raw value.
+ *
+ * @param {GridRow["record"]} record - The record object that contains the column value.
+ * @param {GridColumn} column -The column to extract from the record object.
+ * @return {*} The formatted value  of the specified column from the provided record.
+ */
+function getFormattedValue(record: GridRow["record"], column: GridColumn) {
+  const value = getRawValue(record, column);
+  return column.formatter ? column.formatter(column, value, record) : value;
+}
+
 export const getRows = ({
   columns,
   orderBy,
@@ -49,9 +76,11 @@ export const getRows = ({
       ? sortFn(data, [...orderBy], columns)
       : doSort(data, [...orderBy], columns);
   }
+
   if (groupBy && groupBy.length) {
     data = doGroup(data, [...groupBy], columns);
   }
+
   return doIndexing({
     data: [...data],
     columns,
@@ -72,38 +101,71 @@ export function getColumnWidth(
   );
 }
 
+/**
+ * Determines the scale (number of decimal places) of a given value.
+ *
+ * @param {number|string} value - The numeric value to evaluate. Can be a number or a string representation of a number.
+ * @return {number} The count of decimal places. Returns 0 if the value has no decimal part.
+ */
+export function getNumberScale(value: number | string): number {
+  const parts = value.toString().split(".");
+  return parts[1] ? parts[1].length : 0;
+}
+
+/**
+ * Processes hierarchical data and flattens it into a single array based on the specified field.
+ *
+ * @param {any[]} data - The array of data to be flattened.
+ * @param {GridColumn} field - The field used to extract raw values from each data entry.
+ * @return {any[]} An array containing the flattened data.
+ */
+function getFlatData(data: any[] = [], field: GridColumn): any[] {
+  return data
+    .map((x) => {
+      if (x.type === ROW_TYPE.GROUP_ROW) {
+        return getFlatData(x.data, field);
+      }
+      return getRawValue(x, field) || 0;
+    })
+    .flatMap((element) => element);
+}
+
 export function doAggregate(
   data: any[] = [],
   field: GridColumn,
-): number | string {
-  if (!field || !field.name || !field.aggregate) return 0;
-  const flatData = data.map((x) => {
-    if (x.type === ROW_TYPE.GROUP_ROW) {
-      return doAggregate(x.data, field);
-    }
-    return field.aggregate === "count" ? 1 : x[field.name] || 0;
-  });
+): number | null {
+  if (!field || !field.name || !field.aggregate) return null;
+
+  const flatData = getFlatData(data, field);
+
   switch (field.aggregate) {
     case "count":
+      return flatData.length;
     case "sum":
     case "avg": {
-      const total = flatData.reduce((total, val) => total + Number(val), 0);
-      return Number(
+      const total = flatData.reduce(
+        (_total: number, val) => _total + Number(val),
+        0,
+      );
+      const aggregateValue = Number(
         field.aggregate === "avg" && flatData.length
-          ? Math.round(total / flatData.length)
+          ? total / flatData.length
           : total,
-      ).toFixed(2);
+      );
+      return Number(
+        aggregateValue.toFixed(Math.max(...flatData.map(getNumberScale))),
+      );
     }
     case "min":
       return Math.min(...flatData);
     case "max":
       return Math.max(...flatData);
     default:
-      return 0;
+      return null;
   }
 }
 
-export function doSort(
+function doSort(
   data: any[],
   sorts: GridSortColumn[],
   columns: GridColumn[] = [],
@@ -119,14 +181,10 @@ export function doSort(
         field.type &&
         ["decimal", "integer", "long"].includes(field.type);
 
-      const formatter = (data: any) => {
-        const value = data[name];
-        return field && field.formatter
-          ? field.formatter(field, value, data)
-          : value;
-      };
-      const getValue = (data: any) =>
-        isNumber ? Number(data[field.name] || 0) : formatter(data);
+      const getValue = (rec: GridRow["record"]) =>
+        isNumber
+          ? Number(getRawValue(rec, field ?? { name }) || 0)
+          : getFormattedValue(rec, field ?? { name });
 
       const value1 = getValue(obj1);
       const value2 = getValue(obj2);
@@ -138,7 +196,7 @@ export function doSort(
   });
 }
 
-export function doGroup(
+function doGroup(
   data: any[],
   groups: GridGroup[],
   columns: GridColumn[] = [],
@@ -148,13 +206,11 @@ export function doGroup(
   if (!group) return data;
   const { name } = group;
   const fieldInfo = columns.find((x) => x.name === name) || ({} as GridColumn);
-  const groupData: any = {};
+  const groupData: Record<string, any> = {};
+
   data.forEach((record) => {
-    const key =
-      (fieldInfo.formatter
-        ? fieldInfo.formatter(fieldInfo, record[fieldInfo.name], record)
-        : record[name]) || "";
-    let target = groupData[key] || {
+    const key = getFormattedValue(record, fieldInfo) || "";
+    const target = groupData[key] || {
       data: [],
       type: ROW_TYPE.GROUP_ROW,
       level,
@@ -163,7 +219,7 @@ export function doGroup(
       value: key,
       original: record[fieldInfo.name],
     };
-    target.data.push(record);
+    target.data!.push(record);
     groupData[key] = target;
   });
 
@@ -175,7 +231,7 @@ export function doGroup(
   if (groups.length) {
     groupKeys.forEach((k) => {
       groupData[k].data = doGroup(
-        groupData[k].data,
+        groupData[k].data!,
         [...groups],
         columns,
         level + 1,
@@ -197,7 +253,7 @@ export function doIndexing(
   },
   parent = null,
   defaultState = "open",
-): any[] {
+): GridRow[] {
   const newData = [];
   const hasAggregation = columns.some((x) => x.aggregate);
   for (let i = 0; i < data.length; i++) {
@@ -206,17 +262,22 @@ export function doIndexing(
       record.type === ROW_TYPE.GROUP_ROW && Array.isArray(record.data);
     if (isGroupRecord) {
       const { data, ...groupRecord } = record;
-      const aggregate: any = {};
+      const aggregate: Record<string, number> = {};
       groupRecord.id = `${parent ? `${parent}_` : ""}${groupRecord.column}_${
         groupRecord.value
       }_${groupRecord.level}`;
       const parentId = groupRecord.id;
-      hasAggregation &&
+
+      if (hasAggregation) {
         columns
           .filter((x) => x.aggregate)
           .forEach((field) => {
-            aggregate[field.name] = doAggregate(record.data, field);
+            const aggregateValue = doAggregate(data, field);
+            if (aggregateValue !== null) {
+              aggregate[field.name] = aggregateValue;
+            }
           });
+      }
 
       // header row
       newData.push({
@@ -233,7 +294,7 @@ export function doIndexing(
         ...doIndexing({ columns, data, rows }, parentId, defaultState),
       );
       // footer row
-      hasAggregation &&
+      if (hasAggregation) {
         newData.push({
           key: `footer_${parentId}`,
           type: ROW_TYPE.FOOTER_ROW,
@@ -241,6 +302,7 @@ export function doIndexing(
           aggregate,
           record: { ...groupRecord, id: `footer_${parentId}` },
         });
+      }
     } else {
       newData.push({
         key: record.id || `ind_${i}`,
@@ -250,7 +312,7 @@ export function doIndexing(
       });
     }
   }
-  return newData;
+  return newData as GridRow[];
 }
 
 export const navigator = (

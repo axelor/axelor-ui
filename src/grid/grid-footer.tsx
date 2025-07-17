@@ -16,8 +16,8 @@ export function GridFooter(props: GridFooterProps) {
       aggregate: columns
         .filter((x) => x.aggregate)
         .reduce(
-          (data, column) => ({
-            ...data,
+          (_data, column) => ({
+            ..._data,
             [column.name]: doAggregate(records, column),
           }),
           {},

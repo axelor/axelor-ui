@@ -17,7 +17,11 @@ export interface GridColumn {
   searchable?: boolean;
   action?: boolean;
   aggregate?: "sum" | "min" | "max" | "avg" | "count";
-  formatter?: (column: GridColumn, value: any, record: any) => any;
+  formatter?: (
+    column: GridColumn & { scale?: number },
+    value: any,
+    record: any,
+  ) => any;
   valueGetter?: (column: GridColumn, record: any) => any;
   renderer?: (props: any) => any;
   $changed?: boolean;
@@ -58,7 +62,7 @@ export interface GridRow {
   key: any;
   type: "row" | "group-row" | "footer-row";
   parent?: string | null;
-  aggregate?: any;
+  aggregate?: Record<string, number>;
   record?: any;
   state?: "open" | "close";
   expand?: boolean;
