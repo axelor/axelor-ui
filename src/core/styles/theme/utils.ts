@@ -1,7 +1,7 @@
 import Color from "color";
 
 export type ColorParam =
-  | Color
+  | typeof Color
   | string
   | ArrayLike<number>
   | number
