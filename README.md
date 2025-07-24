@@ -5,7 +5,7 @@ React components by Axelor.
 ## Prerequisite
 
 - node >= v20
-- pnpm >= 9
+- pnpm >= 10
 
 ```bash
 # Nodejs
@@ -19,7 +19,7 @@ $ nvm install 20
 
 # pnpm
 $ corepack enable
-$ corepack prepare pnpm@latest-9 --activate
+$ corepack prepare pnpm@latest-10 --activate
 ```
 
 ## Quick start
