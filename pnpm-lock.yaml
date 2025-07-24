@@ -51,8 +51,8 @@ importers:
         specifier: ^10.1.1
         version: 10.1.1
       jsbarcode:
-        specifier: ^3.11.6
-        version: 3.11.6
+        specifier: ^3.12.1
+        version: 3.12.1
       qrcode:
         specifier: ^1.5.4
         version: 1.5.4
@@ -1987,8 +1987,8 @@ packages:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
     hasBin: true
 
-  jsbarcode@3.11.6:
-    resolution: {integrity: sha512-G5TKGyKY1zJo0ZQKFM1IIMfy0nF2rs92BLlCz+cU4/TazIc4ZH+X1GYeDRt7TKjrYqmPfTjwTBkU/QnQlsYiuA==}
+  jsbarcode@3.12.1:
+    resolution: {integrity: sha512-QZQSqIknC2Rr/YOUyOkCBqsoiBAOTYK+7yNN3JsqfoUtJtkazxNw1dmPpxuv7VVvqW13kA3/mKiLq+s/e3o9hQ==}
 
   jsdoc-type-pratt-parser@4.1.0:
     resolution: {integrity: sha512-Hicd6JK5Njt2QB6XYFS7ok9e37O8AYk3jTcppG4YVQnYjOemymvTcmc7OWsmq/Qqj5TdRFO5/x/tIPmBeRtGHg==}
@@ -4548,7 +4548,7 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
-  jsbarcode@3.11.6: {}
+  jsbarcode@3.12.1: {}
 
   jsdoc-type-pratt-parser@4.1.0: {}
 
