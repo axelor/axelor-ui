@@ -45,8 +45,8 @@ importers:
         specifier: ^1.11.13
         version: 1.11.13
       focus-trap:
-        specifier: ^7.6.2
-        version: 7.6.2
+        specifier: ^7.6.5
+        version: 7.6.5
       immer:
         specifier: ^10.1.1
         version: 10.1.1
@@ -1774,8 +1774,8 @@ packages:
   flatted@3.3.1:
     resolution: {integrity: sha512-X8cqMLLie7KsNUDSdzeN8FYK9rEt4Dt67OsG/DNGnYTSDBG4uFAJFBnUeiV+zCVAvwFy56IjM9sH51jVaEhNxw==}
 
-  focus-trap@7.6.2:
-    resolution: {integrity: sha512-9FhUxK1hVju2+AiQIDJ5Dd//9R2n2RAfJ0qfhF4IHGHgcoEUTMpbTeG/zbEuwaiYXfuAH6XE0/aCyxDdRM+W5w==}
+  focus-trap@7.6.5:
+    resolution: {integrity: sha512-7Ke1jyybbbPZyZXFxEftUtxFGLMpE2n6A+z//m4CRDlj0hW+o3iYSmh8nFlYMurOiJVDmJRilUQtJr08KfIxlg==}
 
   for-each@0.3.5:
     resolution: {integrity: sha512-dKx12eRCVIzqCxFGplyFKJMPvLEWgmNtUrpTiJIR5u97zEhRG8ySrtboPHZXx7daLxQVrl643cTzbab2tkQjxg==}
@@ -4335,7 +4335,7 @@ snapshots:
 
   flatted@3.3.1: {}
 
-  focus-trap@7.6.2:
+  focus-trap@7.6.5:
     dependencies:
       tabbable: 6.2.0
 
