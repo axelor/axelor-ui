@@ -22,6 +22,9 @@
     "./core/*": "./src/core/*/index.ts",
     "./icons/*": "./src/icons/*/index.ts"
   },
+  "engines": {
+    "node": ">=20.19.4"
+  },
   "scripts": {
     "preinstall": "node scripts/check-pnpm.js",
     "format": "prettier -w '**/*.{ts,tsx,js,jsx,json,css,scss}'",
@@ -68,7 +71,7 @@
     "@storybook/react": "^8.6.14",
     "@storybook/react-vite": "^8.6.14",
     "@storybook/test": "^8.6.14",
-    "@types/node": "^22.9.1",
+    "@types/node": "^20.19.4",
     "@types/prop-types": "^15.7.15",
     "@types/react": "^18.3.12",
     "@types/react-beautiful-dnd": "^13.1.8",
