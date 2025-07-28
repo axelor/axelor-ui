@@ -95,14 +95,14 @@ function processConfig(config) {
 async function doPackage(dir, out) {
   const pkgPath = path.join(dir, "package.json");
   const newPath = path.join(out, "package.json");
-  const pkgData = await fse.readJSON(pkgPath, {
+  const pkgData = fse.readJsonSync(pkgPath, {
     encoding: "utf8",
   });
 
   const { files, scripts, eslintConfig, devDependencies, ...othData } = pkgData;
   const newData = processConfig(othData);
 
-  await fse.writeJSON(newPath, newData, {
+  fse.writeJsonSync(newPath, newData, {
     encoding: "utf8",
     spaces: 2,
   });
@@ -111,8 +111,8 @@ async function doPackage(dir, out) {
   ["README.md", "LICENSE.md", "CHANGELOG.md", "LICENSE"].forEach((name) => {
     const srcFile = path.join(dir, name);
     const newFile = path.join(out, name);
-    if (fse.existsSync(srcFile)) {
-      fse.copyFile(srcFile, newFile);
+    if (fse.pathExistsSync(srcFile)) {
+      fse.copySync(srcFile, newFile);
     }
   });
 }
