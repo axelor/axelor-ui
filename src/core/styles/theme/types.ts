@@ -153,7 +153,8 @@ export interface ThemeOptions {
       width?: string;
       zIndex?: number;
       borderRight?: string;
-      header?: ThemeElementColors & ThemeElementSpacing & { border?: ThemeElementBorder };
+      header?: ThemeElementColors &
+        ThemeElementSpacing & { border?: ThemeElementBorder };
       item?: ThemeElementColors &
         ThemeElementSpacing & { border?: ThemeElementBorder };
       item_hover?: ThemeElementColors;

@@ -7,7 +7,12 @@ import { useClassNames, useTheme } from "../core";
 import { BootstrapIcon } from "../icons/bootstrap-icon";
 
 import * as TYPES from "./types";
-import { CONFIG, getCellHeight, getDateFromOffset, getLineHeight } from "./utils";
+import {
+  CONFIG,
+  getCellHeight,
+  getDateFromOffset,
+  getLineHeight,
+} from "./utils";
 import classes from "./gantt.module.scss";
 
 function disablePreview(preview: (e: any, options: any) => void) {

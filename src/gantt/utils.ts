@@ -24,9 +24,7 @@ function memoizeValue<T>(getValue: () => T) {
 }
 
 const getFontSize = memoizeValue<number>(() =>
-  parseFloat(
-    getComputedStyle(document.body).fontSize || "16px",
-  ),
+  parseFloat(getComputedStyle(document.body).fontSize || "16px"),
 );
 
 export const getCellHeight = memoizeValue<number>(
