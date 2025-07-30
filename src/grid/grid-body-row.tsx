@@ -43,7 +43,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
 
   const handleUpdate = React.useCallback(
     (values: any) => {
-      onUpdate && onUpdate(rowIndex, values);
+      onUpdate?.(rowIndex, values);
     },
     [onUpdate, rowIndex],
   );
@@ -55,24 +55,12 @@ export const GridBodyRow = React.memo(function GridBodyRow(
       cellIndex: number,
     ) {
       setTimeout(() => {
-        onCellClick && onCellClick(e, cell, cellIndex, data, rowIndex);
+        onCellClick?.(e, cell, cellIndex, data, rowIndex);
       }, 50);
-      onClick && onClick(e, data, rowIndex, cellIndex, cell);
+      onClick?.(e, data, rowIndex, cellIndex, cell);
     },
     [data, rowIndex, onCellClick, onClick],
   );
-
-  function getColumnValue(rawValue: any, column: TYPES.GridColumn) {
-    return column.formatter
-      ? column.formatter(column, rawValue, data.record)
-      : rawValue;
-  }
-
-  function getColumnRawValue(column: TYPES.GridColumn) {
-    return column.valueGetter
-      ? column.valueGetter(column, data.record)
-      : data.record[column.name];
-  }
 
   const renderCheckbox = React.useCallback(
     () => (
@@ -120,14 +108,13 @@ export const GridBodyRow = React.memo(function GridBodyRow(
   const DragComponent: any = draggable ? GridDNDRow : React.Fragment;
   const borderWidth = 1;
 
-  function collectColumnProps(column: TYPES.GridColumn, value: any) {
+  function collectColumnProps(column: TYPES.GridColumn) {
     if (isRowCheck(column)) {
       return { renderChildren: renderCheckbox };
     }
     if (isRowExpand(column)) {
       return { renderChildren: renderExpandIcon };
     }
-    return { children: value };
   }
 
   return (
@@ -144,27 +131,21 @@ export const GridBodyRow = React.memo(function GridBodyRow(
             onDoubleClick && onDoubleClick(e, data, rowIndex)
           }
         >
-          {columns.map((column, index) => {
-            const rawValue = getColumnRawValue(column);
-            const value = getColumnValue(rawValue, column);
-            return (
-              <GridColumn
-                key={column.id ?? column.name}
-                data={column}
-                index={index}
-                type="body"
-                record={data.record}
-                value={value}
-                rawValue={rawValue}
-                focus={editCell === index}
-                selected={selectedCell === index}
-                renderer={column.renderer || cellRenderer}
-                onClick={handleCellClick}
-                onUpdate={handleUpdate}
-                {...collectColumnProps(column, value)}
-              />
-            );
-          })}
+          {columns.map((column, index) => (
+            <GridBodyRowColumn
+              key={column.id ?? column.name}
+              data={column}
+              index={index}
+              type="body"
+              record={data.record}
+              focus={editCell === index}
+              selected={selectedCell === index}
+              renderer={column.renderer || cellRenderer}
+              onClick={handleCellClick}
+              onUpdate={handleUpdate}
+              {...collectColumnProps(column)}
+            />
+          ))}
         </RowComponent>
       </DragComponent>
       {RowDetails && expandState?.expand && (
@@ -186,3 +167,28 @@ export const GridBodyRow = React.memo(function GridBodyRow(
     </>
   );
 });
+
+function GridBodyRowColumn(
+  props: TYPES.GridColumnProps & {
+    record: TYPES.GridRow["record"];
+    renderChildren?: (
+      column: TYPES.GridColumn,
+      value: TYPES.GridColumnProps["value"],
+    ) => React.ReactNode;
+  },
+) {
+  const { record, data: column } = props;
+  const { valueGetter, formatter } = column;
+
+  const rawValue = useMemo(
+    () => (valueGetter ? valueGetter(column, record) : record[column.name]),
+    [valueGetter, column, record],
+  );
+
+  const value = useMemo(
+    () => (formatter ? formatter(column, rawValue, record) : rawValue),
+    [column, formatter, rawValue, record],
+  );
+
+  return <GridColumn {...props} {...{ value, rawValue, children: value }} />;
+}
