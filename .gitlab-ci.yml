@@ -10,7 +10,7 @@ cache: &global_cache
 
 build_package:
   stage: build
-  image: node:20.19-bullseye
+  image: node:22.17-bullseye
   cache:
     <<: *global_cache
   artifacts:
@@ -20,15 +20,14 @@ build_package:
   only:
     - tags
   before_script:
-    - corepack enable
-    - corepack prepare pnpm@10.13.1 --activate
+    - corepack enable pnpm
   script:
     - pnpm install
     - pnpm build
       
 publish_to_npm:
   stage: publish
-  image: node:20.19-bullseye
+  image: node:22.17-bullseye
   cache:
     <<: *global_cache
     policy: pull
