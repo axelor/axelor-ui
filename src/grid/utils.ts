@@ -217,9 +217,10 @@ function doGroup(
       title: fieldInfo.title,
       column: name,
       value: key,
-      original: record[fieldInfo.name],
+      original: getRawValue(record, fieldInfo),
     };
     target.data!.push(record);
+    target.total = (target.total ?? 0) + 1;
     groupData[key] = target;
   });
 
@@ -261,8 +262,8 @@ export function doIndexing(
     const isGroupRecord =
       record.type === ROW_TYPE.GROUP_ROW && Array.isArray(record.data);
     if (isGroupRecord) {
-      const { data, ...groupRecord } = record;
       const aggregate: Record<string, number> = {};
+      const { data: groupData, ...groupRecord } = record;
       groupRecord.id = `${parent ? `${parent}_` : ""}${groupRecord.column}_${
         groupRecord.value
       }_${groupRecord.level}`;
@@ -272,7 +273,7 @@ export function doIndexing(
         columns
           .filter((x) => x.aggregate)
           .forEach((field) => {
-            const aggregateValue = doAggregate(data, field);
+            const aggregateValue = doAggregate(groupData, field);
             if (aggregateValue !== null) {
               aggregate[field.name] = aggregateValue;
             }
@@ -287,12 +288,18 @@ export function doIndexing(
           (rows.find((x) => x.key === parentId) || {}).state || defaultState,
         type: ROW_TYPE.GROUP_ROW,
         aggregate,
-        record: { ...groupRecord, total: data.length },
+        record: groupRecord,
       });
+
       // child rows
       newData.push(
-        ...doIndexing({ columns, data, rows }, parentId, defaultState),
+        ...doIndexing(
+          { columns, data: groupData, rows },
+          parentId,
+          defaultState,
+        ),
       );
+
       // footer row
       if (hasAggregation) {
         newData.push({
