@@ -103,6 +103,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
     index,
     checkType,
     selectionType,
+    groupBy,
     renderer,
     onCheckAll,
     onSort,
@@ -156,6 +157,9 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
     }
 
     const canResize = column.name !== "__reorder__" && !column.action;
+    const isGrouped = groupBy?.map((g) => g.name).includes(column.name);
+    const canGroup = onGroup && !isGrouped;
+    const canUnGroup = onUngroup && isGrouped;
     const canSort = onSort && column.sortable !== false;
     const hasMenu =
       !column.action &&
@@ -264,34 +268,42 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
             </>
           )}
 
-          {(onGroup || onUngroup) && (
+          {(canGroup || canUnGroup) && (
             <>
               {canSort && <MenuDivider />}
 
-              <MenuItem
-                onClick={(e: SyntheticEvent) => {
-                  handleHide();
-                  onGroup?.(e, { name: column.name });
-                }}
-              >
-                <Box d="flex" alignItems="center" gap={4}>
-                  <span className={styles.headerColumnMenuIcon} />
-                  {t("Group by")}
-                  <i>{column.title}</i>
-                </Box>
-              </MenuItem>
+              {canGroup && (
+                <>
+                  <MenuItem
+                    onClick={(e: SyntheticEvent) => {
+                      handleHide();
+                      onGroup?.(e, { name: column.name });
+                    }}
+                  >
+                    <Box d="flex" alignItems="center" gap={4}>
+                      <span className={styles.headerColumnMenuIcon} />
+                      {t("Group by")}
+                      <i>{column.title}</i>
+                    </Box>
+                  </MenuItem>
+                </>
+              )}
 
-              <MenuItem
-                onClick={(e: SyntheticEvent) => {
-                  handleHide();
-                  onUngroup?.(e, { name: column.name });
-                }}
-              >
-                <Box d="flex" alignItems="center" gap={4}>
-                  <span className={styles.headerColumnMenuIcon} />
-                  {t("Ungroup")}
-                </Box>
-              </MenuItem>
+              {canUnGroup && (
+                <>
+                  <MenuItem
+                    onClick={(e: SyntheticEvent) => {
+                      handleHide();
+                      onUngroup?.(e, { name: column.name });
+                    }}
+                  >
+                    <Box d="flex" alignItems="center" gap={4}>
+                      <span className={styles.headerColumnMenuIcon} />
+                      {t("Ungroup")}
+                    </Box>
+                  </MenuItem>
+                </>
+              )}
             </>
           )}
 
