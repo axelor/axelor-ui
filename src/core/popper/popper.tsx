@@ -73,8 +73,53 @@ const PlacementMapping: Record<PopperPlacement, Placement> = {
   "bottom-end": "bottom-end",
 };
 
-export const Popper = ({
-  open,
+export function Popper(props: PopperProps) {
+  const { container, disablePortal, ...rest } = props;
+
+  if (disablePortal) {
+    return <PopperInner {...rest} />;
+  }
+
+  return (
+    <Portal container={container}>
+      <PopperInner {...rest} />
+    </Portal>
+  );
+}
+
+function PopperInner(props: PopperProps) {
+  const { open, transition, ...rest } = props;
+  const Transition = transition || Fade;
+  const [exited, setExited] = useState(true);
+
+  const handleEnter = () => {
+    setExited(false);
+  };
+
+  const handleExited = () => {
+    setExited(true);
+  };
+
+  if (props.target === null) return null;
+  if (exited && !open) return null;
+
+  return (
+    <Transition
+      in={open}
+      appear
+      mountOnEnter
+      unmountOnExit
+      onEnter={handleEnter}
+      onExited={handleExited}
+    >
+      <div>
+        <PopperElement {...rest} />
+      </div>
+    </Transition>
+  );
+}
+
+function PopperElement({
   target,
   placement: popperPlacement = "bottom",
   offset,
@@ -87,17 +132,12 @@ export const Popper = ({
   role = "tooltip",
   bg = "body",
   color = "body",
-  container,
-  transition: Transition = Fade,
   children,
-  disablePortal,
   contentClassName,
   ...props
-}: PopperProps) => {
+}: PopperProps) {
   const { dir } = useTheme();
   const classNames = useClassNames();
-
-  const [exited, setExited] = useState(true);
 
   const placement = PlacementMapping[popperPlacement];
   const [skidding = 0, distance = 0] = offset || [];
@@ -134,14 +174,6 @@ export const Popper = ({
     }
   }, [target, refs]);
 
-  const handleEnter = () => {
-    setExited(false);
-  };
-
-  const handleExited = () => {
-    setExited(true);
-  };
-
   const side = currentPlacement.split("-")[0];
 
   const staticSide = {
@@ -151,39 +183,7 @@ export const Popper = ({
     left: "right",
   }[side] as string;
 
-  const renderContent = (
-    <Box
-      className={styles.wrapper}
-      role={role}
-      bg={bg}
-      color={color}
-      rounded={rounded}
-    >
-      <div className={contentClassName}>{children}</div>
-      {arrow && (
-        <span
-          ref={arrowRef}
-          className={clsx(
-            "AxPopper_arrow",
-            styles.arrow,
-            styles[`${staticSide}-arrow`],
-          )}
-          style={{
-            left: middlewareData?.arrow?.x ?? "",
-            top: middlewareData?.arrow?.y ?? "",
-            right: "",
-            bottom: "",
-            [staticSide]: `${-(arrowRef?.current?.offsetWidth ?? 0) / 2}px`,
-          }}
-        />
-      )}
-    </Box>
-  );
-
-  if (target === null) return null;
-  if (exited && !open) return null;
-
-  const wrapper = (
+  return (
     <div
       ref={refs.setFloating}
       className={classNames(styles.popper, className, {
@@ -195,24 +195,32 @@ export const Popper = ({
       {...props}
       style={{ position: floatingStrategy, top: y ?? "", left: x ?? "" }}
     >
-      {Transition ? (
-        <Transition
-          in={open}
-          appear
-          onEnter={handleEnter}
-          onExited={handleExited}
-        >
-          {renderContent}
-        </Transition>
-      ) : (
-        renderContent
-      )}
+      <Box
+        className={styles.wrapper}
+        role={role}
+        bg={bg}
+        color={color}
+        rounded={rounded}
+      >
+        <div className={contentClassName}>{children}</div>
+        {arrow && (
+          <span
+            ref={arrowRef}
+            className={clsx(
+              "AxPopper_arrow",
+              styles.arrow,
+              styles[`${staticSide}-arrow`],
+            )}
+            style={{
+              left: middlewareData?.arrow?.x ?? "",
+              top: middlewareData?.arrow?.y ?? "",
+              right: "",
+              bottom: "",
+              [staticSide]: `${-(arrowRef?.current?.offsetWidth ?? 0) / 2}px`,
+            }}
+          />
+        )}
+      </Box>
     </div>
   );
-
-  return disablePortal ? (
-    wrapper
-  ) : (
-    <Portal container={container}>{wrapper}</Portal>
-  );
-};
+}
