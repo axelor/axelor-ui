@@ -438,7 +438,9 @@ export const GanttLine = React.memo(function GanttLine(props: {
         />
 
         <div
-          ref={leftResizeDrag}
+          ref={(node) => {
+            leftResizeDrag(node);
+          }}
           className={classNames(classes.ganttLineDrag, {
             [classes.left]: !rtl,
             [classes.right]: rtl,
@@ -468,7 +470,9 @@ export const GanttLine = React.memo(function GanttLine(props: {
         />
 
         <div
-          ref={rightResizeDrag}
+          ref={(node) => {
+            rightResizeDrag(node);
+          }}
           className={classNames(classes.ganttLineDrag, {
             [classes.left]: rtl,
             [classes.right]: !rtl,
@@ -481,7 +485,9 @@ export const GanttLine = React.memo(function GanttLine(props: {
 
         {allowProgress && (
           <div
-            ref={progressDrag}
+            ref={(node) => {
+              progressDrag(node);
+            }}
             className={classes.ganttLineProgressIndicator}
             style={{
               [rtl ? "right" : "left"]: Math.min(

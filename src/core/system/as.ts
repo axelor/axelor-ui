@@ -31,7 +31,7 @@ export interface OverridableComponent<T extends React.ElementType, P = {}> {
   <C extends React.ElementType = T>(
     props: OverridableComponentProps<C, P>,
     context?: any,
-  ): JSX.Element | null;
+  ): React.JSX.Element | null;
   displayName?: string;
   propTypes?: WeakValidationMap<any>;
   contextTypes?: ValidationMap<any>;

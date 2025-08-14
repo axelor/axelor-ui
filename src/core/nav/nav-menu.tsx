@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { JSX, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { MaterialIcon } from "../../icons/material-icon";
 import { ClickAwayListener } from "../click-away-listener";
@@ -716,7 +716,7 @@ function SearchMenu({
   const [text, setText] = useState("");
   const [cursor, setCursor] = useState(0);
   const itemsRef = useRef<HTMLDivElement>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(null);
 
   const hover = true;
 
@@ -799,7 +799,11 @@ function SearchMenu({
   }, [cancelSearch]);
 
   useEffect(() => {
-    return () => clearTimeout(timerRef.current);
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
   }, []);
 
   return (

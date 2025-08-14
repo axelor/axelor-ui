@@ -1,4 +1,4 @@
-import { ComponentProps, ComponentType, forwardRef, useState } from "react";
+import { JSX, ComponentProps, ComponentType, forwardRef, useState } from "react";
 import { Box, useClassNames } from "..";
 import styled from "../styled";
 

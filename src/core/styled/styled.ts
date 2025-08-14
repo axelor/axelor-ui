@@ -1,5 +1,5 @@
 import isPropValid from "@emotion/is-prop-valid";
-import { createElement, forwardRef, useMemo } from "react";
+import { JSX, createElement, forwardRef, useMemo } from "react";
 import { ClassValue } from "../clsx";
 import { useClassNames } from "../styles";
 import { StyleProps, useStyleProps } from "../system";

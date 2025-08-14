@@ -85,7 +85,7 @@ export const Fade = forwardRef<HTMLElement, FadeProps>(
               const { visibility, display, ...rest } = style;
               style = rest;
             }
-            return cloneElement(children as React.ReactElement, {
+            return cloneElement(children as React.ReactElement<any>, {
               style,
               ref: nodeRef,
             });

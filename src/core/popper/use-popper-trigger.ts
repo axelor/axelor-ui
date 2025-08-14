@@ -21,27 +21,33 @@ export function usePopperTrigger({
   const [contentEl, setContentEl] = useState<any>();
   const [open, setOpen] = useState(false);
 
-  const hiding = useRef<boolean>();
-  const inside = useRef<boolean>();
-  const timer = useRef<number>();
+  const hiding = useRef<boolean>(false);
+  const inside = useRef<boolean>(false);
+  const timer = useRef<number>(null);
 
   const { open: showDelay, close: hideDelay } = {
     ...defaultDelay[trigger],
     ...delay,
   };
 
+  const clearTimer = useCallback(() => {
+    if (timer.current) {
+      clearTimeout(timer.current);
+    }
+  }, []);
+
   const showPopper = useCallback(() => {
-    clearTimeout(timer.current);
+    clearTimer();
     timer.current = window.setTimeout(() => setOpen(true), showDelay);
-  }, [setOpen, showDelay]);
+  }, [setOpen, showDelay, clearTimer]);
 
   const hidePopper = useCallback(() => {
     if (inside.current) return;
-    clearTimeout(timer.current);
+    clearTimer();
     timer.current = window.setTimeout(() => {
       setOpen(false);
     }, hideDelay);
-  }, [setOpen, hideDelay]);
+  }, [setOpen, hideDelay, clearTimer]);
 
   const togglePopper = useCallback(() => {
     setOpen((state) => !state);
@@ -67,7 +73,7 @@ export function usePopperTrigger({
   }, [showPopper]);
 
   // clear timeout
-  useEffect(() => () => clearTimeout(timer.current), []);
+  useEffect(() => clearTimer, [clearTimer]);
 
   // handle click trigger
   useEffect(() => {

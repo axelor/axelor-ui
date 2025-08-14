@@ -118,7 +118,7 @@ export const Grow = forwardRef<HTMLElement, GrowProps>(
         {(state) => {
           if (isValidElement(children)) {
             const style = getTransitionStyle(state, styles as any, children);
-            return cloneElement(children as React.ReactElement, {
+            return cloneElement(children as React.ReactElement<any>, {
               style,
               ref: nodeRef,
             });

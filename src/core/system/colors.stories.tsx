@@ -1,3 +1,4 @@
+import { JSX } from "react";
 import { useTranslation } from "react-i18next";
 import { Box } from "../box/box";
 import { Table, TableBody, TableCell, TableHead, TableRow } from "../table";

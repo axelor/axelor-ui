@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { JSX, forwardRef } from "react";
 import { ClassValue } from "../clsx";
 import { useClasses } from "../styles";
 

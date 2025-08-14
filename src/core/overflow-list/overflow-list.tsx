@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useMemo, useState } from "react";
+import { JSX, forwardRef, useCallback, useMemo, useState } from "react";
 
 import { clsx } from "../clsx";
 import { useRefs } from "../hooks";

@@ -77,7 +77,7 @@ function restoreGridSelection(
 
 export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
   (props, ref) => {
-    const containerRef = React.useRef<any>();
+    const containerRef = React.useRef<any>(null);
 
     const { className, state, setState, columns, records } = props;
     const {

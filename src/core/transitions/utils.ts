@@ -21,7 +21,7 @@ export const getTransitionStyle = (
   styles: {
     [k in TransitionStatus]?: React.CSSProperties;
   },
-  children: React.ReactElement,
+  children: React.ReactElement<any>,
 ): React.CSSProperties => ({
   ...children.props.style,
   ...styles[state],

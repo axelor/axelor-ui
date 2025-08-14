@@ -329,7 +329,7 @@ export const Async = () => {
   const [loading, setLoading] = useState(false);
 
   const [text, setText] = useState("");
-  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(null);
 
   const handleInputChange = useCallback((text: string) => {
     setLoading(true);

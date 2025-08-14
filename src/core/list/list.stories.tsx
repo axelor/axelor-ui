@@ -179,8 +179,8 @@ const NestedList = withStyled(List)(({ children, ...props }, ref) => {
     <List ref={ref} style={{ paddingLeft: 16 }} {...props}>
       {React.Children.map(children, (item) => {
         if (item && (item as ReactElement).type === NestedListItem) {
-          return React.cloneElement(item as ReactElement, {
-            isOpen: activeMenuItem === (item as ReactElement).props.title,
+          return React.cloneElement(item as ReactElement<any>, {
+            isOpen: activeMenuItem === (item as ReactElement<any>).props.title,
             onOpen: open,
             onClose: close,
           });

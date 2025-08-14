@@ -48,7 +48,7 @@ export const AccordionBody = withStyled(AccordionCollapse)((
   const classNames = useClassNames();
   const className = classNames("accordion-body");
   return (
-    <AccordionCollapse ref={ref} {...rest}>
+    <AccordionCollapse ref={ref as any} {...rest}>
       {(state) => {
         return (
           <div className={className}>

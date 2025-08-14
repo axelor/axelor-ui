@@ -13,6 +13,7 @@ import {
   useRole,
 } from "@floating-ui/react";
 import {
+  JSX,
   ReactElement,
   RefObject,
   forwardRef,
@@ -94,7 +95,7 @@ export interface SelectProps<Type, Multiple extends boolean> {
   };
   inputStartAdornment?: ReactElement;
   inputEndAdornment?: ReactElement;
-  selectRef?: RefObject<SelectRefHandler>;
+  selectRef?: RefObject<SelectRefHandler | null>;
   onChange?: (value: SelectValue<Type, Multiple>) => void;
   onOpen?: () => void;
   onClose?: () => void;
@@ -173,7 +174,7 @@ export const Select = forwardRef(function Select<
   const [searchValue, setSearchValue] = useState("");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const valueRef = useRef<SelectValue<Type, Multiple>>();
+  const valueRef = useRef<SelectValue<Type, Multiple>>(null);
 
   const optionEqual = useCallback(
     (a: Type, b: Type) =>

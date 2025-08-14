@@ -11,7 +11,7 @@ import {
 } from "./utils";
 
 export interface ArrowNavigationProps {
-  children: React.ReactElement;
+  children: React.ReactElement<any>;
   enabled?: boolean;
   selector: "auto-horizontal" | "auto-vertical" | (() => HTMLElement[][]);
 }
@@ -23,7 +23,7 @@ const LAYOUT = {
 
 export const ArrowNavigation = React.forwardRef(
   ({ children, enabled = true, selector }: ArrowNavigationProps, ref) => {
-    const nodeRef = React.useRef<HTMLElement>();
+    const nodeRef = React.useRef<HTMLElement>(null);
     const isAutoLayout = [LAYOUT.HORIZONTAL, LAYOUT.VERTICAL].includes(
       selector as string,
     );

@@ -42,7 +42,7 @@ function Form({
   const values = React.useRef({ ...data.record });
   const handlers = React.useContext(FormHandlers);
   const dirty = React.useRef(!data.record.id);
-  const currentFocus = React.useRef<number>();
+  const currentFocus = React.useRef<number>(-1);
 
   const handleChange = React.useCallback((name: string, value: any) => {
     dirty.current = true;
@@ -158,7 +158,7 @@ function FormField({ children, style, className, ...rest }: any) {
 export default function Editable() {
   const [$records, setRecords] = React.useState(records);
   const [state, setState] = useGridState();
-  const boxRef = React.useRef<any>();
+  const boxRef = React.useRef<any>(null);
   const handlers = React.useRef({
     save: (e: boolean) => {},
   });

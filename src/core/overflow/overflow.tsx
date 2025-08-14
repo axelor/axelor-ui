@@ -11,7 +11,7 @@ export type OverflowProps = Pick<
   ObserveOptions,
   "overflowAxis" | "overflowDirection" | "padding" | "minimumVisible"
 > & {
-  children: React.ReactElement;
+  children: React.ReactElement<any>;
 };
 
 export const Overflow = forwardRef((props: OverflowProps, ref) => {
@@ -23,7 +23,7 @@ export const Overflow = forwardRef((props: OverflowProps, ref) => {
     padding,
   } = props;
 
-  const childrenRef = useRef<HTMLDivElement>();
+  const childrenRef = useRef<HTMLDivElement>(null);
   const [overflowState, setOverflowState] = React.useState<OverflowState>({
     hasOverflow: false,
     itemVisibility: {},

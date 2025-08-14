@@ -47,7 +47,7 @@ export function useRefs<T>(
  * @param ref the ref to keep in sync
  * @returns RefObject<T>
  */
-export function useForwardedRef<T>(ref: ForwardedRef<T>): RefObject<T> {
+export function useForwardedRef<T>(ref: ForwardedRef<T>): RefObject<T | null> {
   const res = useRef<T>(null);
   useEffect(() => {
     if (ref && typeof ref === "function") ref(res.current);

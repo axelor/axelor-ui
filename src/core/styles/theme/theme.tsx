@@ -28,7 +28,7 @@ export interface ThemeContextValue {
 }
 
 export interface ThemeProviderProps extends Partial<ThemeContextValue> {
-  children: React.ReactElement;
+  children: React.ReactElement<any>;
 }
 
 const ThemeContext = createContext<ThemeContextValue>({});

@@ -6,7 +6,7 @@ export type FocusTarget = focusTrap.FocusTargetOrFalse;
 
 export interface FocusTrapProps {
   enabled?: boolean;
-  children: React.ReactElement;
+  children: React.ReactElement<any>;
   initialFocus?: FocusTarget;
 }
 
@@ -18,7 +18,7 @@ export const FocusTrap = React.forwardRef<HTMLElement, FocusTrapProps>(
     const handleRef = useRefs(ref, children?.ref, childrenRef);
 
     React.useEffect(() => {
-      const children: HTMLElement | null = childrenRef.current;
+      const children = childrenRef.current;
       if (children && enabled) {
         const trap = focusTrap.createFocusTrap(children, {
           returnFocusOnDeactivate: true,

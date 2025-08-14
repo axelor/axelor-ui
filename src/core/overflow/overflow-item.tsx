@@ -18,7 +18,7 @@ export type OverflowItemProps = {
   /**
    * The single child that has overflow item behavior attached.
    */
-  children: React.ReactElement;
+  children: React.ReactElement<any>;
 };
 
 export const OverflowItem = forwardRef((props: OverflowItemProps, ref) => {

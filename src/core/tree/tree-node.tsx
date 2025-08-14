@@ -88,8 +88,14 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
       isDragging: monitor.isDragging(),
     }),
   });
-  const timerRef = useRef<number>();
+  const timerRef = useRef<NodeJS.Timeout>(null);
   const toggleRef = useRef<number | null>(null);
+
+  const clearTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+  }, []);
 
   const [{ hovered, highlighted }, dropRef] = useDrop({
     accept: NODE_TYPE,
@@ -136,14 +142,14 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
   });
 
   function handleClick(e: React.SyntheticEvent) {
-    window.clearTimeout(timerRef.current);
-    timerRef.current = window.setTimeout(() => {
+    clearTimer();
+    timerRef.current = setTimeout(() => {
       onClick?.(e);
     }, 200);
   }
 
   function handleDoubleClick(e: React.SyntheticEvent) {
-    window.clearTimeout(timerRef.current);
+    clearTimer();
     if (onEdit) {
       e.preventDefault();
       e.stopPropagation();
@@ -155,7 +161,7 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
   const handleDragLeave = useCallback(() => {
     setTimeout(() => {
       if (toggleRef.current) {
-        window.clearTimeout(toggleRef.current);
+        clearTimeout(toggleRef.current);
         toggleRef.current = null;
       }
     });
@@ -170,10 +176,10 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
   useEffect(() => {
     // cleanup
     return () => {
-      window.clearTimeout(timerRef.current);
-      toggleRef.current && window.clearTimeout(toggleRef.current);
+      clearTimer();
+      toggleRef.current && clearTimeout(toggleRef.current);
     };
-  }, []);
+  }, [clearTimer]);
 
   return (
     <div
@@ -187,7 +193,13 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
       onDragLeave={handleDragLeave}
     >
       <TreeNodeContent
-        {...(index === 0 ? { ref: dragPreviewRef } : {})}
+        {...(index === 0
+          ? {
+              ref: (node) => {
+                dragPreviewRef(node);
+              },
+            }
+          : {})}
         data={data}
         columns={columns}
         textRenderer={textRenderer}
@@ -211,12 +223,11 @@ export function RootDroppable({
       return true;
     },
     drop(item: TYPES.TreeNode) {
-      onDrop &&
-        onDrop(item, {
-          data: {
-            data: null,
-          },
-        });
+      onDrop?.(item, {
+        data: {
+          data: null,
+        },
+      });
     },
     canDrop({ data }: TYPES.TreeNode) {
       const { parent } = data;
@@ -234,7 +245,9 @@ export function RootDroppable({
     <Box
       pt={1}
       d="flex"
-      ref={dropRef}
+      ref={(node) => {
+        dropRef(node);
+      }}
       className={classNames(styles.rootNode, {
         [styles.active]: highlighted,
       })}

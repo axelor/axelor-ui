@@ -2,7 +2,7 @@ import * as React from "react";
 import { useRefs } from "../hooks";
 
 export interface ClickAwayListenerProps {
-  children: React.ReactElement;
+  children: React.ReactElement<any>;
   onClickAway: (event: Event) => void;
 }
 
@@ -17,7 +17,7 @@ export const ClickAwayListener = ({
   children,
   onClickAway,
 }: ClickAwayListenerProps) => {
-  const nodeRef = React.useRef<HTMLElement | null>(null);
+  const nodeRef = React.useRef<HTMLElement>(null);
   const activatedRef = React.useRef(false);
   const movedRef = React.useRef(false);
   const syntheticEventRef = React.useRef(false);

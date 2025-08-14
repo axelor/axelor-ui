@@ -14,8 +14,19 @@ export function GridColumResizer(props: React.HTMLAttributes<HTMLSpanElement>) {
     [],
   );
   return (
-    <span ref={drag} {...props}>
-      {preview && <span ref={preview} />}
+    <span
+      ref={(node) => {
+        drag(node);
+      }}
+      {...props}
+    >
+      {preview && (
+        <span
+          ref={(node) => {
+            preview(node);
+          }}
+        />
+      )}
       <Divider vertical />
     </span>
   );

@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useEffect, useState } from "react";
+import { forwardRef, useCallback, useState } from "react";
 
 import { clsx } from "../clsx";
 import { Collapse } from "../collapse";
@@ -7,7 +7,8 @@ import { Scrollable } from "../scrollable";
 
 import styles from "./panel.module.scss";
 
-export interface PanelProps extends React.HTMLProps<HTMLDivElement> {
+export interface PanelProps
+  extends Omit<React.HTMLProps<HTMLDivElement>, "onToggle"> {
   header?: React.ReactNode;
   footer?: React.ReactNode;
   toolbar?: CommandBarProps;
