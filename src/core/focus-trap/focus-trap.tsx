@@ -14,8 +14,7 @@ export const FocusTrap = React.forwardRef<HTMLElement, FocusTrapProps>(
   ({ enabled = true, children, initialFocus }: FocusTrapProps, ref) => {
     const childrenRef = React.useRef<HTMLElement | null>(null);
 
-    // @ts-expect-error ref
-    const handleRef = useRefs(ref, children?.ref, childrenRef);
+    const handleRef = useRefs(ref, children?.props?.ref, childrenRef);
 
     React.useEffect(() => {
       const children = childrenRef.current;

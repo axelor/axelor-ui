@@ -98,8 +98,7 @@ export const ArrowNavigation = React.forwardRef(
       }
     }
 
-    // @ts-expect-error ref
-    const handleRef = useRefs(ref, children?.ref, nodeRef);
+    const handleRef = useRefs(ref, children?.props?.ref, nodeRef);
 
     return enabled
       ? React.cloneElement(children, {

@@ -38,8 +38,7 @@ export const ClickAwayListener = ({
       }
     };
 
-  // @ts-expect-error ref
-  const handleRef = useRefs(children?.ref, nodeRef);
+  const handleRef = useRefs(children?.props?.ref, nodeRef);
 
   const handleClickAway = React.useCallback(
     (event: MouseEvent | TouchEvent) => {
