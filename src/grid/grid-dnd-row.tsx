@@ -2,7 +2,7 @@
  * @title Row Reorder
  */
 import React, { useEffect } from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 
 import { Box, clsx } from "../core";
 import { MaterialIcon } from "../icons/material-icon";

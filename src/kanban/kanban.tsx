@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { Box, useClassNames } from "../core";
-import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 
 import styles from "./kanban.module.css";
 import KanbanColumn, { KanbanColumnProps } from "./kanban-column";

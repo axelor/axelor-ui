@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Box } from "../core";
-import { Draggable, Droppable } from "react-beautiful-dnd";
+import { Draggable, Droppable } from "@hello-pangea/dnd";
 
 import KanbanRecord from "./kanban-record";
 import { DefaultColumn } from "./kanban-default";

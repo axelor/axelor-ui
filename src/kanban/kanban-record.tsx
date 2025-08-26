@@ -1,5 +1,5 @@
 import { Box } from "../core";
-import { Draggable } from "react-beautiful-dnd";
+import { Draggable } from "@hello-pangea/dnd";
 
 import { Column, Record } from "./types";
 import { DefaultRecord } from "./kanban-default";
