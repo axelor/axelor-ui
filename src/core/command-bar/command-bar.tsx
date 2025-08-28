@@ -116,18 +116,6 @@ export function CommandItem(props: RenderCommandItemProps) {
     [items],
   );
 
-  if (hidden || allItemsHidden) {
-    return null;
-  }
-
-  if (render) {
-    return render({ ...props, render: undefined });
-  }
-
-  if (divider) {
-    return <hr className={styles.divider} />;
-  }
-
   const isSplit = onClick && items.length > 0 && !showAsMenuItem;
   const Wrapper = ButtonGroup;
 
@@ -149,6 +137,20 @@ export function CommandItem(props: RenderCommandItemProps) {
   };
 
   const hasContent = imageProps || Icon || iconProps || text || showArrow;
+
+  if (hidden || allItemsHidden) {
+    return null;
+  }
+
+  if (render) {
+    const RenderItem = render;
+    return <RenderItem {...props} render={undefined} />;
+  }
+
+  if (divider) {
+    return <hr className={styles.divider} />;
+  }
+
   return (
     <>
       {showAsMenuItem ? (
