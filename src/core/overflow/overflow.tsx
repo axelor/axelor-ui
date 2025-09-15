@@ -5,14 +5,15 @@ import { OverflowContext, OverflowState } from "./context";
 import { updateVisibilityAttribute, useOverflowContainer } from "./hooks";
 
 import { useRefs } from "../hooks";
+import { WithChildrenProps } from "../system";
 import styles from "./overflow.module.scss";
 
-export type OverflowProps = Pick<
-  ObserveOptions,
-  "overflowAxis" | "overflowDirection" | "padding" | "minimumVisible"
-> & {
-  children: React.ReactElement<any>;
-};
+export interface OverflowProps<T extends React.ElementType = "div">
+  extends WithChildrenProps<T>,
+    Pick<
+      ObserveOptions,
+      "overflowAxis" | "overflowDirection" | "padding" | "minimumVisible"
+    > {}
 
 export const Overflow = forwardRef((props: OverflowProps, ref) => {
   const {

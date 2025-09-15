@@ -9,9 +9,10 @@ import {
   isElementDisabled,
   isElementHidden,
 } from "./utils";
+import { WithChildrenProps } from "../system";
 
-export interface ArrowNavigationProps {
-  children: React.ReactElement<any>;
+export interface ArrowNavigationProps<T extends React.ElementType = "div">
+  extends WithChildrenProps<T> {
   enabled?: boolean;
   selector: "auto-horizontal" | "auto-vertical" | (() => HTMLElement[][]);
 }
@@ -31,7 +32,7 @@ export const ArrowNavigation = React.forwardRef(
     const { dir } = useTheme();
     const rtl = dir === "rtl";
 
-    function handleKeyDown(e: KeyboardEvent) {
+    function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
       // get selector elements
       const elements =
         !isAutoLayout && typeof selector === "function" && selector();

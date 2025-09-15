@@ -6,7 +6,9 @@ import { useStyles } from "../styles";
 export interface DecorateProps {
   style?: React.CSSProperties;
   classes?: ClassValue;
-  children: React.ReactElement<any>;
+  children: React.ReactElement<
+    React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> }
+  >;
 }
 
 /**

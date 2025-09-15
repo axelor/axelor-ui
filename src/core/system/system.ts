@@ -48,6 +48,11 @@ export interface CSSStyleProps extends StyleProps {
   style?: CSSProperties;
 }
 
+// Generic WithChildrenProps that works for DOM + custom components
+export interface WithChildrenProps<T extends React.ElementType = "div"> {
+  children: React.ReactElement<React.ComponentPropsWithRef<T>, T>;
+}
+
 /**
  * @deprecated
  */

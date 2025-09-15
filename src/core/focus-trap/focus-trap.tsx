@@ -1,20 +1,19 @@
 import * as focusTrap from "focus-trap";
 import * as React from "react";
 import { useRefs } from "../hooks";
+import { WithChildrenProps } from "../system";
 
 export type FocusTarget = focusTrap.FocusTargetOrFalse;
 
-export interface FocusTrapProps {
+export interface FocusTrapProps<T extends React.ElementType = "div">
+  extends WithChildrenProps<T> {
   enabled?: boolean;
-  children: React.ReactElement<any>;
   initialFocus?: FocusTarget;
 }
 
-export const FocusTrap = React.forwardRef<HTMLElement, FocusTrapProps>(
+export const FocusTrap = React.forwardRef<HTMLDivElement, FocusTrapProps>(
   ({ enabled = true, children, initialFocus }: FocusTrapProps, ref) => {
-    const childrenRef = React.useRef<HTMLElement | null>(null);
-
-    const handleRef = useRefs(ref, children?.props?.ref, childrenRef);
+    const childrenRef = React.useRef<HTMLDivElement | null>(null);
 
     React.useEffect(() => {
       const children = childrenRef.current;
@@ -32,6 +31,12 @@ export const FocusTrap = React.forwardRef<HTMLElement, FocusTrapProps>(
         };
       }
     }, [enabled, initialFocus]);
+
+    const handleRef = useRefs<HTMLDivElement>(
+      ref,
+      children?.props?.ref,
+      childrenRef,
+    );
 
     return React.cloneElement(children, {
       ref: handleRef,

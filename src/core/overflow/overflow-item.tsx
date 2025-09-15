@@ -1,8 +1,10 @@
 import { cloneElement, forwardRef } from "react";
 import { useRefs } from "../hooks";
 import { useOverflowItem } from "./hooks";
+import { WithChildrenProps } from "../system";
 
-export type OverflowItemProps = {
+export interface OverflowItemProps<T extends React.ElementType = "div">
+  extends WithChildrenProps<T> {
   /**
    * The unique identifier for the item used by the overflow manager.
    */
@@ -15,11 +17,7 @@ export type OverflowItemProps = {
    * A higher priority means the item overflows later.
    */
   priority?: number;
-  /**
-   * The single child that has overflow item behavior attached.
-   */
-  children: React.ReactElement<any>;
-};
+}
 
 export const OverflowItem = forwardRef((props: OverflowItemProps, ref) => {
   const { id, groupId, priority, children } = props;

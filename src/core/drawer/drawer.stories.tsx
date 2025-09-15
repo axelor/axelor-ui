@@ -112,7 +112,9 @@ function DrawerDemo({
     setShow(false);
   }, []);
 
-  const render = (children: React.ReactElement) => {
+  const render = (
+    children: React.ReactElement<React.HTMLAttributes<HTMLDivElement>, "div">,
+  ) => {
     if (clickAway) {
       return (
         <ClickAwayListener onClickAway={hideDrawer}>

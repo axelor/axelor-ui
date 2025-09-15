@@ -1,8 +1,9 @@
 import * as React from "react";
 import { useRefs } from "../hooks";
+import { WithChildrenProps } from "../system";
 
-export interface ClickAwayListenerProps {
-  children: React.ReactElement<any>;
+export interface ClickAwayListenerProps<T extends React.ElementType = "div">
+  extends WithChildrenProps<T> {
   onClickAway: (event: Event) => void;
 }
 
@@ -17,7 +18,7 @@ export const ClickAwayListener = ({
   children,
   onClickAway,
 }: ClickAwayListenerProps) => {
-  const nodeRef = React.useRef<HTMLElement>(null);
+  const nodeRef = React.useRef<HTMLDivElement>(null);
   const activatedRef = React.useRef(false);
   const movedRef = React.useRef(false);
   const syntheticEventRef = React.useRef(false);
@@ -29,7 +30,11 @@ export const ClickAwayListener = ({
   }, []);
 
   const createHandleSynthetic =
-    (handlerName: string) => (event: React.SyntheticEvent) => {
+    (handlerName: "onTouchEnd" | "onClick") =>
+    (
+      event: React.TouchEvent<HTMLDivElement> &
+        React.MouseEvent<HTMLDivElement, MouseEvent>,
+    ) => {
       syntheticEventRef.current = true;
 
       const childrenPropsHandler = children.props[handlerName];

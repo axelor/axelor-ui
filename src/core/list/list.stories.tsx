@@ -11,10 +11,12 @@ import React, { ReactElement, useState } from "react";
 
 import { Box } from "../box";
 import { Collapse } from "../collapse";
-import { Icon } from "../icon";
-import { IconProps } from "../icon/icon";
 import { withStyled } from "../styled";
 import { List, ListItem } from "./list";
+import {
+  SvgIcon as Icon,
+  SvgIconProps as IconProps,
+} from "../../icons/svg-icon";
 
 const config = {
   component: List,
@@ -179,8 +181,10 @@ const NestedList = withStyled(List)(({ children, ...props }, ref) => {
     <List ref={ref} style={{ paddingLeft: 16 }} {...props}>
       {React.Children.map(children, (item) => {
         if (item && (item as ReactElement).type === NestedListItem) {
-          return React.cloneElement(item as ReactElement<any>, {
-            isOpen: activeMenuItem === (item as ReactElement<any>).props.title,
+          return React.cloneElement(item as ReactElement<NestedListItemProps>, {
+            isOpen:
+              activeMenuItem ===
+              (item as ReactElement<HTMLElement>).props.title,
             onOpen: open,
             onClose: close,
           });
@@ -191,6 +195,15 @@ const NestedList = withStyled(List)(({ children, ...props }, ref) => {
   );
 });
 
+type NestedListItemProps = {
+  children: React.ReactNode;
+  title: string;
+  icon?: IconProps["as"];
+  isOpen?: boolean;
+  onOpen?: (title: string) => void;
+  onClose?: () => void;
+};
+
 function NestedListItem({
   children,
   title,
@@ -198,19 +211,12 @@ function NestedListItem({
   isOpen,
   onOpen,
   onClose,
-}: {
-  children: React.ReactNode;
-  title: string;
-  icon?: IconProps["as"];
-  isOpen?: boolean;
-  onOpen?: (title: string) => void;
-  onClose?: () => void;
-}) {
+}: NestedListItemProps) {
   const toggle = function () {
     if (isOpen) {
-      onClose && onClose();
+      onClose?.();
     } else {
-      onOpen && onOpen(title);
+      onOpen?.(title);
     }
   };
 
