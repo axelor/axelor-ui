@@ -68,7 +68,7 @@
     "@storybook/addon-docs": "^9.1.6",
     "@storybook/react": "^9.1.6",
     "@storybook/react-vite": "^9.1.6",
-    "@types/node": "^22.17.0",
+    "@types/node": "^22.18.5",
     "@types/prop-types": "^15.7.15",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
