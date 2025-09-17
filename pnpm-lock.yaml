@@ -18,8 +18,8 @@ importers:
         specifier: ^9.1.16
         version: 9.1.16
       '@fluentui/react-context-selector':
-        specifier: ^9.2.3
-        version: 9.2.6(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(scheduler@0.26.0)
+        specifier: ^9.2.7
+        version: 9.2.7(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(scheduler@0.26.0)
       '@hello-pangea/dnd':
         specifier: ^18.0.1
         version: 18.0.1(@types/react@19.1.13)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -504,29 +504,29 @@ packages:
   '@fluentui/priority-overflow@9.1.16':
     resolution: {integrity: sha512-YKkI64UNU5ZuIeLRi3IC/Cr1Bgz1pgvCP3lBvkHMAG1R6CfFOyKgmpjANiq21lNGv+2NsDbATZ7gFdrPmo6OnA==}
 
-  '@fluentui/react-context-selector@9.2.6':
-    resolution: {integrity: sha512-AskFoj248mH8USB/GfXRxj4PbVETVg+T1Xl+uVS6owYchVqkDDHW3oYnZdOTY/rMf1hxOUJhcC3GtXP0JRFdbg==}
+  '@fluentui/react-context-selector@9.2.7':
+    resolution: {integrity: sha512-wIxdd113xXz+rtCN6eBAWmc2S2sBVE3aWOdesbeFIVQqqMv/0XW3zh3AF8H9CsV++8w5MsmCccRB11wqwut8GQ==}
     peerDependencies:
-      '@types/react': '>=16.14.0 <19.0.0'
-      '@types/react-dom': '>=16.9.0 <19.0.0'
-      react: '>=16.14.0 <19.0.0'
-      react-dom: '>=16.14.0 <19.0.0'
+      '@types/react': '>=16.14.0 <20.0.0'
+      '@types/react-dom': '>=16.9.0 <20.0.0'
+      react: '>=16.14.0 <20.0.0'
+      react-dom: '>=16.14.0 <20.0.0'
       scheduler: '>=0.19.0 <=0.23.0'
 
-  '@fluentui/react-shared-contexts@9.25.0':
-    resolution: {integrity: sha512-uFWi93L5ZjZACx5VA4+gbWgg6l/on3ultJpXTyFYFuox0paJbqENsPf383GKZW7UnUs08Kqry5CFC36VfqDdSg==}
+  '@fluentui/react-shared-contexts@9.25.1':
+    resolution: {integrity: sha512-C15uX9dnIVe0cm2wa9WMd9KhG5pdbs9jxnzgpFvraCGpLqFHniK2xJghYBRzj66zEK6xJnuRZR89/Y8wsiO11w==}
     peerDependencies:
-      '@types/react': '>=16.14.0 <19.0.0'
-      react: '>=16.14.0 <19.0.0'
+      '@types/react': '>=16.14.0 <20.0.0'
+      react: '>=16.14.0 <20.0.0'
 
   '@fluentui/react-theme@9.2.0':
     resolution: {integrity: sha512-Q0zp/MY1m5RjlkcwMcjn/PQRT2T+q3bgxuxWbhgaD07V+tLzBhGROvuqbsdg4YWF/IK21zPfLhmGyifhEu0DnQ==}
 
-  '@fluentui/react-utilities@9.24.0':
-    resolution: {integrity: sha512-fIAEi62slg3YGe9nbUW4crD9KLx//eNWBVRuwEvhqJeqrbLL6dTWRAmRhmYOmzzySy+4gxHP7I/D7jl3BjeXpA==}
+  '@fluentui/react-utilities@9.24.1':
+    resolution: {integrity: sha512-Ih0S+BrHiiGiG0faDncmipOQ2rz8jHaKXzSN4p5U5m7d/jcPMAZ45cHtaYGLTD0O32ur7/AusmQSLY6c/9WvnQ==}
     peerDependencies:
-      '@types/react': '>=16.14.0 <19.0.0'
-      react: '>=16.14.0 <19.0.0'
+      '@types/react': '>=16.14.0 <20.0.0'
+      react: '>=16.14.0 <20.0.0'
 
   '@fluentui/tokens@1.0.0-alpha.22':
     resolution: {integrity: sha512-i9fgYyyCWFRdUi+vQwnV6hp7wpLGK4p09B+O/f2u71GBXzPuniubPYvrIJYtl444DD6shLjYToJhQ1S6XTFwLg==}
@@ -2809,9 +2809,9 @@ snapshots:
     dependencies:
       '@swc/helpers': 0.5.17
 
-  '@fluentui/react-context-selector@9.2.6(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(scheduler@0.26.0)':
+  '@fluentui/react-context-selector@9.2.7(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(scheduler@0.26.0)':
     dependencies:
-      '@fluentui/react-utilities': 9.24.0(@types/react@19.1.13)(react@19.1.1)
+      '@fluentui/react-utilities': 9.24.1(@types/react@19.1.13)(react@19.1.1)
       '@swc/helpers': 0.5.17
       '@types/react': 19.1.13
       '@types/react-dom': 19.1.9(@types/react@19.1.13)
@@ -2819,7 +2819,7 @@ snapshots:
       react-dom: 19.1.1(react@19.1.1)
       scheduler: 0.26.0
 
-  '@fluentui/react-shared-contexts@9.25.0(@types/react@19.1.13)(react@19.1.1)':
+  '@fluentui/react-shared-contexts@9.25.1(@types/react@19.1.13)(react@19.1.1)':
     dependencies:
       '@fluentui/react-theme': 9.2.0
       '@swc/helpers': 0.5.17
@@ -2831,10 +2831,10 @@ snapshots:
       '@fluentui/tokens': 1.0.0-alpha.22
       '@swc/helpers': 0.5.17
 
-  '@fluentui/react-utilities@9.24.0(@types/react@19.1.13)(react@19.1.1)':
+  '@fluentui/react-utilities@9.24.1(@types/react@19.1.13)(react@19.1.1)':
     dependencies:
       '@fluentui/keyboard-keys': 9.0.8
-      '@fluentui/react-shared-contexts': 9.25.0(@types/react@19.1.13)(react@19.1.1)
+      '@fluentui/react-shared-contexts': 9.25.1(@types/react@19.1.13)(react@19.1.1)
       '@swc/helpers': 0.5.17
       '@types/react': 19.1.13
       react: 19.1.1
