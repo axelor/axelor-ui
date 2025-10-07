@@ -55,7 +55,11 @@ function GridFooterRowColumn(
   const { index, selected, data: column, row } = props;
 
   const textValue = React.useMemo(() => {
-    if (!column.aggregate || !row.aggregate || row.aggregate[column.name] == null) {
+    if (
+      !column.aggregate ||
+      !row.aggregate ||
+      row.aggregate[column.name] == null
+    ) {
       return null;
     }
     let _value = row.aggregate[column.name];
