@@ -35,6 +35,7 @@ export interface GridHeaderColumnProps extends TYPES.GridColumnProps {
   selectionType?: TYPES.GridProps["selectionType"];
   groupBy?: TYPES.GridState["groupBy"];
   columns?: TYPES.GridColumn[];
+  canResize?: boolean;
   renderer?: TYPES.Renderer;
   onGroup?: (e: SyntheticEvent, group: TYPES.GridGroup) => void;
   onUngroup?: (e: SyntheticEvent, group: TYPES.GridGroup) => void;
@@ -103,6 +104,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
     index,
     checkType,
     selectionType,
+    canResize,
     renderer,
     onCheckAll,
     onSort,
@@ -155,7 +157,8 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
       );
     }
 
-    const canResize = column.name !== "__reorder__" && !column.action;
+    const resizable =
+      canResize && column.name !== "__reorder__" && !column.action;
     const canSort = onSort && column.sortable !== false;
     const hasMenu =
       !column.action &&
@@ -167,7 +170,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
       <>
         <span
           className={classNames(styles.headerColumnTitle, column.$headerCss, {
-            [styles.resizable]: Boolean(onResize),
+            [styles.resizable]: canResize,
           })}
           title={column.help || column.title}
           onClick={(e) => {
@@ -208,7 +211,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
           )}
         </span>
 
-        {canResize && onResizeStart && onResize && onResizeEnd ? (
+        {resizable && onResizeStart && onResize && onResizeEnd ? (
           <GridColumResizer
             className={styles.columnResizer}
             draggable={true}
