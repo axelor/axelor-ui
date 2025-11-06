@@ -1450,6 +1450,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             rowRenderer={headerRowRenderer}
             checkType={checkType}
             selectionType={selectionType}
+            canResizeColumns={allowColumnResize}
             {...(allowColumnOptions ? { allColumns: state.columns } : {})}
             {...(allowSearch
               ? {

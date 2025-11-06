@@ -24,6 +24,7 @@ export interface GridHeaderProps
   cellRenderer?: TYPES.Renderer;
   rowRenderer?: TYPES.Renderer;
   checkType?: GridHeaderColumnProps["checkType"];
+  canResizeColumns?: boolean;
   onCheckAll?: (checked: boolean) => void;
   onColumnResizeStart?: ResizeHandler;
   onColumnResize?: ResizeHandler;
@@ -57,6 +58,7 @@ export const GridHeader = React.memo(function GridHeader(
     searchColumnRenderer,
     cellRenderer,
     rowRenderer,
+    canResizeColumns,
     onCheckAll,
     onColumnDrop,
     onColumnSort,
@@ -87,6 +89,7 @@ export const GridHeader = React.memo(function GridHeader(
               groupBy={groupBy}
               columns={allColumns}
               renderer={cellRenderer}
+              canResize={canResizeColumns}
               onCheckAll={onCheckAll}
               onSort={onColumnSort}
               onGroup={onColumnGroupAdd}
