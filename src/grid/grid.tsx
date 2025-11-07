@@ -1412,7 +1412,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       );
     }, [displayColumns]);
 
-    const hasFooter = hasAggregation && aggregationType === "all";
+    const hasFooter =
+      hasAggregation && aggregationType === "all" && records.length > 0;
     const classNames = useClassNames();
 
     return (

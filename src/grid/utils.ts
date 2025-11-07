@@ -153,7 +153,9 @@ export function doAggregate(
           : total,
       );
       return Number(
-        aggregateValue.toFixed(Math.max(...flatData.map(getNumberScale))),
+        flatData.length > 0
+          ? aggregateValue.toFixed(Math.max(...flatData.map(getNumberScale)))
+          : aggregateValue,
       );
     }
     case "min":
