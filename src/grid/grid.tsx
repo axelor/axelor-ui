@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { unstable_batchedUpdates } from "react-dom";
 import { Box, useClassNames, useRefs } from "../core";
 import { GridBody } from "./grid-body";
 import { GridDNDColumn } from "./grid-dnd-row";
@@ -869,24 +870,36 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         if (dirty && onRecordSave) {
           result = await onRecordSave(row, rowIndex, 0);
         }
-        // record is validated
-        if (result) {
-          if (isLast && onRecordAdd) {
-            // add new record
-            handleRecordAdd(false);
-          } else if (dirty) {
-            // complete record edit state
-            handleRecordComplete(
-              row,
-              rowIndex,
-              columnIndex,
-              false,
-              !saveFromEdit,
-            );
-          } else if (!dirty) {
-            handleRecordDiscard(row, rowIndex, columnIndex);
+
+        unstable_batchedUpdates(() => {
+          // record is validated
+          if (result) {
+            if (isLast && onRecordAdd) {
+              // add new record
+              handleRecordAdd(false);
+            } else if (dirty) {
+              // complete record edit state
+              handleRecordComplete(
+                row,
+                rowIndex,
+                columnIndex,
+                false,
+                !saveFromEdit,
+              );
+            } else if (!dirty) {
+              handleRecordDiscard(row, rowIndex, columnIndex);
+            }
           }
-        }
+        });
+
+        await new Promise((resolve) => {
+          if (typeof requestAnimationFrame === "function") {
+            requestAnimationFrame(resolve);
+          } else {
+            setTimeout(resolve, 0);
+          }
+        });
+
         return result;
       },
       [
