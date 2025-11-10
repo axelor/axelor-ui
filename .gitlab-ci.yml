@@ -37,4 +37,5 @@ publish_to_npm:
     - tags
   script:
     - npm config set -- '//registry.npmjs.org/:_authToken' "${NPMJS_TOKEN}"
-    - (cd dist && npm publish --access public)
+    - NPM_TAG=$(node scripts/get-tag.js)
+    - (cd dist && npm publish --access public --tag $NPM_TAG)

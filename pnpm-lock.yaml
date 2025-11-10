@@ -150,6 +150,9 @@ importers:
       sass:
         specifier: 1.77.8
         version: 1.77.8
+      semver:
+        specifier: ^7.7.3
+        version: 7.7.3
       storybook:
         specifier: ^9.1.10
         version: 9.1.10(@testing-library/dom@10.4.0)(prettier@3.6.2)(vite@7.1.9(@types/node@22.18.5)(sass@1.77.8))
@@ -2004,8 +2007,8 @@ packages:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
     hasBin: true
 
-  semver@7.7.2:
-    resolution: {integrity: sha512-RF0Fw+rO5AMf9MAyaRXI4AV0Ulj5lMHqVxxdSgiVbixSCXoEmmX/jk0CuJw4+3SqroYO9VoUh+HcuJivvtJemA==}
+  semver@7.7.3:
+    resolution: {integrity: sha512-SdsKMrI9TdgjdweUSR9MweHA4EJ8YxHn8DFaDisvhVlUOe4BF1tLD7GAj0lIqWVl+dPb/rExr0Btby5loQm20Q==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -3094,7 +3097,7 @@ snapshots:
       fast-glob: 3.3.3
       is-glob: 4.0.3
       minimatch: 9.0.5
-      semver: 7.7.2
+      semver: 7.7.3
       ts-api-utils: 2.1.0(typescript@5.9.3)
       typescript: 5.9.3
     transitivePeerDependencies:
@@ -4090,7 +4093,7 @@ snapshots:
 
   semver@6.3.1: {}
 
-  semver@7.7.2: {}
+  semver@7.7.3: {}
 
   set-blocking@2.0.0: {}
 
@@ -4123,7 +4126,7 @@ snapshots:
       esbuild: 0.25.9
       esbuild-register: 3.6.0(esbuild@0.25.9)
       recast: 0.23.11
-      semver: 7.7.2
+      semver: 7.7.3
       ws: 8.18.3
     optionalDependencies:
       prettier: 3.6.2
