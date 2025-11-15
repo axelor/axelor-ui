@@ -22,6 +22,7 @@ export const Basic = () => {
   return (
     <Box display="flex" flexDirection="column" gap="1rem">
       <TextField
+        data-testid="text-field"
         label={
           <Box display="flex" alignItems="center">
             <Box pe={2}>Field Label</Box>
