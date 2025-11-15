@@ -37,7 +37,7 @@ export const WithTheme: Decorator = (Story, context) => {
   return (
     <I18nextProvider i18n={i18n}>
       <ThemeProvider dir={dir} theme={theme}>
-        {Story(context)}
+        <div id="story-wrapper">{Story(context)}</div>
       </ThemeProvider>
     </I18nextProvider>
   );
