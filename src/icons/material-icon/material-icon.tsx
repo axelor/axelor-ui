@@ -2,8 +2,9 @@ import { MaterialSymbol } from "@material-symbols/font-400";
 import { forwardRef, useMemo } from "react";
 
 import { Box } from "../../core";
-import { TForeground } from "../../core/system";
 import { clsx } from "../../core/clsx";
+import { TForeground } from "../../core/system";
+import { findAriaProp, findDataProp } from "../../core/system/utils";
 
 import styles from "./material-icon.module.scss";
 
@@ -14,6 +15,7 @@ export interface MaterialIconProps {
   fontSize?: number | string;
   color?: TForeground;
   className?: string;
+  role?: string;
   onClick?: React.MouseEventHandler<HTMLSpanElement>;
 }
 
@@ -37,6 +39,7 @@ const getStyles = ({ fill, fontSize }: Partial<MaterialIconProps>) => {
 export const MaterialIcon = forwardRef<HTMLSpanElement, MaterialIconProps>(
   (props, ref) => {
     const {
+      role,
       className,
       icon,
       variant = "outlined",
@@ -49,9 +52,14 @@ export const MaterialIcon = forwardRef<HTMLSpanElement, MaterialIconProps>(
     const cls = `material-symbols-${variant}`;
     const clsName = clsx(className, styles.icon, styles[cls], "notranslate");
     const style = useMemo(() => {
-      const props = { fill, fontSize };
-      return hasStyles(props) ? getStyles(props) : undefined;
+      const attrs = { fill, fontSize };
+      return hasStyles(attrs) ? getStyles(attrs) : undefined;
     }, [fill, fontSize]);
+
+    const testId = findDataProp(props, "data-testid");
+    const ariaLabel = findAriaProp(props, "aria-label");
+    const ariaHidden =
+      findAriaProp(props, "aria-hidden") ?? (onClick ? undefined : true);
 
     return (
       <Box
@@ -61,6 +69,10 @@ export const MaterialIcon = forwardRef<HTMLSpanElement, MaterialIconProps>(
         onClick={onClick}
         style={style}
         ref={ref}
+        role={role}
+        aria-label={ariaLabel}
+        aria-hidden={ariaHidden}
+        data-testid={testId}
       >
         {icon}
       </Box>
