@@ -74,6 +74,7 @@ export default function Searching() {
             columns={columns}
             state={state}
             setState={setState}
+            data-testid="grid"
           />
         </SearchContext.Provider>
       </Box>

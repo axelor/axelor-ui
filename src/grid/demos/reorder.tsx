@@ -26,6 +26,7 @@ export default function Reorder() {
         columns={columns}
         state={state}
         setState={setState}
+        data-testid="grid"
       />
     </GridProvider>
   );

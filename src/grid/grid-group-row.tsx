@@ -1,5 +1,6 @@
 import React from "react";
 import { useClassNames } from "../core";
+import { findDataProp, makeTestId } from "../core/system/utils";
 
 import { MaterialIcon } from "../icons/material-icon";
 import styles from "./grid.module.scss";
@@ -19,6 +20,7 @@ export const GridGroupRow = React.memo(function GridGroupRow(
   const classNames = useClassNames();
   const isRTL = useRTL();
   const t = useTranslation();
+  const testId = findDataProp(props, "data-testid");
 
   return (
     <RowRenderer
@@ -26,7 +28,12 @@ export const GridGroupRow = React.memo(function GridGroupRow(
       className={classNames(styles.row, styles.groupRow, className, {
         [styles.selected]: selected,
       })}
+      role="row"
+      aria-expanded={state === "open"}
+      aria-level={level}
       {...((width || style) && { style: { width, ...style } })}
+      data-testid={testId}
+      data-groupkey={data.key}
     >
       {new Array(level)
         .fill(0)
@@ -36,6 +43,10 @@ export const GridGroupRow = React.memo(function GridGroupRow(
       <div
         onClick={(e) => onClick && data && onClick(e as any, data, index)}
         className={styles.groupRowContent}
+        role="button"
+        aria-label={`${state === "close" ? t("Expand group") : t("Collapse group")} ${title}: ${value}`}
+        tabIndex={0}
+        data-testid={makeTestId(testId, "content")}
       >
         <MaterialIcon
           className={styles.groupRowIcon}
@@ -46,6 +57,7 @@ export const GridGroupRow = React.memo(function GridGroupRow(
                 : "chevron_right"
               : "keyboard_arrow_down"
           }
+          data-testid={makeTestId(testId, "icon")}
         />
         {title} : {value} ({total} {t("items")})
       </div>

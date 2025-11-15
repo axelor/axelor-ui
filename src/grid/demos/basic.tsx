@@ -55,6 +55,7 @@ export default function Basic() {
           columns={columns}
           state={state}
           setState={setState}
+          data-testid="grid"
         />
       </Box>
     </GridProvider>

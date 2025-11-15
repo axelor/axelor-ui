@@ -1,5 +1,6 @@
 import React, { memo, MouseEventHandler, useCallback, useMemo } from "react";
 import { useClassNames } from "../core";
+import { findAriaProp, findDataProp } from "../core/system/utils";
 import * as TYPES from "./types";
 import styles from "./grid.module.scss";
 
@@ -21,6 +22,7 @@ export const GridColumn = memo(function GridColumn(
     renderer,
     renderChildren,
     onClick,
+    ...rest
   } = props;
 
   const children = renderChildren ? renderChildren(data, value) : _children;
@@ -50,6 +52,8 @@ export const GridColumn = memo(function GridColumn(
   }, [selected]);
 
   const classNames = useClassNames();
+  const testId = findDataProp(props, "data-testid");
+  const ariaSort = findAriaProp(rest, "aria-sort");
 
   const $width = Math.max(width || 0, minWidth || 0);
   const style = useMemo(
@@ -81,7 +85,12 @@ export const GridColumn = memo(function GridColumn(
         [styles.center]: ["row-checked"].includes(data.type || ""),
         [styles.selected]: selected,
       })}
+      role={props.type === "header" ? "columnheader" : "gridcell"}
+      aria-colindex={index + 1}
+      aria-selected={selected || undefined}
+      aria-sort={ariaSort}
       style={style}
+      data-testid={testId}
     >
       {$children}
     </ColumnComponent>

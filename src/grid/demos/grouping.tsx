@@ -23,6 +23,7 @@ export default function Grouping() {
           columns={columns}
           state={state}
           setState={setState}
+          data-testid="grid"
         />
       </Box>
     </GridProvider>

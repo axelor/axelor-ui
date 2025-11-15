@@ -56,6 +56,7 @@ export default function Renderer() {
         headerRowRenderer={CustomHeaderRenderer}
         rowRenderer={CustomRowRenderer}
         cellRenderer={CustomCellRenderer}
+        data-testid="grid"
       />
     </Box>
   );

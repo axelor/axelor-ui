@@ -1,6 +1,7 @@
 import React, {
   SyntheticEvent,
   useCallback,
+  useId,
   useMemo,
   useRef,
   useState,
@@ -14,14 +15,15 @@ import {
   MenuItem,
   useClassNames,
 } from "../core";
+import { findDataProp, makeTestId } from "../core/system/utils";
 
 import { MaterialIcon } from "../icons/material-icon";
 import { GridColumn } from "./grid-column";
 import { GridColumResizer } from "./grid-column-resizer";
 import styles from "./grid.module.scss";
+import { useTranslation } from "./translate";
 import * as TYPES from "./types";
 import { isRowCheck } from "./utils";
-import { useTranslation } from "./translate";
 
 export type ResizeHandler = (
   e: React.DragEvent<HTMLElement>,
@@ -54,13 +56,17 @@ export interface GridHeaderColumnProps extends TYPES.GridColumnProps {
   onCustomize?: TYPES.GridProps["onColumnCustomize"];
 }
 
-function GridHeaderCheckbox({
-  checkType,
-  onCheckAll,
-}: Pick<GridHeaderColumnProps, "checkType" | "onCheckAll">) {
+function GridHeaderCheckbox(
+  props: Pick<GridHeaderColumnProps, "checkType" | "onCheckAll">,
+) {
+  const { checkType, onCheckAll } = props;
   const inputRef = React.useRef<HTMLInputElement>(null);
   const canCheck = Boolean(onCheckAll);
   const classNames = useClassNames();
+  const testId = findDataProp(props, "data-testid");
+  const checkboxId = useId();
+  const t = useTranslation();
+
   React.useEffect(() => {
     const input = inputRef.current;
     if (checkType && input) {
@@ -80,6 +86,7 @@ function GridHeaderCheckbox({
     <span className={classNames(styles.headerColumnTitle, styles.center)}>
       <Input
         ref={inputRef}
+        id={checkboxId}
         type="checkbox"
         key={canCheck ? "check-all" : "check-all-disable"}
         {...(onCheckAll
@@ -89,6 +96,8 @@ function GridHeaderCheckbox({
             }
           : { defaultChecked: false })}
         tabIndex={-1}
+        aria-label={t("Select all rows")}
+        data-testid={testId}
       />
     </span>
   );
@@ -123,6 +132,9 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
   const targetRef = useRef<HTMLSpanElement | null>(null);
   const [show, setShow] = useState(false);
   const t = useTranslation();
+  const testId = findDataProp(props, "data-testid");
+  const menuId = useId();
+  const showMenuButtonId = useId();
 
   const handleShow = useCallback(() => setShow(true), []);
   const handleHide = useCallback(() => setShow(false), []);
@@ -153,7 +165,11 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
     if (isRowCheck(column)) {
       return (
         selectionType !== "single" && (
-          <GridHeaderCheckbox checkType={checkType} onCheckAll={onCheckAll} />
+          <GridHeaderCheckbox
+            checkType={checkType}
+            onCheckAll={onCheckAll}
+            data-testid={makeTestId(testId, "checkbox")}
+          />
         )
       );
     }
@@ -204,11 +220,18 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
           </Box>
           {hasMenu && (
             <span
+              id={showMenuButtonId}
               className={classNames(styles.headerColumnMenuButton, {
                 [styles.active]: show,
               })}
               ref={targetRef}
               onClick={handleShow}
+              role="button"
+              aria-label={`${t("Column options")}`}
+              aria-expanded={show}
+              aria-haspopup="menu"
+              aria-controls={menuId}
+              tabIndex={0}
             >
               <MaterialIcon icon="arrow_drop_down" />
             </span>
@@ -236,12 +259,14 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
         )}
 
         <Menu
+          id={menuId}
           target={targetRef.current}
           show={show}
           navigation
           onHide={() => setShow(false)}
           offset={[0, -8]}
           placement="bottom-start"
+          data-testid={makeTestId(testId, "menu")}
         >
           {canSort && (
             <>
@@ -373,6 +398,14 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
     );
   }
 
+  const ariaSort = sort
+    ? sort === "asc"
+      ? "ascending"
+      : "descending"
+    : data.sortable
+      ? "none"
+      : undefined;
+
   return (
     <GridColumn
       {...(data.action
@@ -384,6 +417,8 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
       type="header"
       index={index}
       data={data}
+      aria-sort={ariaSort}
+      data-testid={testId}
     >
       {renderColumn(data, index)}
     </GridColumn>

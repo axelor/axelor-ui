@@ -22,6 +22,7 @@ export default function Resizing() {
           columns={columns}
           state={state}
           setState={setState}
+          data-testid="grid"
         />
       </Box>
     </GridProvider>

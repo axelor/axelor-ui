@@ -1,14 +1,16 @@
 import React, { CSSProperties, useMemo } from "react";
-import { GridGroupRow } from "./grid-group-row";
+import { findDataProp, makeTestId } from "../core/system/utils";
 import { GridBodyRow } from "./grid-body-row";
-import { GridFooterRow } from "./grid-footer-row";
 import { GridDNDContainer } from "./grid-dnd-row";
-import { isRowVisible } from "./utils";
-import * as TYPES from "./types";
+import { GridFooterRow } from "./grid-footer-row";
+import { GridGroupRow } from "./grid-group-row";
 import styles from "./grid.module.scss";
+import * as TYPES from "./types";
+import { isRowVisible } from "./utils";
 
 export interface GridBodyProps
-  extends Pick<
+  extends
+    Pick<
       TYPES.GridState,
       "rows" | "columns" | "selectedCell" | "selectedRows" | "editRow"
     >,
@@ -76,6 +78,8 @@ export function GridBody(props: GridBodyProps) {
     onRowDoubleClick,
   } = props;
 
+  const testId = findDataProp(props, "data-testid");
+
   const renderRows = React.useMemo(
     () =>
       rows.map((row) => ({
@@ -92,23 +96,26 @@ export function GridBody(props: GridBodyProps) {
   const showNoRecords = noRecordsText && !addNewText;
 
   function render(children: React.ReactNode) {
-    const props = {
+    const bodyProps = {
       ...(showNoRecords ? { style: { width: totalWidth + 2 } } : {}),
       className: styles.body,
+      role: "rowgroup",
+      "data-testid": testId,
     };
     if (onRowMove || allowRowDND) {
       return (
         <GridDNDContainer
-          {...props}
+          {...bodyProps}
           rows={rows}
           onRowMove={onRowMove}
           onRowMoveStart={onRowMoveStart}
+          data-testid={testId}
         >
           {children}
         </GridDNDContainer>
       );
     }
-    return <div {...props}>{children}</div>;
+    return <div {...bodyProps}>{children}</div>;
   }
   const style = useMemo(() => {
     const style: CSSProperties = {};
@@ -170,6 +177,7 @@ export function GridBody(props: GridBodyProps) {
               key={row.key}
               width={totalWidth}
               renderer={rowGroupHeaderRenderer}
+              data-testid={makeTestId(testId, "group-row", row.key)}
               {...rowProps}
             />
           );
@@ -181,6 +189,7 @@ export function GridBody(props: GridBodyProps) {
               key={row.key}
               width={totalWidth}
               renderer={rowGroupFooterRenderer}
+              data-testid={makeTestId(testId, "footer-row", row.key)}
               {...rowProps}
             />
           );
@@ -195,17 +204,29 @@ export function GridBody(props: GridBodyProps) {
             hasExpanded={hasRowExpanded}
             detailsRenderer={rowDetailsRenderer}
             detailsExpandIcon={rowDetailsExpandIcon}
+            data-testid={makeTestId(testId, "row", row.key)}
             {...rowProps}
           />
         );
       })}
       {addNewText && (
-        <div className={styles.addNewText} onClick={onRecordAdd}>
+        <div
+          className={styles.addNewText}
+          onClick={onRecordAdd}
+          data-testid={makeTestId(testId, "add-new-row")}
+          role="row"
+        >
           {addNewText}
         </div>
       )}
       {showNoRecords && (
-        <div className={styles.noRecordsText}>{noRecordsText}</div>
+        <div
+          className={styles.noRecordsText}
+          data-testid={makeTestId(testId, "no-records-row")}
+          role="row"
+        >
+          {noRecordsText}
+        </div>
       )}
     </>,
   );

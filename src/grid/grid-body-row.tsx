@@ -1,12 +1,15 @@
-import React, { useMemo } from "react";
-import { Box, Input, clsx } from "../core";
-import { useClassNames } from "../core";
+import React, { useId, useMemo } from "react";
 
-import { GridColumn } from "./grid-column";
-import { isRowCheck, isRowExpand } from "./utils";
+import { Box, Input, clsx, useClassNames } from "../core";
+import { findDataProp, makeTestId } from "../core/system/utils";
 import { MaterialIcon } from "../icons/material-icon";
+import { GridColumn } from "./grid-column";
 import { GridDNDRow } from "./grid-dnd-row";
+import { useTranslation } from "./translate";
+import { isRowCheck, isRowExpand } from "./utils";
+
 import * as TYPES from "./types";
+
 import styles from "./grid.module.scss";
 
 export const GridBodyRow = React.memo(function GridBodyRow(
@@ -35,6 +38,9 @@ export const GridBodyRow = React.memo(function GridBodyRow(
     onExpand,
     onUpdate,
   } = props;
+
+  const checkboxId = useId();
+  const t = useTranslation();
 
   const expandState = useMemo(
     () => (hasExpanded ? hasExpanded(data) : { expand: Boolean(data.expand) }),
@@ -65,14 +71,16 @@ export const GridBodyRow = React.memo(function GridBodyRow(
   const renderCheckbox = React.useCallback(
     () => (
       <Input
+        id={checkboxId}
         type={selectionType === "single" ? "radio" : "checkbox"}
         checked={selected}
         onChange={() => {}}
         m={0}
         tabIndex={-1}
+        aria-label={t("Select row")}
       />
     ),
-    [selectionType, selected],
+    [checkboxId, selectionType, selected, t],
   );
 
   const renderExpandIcon = React.useCallback(() => {
@@ -83,6 +91,10 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         className={clsx(styles.expandRowIcon, {
           [styles.disabled]: disable,
         })}
+        role="button"
+        aria-label={expand ? t("Collapse row") : t("Expand row")}
+        aria-expanded={expand}
+        tabIndex={disable ? -1 : 0}
         onDoubleClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -100,13 +112,14 @@ export const GridBodyRow = React.memo(function GridBodyRow(
         )}
       </Box>
     );
-  }, [ExpandIcon, data, expandState, onExpand]);
+  }, [ExpandIcon, data, expandState, onExpand, t]);
 
   const RowComponent = renderer || "div";
   const rendererProps = renderer ? props : {};
   const classNames = useClassNames();
   const DragComponent: any = draggable ? GridDNDRow : React.Fragment;
   const borderWidth = 1;
+  const testId = findDataProp(props, "data-testid");
 
   function collectColumnProps(column: TYPES.GridColumn) {
     if (isRowCheck(column)) {
@@ -126,10 +139,15 @@ export const GridBodyRow = React.memo(function GridBodyRow(
             [styles.selected]: selected,
             [styles.inner]: draggable,
           })}
+          role="row"
+          aria-selected={selected || undefined}
           style={style}
           onDoubleClick={(e) =>
             onDoubleClick && onDoubleClick(e, data, rowIndex)
           }
+          data-testid={testId}
+          data-rowkey={data.key}
+          data-groupkey={data.parent}
         >
           {columns.map((column, index) => (
             <GridBodyRowColumn
@@ -143,6 +161,7 @@ export const GridBodyRow = React.memo(function GridBodyRow(
               renderer={column.renderer || cellRenderer}
               onClick={handleCellClick}
               onUpdate={handleUpdate}
+              data-testid={makeTestId(testId, "column", column.name)}
               {...collectColumnProps(column)}
             />
           ))}
@@ -151,7 +170,8 @@ export const GridBodyRow = React.memo(function GridBodyRow(
       {RowDetails && expandState?.expand && (
         <div
           className={styles.detailsRow}
-          data-row-details={`${data.key}`}
+          data-details-rowkey={data.key}
+          data-testid={makeTestId(testId, "details", data.key)}
           {...(width && {
             style: {
               width: width + borderWidth * 2, // add left + right border width

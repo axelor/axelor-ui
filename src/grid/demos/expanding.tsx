@@ -55,6 +55,7 @@ export default function Expanding() {
           state={state}
           setState={setState}
           rowDetailsRenderer={Details}
+          data-testid="grid"
         />
       </Box>
     </GridProvider>
@@ -101,6 +102,7 @@ function Details({ data }: { data: GridRow }) {
           columns={detailsColumns}
           state={state}
           setState={setState}
+          data-testid="grid"
         />
       </Box>
     </Collapse>

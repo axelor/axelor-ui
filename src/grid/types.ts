@@ -97,7 +97,14 @@ export type GridLabel =
   | "Hide"
   | "Show"
   | "Customize..."
-  | "Groups";
+  | "Groups"
+  | "Expand row"
+  | "Collapse row"
+  | "Expand group"
+  | "Collapse group"
+  | "Column options"
+  | "Select row"
+  | "Select all rows";
 
 export interface GridProps {
   className?: string;

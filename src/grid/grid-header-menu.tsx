@@ -13,6 +13,7 @@ import {
   PopperPlacement,
   useClassNames,
 } from "../core";
+import { findDataProp, makeTestId } from "../core/system/utils";
 
 import { MaterialIcon } from "../icons/material-icon";
 import GridDragElement, { DropHandler } from "./grid-drag-element";
@@ -92,21 +93,25 @@ const CustomMenuItem = ({ onEnter, onClick, ...props }: any) => {
   );
 };
 
-export const GridHeaderMenu = React.memo(function GridHeaderMenu({
-  columns = [],
-  groupBy,
-  onColumnCustomize,
-  onColumnShow,
-  onColumnHide,
-  onColumnDrop,
-  onColumnGroupRemove,
-}: GridHeaderMenuProps) {
+export const GridHeaderMenu = React.memo(function GridHeaderMenu(
+  props: GridHeaderMenuProps,
+) {
+  const {
+    columns = [],
+    groupBy,
+    onColumnCustomize,
+    onColumnShow,
+    onColumnHide,
+    onColumnDrop,
+    onColumnGroupRemove,
+  } = props;
   const [showColumnOptions, setColumnOptions] = React.useState(false);
   const [columnOptionsTarget, setColumnOptionsTarget] =
     React.useState<HTMLElement | null>(null);
   const t = useTranslation();
   const rtl = useRTL();
   const classNames = useClassNames();
+  const testId = findDataProp(props, "data-testid");
 
   const showMenu = useCallback(() => setColumnOptions(true), []);
   const hideMenu = useCallback(() => setColumnOptions(false), []);
@@ -118,14 +123,19 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
         ref={setColumnOptionsTarget}
         className={styles.columnOptions}
         onClick={showMenu}
+        data-testid={testId}
       >
-        <MaterialIcon icon="more_vert" />
+        <MaterialIcon
+          icon="more_vert"
+          data-testid={makeTestId(testId, "icon")}
+        />
       </Box>
       <Popper
         className={classNames("table-popover", styles.columnOptionsMenu)}
         placement={placement}
         target={columnOptionsTarget}
         open={showColumnOptions}
+        data-testid={makeTestId(testId, "popper")}
       >
         <ClickAwayListener onClickAway={hideMenu}>
           <Box d="flex" flexDirection="column">
@@ -136,6 +146,7 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu({
                   border={false}
                   placement={placement}
                   className={styles.columnOptionsMenuColumns}
+                  data-testid={makeTestId(testId, "menu")}
                 >
                   {columns
                     .filter((c) => !c.action && c.title && c.hidden !== true)

@@ -1,10 +1,13 @@
 import React from "react";
+
 import { Box, Popper, useClassNames, usePopperTrigger } from "../core";
+import { findDataProp, makeTestId } from "../core/system/utils";
+import { GridColumn } from "./grid-column";
+import { useTranslation } from "./translate";
+import { capitalizeWord, getNumberScale } from "./utils";
+
 import * as TYPES from "./types";
 
-import { GridColumn } from "./grid-column";
-import { capitalizeWord, getNumberScale } from "./utils";
-import { useTranslation } from "./translate";
 import styles from "./grid.module.scss";
 
 export const GridFooterRow = React.memo(function GridFooterRow(
@@ -23,6 +26,7 @@ export const GridFooterRow = React.memo(function GridFooterRow(
   const RowRenderer = renderer || "div";
   const rendererProps = renderer ? props : {};
   const classNames = useClassNames();
+  const testId = findDataProp(props, "data-testid");
 
   return (
     <RowRenderer
@@ -30,9 +34,12 @@ export const GridFooterRow = React.memo(function GridFooterRow(
       className={classNames(styles.row, styles.footerRow, className, {
         [styles.selected]: selected,
       })}
+      role="row"
       {...((width || style) && {
         style: { width, maxWidth: width, ...style },
       })}
+      data-testid={testId}
+      data-groupkey={data.key}
     >
       {columns.map((column, index) => {
         return (
@@ -42,6 +49,7 @@ export const GridFooterRow = React.memo(function GridFooterRow(
             index={index}
             data={column}
             row={data}
+            data-testid={makeTestId(testId, "column", column.name)}
           />
         );
       })}
@@ -53,6 +61,7 @@ function GridFooterRowColumn(
   props: TYPES.GridColumnProps & { row: TYPES.GridRow },
 ) {
   const { index, selected, data: column, row } = props;
+  const testId = findDataProp(props, "data-testid");
 
   const textValue = React.useMemo(() => {
     if (
@@ -83,10 +92,18 @@ function GridFooterRowColumn(
   } = usePopperTrigger({ trigger: "hover", delay: { open: 1000, close: 100 } });
 
   return (
-    <GridColumn selected={selected} index={index} data={column} type="footer">
+    <GridColumn
+      selected={selected}
+      index={index}
+      data={column}
+      type="footer"
+      data-testid={testId}
+    >
       {column.aggregate && (
         <>
-          <span ref={setTargetEl}>{textValue}</span>
+          <span ref={setTargetEl} data-testid={makeTestId(testId, "value")}>
+            {textValue}
+          </span>
           <Popper
             open={popperOpen}
             target={targetEl}
@@ -95,6 +112,7 @@ function GridFooterRowColumn(
             shadow
             rounded
             placement="top"
+            data-testid={makeTestId(testId, "tooltip")}
           >
             <Box p={2}>
               <span>

@@ -1,14 +1,18 @@
 import React from "react";
+
+import { findDataProp, makeTestId } from "../core/system/utils";
 import {
   GridHeaderColumn,
   GridHeaderColumnProps,
   ResizeHandler,
 } from "./grid-header-column";
-import { GridSearchRow } from "./grid-search-row";
 import { GridHeaderMenu, GridHeaderMenuProps } from "./grid-header-menu";
-import * as TYPES from "./types";
-import styles from "./grid.module.scss";
+import { GridSearchRow } from "./grid-search-row";
 import { isRowCheck } from "./utils";
+
+import * as TYPES from "./types";
+
+import styles from "./grid.module.scss";
 
 export interface GridHeaderProps
   extends Pick<
@@ -72,10 +76,15 @@ export const GridHeader = React.memo(function GridHeader(
     onColumnResizeEnd,
   } = props;
   const RowRenderer = rowRenderer || "div";
+  const testId = findDataProp(props, "data-testid");
 
   return (
-    <div className={className}>
-      <RowRenderer className={styles.row}>
+    <div className={className} role="rowgroup" data-testid={testId}>
+      <RowRenderer
+        className={styles.row}
+        role="row"
+        data-testid={makeTestId(testId, "header-row")}
+      >
         {columns.map((column, index) => {
           const sortColumn = (orderBy || []).find(
             (col) => col.name === column.name,
@@ -100,6 +109,7 @@ export const GridHeader = React.memo(function GridHeader(
               onResizeStart={onColumnResizeStart}
               onResizeEnd={onColumnResizeEnd}
               onCustomize={onColumnCustomize}
+              data-testid={makeTestId(testId, "column", column.name)}
               {...(isRowCheck(column) ? { checkType, selectionType } : {})}
             />
           );
@@ -108,6 +118,7 @@ export const GridHeader = React.memo(function GridHeader(
 
       {searchRowRenderer && searchColumnRenderer && (
         <GridSearchRow
+          data-testid={makeTestId(testId, "search-row")}
           {...{
             columns,
             searchRowRenderer,
@@ -118,6 +129,7 @@ export const GridHeader = React.memo(function GridHeader(
 
       {allColumns && onColumnShow && onColumnHide && (
         <GridHeaderMenu
+          data-testid={makeTestId(testId, "menu")}
           groupBy={groupBy}
           columns={allColumns}
           onColumnShow={onColumnShow}

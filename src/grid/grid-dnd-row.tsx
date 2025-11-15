@@ -1,10 +1,10 @@
 /**
  * @title Row Reorder
  */
-import React, { useEffect } from "react";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
+import React, { useEffect } from "react";
 
-import { Box, clsx } from "../core";
+import { Box, clsx, findDataProp } from "../core";
 import { MaterialIcon } from "../icons/material-icon";
 
 import * as TYPES from "./types";
@@ -39,6 +39,7 @@ function getStyle(style: any) {
 
 export function GridDNDContainer(props: GridDNDBodyProps) {
   const { className, style, children, rows, onRowMove, onRowMoveStart } = props;
+  const testId = findDataProp(props, "data-testid");
 
   function handleDragEnd(result: any) {
     const { source, destination } = result;
@@ -71,6 +72,7 @@ export function GridDNDContainer(props: GridDNDBodyProps) {
             style={style}
             {...provided.droppableProps}
             ref={provided.innerRef}
+            data-testid={testId}
           >
             {children as any}
             {provided.placeholder}

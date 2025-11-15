@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { Box, useClassNames, useRefs } from "../core";
+import { findAriaProp, findDataProp, makeTestId } from "../core/system/utils";
 import { GridBody } from "./grid-body";
 import { GridDNDColumn } from "./grid-dnd-row";
 import { GridFooter } from "./grid-footer";
@@ -1415,6 +1416,8 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
     const hasFooter =
       hasAggregation && aggregationType === "all" && records.length > 0;
     const classNames = useClassNames();
+    const testId = findDataProp(props, "data-testid");
+    const ariaLabel = findAriaProp(props, "aria-label");
 
     return (
       <TranslateProvider labels={labels}>
@@ -1429,6 +1432,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             [styles["variable-rows"]]: rowType === "variable",
             [styles["rtl"]]: isRTL,
           })}
+          role="grid"
+          aria-label={ariaLabel}
+          aria-multiselectable={selectionType === "multiple" || undefined}
           {...(allowCellSelection
             ? {
                 tabIndex: 0,
@@ -1437,8 +1443,10 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
             : {})}
           style={style}
           onScroll={handleScroll}
+          data-testid={testId}
         >
           <GridHeader
+            data-testid={makeTestId(testId, "header")}
             className={classNames(styles.header, {
               [styles.sticky]: stickyHeader,
               [styles.options]: allowColumnOptions,
@@ -1489,6 +1497,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
               : {})}
           />
           <GridBody
+            data-testid={makeTestId(testId, "body")}
             columns={displayColumns}
             rows={state.rows}
             editRow={state.editRow}
@@ -1535,6 +1544,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
           />
           {hasFooter && (
             <GridFooter
+              data-testid={makeTestId(testId, "footer")}
               className={classNames(styles.footer, {
                 [styles.sticky]: stickyFooter,
               })}

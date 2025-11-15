@@ -21,6 +21,7 @@ export default function Sorting() {
         columns={columns}
         state={state}
         setState={setState}
+        data-testid="grid"
       />
     </Box>
   );
