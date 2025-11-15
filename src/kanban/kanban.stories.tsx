@@ -131,6 +131,7 @@ function KanbanContainer({ columns: columnsProp, readonly }: KanbanProps) {
       readonly={readonly}
       onCardMove={onCardMove}
       onColumnMove={onColumnMove}
+      data-testid="kanban"
     />
   );
 }

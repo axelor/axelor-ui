@@ -1,9 +1,10 @@
-import * as React from "react";
-import { Box } from "../core";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
+import * as React from "react";
 
-import KanbanRecord from "./kanban-record";
+import { Box } from "../core";
+import { findDataProp, makeTestId } from "../core/system/utils";
 import { DefaultColumn } from "./kanban-default";
+import KanbanRecord from "./kanban-record";
 import { Column } from "./types";
 
 export type RecordListProps = {
@@ -13,13 +14,12 @@ export type RecordListProps = {
   className?: string;
 };
 
-export const RecordList = React.memo(function RecordList({
-  column,
-  readonly,
-  style,
-  className,
-}: RecordListProps) {
+export const RecordList = React.memo(function RecordList(
+  props: RecordListProps,
+) {
+  const { column, readonly, style, className } = props;
   const { records } = column;
+  const testId = findDataProp(props, "data-testid");
   return (
     <Droppable
       droppableId={String(column.id)}
@@ -32,8 +32,11 @@ export const RecordList = React.memo(function RecordList({
           {...droppableProps}
           d="flex"
           flexDirection="column"
+          role="list"
+          aria-label={column.title}
           style={style}
           className={className}
+          data-testid={testId}
         >
           {records?.map((record, index) => (
             <KanbanRecord
@@ -42,6 +45,7 @@ export const RecordList = React.memo(function RecordList({
               key={record.id}
               index={index}
               readonly={readonly}
+              data-testid={makeTestId(testId, "card", record.id)}
             />
           ))}
           {placeholder}
@@ -59,18 +63,14 @@ export type KanbanColumnProps = {
   style?: React.CSSProperties;
 };
 
-export function KanbanColumn({
-  column,
-  index,
-  readonly,
-  className,
-  style,
-}: KanbanColumnProps) {
+export function KanbanColumn(props: KanbanColumnProps) {
+  const { column, index, readonly, className, style } = props;
   const {
     renderer: Component = DefaultColumn,
     id,
     disableDrag = true,
   } = column;
+  const testId = findDataProp(props, "data-testid");
 
   return (
     <Draggable
@@ -85,11 +85,13 @@ export function KanbanColumn({
           {...dragHandleProps}
           className={className}
           style={{ ...style, ...draggableProps.style }}
+          data-testid={testId}
         >
           <Component
             RecordList={RecordList}
             column={column}
             readonly={readonly}
+            data-testid={makeTestId(testId, "content")}
           />
         </Box>
       )}

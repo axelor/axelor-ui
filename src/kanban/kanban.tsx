@@ -1,10 +1,12 @@
-import { useCallback } from "react";
-import { Box, useClassNames } from "../core";
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
+import { useCallback } from "react";
 
-import styles from "./kanban.module.css";
+import { Box, useClassNames } from "../core";
+import { findAriaProp, findDataProp, makeTestId } from "../core/system/utils";
 import KanbanColumn, { KanbanColumnProps } from "./kanban-column";
 import { CardEvent, Column, ColumnEvent } from "./types";
+
+import styles from "./kanban.module.css";
 
 export type KanbanProps = {
   columns?: Column[];
@@ -15,14 +17,15 @@ export type KanbanProps = {
   ColumnProps?: Pick<KanbanColumnProps, "className" | "style">;
 };
 
-export function Kanban({
-  columns,
-  onColumnMove,
-  onCardMove,
-  readonly,
-  className,
-  ColumnProps,
-}: KanbanProps) {
+export function Kanban(props: KanbanProps) {
+  const {
+    columns,
+    onColumnMove,
+    onCardMove,
+    readonly,
+    className,
+    ColumnProps,
+  } = props;
   const getColumn = useCallback(
     (columnId: string) =>
       columns?.find((c) => String(c.id) === String(columnId)),
@@ -65,6 +68,8 @@ export function Kanban({
     [columns, onCardMove, onColumnMove, getColumn],
   );
   const classNames = useClassNames();
+  const testId = findDataProp(props, "data-testid");
+  const ariaLabel = findAriaProp(props, "aria-label");
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable
@@ -78,6 +83,9 @@ export function Kanban({
             ref={innerRef}
             {...droppableProps}
             className={classNames(styles.board, className)}
+            role={ariaLabel ? "region" : undefined}
+            aria-label={ariaLabel}
+            data-testid={testId}
           >
             {columns?.map((column, index) => (
               <KanbanColumn
@@ -86,6 +94,7 @@ export function Kanban({
                 index={index}
                 readonly={readonly}
                 {...ColumnProps}
+                data-testid={makeTestId(testId, "column", column.id)}
               />
             ))}
             {placeholder}

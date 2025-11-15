@@ -1,4 +1,5 @@
 import { Box } from "../core";
+import { findDataProp, makeTestId } from "../core/system/utils";
 import { Draggable } from "@hello-pangea/dnd";
 
 import { Column, Record } from "./types";
@@ -11,13 +12,10 @@ export type KanbanRecordProps = {
   readonly?: boolean;
 };
 
-export function KanbanRecord({
-  record,
-  column,
-  index,
-  readonly,
-}: KanbanRecordProps) {
+export function KanbanRecord(props: KanbanRecordProps) {
+  const { record, column, index, readonly } = props;
   const { renderer: Component = DefaultRecord } = record;
+  const testId = findDataProp(props, "data-testid");
 
   return (
     <Draggable
@@ -26,8 +24,20 @@ export function KanbanRecord({
       isDragDisabled={readonly || column.readonly}
     >
       {({ innerRef, draggableProps, dragHandleProps }, { isDragging }) => (
-        <Box ref={innerRef} {...draggableProps} {...dragHandleProps}>
-          <Component record={record} column={column} isDragging={isDragging} />
+        <Box
+          ref={innerRef}
+          {...draggableProps}
+          {...dragHandleProps}
+          role="listitem"
+          aria-label={record.title}
+          data-testid={testId}
+        >
+          <Component
+            record={record}
+            column={column}
+            isDragging={isDragging}
+            data-testid={makeTestId(testId, "content")}
+          />
         </Box>
       )}
     </Draggable>
