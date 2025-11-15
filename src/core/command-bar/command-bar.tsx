@@ -1,4 +1,4 @@
-import { JSX, Fragment, useCallback, useMemo, useState } from "react";
+import { Fragment, JSX, useCallback, useId, useMemo, useState } from "react";
 import { MaterialIcon, MaterialIconProps } from "../../icons/material-icon";
 import { Button, ButtonProps } from "../button";
 import { ButtonGroup } from "../button-group";
@@ -6,6 +6,7 @@ import { clsx } from "../clsx";
 import { Image } from "../image";
 import { Menu, MenuDivider, MenuItem } from "../menu";
 import { useClassNames } from "../styles";
+import { findAriaProp, findDataProp, makeTestId } from "../system/utils";
 
 import styles from "./command-bar.module.scss";
 
@@ -76,8 +77,28 @@ export function CommandItem(props: RenderCommandItemProps) {
     className,
   } = props;
   const classNames = useClassNames();
+  const testId = findDataProp(props, "data-testid");
+  const ariaLabel = findAriaProp(props, "aria-label");
   const [show, setShow] = useState(false);
   const [target, setTarget] = useState<HTMLElement | null>(null);
+
+  const baseId = useId();
+  const titleId = `${baseId}-title`;
+  const descriptionId = `${baseId}-desc`;
+  const subtextId = `${baseId}-subtext`;
+  const menuId = `${baseId}-menu`;
+
+  const ariaHaspopup =
+    findAriaProp(props, "aria-haspopup") ||
+    (items.length > 0 ? "menu" : undefined);
+
+  const ariaExpanded =
+    findAriaProp(props, "aria-expanded") ||
+    (items.length > 0 ? show : undefined);
+
+  const ariaControls =
+    findAriaProp(props, "aria-controls") ||
+    (items.length > 0 ? menuId : undefined);
 
   const handleClick = useCallback(
     (e: any) => {
@@ -154,23 +175,47 @@ export function CommandItem(props: RenderCommandItemProps) {
   return (
     <>
       {showAsMenuItem ? (
-        <MenuItem disabled={disabled} {...buttonProps}>
+        <MenuItem
+          disabled={disabled}
+          aria-label={ariaLabel}
+          aria-labelledby={text ? titleId : undefined}
+          aria-describedby={subtext ? subtextId : undefined}
+          aria-haspopup={ariaHaspopup}
+          aria-expanded={ariaExpanded}
+          aria-controls={ariaControls}
+          aria-pressed={checked ? true : undefined}
+          {...buttonProps}
+          data-testid={testId}
+        >
           {subtext ? (
             <div className={styles.menuTexts}>
-              <span className={styles.menuTitle}>{text}</span>
-              <span className={styles.menuSub}>{subtext}</span>
+              <span id={titleId} className={styles.menuTitle}>
+                {text}
+              </span>
+              <span id={subtextId} className={styles.menuSub}>
+                {subtext}
+              </span>
             </div>
           ) : (
-            <span className={styles.menuTitle}>{text}</span>
+            <span id={titleId} className={styles.menuTitle}>
+              {text}
+            </span>
           )}
           {items?.length > 0 && (
             <span className={styles.menuItemIcon}>
-              <MaterialIcon icon="arrow_right" className={styles.icon} />
+              <MaterialIcon
+                icon="arrow_right"
+                className={styles.icon}
+                aria-hidden="true"
+              />
             </span>
           )}
         </MenuItem>
       ) : (
-        <Wrapper className={clsx(styles.itemWrapper, className)}>
+        <Wrapper
+          className={clsx(styles.itemWrapper, className)}
+          data-testid={testId}
+        >
           {hasContent && (
             <Button
               variant={variant}
@@ -185,6 +230,16 @@ export function CommandItem(props: RenderCommandItemProps) {
                 }),
               )}
               disabled={disabled}
+              data-testid={makeTestId(testId, "button")}
+              aria-label={
+                ariaLabel || (iconOnly && !text ? description : undefined)
+              }
+              aria-labelledby={text && !iconOnly ? titleId : undefined}
+              aria-describedby={description ? descriptionId : undefined}
+              aria-haspopup={ariaHaspopup}
+              aria-expanded={ariaExpanded}
+              aria-controls={ariaControls}
+              aria-pressed={checked ? true : undefined}
               {...buttonProps}
             >
               <span
@@ -203,12 +258,15 @@ export function CommandItem(props: RenderCommandItemProps) {
                   )
                 )}
                 {text && !iconOnly && (
-                  <span className={styles.titleText}>{text}</span>
+                  <span id={titleId} className={styles.titleText}>
+                    {text}
+                  </span>
                 )}
                 {showArrow && (
                   <MaterialIcon
                     icon="arrow_drop_down"
                     className={clsx(styles.icon, styles.arrowIcon)}
+                    aria-hidden="true"
                   />
                 )}
               </span>
@@ -221,12 +279,20 @@ export function CommandItem(props: RenderCommandItemProps) {
                 [styles.open]: show,
               })}
               disabled={disabled}
+              tabIndex={0}
+              data-testid={makeTestId(testId, "split")}
+              aria-label={`${text || ""} menu`}
+              aria-labelledby={text ? titleId : undefined}
+              aria-haspopup="menu"
+              aria-expanded={show}
+              aria-controls={menuId}
               {...splitProps}
             >
               <span className={styles.title}>
                 <MaterialIcon
                   icon="arrow_drop_down"
                   className={clsx(styles.icon, styles.arrowIcon)}
+                  aria-hidden="true"
                 />
               </span>
             </Button>
@@ -235,10 +301,13 @@ export function CommandItem(props: RenderCommandItemProps) {
       )}
       {items.length > 0 && (
         <Menu
+          id={menuId}
           target={target}
           show={show}
           onHide={hideMenu}
           className={styles.menu}
+          data-testid={makeTestId(testId, "menu")}
+          aria-label={ariaLabel}
           {...menuProps}
           {...(showAsMenuItem && {
             placement: "end-top",
@@ -246,7 +315,7 @@ export function CommandItem(props: RenderCommandItemProps) {
         >
           {items.map((itemProp) => {
             const { key, ...item } = itemProp;
-            const { divider, hidden, render } = item;
+            const { divider, hidden, render: Render } = item;
 
             if (hidden) {
               return null;
@@ -262,15 +331,25 @@ export function CommandItem(props: RenderCommandItemProps) {
               onClick: (e: any) => handleMenuClick(e, itemProp),
             };
 
-            if (render) {
+            if (Render) {
               return (
                 <Fragment key={key}>
-                  {render({ ...itemProps, render: undefined })}
+                  <Render
+                    {...itemProps}
+                    render={undefined}
+                    data-testid={makeTestId(testId, "item", key)}
+                  />
                 </Fragment>
               );
             }
 
-            return <CommandItem key={key} {...itemProps} />;
+            return (
+              <CommandItem
+                key={key}
+                {...itemProps}
+                data-testid={makeTestId(testId, "item", key)}
+              />
+            );
           })}
         </Menu>
       )}
@@ -280,8 +359,15 @@ export function CommandItem(props: RenderCommandItemProps) {
 
 export function CommandBar(props: CommandBarProps) {
   const { className, iconOnly, iconProps = {}, items = [] } = props;
+  const testId = findDataProp(props, "data-testid");
+  const ariaLabel = findAriaProp(props, "aria-label");
   return (
-    <div className={clsx(className, styles.bar)}>
+    <div
+      className={clsx(className, styles.bar)}
+      data-testid={testId}
+      role="toolbar"
+      aria-label={ariaLabel}
+    >
       {items.map(({ key, iconProps: icon, menuProps, ...item }) => (
         <CommandItem
           key={key}
@@ -291,6 +377,7 @@ export function CommandBar(props: CommandBarProps) {
             ...props.menuProps,
             ...menuProps,
           }}
+          data-testid={makeTestId(testId, "item", key)}
           {...item}
         />
       ))}

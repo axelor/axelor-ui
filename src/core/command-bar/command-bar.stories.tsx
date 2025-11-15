@@ -9,6 +9,7 @@ export const Basic = () => {
   return (
     <div>
       <CommandBar
+        data-testid="command-bar-basic"
         items={[
           {
             key: "new",
