@@ -3,6 +3,7 @@ import { Transition } from "react-transition-group";
 
 import { useRefs } from "../hooks";
 import { useClassNames } from "../styles";
+import { findAriaProp } from "../system";
 import { TransitionProps } from "../transitions/types";
 import {
   getTransition,
@@ -146,8 +147,13 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
               [styles.collapseExited]: state === "exited",
             },
           ]);
+          const isCollapsed = state === "exited" || state === "exiting";
           return (
-            <div className={cls} ref={combinedRef}>
+            <div
+              className={cls}
+              ref={combinedRef}
+              aria-hidden={isCollapsed || findAriaProp(props, "aria-hidden")}
+            >
               <div ref={wrapperRef} className={styles.collapseWrapper}>
                 <div className={styles.collapseWrapperInner}>
                   {typeof children === "function" && children(state)}

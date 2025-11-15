@@ -119,9 +119,11 @@ export const Grow = forwardRef<HTMLElement, GrowProps>(
         {(state) => {
           if (isValidElement(children)) {
             const style = getTransitionStyle(state, styles as any, children);
+            const hidden = state === "exited" || state === "exiting";
             return cloneElement(children as React.ReactElement<any>, {
               style,
               ref: combinedRef,
+              "aria-hidden": hidden,
             });
           }
         }}

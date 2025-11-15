@@ -86,9 +86,11 @@ export const Fade = forwardRef<HTMLElement, FadeProps>(
               const { visibility, display, ...rest } = style;
               style = rest;
             }
+            const hiden = state === "exited" || state === "exiting";
             return cloneElement(children as React.ReactElement<any>, {
               style,
               ref: combinedRef,
+              "aria-hidden": hiden,
             });
           }
         }}
