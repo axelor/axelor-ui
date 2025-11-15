@@ -93,10 +93,6 @@
   user-select: none;
 }
 
-.button:not(.active) {
-  width: 0;
-}
-
 .button.active {
   .arrow {
     visibility: visible;
@@ -126,6 +122,12 @@
 }
 
 .tab {
+  outline: none;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 0.125rem rgba(var(--bs-primary-rgb), 0.25) inset;
+  }
+
   &.active {
     .title {
       opacity: 1;

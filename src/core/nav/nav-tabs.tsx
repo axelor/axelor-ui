@@ -11,7 +11,9 @@ import {
 
 import { MaterialIcon } from "../../icons/material-icon";
 import { clsx } from "../clsx";
+import { useControlled } from "../hooks/use-controlled";
 import { useTheme } from "../styles";
+import { findAriaProp, findDataProp, makeTestId } from "../system/utils";
 import { getRGB } from "./utils";
 
 import styles from "./nav-tabs.module.scss";
@@ -57,6 +59,17 @@ export interface NavTabItem {
   data?: any;
 
   /**
+   * The HTML properties.
+   */
+  htmlProps?: {
+    id?: string;
+    "aria-label"?: string;
+    "aria-labelledby"?: string;
+    "aria-controls"?: string;
+    "data-testid"?: string;
+  };
+
+  /**
    * The click handler.
    *
    */
@@ -84,7 +97,7 @@ export interface NavTabsProps {
   /**
    * The id of the active tab.
    */
-  active?: string;
+  active?: string | null;
 
   /**
    * The class name.
@@ -96,10 +109,18 @@ export interface NavTabsProps {
    *
    */
   onItemClick?: (item: NavTabItem) => void;
+
+  /**
+   * The item select change handler.
+   *
+   * @param item the selected item
+   *
+   */
+  onItemSelect?: (item?: NavTabItem) => void;
 }
 
 type ContextValue = {
-  active: string | null;
+  active: string | null | undefined;
   activeElement: HTMLElement | null;
   setActive: (
     id: string | null,
@@ -125,8 +146,9 @@ const useTabs = () => {
 
 export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
   (props, ref) => {
-    const { className, items, onItemClick } = props;
+    const { className, items, onItemClick, onItemSelect } = props;
 
+    const testId = findDataProp(props, "data-testid");
     const isRtl = useTheme().dir === "rtl";
 
     const [indicator, setIndicator] = useState<{ x: number; w: number }>({
@@ -138,8 +160,11 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
     const [startArrow, setStartArrow] = useState(false);
     const [endArrow, setEndArrow] = useState(false);
 
-    const [active, setActiveTab] = useState<string | null>(() => {
-      return props.active ?? items.find(Boolean)?.id ?? null;
+    const [active, setActiveTab] = useControlled<string | null>({
+      name: "NavTabs",
+      prop: "active",
+      state: props.active,
+      defaultState: items?.[0]?.id,
     });
 
     const [activeElement, setActiveElement] = useState<HTMLElement | null>(
@@ -149,38 +174,44 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
     const scrollIn = useCallback(
       (element: HTMLElement) => {
         if (stripElement) {
-          const left = element.offsetLeft;
-          const right = left + element.offsetWidth;
-          const scrollLeft = stripElement.scrollLeft;
-          const scrollRight = scrollLeft + stripElement.clientWidth;
+          const stripRect = stripElement.getBoundingClientRect();
+          const elementRect = element.getBoundingClientRect();
 
-          const diff =
-            right > scrollRight
-              ? right - scrollRight
-              : left < scrollLeft
-                ? -(scrollLeft - left)
-                : 0;
+          const isClippedLeft = elementRect.left < stripRect.left;
+          const isClippedRight = elementRect.right > stripRect.right;
 
-          if (diff) {
+          let scrollLeft = stripElement.scrollLeft;
+          if (isClippedLeft) {
+            scrollLeft -= stripRect.left - elementRect.left;
+          } else if (isClippedRight) {
+            scrollLeft += elementRect.right - stripRect.right;
+          } else {
+            return;
+          }
+
+          scrollLeft = isRtl ? Math.floor(scrollLeft) : Math.ceil(scrollLeft);
+
+          if (scrollLeft !== stripElement.scrollLeft) {
             stripElement.scroll({
-              left: scrollLeft + diff,
+              left: scrollLeft,
               behavior: "smooth",
             });
           }
         }
       },
-      [stripElement],
+      [isRtl, stripElement],
     );
 
     const setActive = useCallback(
       (id: string | null, element: HTMLElement | null, persist = true) => {
         persist && setActiveTab(id);
         setActiveElement(element);
+        onItemSelect?.(items.find((x) => x.id === id));
         if (element) {
           scrollIn(element);
         }
       },
-      [scrollIn],
+      [items, onItemSelect, scrollIn, setActiveTab],
     );
 
     const handleItemClick = useCallback(
@@ -193,9 +224,11 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
     const activateScrollArrows = useCallback(() => {
       const elem = stripElement;
       if (elem) {
-        const start = isRtl ? Math.abs(elem.scrollLeft) : elem.scrollLeft;
         const width = elem.clientWidth;
-        const end = elem.scrollWidth - width - start;
+        const start = Math.ceil(
+          isRtl ? Math.abs(elem.scrollLeft) : elem.scrollLeft,
+        );
+        const end = Math.ceil(elem.scrollWidth - width - start);
 
         setStartArrow(start > 0);
         setEndArrow(end > 0);
@@ -250,11 +283,11 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
           const x = isRtl
             ? stripElement.clientWidth -
               activeElement.offsetLeft -
-              activeElement.offsetWidth
+              activeElement.clientWidth
             : activeElement.offsetLeft;
           const w = activeElement.offsetWidth;
           if (w > 0) {
-            setIndicator({ x, w });
+            setIndicator({ x: x + 1, w: w - 2 });
           }
         });
         observer.observe(activeElement);
@@ -276,19 +309,18 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
       }
     }, [activateScrollArrows, stripElement, items]);
 
-    useEffect(() => {
-      if (props.active !== active) {
-        setActive(props.active ?? null, null);
-      }
-    }, [active, props.active, setActive]);
-
     return (
       <NavTabsContext.Provider value={{ active, activeElement, setActive }}>
-        <div className={clsx(className, styles.container)} ref={ref}>
+        <div
+          className={clsx(className, styles.container)}
+          ref={ref}
+          data-testid={testId}
+        >
           <div
             className={clsx(styles.button, styles.start, {
               [styles.active]: startArrow,
             })}
+            data-testid={makeTestId(testId, "start-arrow")}
           >
             <MaterialIcon
               className={styles.arrow}
@@ -301,12 +333,14 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
             className={styles.strip}
             onScroll={activateScrollArrows}
           >
-            <div className={styles.tabs}>
+            <div className={styles.tabs} role="tablist">
               {items.map((item) => (
                 <NavTab
                   key={item.id}
                   item={item}
                   onItemClick={handleItemClick}
+                  stripElement={stripElement}
+                  data-testid={makeTestId(testId, "tab", item.id)}
                 />
               ))}
             </div>
@@ -323,12 +357,14 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
                       width: indicator.w,
                     }
               }
+              data-testid={makeTestId(testId, "indicator")}
             ></div>
           </div>
           <div
             className={clsx(styles.button, styles.end, {
               [styles.active]: endArrow,
             })}
+            data-testid={makeTestId(testId, "end-arrow")}
           >
             <MaterialIcon
               className={styles.arrow}
@@ -345,16 +381,44 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
 interface NavTabProps {
   item: NavTabItem;
   onItemClick?: (item: NavTabItem) => void;
+  stripElement?: HTMLElement | null;
 }
 
 function NavTab(props: NavTabProps) {
-  const { item, onItemClick } = props;
-  const { icon, title, render, onClick, onAuxClick, onContextMenu } = item;
+  const { item, onItemClick, stripElement } = props;
+  const { htmlProps = {}, onClick, onAuxClick, onContextMenu } = item;
+
+  const id = htmlProps.id;
+  const ariaLabel = findAriaProp(htmlProps, "aria-label");
+  const ariaLabelledby = findAriaProp(htmlProps, "aria-labelledby");
+  const ariaControls = findAriaProp(htmlProps, "aria-controls");
+  const testId =
+    findDataProp(htmlProps, "data-testid") ||
+    findDataProp(props, "data-testid");
 
   const { active, setActive } = useTabs();
   const [element, setElement] = useState<HTMLDivElement | null>(null);
 
   const isActive = active === item.id;
+  const isRtl = useTheme().dir === "rtl";
+
+  const scrollTab = useCallback((tab: HTMLElement, strip: HTMLElement) => {
+    const stripRect = strip.getBoundingClientRect();
+    const elementRect = tab.getBoundingClientRect();
+
+    const isClippedLeft = elementRect.left < stripRect.left;
+    const isClippedRight = elementRect.right > stripRect.right;
+
+    if (isClippedLeft || isClippedRight) {
+      let scrollLeft = strip.scrollLeft;
+      if (isClippedLeft) {
+        scrollLeft -= stripRect.left - elementRect.left;
+      } else {
+        scrollLeft += elementRect.right - stripRect.right;
+      }
+      strip.scroll({ left: scrollLeft, behavior: "smooth" });
+    }
+  }, []);
 
   const handleClick = useCallback<React.MouseEventHandler<HTMLDivElement>>(
     (e) => {
@@ -365,6 +429,37 @@ function NavTab(props: NavTabProps) {
     [element, item, onClick, onItemClick, setActive],
   );
 
+  const handleKeyDown = useCallback<React.KeyboardEventHandler<HTMLDivElement>>(
+    (event) => {
+      if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+        event.preventDefault();
+        const previousSibling = isRtl ? "nextSibling" : "previousSibling";
+        const nextSibling = isRtl ? "previousSibling" : "nextSibling";
+        const lastChild = isRtl ? "firstChild" : "lastChild";
+        const firstChild = isRtl ? "lastChild" : "firstChild";
+        let next =
+          event.key === "ArrowLeft"
+            ? element?.[previousSibling]
+            : element?.[nextSibling];
+        if (next == null) {
+          next =
+            event.key === "ArrowLeft"
+              ? element?.parentElement?.[lastChild]
+              : element?.parentElement?.[firstChild];
+        }
+        (next as HTMLElement)?.focus();
+        if (next && stripElement) {
+          scrollTab(next as HTMLElement, stripElement);
+        }
+      }
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        element?.click();
+      }
+    },
+    [element, isRtl, scrollTab, stripElement],
+  );
+
   useEffect(() => {
     if (isActive) {
       setActive(item.id, element, false);
@@ -373,16 +468,25 @@ function NavTab(props: NavTabProps) {
 
   return (
     <div
+      id={id}
       ref={setElement}
       className={clsx(styles.tab, {
         [styles.active]: isActive,
       })}
+      role="tab"
+      tabIndex={isActive ? 0 : -1}
+      aria-selected={isActive ? "true" : "false"}
+      aria-controls={ariaControls}
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledby}
       data-tab-id={item.id}
+      onKeyDown={handleKeyDown}
       onClick={handleClick}
       onAuxClick={onAuxClick}
       onContextMenu={onContextMenu}
+      data-testid={testId}
     >
-      <NavTabInner item={item} active={isActive} />
+      <NavTabInner item={item} active={isActive} data-testid={testId} />
     </div>
   );
 }
@@ -390,17 +494,18 @@ function NavTab(props: NavTabProps) {
 function NavTabInner(props: { item: NavTabItem; active?: boolean }) {
   const { item, active } = props;
   const { icon, title, render: Title } = item;
+  const testId = findDataProp(props, "data-testid");
   if (Title) {
     return (
       <Title item={item} active={active} className={styles.title}>
-        {icon && <NavTabIcon item={item} />}
+        {icon && <NavTabIcon item={item} data-testid={testId} />}
         {title && <div className={styles.text}>{title}</div>}
       </Title>
     );
   }
   return (
     <div className={styles.title}>
-      {icon && <NavTabIcon item={item} />}
+      {icon && <NavTabIcon item={item} data-testid={testId} />}
       {title && <div className={styles.text}>{title}</div>}
     </div>
   );
@@ -409,6 +514,7 @@ function NavTabInner(props: { item: NavTabItem; active?: boolean }) {
 function NavTabIcon(props: NavTabProps) {
   const { item } = props;
   const { icon: Icon, iconColor } = item;
+  const testId = findDataProp(props, "data-testid");
   const bg = useMemo(() => iconColor && getRGB(iconColor, 0.1), [iconColor]);
   const hoverBg = useMemo(
     () => iconColor && getRGB(iconColor, 0.2),
@@ -432,6 +538,7 @@ function NavTabIcon(props: NavTabProps) {
             "--ax-nav-tabs-icon-active-color": iconColor,
           } as any
         }
+        data-testid={makeTestId(testId, "icon")}
       >
         <Icon color={iconColor} />
       </div>
