@@ -113,7 +113,7 @@ function PopperInner(props: PopperProps) {
       onEnter={handleEnter}
       onExited={handleExited}
     >
-      <PopperElement {...rest} />
+      <PopperElement {...rest} open={open} />
     </Transition>
   );
 }
@@ -121,6 +121,7 @@ function PopperInner(props: PopperProps) {
 const PopperElement = forwardRef<HTMLDivElement, PopperProps>(
   function PopperElement(
     {
+      open,
       target,
       placement: popperPlacement = "bottom",
       offset,
@@ -130,7 +131,7 @@ const PopperElement = forwardRef<HTMLDivElement, PopperProps>(
       rounded = true,
       shadow = true,
       border = true,
-      role = "tooltip",
+      role,
       bg = "body",
       color = "body",
       children,
@@ -201,6 +202,7 @@ const PopperElement = forwardRef<HTMLDivElement, PopperProps>(
         {...(dir === "rtl" ? { dir: "rtl" } : {})}
         {...props}
         style={{ position: floatingStrategy, top: y ?? "", left: x ?? "" }}
+        aria-hidden={!open}
       >
         <Box
           className={styles.wrapper}
@@ -218,6 +220,7 @@ const PopperElement = forwardRef<HTMLDivElement, PopperProps>(
                 styles.arrow,
                 styles[`${staticSide}-arrow`],
               )}
+              aria-hidden="true"
               style={{
                 left: middlewareData?.arrow?.x ?? "",
                 top: middlewareData?.arrow?.y ?? "",

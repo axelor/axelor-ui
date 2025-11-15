@@ -27,7 +27,12 @@ export const Basic = () => {
       <Button variant="primary" ref={setTargetEl} onClick={toggle}>
         Button
       </Button>
-      <Popper open={open} target={targetEl} offset={[0, 4]}>
+      <Popper
+        data-testid="popper"
+        open={open}
+        target={targetEl}
+        offset={[0, 4]}
+      >
         <Box p={2}>The content of the Popper.</Box>
       </Popper>
     </Box>
@@ -45,7 +50,13 @@ export const Dropdown = () => {
       <Button variant="primary" ref={setTargetEl} onClick={toggle}>
         Button
       </Button>
-      <Popper open={open} target={targetEl} offset={[0, 4]} arrow>
+      <Popper
+        data-testid="popper"
+        open={open}
+        target={targetEl}
+        offset={[0, 4]}
+        arrow
+      >
         <ul
           className={classNames(
             "dropdown-menu show border-0 rounded-0 position-static bg-transparent",
@@ -84,7 +95,12 @@ function Example({ event, interactive }: any) {
       <Button textTransform="capitalize" variant="primary" ref={setTargetEl}>
         {event}
       </Button>
-      <Popper open={open} target={targetEl} offset={[0, 4]}>
+      <Popper
+          data-testid="popper"
+          open={open}
+          target={targetEl}
+          offset={[0, 4]}
+        >
         <ClickAwayListener onClickAway={onClickAway}>
           <Box p={2} ref={setContentEl} style={{ width: 320 }}>
             <Box as="h4">Personal Information</Box>
@@ -154,6 +170,7 @@ export const Placement = () => {
   return (
     <Box style={{ width: 500 }} m="auto" pt={5}>
       <Popper
+        data-testid="popper"
         target={targetEl}
         open={open}
         placement={placement}
@@ -212,6 +229,7 @@ export const Transition = () => {
         Button
       </Button>
       <Popper
+        data-testid="popper"
         open={open}
         target={targetEl}
         transition={Grow}
