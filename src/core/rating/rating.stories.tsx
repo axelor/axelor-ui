@@ -11,7 +11,13 @@ export const Basic = () => {
   const [value, setValue] = useState(2);
 
   return (
-    <Rating value={value} handleClick={(position) => setValue(position)} />
+    <Rating
+      data-testid="rating"
+      value={value}
+      handleClick={(position) => {
+        setValue((prev) => (prev === position ? 0 : position));
+      }}
+    />
   );
 };
 
@@ -20,6 +26,7 @@ export const Heart = () => {
 
   return (
     <Rating
+      data-testid="rating"
       value={value}
       icon="heart"
       max={8}
@@ -28,13 +35,16 @@ export const Heart = () => {
   );
 };
 
-export const Readonly = () => <Rating value={3.5} readonly={true} />;
+export const Readonly = () => (
+  <Rating data-testid="rating" value={3.5} readonly={true} />
+);
 
 export const Satisfaction = () => {
   const [value, setValue] = useState(4);
 
   return (
     <Rating
+      data-testid="rating"
       value={value}
       icon="emoji-angry,emoji-frown,emoji-neutral,emoji-smile,emoji-laughing"
       color="#d32f2f,#d32f2f,#ed6c02,#2eaa32,#2eaa32"

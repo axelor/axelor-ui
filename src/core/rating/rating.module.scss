@@ -16,3 +16,9 @@
   transition: all 0.2s;
   transform: scale(1.2);
 }
+
+.container [role="radio"]:focus {
+  outline: none;
+  transition: all 0.2s;
+  transform: scale(1.2);
+}

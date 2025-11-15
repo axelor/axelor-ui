@@ -3,6 +3,8 @@ import { CSSProperties, useCallback } from "react";
 import { BootstrapIcon, BootstrapIconName } from "../../icons/bootstrap-icon";
 import { Box } from "../box";
 import { clsx } from "../clsx";
+import { useRovingFocus } from "../hooks";
+import { findDataProp, makeTestId } from "../system/utils";
 
 import styles from "./rating.module.scss";
 
@@ -64,6 +66,7 @@ export function Rating(props: RatingProps) {
     handleClick,
   } = props;
 
+  const testId = findDataProp(props, "data-testid");
   const getIcon = useCallback(
     (position: number): BootstrapIconName => {
       const icons = icon.trim().split(/\s*,\s*/) as BootstrapIconName[];
@@ -97,33 +100,52 @@ export function Rating(props: RatingProps) {
     [value],
   );
 
+  const { getRootProps, getItemProps } = useRovingFocus({
+    orientation: "horizontal",
+    index: value != null ? Math.ceil(value) - 1 : undefined,
+    onSelect: (index) => {
+      if (!readonly) {
+        handleClick?.(index + 1);
+      }
+    },
+    disabled: readonly,
+  });
+
   return (
     <Box
       m={0}
       d="flex"
+      role="radiogroup"
+      aria-label={text}
+      aria-disabled={readonly}
       className={clsx([styles.container], {
         [styles.pointer]: !readonly,
       })}
+      data-testid={testId}
+      {...getRootProps()}
     >
-      {Array.from({ length: max }, (v, k) => k + 1).map((position) => {
+      {Array.from({ length: max }, (_, k) => k + 1).map((position) => {
         const partialWidth = getPartialWidth(position);
         const checked = position <= Math.ceil(value ?? 0);
         const posIcon = getIcon(position);
         const highlightMe = highlightSelected ? value === position : true;
-        const color = getColor(position);
+        const iconColor = getColor(position);
         const style =
-          (color ? { style: { color: color } } : null) ??
+          (iconColor ? { style: { color: iconColor } } : null) ??
           PREDEFINED_ICONS[posIcon] ??
           {};
 
         return (
           <Box
             key={position}
-            {...(!readonly && {
-              onClick: () => handleClick?.(position),
-            })}
+            role="radio"
+            aria-label={`${position}`}
+            aria-checked={checked}
+            aria-disabled={readonly}
             style={{ ...(checked && highlightMe ? style.style : {}) }}
             title={text}
+            data-testid={makeTestId(testId, "icon", position)}
+            {...getItemProps(position - 1)}
           >
             {partialWidth !== null ? (
               <Box
@@ -131,6 +153,7 @@ export function Rating(props: RatingProps) {
                   overflow: "hidden",
                   position: "relative",
                 }}
+                aria-hidden="true"
               >
                 <Box
                   style={{
