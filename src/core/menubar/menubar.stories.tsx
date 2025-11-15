@@ -18,9 +18,9 @@ const Menu: any = AxMenu;
 
 export const Basic = () => {
   return (
-    <Menubar>
-      <Menu text="File">
-        <MenuItem text="Share" />
+    <Menubar data-testid="menubar-basic">
+      <Menu text="File" data-testid="menu-file">
+        <MenuItem text="Share" data-testid="menu-item-share" />
         <MenuDivider />
         <MenuItem text="New">
           <MenuItem text="Document" />

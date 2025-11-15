@@ -19,6 +19,7 @@ import { MenuItem as AxMenuItem } from "../menu/menu-item";
 import { Portal } from "../portal";
 import { withStyled } from "../styled";
 import { useClassNames, useTheme } from "../styles";
+import { findDataProp, makeTestId } from "../system/utils";
 import { tryFocus } from "./utils";
 
 import styles from "./menubar.module.scss";
@@ -175,6 +176,7 @@ function Menu({
   }, [showProp]);
 
   const classNames = useClassNames();
+  const testId = findDataProp(rest, "data-testid");
 
   return (
     <>
@@ -186,6 +188,7 @@ function Menu({
           className={classNames(styles.btn, {
             [styles["active-btn"]]: show || showProp,
           })}
+          data-testid={makeTestId(testId, testId, "button")}
         >
           {text}
         </Button>
