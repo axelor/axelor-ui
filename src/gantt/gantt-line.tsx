@@ -4,8 +4,8 @@ import { DragSourceMonitor, useDrag, useDrop } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
 
 import { useClassNames, useTheme } from "../core";
+import { findDataProp, makeTestId } from "../core/system/utils";
 import { BootstrapIcon } from "../icons/bootstrap-icon";
-
 import * as TYPES from "./types";
 import {
   CONFIG,
@@ -13,6 +13,7 @@ import {
   getDateFromOffset,
   getLineHeight,
 } from "./utils";
+
 import classes from "./gantt.module.scss";
 
 function disablePreview(preview: (e: any, options: any) => void) {
@@ -108,6 +109,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
     onUpdate,
     onConnect,
   } = props;
+  const testId = findDataProp(props, "data-testid");
   const { id, duration, $color, taskData } = data;
   const {
     progress: allowProgress = true,
@@ -393,6 +395,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
               }
             : {}),
         }}
+        data-testid={testId}
       >
         {allowProgress && (
           <div
@@ -402,6 +405,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
               height: getLineHeight(),
               width: `${progress}%`,
             }}
+            data-testid={makeTestId(testId, "progress")}
           >
             <div
               className={classes.ganttLineProgressContent}
@@ -426,6 +430,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
               (virtualLine && virtualLine.source?.type === "start"),
             [classes.connect]: leftConnectProps.isOver,
           })}
+          data-testid={makeTestId(testId, "start-connector")}
         >
           <div className={classes.ganttConnectorLink} />
         </div>
@@ -445,6 +450,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
             [classes.left]: !rtl,
             [classes.right]: rtl,
           })}
+          data-testid={makeTestId(testId, "start-resize")}
         />
 
         <div
@@ -458,6 +464,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
               (virtualLine && virtualLine.source?.type === "finish"),
             [classes.connect]: rightConnectProps.isOver,
           })}
+          data-testid={makeTestId(testId, "finish-connector")}
         >
           <div className={classes.ganttConnectorLink} />
         </div>
@@ -477,6 +484,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
             [classes.left]: rtl,
             [classes.right]: !rtl,
           })}
+          data-testid={makeTestId(testId, "finish-resize")}
         />
 
         <div className={classes.ganttLineTitle}>
@@ -495,6 +503,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
                 Math.max(0, progressWidth - (progressWidth > 5 ? 5 : 0)),
               ),
             }}
+            data-testid={makeTestId(testId, "progress-handle")}
           ></div>
         )}
       </div>

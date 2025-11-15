@@ -1,9 +1,12 @@
 import React, { useCallback } from "react";
+
 import { useClassNames, useTheme } from "../core";
+import { findDataProp } from "../core/system/utils";
+import { MaterialIcon, MaterialIconProps } from "../icons/material-icon";
+
+import * as TYPES from "./types";
 
 import classes from "./gantt.module.scss";
-import * as TYPES from "./types";
-import { MaterialIcon, MaterialIconProps } from "../icons/material-icon";
 
 const Line = React.memo<{
   x1: number;
@@ -104,6 +107,7 @@ export const GanttEdge = React.memo<GanttEdgeProps>((props) => {
     start: sourceStart,
     end: targetEnd,
   } = edge;
+  const testId = findDataProp(props, "data-testid");
   const lines = React.useMemo(() => {
     const lines: {
       start: TYPES.GanttPoint;
@@ -132,7 +136,7 @@ export const GanttEdge = React.memo<GanttEdgeProps>((props) => {
   }, [startPoint, endPoint, bendPoints]);
 
   return (
-    <div className={classes.ganttEdgeLines}>
+    <div className={classes.ganttEdgeLines} data-testid={testId}>
       {lines.map(({ start, end, pointer }, i) => (
         <Line
           key={i}

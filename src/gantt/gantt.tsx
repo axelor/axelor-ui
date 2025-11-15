@@ -1,15 +1,18 @@
 import moment, { Dayjs } from "dayjs";
 import React, { useEffect, useMemo, useState } from "react";
-import { Box, useClassNames, useTheme } from "../core";
 
+import { Box, useClassNames, useTheme } from "../core";
+import { findDataProp, makeTestId } from "../core/system/utils";
 import { GanttBody } from "./gantt-body";
 import { GanttEdge } from "./gantt-edge";
 import { GanttHeader } from "./gantt-header";
 import { GanttLine } from "./gantt-line";
 import { GanttTable } from "./gantt-table";
-import classes from "./gantt.module.scss";
-import * as TYPES from "./types";
 import { getGraphConfig, getGraphEdges, getHeader } from "./utils";
+
+import * as TYPES from "./types";
+
+import classes from "./gantt.module.scss";
 
 function GanttView(
   props: Pick<
@@ -38,6 +41,7 @@ function GanttView(
     onRecordConnect,
     onRecordDisconnect,
   } = props;
+  const testId = findDataProp(props, "data-testid");
 
   const [list, setList] = useState<TYPES.GanttHeaderItem[]>([]);
   const [items, setItems] = useState<TYPES.GanttHeaderItem[]>([]);
@@ -60,8 +64,8 @@ function GanttView(
   }, [view, startDate, endDate, hourSize]);
 
   return (
-    <div className={classes.body}>
-      <GanttHeader items={list} />
+    <div className={classes.body} data-testid={testId}>
+      <GanttHeader items={list} data-testid={makeTestId(testId, "timeline")} />
       <div className={classes.ganttRows}>
         <GanttBody
           items={items}
@@ -82,35 +86,47 @@ function GanttView(
                 data={record}
                 onUpdate={onRecordUpdate}
                 onConnect={onRecordConnect}
+                data-testid={makeTestId(testId, "bar", record.id)}
               />
             );
           })}
         </GanttBody>
         {edges.map((edge, i) => (
-          <GanttEdge key={i} edge={edge} onDelete={onRecordDisconnect} />
+          <GanttEdge
+            key={i}
+            edge={edge}
+            onDelete={onRecordDisconnect}
+            data-testid={makeTestId(
+              testId,
+              "link",
+              `${edge.source}-${edge.target}`,
+            )}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-export function Gantt({
-  className,
-  records,
-  view,
-  items,
-  config,
-  onRecordView,
-  onRecordUpdate,
-  onRecordConnect,
-  onRecordDisconnect,
-}: TYPES.GanttProps) {
+export function Gantt(props: TYPES.GanttProps) {
+  const {
+    className,
+    records,
+    view,
+    items,
+    config,
+    onRecordView,
+    onRecordUpdate,
+    onRecordConnect,
+    onRecordDisconnect,
+  } = props;
   const [container, setContainer] = React.useState<HTMLDivElement | null>(null);
   const [activeRow, setActiveRow] = React.useState<number | null>(null);
 
   const { dir } = useTheme();
   const rtl = dir === "rtl";
   const classNames = useClassNames();
+  const testId = findDataProp(props, "data-testid");
 
   const graphConfig = React.useMemo(
     () => container && getGraphConfig(records, view, container.offsetWidth),
@@ -148,10 +164,12 @@ export function Gantt({
       className={classNames(classes.gantt, className, classes.root, {
         [classes.rtl]: rtl,
       })}
+      data-testid={testId}
     >
       <GanttTable
         {...{ items, records, activeRow, setActiveRow }}
         onView={onRecordView}
+        data-testid={makeTestId(testId, "grid")}
       />
       <Box
         ref={setContainer}
@@ -178,6 +196,7 @@ export function Gantt({
               onRecordConnect={onRecordConnect}
               onRecordDisconnect={onRecordDisconnect}
               onRecordUpdate={onRecordUpdate}
+              data-testid={makeTestId(testId, "chart")}
             />
           </div>
         )}

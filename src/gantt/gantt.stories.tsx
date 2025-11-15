@@ -1,14 +1,13 @@
 import React from "react";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
-import { Box } from "../core";
-import { useClassNames } from "../core";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
+import { Box, useClassNames } from "../core";
+import response from "./data";
 import { Gantt } from "./gantt";
 import { GANTT_TYPES } from "./utils";
-import * as TYPES from "./types";
 
-import response from "./data";
+import * as TYPES from "./types";
 
 const config = {
   component: Gantt,
@@ -108,6 +107,7 @@ export const Basic = () => {
           onRecordConnect={handleRecordConnect}
           onRecordDisconnect={handleRecordDisconnect}
           onRecordUpdate={handleRecordUpdate}
+          data-testid="gantt"
         />
       </Box>
     </DndProvider>

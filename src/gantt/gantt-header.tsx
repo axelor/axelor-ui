@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
-import * as TYPES from "./types";
+
 import { Box, useClassNames } from "../core";
+import { findDataProp, makeTestId } from "../core/system/utils";
+
+import * as TYPES from "./types";
+
 import classes from "./gantt.module.scss";
 
 export const GanttHeader = React.memo(function GanttHeader(props: {
@@ -9,6 +13,7 @@ export const GanttHeader = React.memo(function GanttHeader(props: {
   const { items } = props;
   const [renderItems, setRenderItems] = useState<TYPES.GanttHeaderItem[]>([]);
   const classNames = useClassNames();
+  const testId = findDataProp(props, "data-testid");
 
   useEffect(() => {
     const id = window.requestIdleCallback(() => {
@@ -18,7 +23,7 @@ export const GanttHeader = React.memo(function GanttHeader(props: {
   }, [items]);
 
   return (
-    <div>
+    <div data-testid={testId}>
       <div className={classes.header}>
         {renderItems.map((item, i: number) => (
           <Box
@@ -31,6 +36,7 @@ export const GanttHeader = React.memo(function GanttHeader(props: {
               minWidth: item.width,
               maxWidth: item.width,
             }}
+            data-testid={makeTestId(testId, "period", i)}
           >
             {item.title}
           </Box>

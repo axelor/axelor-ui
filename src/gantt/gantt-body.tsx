@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useTheme, useClassNames, Box } from "../core";
 import { useDrop } from "react-dnd";
 
-import * as TYPES from "./types";
+import { Box, useClassNames, useTheme } from "../core";
+import { findDataProp } from "../core/system/utils";
 import { CONFIG } from "./utils";
+
+import * as TYPES from "./types";
+
 import classes from "./gantt.module.scss";
 
 const { DND_TYPES } = CONFIG;
@@ -58,20 +61,17 @@ const GanttRows = React.memo(function GanttRows({
   );
 });
 
-export function GanttBody({
-  totalRecords,
-  activeRowIndex,
-  children,
-  items,
-}: {
+export function GanttBody(props: {
   totalRecords: number;
   activeRowIndex: number;
   children: React.ReactElement | React.ReactElement[];
   items: TYPES.GanttHeaderItem[];
 }) {
+  const { totalRecords, activeRowIndex, children, items } = props;
   const bodyRef = React.useRef<HTMLDivElement>(null);
   const { dir } = useTheme();
   const rtl = dir === "rtl";
+  const testId = findDataProp(props, "data-testid");
 
   const [, drop] = useDrop({
     accept: [
@@ -204,7 +204,7 @@ export function GanttBody({
   drop(bodyRef);
 
   return (
-    <div ref={bodyRef} className={classes.ganttBody}>
+    <div ref={bodyRef} className={classes.ganttBody} data-testid={testId}>
       <GanttRows
         activeRowIndex={activeRowIndex}
         items={items}
