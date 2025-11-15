@@ -1,7 +1,8 @@
-import React, { forwardRef, useCallback, useState } from "react";
+import React, { forwardRef, useCallback, useId, useState } from "react";
 import { Collapse } from "../collapse";
 import styled, { withStyled } from "../styled";
 import { useClassNames } from "../styles";
+import { findAriaProp, findDataProp, makeTestId } from "../system/utils";
 
 export interface AccordionHeaderProps {
   collapsed?: boolean;
@@ -17,9 +18,21 @@ export const AccordionHeader = withStyled(AccordionHeaderButton)((
 ) => {
   const classNames = useClassNames();
   const className = classNames("accordion-header");
+  const testId = findDataProp(props, "data-testid");
+  const ariaExpanded = findAriaProp(props, "aria-expanded");
+  const ariaControls = findAriaProp(props, "aria-controls");
+  const ariaLabel = findAriaProp(props, "aria-label");
   return (
-    <h2 className={className}>
-      <AccordionHeaderButton ref={ref} type="button" {...props} />
+    <h2 className={className} data-testid={testId}>
+      <AccordionHeaderButton
+        ref={ref}
+        type="button"
+        {...props}
+        aria-expanded={ariaExpanded}
+        aria-controls={ariaControls}
+        aria-label={ariaLabel}
+        data-testid={makeTestId(testId, "toggle")}
+      />
     </h2>
   );
 });
@@ -47,11 +60,18 @@ export const AccordionBody = withStyled(AccordionCollapse)((
 ) => {
   const classNames = useClassNames();
   const className = classNames("accordion-body");
+  const testId = findDataProp(rest, "data-testid");
+  const ariaLabelledBy = findAriaProp(rest, "aria-labelledby");
   return (
-    <AccordionCollapse ref={ref as any} {...rest}>
+    <AccordionCollapse ref={ref} {...rest}>
       {(state) => {
         return (
-          <div className={className}>
+          <div
+            className={className}
+            data-testid={testId}
+            aria-labelledby={ariaLabelledBy}
+            role="region"
+          >
             {typeof children === "function" && children(state)}
             {typeof children !== "function" && children}
           </div>
@@ -90,6 +110,9 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
       },
       className,
     ]);
+    const testId = findDataProp(props, "data-testid");
+    const ariaLabel = findAriaProp(props, "aria-label");
+    const accordionId = useId();
 
     const handleHeaderOnClick = useCallback(
       (
@@ -115,8 +138,12 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
       }
 
       const { eventKey, children: itemChildren } = child.props;
+      const itemTestId =
+        findDataProp(child.props, "data-testid") ||
+        makeTestId(testId, "item", eventKey);
 
       return React.cloneElement(child, {
+        "data-testid": itemTestId,
         children: React.Children.map(itemChildren, (nestedchild) => {
           const { type } = nestedchild;
 
@@ -126,16 +153,33 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
 
           if (type === AccordionHeader) {
             const { onClick } = nestedchild.props;
+            const headerTestId =
+              findDataProp(nestedchild.props, "data-testid") ||
+              makeTestId(itemTestId, "header");
+            const headerId = `${accordionId}-header-${eventKey}`;
+            const bodyId = `${accordionId}-body-${eventKey}`;
             return React.cloneElement(nestedchild, {
               onClick: (event: React.MouseEvent<any>) => {
                 handleHeaderOnClick(event, eventKey);
                 onClick && onClick(event);
               },
               collapsed: !isActive,
+              "data-testid": headerTestId,
+              id: headerId,
+              "aria-expanded": isActive,
+              "aria-controls": bodyId,
             });
           } else if (type === AccordionBody) {
+            const bodyTestId =
+              findDataProp(nestedchild.props, "data-testid") ||
+              makeTestId(itemTestId, "body");
+            const headerId = `${accordionId}-header-${eventKey}`;
+            const bodyId = `${accordionId}-body-${eventKey}`;
             return React.cloneElement(nestedchild, {
               in: isActive,
+              id: bodyId,
+              "data-testid": bodyTestId,
+              "aria-labelledby": headerId,
             });
           } else {
             return nestedchild;
@@ -145,7 +189,13 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
     });
 
     return (
-      <div ref={ref} className={classes} {...props}>
+      <div
+        ref={ref}
+        className={classes}
+        {...props}
+        data-testid={testId}
+        aria-label={ariaLabel}
+      >
         {children}
       </div>
     );

@@ -38,7 +38,7 @@ const items = [
 export const Basic = () => {
   return (
     <Box>
-      <Accordion>
+      <Accordion data-testid="accordion">
         {items.map(({ id, title, content }) => (
           <AccordionItem key={id} eventKey={id}>
             <AccordionHeader>{title}</AccordionHeader>
