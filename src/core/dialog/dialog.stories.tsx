@@ -50,11 +50,16 @@ export const Basic = (props: any) => {
         backdrop
         scrollable={scrollable}
         fullscreen={fullScreen}
+        data-testid="dialog"
+        aria-labelledby="dialog-title"
+        aria-describedby="dialog-description"
       >
-        <DialogHeader onCloseClick={handleClose}>
-          <DialogTitle>Information</DialogTitle>
+        <DialogHeader onCloseClick={handleClose} data-testid="dialog:header">
+          <DialogTitle id="dialog-title" data-testid="dialog:title">
+            Information
+          </DialogTitle>
         </DialogHeader>
-        <DialogContent>
+        <DialogContent id="dialog-description" data-testid="dialog:content">
           <p>
             This is some placeholder content to show the scrolling behavior for
             modals. Instead of repeating the text the modal, we use an inline
@@ -68,11 +73,17 @@ export const Basic = (props: any) => {
           </p>
           <p style={{ height: 500 }}></p>
         </DialogContent>
-        <DialogFooter>
-          <Button variant="secondary" onClick={handleClose}>
+        <DialogFooter data-testid="dialog:footer">
+          <Button
+            variant="secondary"
+            onClick={handleClose}
+            data-testid="dialog:footer:close"
+          >
             Close
           </Button>
-          <Button variant="primary">OK</Button>
+          <Button variant="primary" data-testid="dialog:footer:ok">
+            OK
+          </Button>
         </DialogFooter>
       </Dialog>
     </div>

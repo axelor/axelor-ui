@@ -6,6 +6,8 @@ import { FocusTarget, FocusTrap } from "../focus-trap";
 import { Portal } from "../portal";
 import styled, { withStyled } from "../styled";
 import { useClassNames } from "../styles";
+import { findAriaProp, findDataProp, makeTestId } from "../system/utils";
+
 import styles from "./dialog.module.scss";
 
 export interface DialogProps {
@@ -66,6 +68,7 @@ const HeaderRoot = styled.div<DialogHeaderProps>();
 export const DialogHeader = withStyled(HeaderRoot)((props, ref) => {
   const { className, children, onCloseClick, ...rest } = props;
   const classNames = useClassNames();
+  const testId = findDataProp(props, "data-testid");
   return (
     <HeaderRoot
       ref={ref}
@@ -80,7 +83,9 @@ export const DialogHeader = withStyled(HeaderRoot)((props, ref) => {
           as="button"
           tabIndex={0}
           className={classNames("btn-close")}
+          aria-label="Close dialog"
           onClick={onCloseClick}
+          data-testid={makeTestId(testId, "close")}
         />
       )}
     </HeaderRoot>
@@ -121,6 +126,7 @@ export const DialogContent = withStyled(ContentRoot)((props, ref) => {
 
 export const Dialog = withStyled(Box)<DialogProps>((props, ref) => {
   const {
+    id,
     open,
     size,
     backdrop,
@@ -136,6 +142,10 @@ export const Dialog = withStyled(Box)<DialogProps>((props, ref) => {
   } = props;
   const classNames = useClassNames();
   const [entered, setEntered] = useState(false);
+  const testId = findDataProp(props, "data-testid");
+
+  const ariaLabelledby = findAriaProp(props, "aria-labelledby");
+  const ariaDescribedby = findAriaProp(props, "aria-describedby");
 
   const onEntering = useCallback(() => {
     setEntered(true);
@@ -160,6 +170,8 @@ export const Dialog = withStyled(Box)<DialogProps>((props, ref) => {
           <Box
             className={classNames("modal-backdrop", "show", "fade")}
             tabIndex={-1}
+            aria-hidden="true"
+            data-testid={makeTestId(testId, "backdrop")}
           />
         </Fade>
       )}
@@ -176,6 +188,9 @@ export const Dialog = withStyled(Box)<DialogProps>((props, ref) => {
           tabIndex={-1}
           className={clsx(className, styles.dialogRoot, classNames("modal"))}
           {...rest}
+          aria-labelledby={undefined}
+          aria-describedby={undefined}
+          data-testid={undefined}
         >
           <Box
             tabIndex={-1}
@@ -191,10 +206,20 @@ export const Dialog = withStyled(Box)<DialogProps>((props, ref) => {
                 "modal-xl": size === "xl",
               }),
             )}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={ariaLabelledby}
+            aria-describedby={ariaDescribedby}
+            data-testid={testId}
             ref={ref}
+            id={id}
           >
             <FocusTrap enabled={open} initialFocus={initialFocus}>
-              <Box className={classNames("modal-content")} tabIndex={-1}>
+              <Box
+                className={classNames("modal-content")}
+                tabIndex={-1}
+                data-testid={makeTestId(testId, "content")}
+              >
                 {children}
               </Box>
             </FocusTrap>
