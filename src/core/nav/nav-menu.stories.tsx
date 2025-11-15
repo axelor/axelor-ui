@@ -294,6 +294,7 @@ export function NavMenu() {
       <Box d="flex" style={{ maxWidth: 600, height: 500 }} border p={2} g={2}>
         <Box d="flex" border>
           <SideMenu
+            data-testid="nav-menu"
             mode={mode}
             show={show}
             searchOptions={searchOptions}

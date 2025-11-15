@@ -6,12 +6,13 @@ import { clsx } from "../clsx";
 import { Collapse } from "../collapse";
 import { Fade } from "../fade";
 import { Scrollable } from "../scrollable";
+import { findDataProp, makeTestId } from "../system/utils";
 import { TextField } from "../text-field";
 import { getRGB } from "./utils";
 
-import styles from "./nav-menu.module.scss";
-import { Popper, usePopperTrigger } from "../popper";
 import { Box } from "../box";
+import { Popper, usePopperTrigger } from "../popper";
+import styles from "./nav-menu.module.scss";
 
 export interface NavMenuItem {
   /**
@@ -151,21 +152,23 @@ export interface NavMenuProps {
   className?: string;
 }
 
-export function NavMenu({
-  mode,
-  show,
-  items,
-  header,
-  headerSmall,
-  style,
-  className,
-  searchOptions,
-  searchActive,
-  onItemClick,
-}: NavMenuProps) {
+export function NavMenu(props: NavMenuProps) {
+  const {
+    mode,
+    show,
+    items,
+    header,
+    headerSmall,
+    style,
+    className,
+    searchOptions,
+    searchActive,
+    onItemClick,
+  } = props;
   const menus = useMemo(() => items.map((item) => walk(item)), [items]);
   const showIcons = mode === "icons";
   const Comp = showIcons ? Icons : Accordion;
+  const testId = findDataProp(props, "data-testid");
   return (
     <div
       className={clsx(
@@ -175,6 +178,7 @@ export function NavMenu({
         styles[`show-${show}`],
       )}
       style={style}
+      data-testid={testId}
     >
       <Comp
         mode={mode}
@@ -185,6 +189,7 @@ export function NavMenu({
         searchOptions={searchOptions}
         searchActive={searchActive}
         onItemClick={onItemClick}
+        data-testid={testId}
       />
     </div>
   );
@@ -380,6 +385,7 @@ function Accordion(props: VariantProps) {
 
   const { lookup } = state;
   const { header, headerSmall, searchOptions } = props;
+  const testId = findDataProp(props, "data-testid");
 
   return (
     <ClickAwayListener onClickAway={handleLeave}>
@@ -397,29 +403,39 @@ function Accordion(props: VariantProps) {
             state={state}
             items={icons}
             header={headerSmall}
+            data-testid={makeTestId(testId, "icons-bar")}
           />
         )}
         {showSearch && (
-          <div className={clsx(styles.menus, styles.search)}>
+          <div
+            className={clsx(styles.menus, styles.search)}
+            data-testid={makeTestId(testId, "search-panel")}
+          >
             {header && <div className={styles.menusHeader}>{header}</div>}
             <SearchMenu
               item={searchItem}
               state={state}
               filter={searchOptions?.filter}
               onItemClick={handleItemClick}
+              data-testid={makeTestId(testId, "search-menu")}
             />
           </div>
         )}
-        <div className={styles.menus}>
+        <div className={styles.menus} data-testid={makeTestId(testId, "menus")}>
           {header && <div className={styles.menusHeader}>{header}</div>}
           <Scrollable className={styles.menusInner}>
             {searchEnabled && (
               <div
                 className={clsx(styles.item, styles.searchItem)}
                 onClick={handleSearchClick}
+                data-testid={makeTestId(testId, "search-trigger")}
               >
                 <div className={styles.title}>
-                  <MenuIcon item={searchItem} state={{}} />
+                  <MenuIcon
+                    item={searchItem}
+                    state={{}}
+                    data-testid={makeTestId(testId, "search-icon")}
+                  />
                   <div className={styles.text}>{searchItem.title}</div>
                 </div>
               </div>
@@ -430,6 +446,7 @@ function Accordion(props: VariantProps) {
                 item={item}
                 state={state}
                 onItemClick={handleItemClick}
+                data-testid={makeTestId(testId, "item", item.id)}
               />
             ))}
           </Scrollable>
@@ -454,6 +471,7 @@ function Icons(props: VariantProps) {
 
   const { headerSmall, searchOptions } = props;
   const hover = showSearch ? searchItem.id : state.lookup;
+  const testId = findDataProp(props, "data-testid");
 
   return (
     <div
@@ -470,6 +488,7 @@ function Icons(props: VariantProps) {
         header={headerSmall}
         onItemClick={handleIconClick}
         onItemHover={handleIconHover}
+        data-testid={makeTestId(testId, "icons-bar")}
       />
       <div className={styles.menusWrapper}>
         <div className={styles.menus}>
@@ -479,6 +498,7 @@ function Icons(props: VariantProps) {
               state={state}
               filter={searchOptions?.filter}
               onItemClick={handleItemClick}
+              data-testid={makeTestId(testId, "search-menu")}
             />
           )}
           {items.map((item) => (
@@ -487,6 +507,7 @@ function Icons(props: VariantProps) {
               item={item}
               state={state}
               onItemClick={handleItemClick}
+              data-testid={makeTestId(testId, "menu", item.id)}
             />
           ))}
         </div>
@@ -495,8 +516,10 @@ function Icons(props: VariantProps) {
   );
 }
 
-function Menu({ item, state, onItemClick }: ItemProps) {
+function Menu(props: ItemProps) {
+  const { item, state, onItemClick } = props;
   const { id, title } = item;
+  const testId = findDataProp(props, "data-testid");
 
   const active = state.lookup ? false : state.active === id;
   const hover = state.lookup === id;
@@ -507,13 +530,19 @@ function Menu({ item, state, onItemClick }: ItemProps) {
         [styles.active]: active,
         [styles.hover]: hover,
       })}
+      data-testid={testId}
     >
-      <div className={styles.header}>
+      <div className={styles.header} data-testid={makeTestId(testId, "header")}>
         <MenuIcon item={item} state={{}} />
         <div className={styles.text}>{title}</div>
       </div>
       <Scrollable>
-        <MenuItems item={item} state={state} onItemClick={onItemClick} />
+        <MenuItems
+          item={item}
+          state={state}
+          onItemClick={onItemClick}
+          data-testid={makeTestId(testId, "items")}
+        />
       </Scrollable>
     </div>
   );
@@ -523,9 +552,11 @@ function UnknownIcon() {
   return <MaterialIcon icon="apps" />;
 }
 
-function MenuIcon({ item, state, onItemClick, onItemHover }: ItemProps) {
+function MenuIcon(props: ItemProps) {
+  const { item, state, onItemClick, onItemHover } = props;
   const { icon, iconColor } = item;
   const Icon = icon || UnknownIcon;
+  const testId = findDataProp(props, "data-testid");
 
   const bg = useMemo(() => iconColor && getRGB(iconColor, 0.1), [iconColor]);
   const hoverBg = useMemo(
@@ -564,21 +595,19 @@ function MenuIcon({ item, state, onItemClick, onItemHover }: ItemProps) {
       }
       onClick={handleClick}
       onMouseOver={handleHover}
+      data-testid={testId}
     >
       <Icon color={iconColor} />
     </div>
   );
 }
 
-function MenuIcons({
-  items,
-  state,
-  header,
-  onItemClick,
-  onItemHover,
-}: VariantProps & { state: ItemProps["state"] }) {
+function MenuIcons(props: VariantProps & { state: ItemProps["state"] }) {
+  const { items, state, header, onItemClick, onItemHover } = props;
+  const testId = findDataProp(props, "data-testid");
+
   return (
-    <Scrollable className={styles.menusIcon}>
+    <Scrollable className={styles.menusIcon} data-testid={testId}>
       <div className={styles.icons}>
         {header && <div className={styles.iconsHeader}>{header}</div>}
         {items.map((item) => (
@@ -588,6 +617,7 @@ function MenuIcons({
             state={state}
             onItemClick={onItemClick}
             onItemHover={onItemHover}
+            data-testid={makeTestId(testId, "icon", item.id)}
           />
         ))}
       </div>
@@ -595,9 +625,11 @@ function MenuIcons({
   );
 }
 
-function MenuItem({ item, state, onItemClick }: ItemProps) {
+function MenuItem(props: ItemProps) {
+  const { item, state, onItemClick } = props;
   const node: NavMenuNode = item;
   const { icon, tag: Tag, tagColor, title, help, items = [], onClick } = item;
+  const testId = findDataProp(props, "data-testid");
 
   const {
     open: popperOpen,
@@ -633,8 +665,14 @@ function MenuItem({ item, state, onItemClick }: ItemProps) {
         [styles.open]: open,
         [styles.selected]: selected,
       })}
+      data-testid={testId}
     >
-      <div className={styles.title} onClick={handleClick} ref={setTargetEl}>
+      <div
+        className={styles.title}
+        onClick={handleClick}
+        ref={setTargetEl}
+        data-testid={makeTestId(testId, "title")}
+      >
         {hasIcon && <MenuIcon item={item} state={state} />}
         {hasIcon || <div className={styles.icon}></div>}
         <div className={styles.text}>{title}</div>
@@ -657,6 +695,7 @@ function MenuItem({ item, state, onItemClick }: ItemProps) {
           shadow
           rounded
           placement="end"
+          data-testid={makeTestId(testId, "help")}
         >
           <Box p={2} style={{ maxWidth: 320 }}>
             <span dangerouslySetInnerHTML={{ __html: help }} />
@@ -670,6 +709,7 @@ function MenuItem({ item, state, onItemClick }: ItemProps) {
             state={state}
             onItemClick={onItemClick}
             isSubItems
+            data-testid={makeTestId(testId, "sub-items")}
           />
         </Collapse>
       )}
@@ -677,16 +717,23 @@ function MenuItem({ item, state, onItemClick }: ItemProps) {
   );
 }
 
-function MenuItems({ item, state, onItemClick, isSubItems }: ItemProps) {
+function MenuItems(props: ItemProps) {
+  const { item, state, onItemClick, isSubItems } = props;
   const { items = [] } = item;
+  const testId = findDataProp(props, "data-testid");
+
   return (
-    <div className={clsx(styles.items, { [styles.subItems]: isSubItems })}>
+    <div
+      className={clsx(styles.items, { [styles.subItems]: isSubItems })}
+      data-testid={isSubItems ? undefined : testId}
+    >
       {items.map((item) => (
         <MenuItem
           key={item.id}
           item={item}
           state={state}
           onItemClick={onItemClick}
+          data-testid={makeTestId(testId, "item", item.id)}
         />
       ))}
     </div>
@@ -704,19 +751,18 @@ function flattenItem(item: NavMenuItem, parent?: NavMenuItem) {
   return items.length ? items : [rest];
 }
 
-function SearchMenu({
-  item,
-  state,
-  filter: filterMenuItem,
-  onItemClick,
-}: ItemProps & {
-  filter?: (item: NavMenuItem, searchText: string) => boolean;
-}) {
+function SearchMenu(
+  props: ItemProps & {
+    filter?: (item: NavMenuItem, searchText: string) => boolean;
+  },
+) {
+  const { item, state, filter: filterMenuItem, onItemClick } = props;
   const [show, setShow] = useState(false);
   const [text, setText] = useState("");
   const [cursor, setCursor] = useState(0);
   const itemsRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout>>(null);
+  const testId = findDataProp(props, "data-testid");
 
   const hover = true;
 
@@ -812,8 +858,12 @@ function SearchMenu({
         className={clsx(styles.menu, styles.search, {
           [styles.hover]: hover,
         })}
+        data-testid={testId}
       >
-        <div className={styles.header}>
+        <div
+          className={styles.header}
+          data-testid={makeTestId(testId, "header")}
+        >
           <div className={styles.text}>
             <TextField
               autoFocus
@@ -827,11 +877,16 @@ function SearchMenu({
                   icon: "search",
                 },
               ]}
+              data-testid={makeTestId(testId, "input")}
             />
           </div>
         </div>
         {show && (
-          <Scrollable className={styles.items} ref={itemsRef}>
+          <Scrollable
+            className={styles.items}
+            ref={itemsRef}
+            data-testid={makeTestId(testId, "results")}
+          >
             {filtered.map((item, index) => (
               <div
                 key={item.id}
@@ -846,6 +901,7 @@ function SearchMenu({
                   item={item}
                   state={{}}
                   onItemClick={onItemClick}
+                  data-testid={makeTestId(testId, "result", item.id)}
                 />
               </div>
             ))}
