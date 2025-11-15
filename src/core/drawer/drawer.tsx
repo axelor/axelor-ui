@@ -3,6 +3,7 @@ import { Portal } from "../portal";
 import { Slide } from "../slide";
 import styled, { withStyled } from "../styled";
 import { useTheme } from "../styles";
+import { findAriaProp, findDataProp, makeTestId } from "../system/utils";
 import styles from "./drawer.module.css";
 
 export type DrawerPlacement = "start" | "end" | "top" | "bottom";
@@ -35,16 +36,33 @@ export const Drawer = withStyled(DrawerContent)((
   ref,
 ) => {
   const { dir } = useTheme();
+  const testId = findDataProp(props, "data-testid");
+  const ariaLabel = findAriaProp(props, "aria-label");
   return (
     <Portal>
       {backdrop && (
         <Fade in={open}>
-          <DrawerBackdrop onClick={onClose} />
+          <DrawerBackdrop
+            aria-hidden="true"
+            onClick={onClose}
+            data-testid={makeTestId(testId, "backdrop")}
+          />
         </Fade>
       )}
       <Slide in={open} direction={mapDrawerPlacement(placement)} unmountOnExit>
-        <DrawerRoot dir={dir} placement={placement}>
-          <DrawerContent ref={ref} {...props} />
+        <DrawerRoot
+          dir={dir}
+          placement={placement}
+          role="dialog"
+          aria-modal={backdrop || undefined}
+          aria-label={ariaLabel}
+          data-testid={testId}
+        >
+          <DrawerContent
+            ref={ref}
+            {...props}
+            data-testid={makeTestId(testId, "content")}
+          />
         </DrawerRoot>
       </Slide>
     </Portal>

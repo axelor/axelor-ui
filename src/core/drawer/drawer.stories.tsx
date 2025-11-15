@@ -39,6 +39,7 @@ export const Backdrop = () => {
         open={show}
         onClose={hideDrawer}
         backdrop
+        data-testid="drawer"
       >
         <Box
           d="flex"
