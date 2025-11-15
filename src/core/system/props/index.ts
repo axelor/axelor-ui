@@ -3,6 +3,7 @@ export * from "./border";
 export * from "./data";
 export * from "./display";
 export * from "./effect";
+export * from "./focus";
 export * from "./interactive";
 export * from "./layout";
 export * from "./position";

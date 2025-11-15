@@ -89,6 +89,12 @@ export interface ThemeOptions {
     code?: ThemeTypography;
   };
   border?: ThemeElementBorder;
+  focus?: {
+    ring?: {
+      width?: string;
+      color?: string;
+    };
+  };
   link?: {
     color?: string;
     hover?: string;
@@ -201,6 +207,10 @@ export interface ThemeOptions {
         border?: ThemeElementBorder;
       };
       button_active?: ThemeElementColors & {
+        border?: ThemeElementBorder;
+        shadow?: string;
+      };
+      button_focus?: ThemeElementColors & {
         border?: ThemeElementBorder;
         shadow?: string;
       };

@@ -222,6 +222,11 @@ function toCommandBarVars(options: ThemeOptions) {
     "--ax-theme-command-bar-button-active-border-color":
       opts.button_active?.border?.color,
     "--ax-theme-command-bar-button-active-shadow": opts.button_active?.shadow,
+    "--ax-theme-command-bar-button-focus-color": opts.button_focus?.color,
+    "--ax-theme-command-bar-button-focus-bg": opts.button_focus?.bg,
+    "--ax-theme-command-bar-button-focus-shadow": opts.button_focus?.shadow,
+    "--ax-theme-command-bar-button-focus-border-color":
+      opts.button_focus?.border?.color,
     "--ax-theme-command-bar-divider-color": opts.divider?.color,
   };
 }

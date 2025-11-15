@@ -13,6 +13,7 @@ import {
   EffectProps,
   FlexConfig,
   FlexProps,
+  FocusConfig,
   GridConfig,
   GridProps,
   InteractiveConfig,
@@ -63,6 +64,7 @@ export interface SystemProps
 const SystemConfig = {
   ...BackgroundConfig,
   ...BorderConfig,
+  ...FocusConfig,
   ...SpaceConfig,
   ...EffectConfig,
   ...InteractiveConfig,

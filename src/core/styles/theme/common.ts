@@ -251,6 +251,14 @@ function toBorderVars({ border = {} }: ThemeOptions) {
   };
 }
 
+function toFocusVars({ focus = {} }: ThemeOptions) {
+  const ring = focus.ring || {};
+  return {
+    "--bs-focus-ring-width": ring.width,
+    "--bs-focus-ring-color": ring.color,
+  };
+}
+
 function toLinkVars({ palette = {}, link = {} }: ThemeOptions) {
   const color = link.color ?? palette.primary ?? palette.blue;
   const hover = link.hover ?? (color && shiftColor(color, 0.2));
@@ -287,6 +295,7 @@ export function toCommonVars(options: ThemeOptions) {
     ...toThemeVars(options),
     ...toBodyVars(options),
     ...toBorderVars(options),
+    ...toFocusVars(options),
     ...toLinkVars(options),
     ...toMiscVars(options),
     ...toComponentVars(options),
