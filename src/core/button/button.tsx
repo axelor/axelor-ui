@@ -8,8 +8,7 @@ export interface ButtonProps {
 }
 
 export const Button = styled.button<ButtonProps>(
-  ({ disabled, variant, outline, size }) => [
-    { disabled },
+  ({ variant, outline, size }) => [
     {
       [`btn`]: true,
       [`btn-outline-${variant}`]: outline,

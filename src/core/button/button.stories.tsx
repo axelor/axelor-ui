@@ -15,7 +15,7 @@ export const Basic = () => {
   };
   return (
     <Box display="flex" alignItems="center" g={2}>
-      <Button variant="primary" onClick={onClick}>
+      <Button variant="primary" onClick={onClick} data-testid="button">
         {text}
       </Button>
       <Button variant="primary" disabled>
