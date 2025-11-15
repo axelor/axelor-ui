@@ -1,15 +1,17 @@
 import React, {
-  useState,
   useCallback,
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from "react";
 
+import { useClassNames } from "../styles";
+import { findAriaProp, findDataProp, makeTestId } from "../system/utils";
 import { TreeHeaderColumn } from "./tree-column";
 import { RootDroppable, TreeNode } from "./tree-node";
-import { useClassNames } from "../styles";
 import * as TYPES from "./types";
+
 import styles from "./tree.module.scss";
 
 function toNode({
@@ -80,6 +82,8 @@ export function Tree(props: TYPES.TreeProps) {
     textRenderer,
     editNodeRenderer,
   } = props;
+  const testId = findDataProp(props, "data-testid");
+  const ariaLabel = findAriaProp(props, "aria-label");
   const [data, setData] = useState<TYPES.TreeNode[]>([]);
   const [loading, setLoading] = useState(false);
   const [editNode, setEditNode] = useState<TYPES.TreeNode | null>(null);
@@ -351,15 +355,23 @@ export function Tree(props: TYPES.TreeProps) {
       className={classNames("table-tree", className, styles.tree, {
         [styles.loading]: loading,
       })}
+      role="treegrid"
+      aria-label={ariaLabel}
+      aria-busy={loading || undefined}
       {...(editNode
         ? {}
         : {
             tabIndex: 0,
             onKeyDown: handleNavigation,
           })}
+      data-testid={testId}
     >
-      <div className={styles.header}>
-        {columns.map((column) => {
+      <div
+        className={styles.header}
+        role="row"
+        data-testid={makeTestId(testId, "header")}
+      >
+        {columns.map((column, ind) => {
           const sortColumn = (sortColumns || []).find(
             (c) => c.name === column.name,
           );
@@ -373,11 +385,17 @@ export function Tree(props: TYPES.TreeProps) {
                     onSort: handleSort,
                   }
                 : {})}
+              aria-colindex={ind + 1}
+              data-testid={makeTestId(testId, "column", column.name)}
             />
           );
         })}
       </div>
-      <div className={styles.body}>
+      <div
+        className={styles.body}
+        role="presentation"
+        data-testid={makeTestId(testId, "body")}
+      >
         {$data.map(
           (row, rowIndex) =>
             !row.hidden && (
@@ -396,11 +414,16 @@ export function Tree(props: TYPES.TreeProps) {
                 onEdit={handleNodeEdit}
                 onSave={handleNodeSave}
                 onCancel={handleNodeCancel}
+                data-testid={makeTestId(testId, "node", row.$key ?? rowIndex)}
               />
             ),
         )}
         {droppable && (
-          <RootDroppable text={droppableText} onDrop={handleDrop} />
+          <RootDroppable
+            text={droppableText}
+            onDrop={handleDrop}
+            data-testid={makeTestId(testId, "dropzone")}
+          />
         )}
       </div>
     </div>

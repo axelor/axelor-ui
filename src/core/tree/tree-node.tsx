@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
-import { Box } from "../box";
-import { TreeColumn } from "./tree-column";
-import { useClassNames, useTheme } from "../styles";
 import { MaterialIcon } from "../../icons/material-icon";
+import { Box } from "../box";
+import { useClassNames, useTheme } from "../styles";
+import { findDataProp, makeTestId } from "../system/utils";
+import { TreeColumn } from "./tree-column";
 import * as TYPES from "./types";
+
 import styles from "./tree.module.scss";
 
 const hasChildren = (node: TYPES.TreeNode) => Boolean(node.children);
@@ -18,6 +20,7 @@ const TreeNodeContent = React.forwardRef<
   const { columns, data, textRenderer } = props;
   const { dir } = useTheme();
   const rtl = dir === "rtl";
+  const testId = findDataProp(props, "data-testid");
 
   function render(column: TYPES.TreeColumn) {
     if (textRenderer) {
@@ -27,10 +30,16 @@ const TreeNodeContent = React.forwardRef<
     return (data as any).data[column.name];
   }
   return (
-    <div className={styles.nodeContent} ref={ref}>
+    <div className={styles.nodeContent} ref={ref} role={"presentation"}>
       {columns.map((column, ind) => {
         return (
-          <TreeColumn data={column} key={column.name}>
+          <TreeColumn
+            data={column}
+            key={column.name}
+            role="gridcell"
+            aria-colindex={ind + 1}
+            data-testid={makeTestId(testId, "column", column.name)}
+          >
             {ind === 0 && (
               <Box
                 as="span"
@@ -51,6 +60,7 @@ const TreeNodeContent = React.forwardRef<
                           : "arrow_right"
                     }
                     className={styles.icon}
+                    data-testid={makeTestId(testId, "icon")}
                   />
                 )}
               </Box>
@@ -68,6 +78,7 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
     className,
     columns,
     data,
+    edit,
     index,
     textRenderer,
     onEdit,
@@ -76,9 +87,11 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
     onSelect,
     onClick,
     onDoubleClick,
+    ...rest
   } = props;
   const ref = useRef(null);
   const classNames = useClassNames();
+  const testId = findDataProp(props, "data-testid");
   const [{ isDragging }, dragRef, dragPreviewRef] = useDrag({
     type: NODE_TYPE,
     canDrag: () => data.draggable === true,
@@ -191,6 +204,7 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
       onDragLeave={handleDragLeave}
+      {...rest}
     >
       <TreeNodeContent
         {...(index === 0
@@ -203,19 +217,19 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
         data={data}
         columns={columns}
         textRenderer={textRenderer}
+        data-testid={makeTestId(testId, "content")}
       />
     </div>
   );
 }
 
-export function RootDroppable({
-  text,
-  onDrop,
-}: {
+export function RootDroppable(props: {
   text?: TYPES.TreeProps["droppableText"];
   onDrop: TYPES.TreeNodeProps["onDrop"];
 }) {
+  const { text, onDrop } = props;
   const classNames = useClassNames();
+  const testId = findDataProp(props, "data-testid");
 
   const [{ highlighted, hovered }, dropRef] = useDrop({
     accept: NODE_TYPE,
@@ -252,6 +266,7 @@ export function RootDroppable({
         [styles.active]: highlighted,
         [styles.hover]: hovered,
       })}
+      data-testid={testId}
     >
       <Box className={styles.rootNodeContent} d="flex" flex={1} alignItems={"center"} justifyContent={"center"}>
         {text ?? "Drop here"}
@@ -274,9 +289,21 @@ export const TreeNode = React.memo(function TreeNode({
   editRenderer,
   textRenderer,
   renderer: Renderer = React.Fragment,
+  ...rest
 }: TYPES.TreeNodeProps) {
   const RendererComponent = edit && editRenderer ? editRenderer : Renderer;
+  const testId = findDataProp(rest, "data-testid");
   const classNames = useClassNames();
+
+  const ariaProps = {
+    "aria-expanded": hasChildren(data) ? data.expanded : undefined,
+    "aria-level": data.level !== undefined ? data.level + 1 : undefined,
+    "aria-selected": data.selected || undefined,
+    "aria-busy": edit || undefined,
+    "data-testid": testId,
+    role: "row",
+  };
+
   return (
     <RendererComponent
       {...(Renderer === React.Fragment
@@ -284,11 +311,14 @@ export const TreeNode = React.memo(function TreeNode({
         : {
             data,
           })}
-      {...(edit ? { node: data, index, columns, onCancel, onSave } : {})}
+      {...(edit
+        ? { node: data, index, columns, onCancel, onSave }
+        : {})}
     >
       <DNDTreeNode
         data={data}
         index={index}
+        edit={edit}
         className={classNames(styles.node, {
           [styles.selected]: data.selected,
         })}
@@ -301,6 +331,7 @@ export const TreeNode = React.memo(function TreeNode({
         {...(editRenderer ? { onEdit } : {})}
         onDrop={onDrop}
         onToggle={onToggle}
+        {...ariaProps}
       />
     </RendererComponent>
   );

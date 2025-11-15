@@ -73,6 +73,7 @@ export interface TreeColumnProps {
   data: TreeColumn;
   children: React.ReactNode;
   className?: string;
+  role?: string;
   onClick?: (e: React.MouseEvent<HTMLDivElement>, column: TreeColumn) => void;
 }
 
@@ -86,6 +87,7 @@ export interface TreeChildProps extends TreeNodeProps {
   className?: string;
   onClick?: (e: React.SyntheticEvent) => void;
   onDoubleClick?: (e: React.SyntheticEvent) => void;
+  edit?: boolean;
 }
 
 export interface TreeChildContentProps

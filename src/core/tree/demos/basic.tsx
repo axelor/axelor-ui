@@ -52,6 +52,7 @@ export default function Basic() {
         onLoad={onLoad}
         onNodeMove={onNodeMove}
         textRenderer={TextRenderer}
+        data-testid="tree"
       />
     </DndProvider>
   );

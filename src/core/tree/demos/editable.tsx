@@ -2,11 +2,11 @@
  * @title Editable
  */
 import React from "react";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
-import { Tree } from "../tree";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { Input } from "../../input";
 import { useClassNames } from "../../styles";
+import { Tree } from "../tree";
 import records from "./data";
 
 const columns = [
@@ -73,7 +73,7 @@ function FormField({
   return <div {...{ style: { flex: 1 }, className }}>{render()}</div>;
 }
 
-function Form({ node, index, columns, onSave, onCancel }: any) {
+function Form({ node, index, columns, onSave, onCancel, ...rest }: any) {
   const values = React.useRef({ ...node.data });
   const handlers = React.useContext(FormHandlers);
   const dirty = React.useRef(false);
@@ -108,7 +108,7 @@ function Form({ node, index, columns, onSave, onCancel }: any) {
   }, [handlers, handleSave]);
 
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex" }} {...rest}>
       {columns.map((column: any, index: number) => (
         <FormField
           focus={index === 0}
