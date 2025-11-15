@@ -284,6 +284,7 @@ function RenderNavTree(props: NavTreeProps) {
       <Box border p={2} style={{ height: 600 }} overflow="auto">
         <Tree
           {...props}
+          data-testid="nav-tree"
           items={items}
           filter={filter}
           filterText={text}

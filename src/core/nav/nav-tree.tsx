@@ -4,6 +4,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useId,
   useMemo,
   useRef,
   useState,
@@ -14,6 +15,7 @@ import { clsx } from "../clsx";
 import { Collapse } from "../collapse";
 import { useControlled } from "../hooks";
 import { Input } from "../input";
+import { findAriaProp, findDataProp, makeTestId } from "../system/utils";
 
 import styles from "./nav-tree.module.scss";
 
@@ -283,7 +285,8 @@ function NavTreeC(
     setExpanded,
   } = useTree(props);
 
-  const ariaLabel = props["aria-label"];
+  const ariaLabel = findAriaProp(props, "aria-label");
+  const testId = findDataProp(props, "data-testid");
 
   const handleActiveChange = useCallback(
     (item: NavTreeItem | null) => {
@@ -315,10 +318,12 @@ function NavTreeC(
       ref={ref}
       role="tree"
       aria-label={ariaLabel}
+      data-testid={testId}
     >
       <TreeContext.Provider value={{ items, active, selected, expanded }}>
         <NavTreeNodes
           {...props}
+          data-testid={makeTestId(testId, "nodes")}
           level={0}
           items={items}
           active={active}
@@ -336,19 +341,26 @@ function NavTreeC(
 
 type NavTreeNodesProps = NavTreeProps & {
   level: number;
+  id?: string;
 };
 
 function NavTreeNodes(props: NavTreeNodesProps) {
-  const { items, ...rest } = props;
+  const { items, id, ...rest } = props;
   const { level, classes } = props;
+  const testId = findDataProp(props, "data-testid");
   return (
-    <div className={clsx(styles.nodes, classes?.nodes)}>
+    <div
+      id={id}
+      className={clsx(styles.nodes, classes?.nodes)}
+      data-testid={testId}
+    >
       {items.map((item, index) => (
         <NavTreeNode
           {...rest}
           key={item.id}
           item={item}
           focusable={level === 0 && index === 0}
+          data-testid={makeTestId(testId, "node", item.id)}
         />
       ))}
     </div>
@@ -393,7 +405,9 @@ function NavTreeNode(props: NavTreeNodeProps) {
     renderCheckbox: Checkbox = NavTreeCheckbox,
   } = props;
 
+  const testId = findDataProp(props, "data-testid");
   const hasChildren = useMemo(() => !!item.items, [item.items]);
+  const childrenId = useId();
 
   const isActive = useMemo(() => active?.id === item.id, [active?.id, item.id]);
   const isExpanded = useMemo(
@@ -637,6 +651,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
     <div className={clsx(styles.icon, classes?.arrow)}>
       {hasChildren && (
         <Arrow
+          data-testid={makeTestId(testId, "arrow")}
           expanded={isExpanded}
           expanding={isExpanding}
           onClick={handleArrowClick}
@@ -647,6 +662,7 @@ function NavTreeNode(props: NavTreeNodeProps) {
 
   return (
     <div
+      data-testid={testId}
       className={clsx(styles.node, classes?.node, {
         [styles.active]: isActive,
         [styles.selected]: isSelected,
@@ -666,6 +682,8 @@ function NavTreeNode(props: NavTreeNodeProps) {
         role="treeitem"
         aria-level={level + 1}
         aria-expanded={hasChildren ? isExpanded : undefined}
+        aria-controls={hasChildren ? childrenId : undefined}
+        aria-selected={isSelected}
         data-item-id={item.id}
       >
         {arrowPosition !== "end" && renderArrow()}
@@ -676,13 +694,17 @@ function NavTreeNode(props: NavTreeNodeProps) {
           >
             <Checkbox
               tabIndex={-1}
+              data-testid={makeTestId(testId, "checkbox")}
               indeterminate={!!isIndeterminate}
               checked={isChecked}
               onChange={handleCheckboxChange}
             />
           </div>
         )}
-        <div className={clsx(styles.title, classes?.title)}>
+        <div
+          className={clsx(styles.title, classes?.title)}
+          data-testid={makeTestId(testId, "title")}
+        >
           <Title
             item={item}
             level={level}
@@ -695,7 +717,13 @@ function NavTreeNode(props: NavTreeNodeProps) {
       </div>
       {hasChildren && (
         <Collapse in={isExpanded} mountOnEnter unmountOnExit>
-          <NavTreeNodes {...props} items={item.items!} level={level + 1} />
+          <NavTreeNodes
+            {...props}
+            id={childrenId}
+            items={item.items!}
+            level={level + 1}
+            data-testid={makeTestId(testId, "nodes")}
+          />
         </Collapse>
       )}
     </div>
@@ -707,11 +735,14 @@ export const NavTree = forwardRef<HTMLDivElement, NavTreeProps>(NavTreeC);
 function NavTreeTitle(props: NavTreeTitleProps) {
   const { item } = props;
   const { title } = item;
-  return <div>{title}</div>;
+  const testId = findDataProp(props, "data-testid");
+  return <div data-testid={testId}>{title}</div>;
 }
 
 function NavTreeCheckbox(props: NavTreeCheckboxProps) {
   const { tabIndex, checked, indeterminate, onChange } = props;
+  const testId = findDataProp(props, "data-testid");
+  const checkboxId = useId();
 
   const checkboxRef = useCallback(
     (input: HTMLInputElement | null) => {
@@ -724,6 +755,8 @@ function NavTreeCheckbox(props: NavTreeCheckboxProps) {
 
   return (
     <Input
+      id={checkboxId}
+      data-testid={testId}
       tabIndex={tabIndex}
       type="checkbox"
       checked={checked}
@@ -735,12 +768,16 @@ function NavTreeCheckbox(props: NavTreeCheckboxProps) {
 
 export function NavTreeArrow(props: NavTreeArrowProps) {
   const { expanded, expanding, onClick } = props;
+  const testId = findDataProp(props, "data-testid");
   return (
     <div
+      data-testid={testId}
       className={clsx(styles.toggle, {
         [styles.expanded]: expanded,
       })}
       onClick={onClick}
+      role="presentation"
+      aria-hidden="true"
     >
       {expanding && (
         <MaterialIcon className={styles.wait} icon="progress_activity" />
