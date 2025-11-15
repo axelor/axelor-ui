@@ -2,5 +2,9 @@ import styled from "../styled";
 
 export const MenuHeader = styled.div(
   () => ["dropdown-header"],
-  () => ({ "aria-disabled": true }),
+  () => ({
+    role: "presentation",
+    "aria-disabled": true,
+    tabIndex: -1,
+  }),
 );

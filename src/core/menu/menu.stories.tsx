@@ -9,6 +9,7 @@ import styled from "../styled";
 import { Menu, MenuProps } from "./menu";
 import { MenuHeader } from "./menu-header";
 import { MenuItem } from "./menu-item";
+import { MenuDivider } from "./menu-divider";
 
 const config = {
   component: Menu,
@@ -27,18 +28,35 @@ export const Basic = () => {
     setShow(false);
   }
 
+  const id = React.useId();
+  const menuId = `menu-${id}`;
+  const buttonId = `button-${id}`;
+
   return (
     <Box>
       <Button
+        id={buttonId}
         ref={setTarget}
         onClick={showMenu}
         bgColor="primary"
         color="light"
+        aria-controls={show ? menuId : undefined}
+        aria-expanded={show}
+        aria-haspopup="true"
       >
         Menu
       </Button>
-      <Menu target={target} show={show} onHide={hideMenu}>
-        <MenuItem onClick={hideMenu}>Option 1</MenuItem>
+      <Menu
+        target={target}
+        show={show}
+        onHide={hideMenu}
+        data-testid="menu"
+        id={menuId}
+      >
+        <MenuItem onClick={hideMenu} data-testid="menu-item-1">
+          Option 1
+        </MenuItem>
+        <MenuDivider />
         <MenuItem onClick={hideMenu}>Option 2</MenuItem>
         <MenuItem onClick={hideMenu}>Option 3</MenuItem>
       </Menu>

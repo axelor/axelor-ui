@@ -2,8 +2,9 @@ import { ArrowNavigation } from "../arrow-navigation";
 
 import { ClickAwayListener } from "../click-away-listener";
 import { FocusTrap } from "../focus-trap";
-import { Popper, PopperProps } from "../popper/popper";
+import { Popper, PopperProps } from "../popper";
 import styled, { withStyled } from "../styled";
+
 import styles from "./menu.module.css";
 
 export interface MenuProps
@@ -55,6 +56,7 @@ export const Menu = withStyled(MenuContent)((
   },
   ref,
 ) => {
+  const ariaLabelledBy = target?.id || undefined;
   return (
     <Popper
       placement={placement}
@@ -67,7 +69,7 @@ export const Menu = withStyled(MenuContent)((
       rounded={rounded}
       transition={transition}
       contentClassName={contentClassName}
-      role="menu"
+      role="presentation"
       bg={bg}
     >
       <ClickAwayListener onClickAway={onHide}>
@@ -75,6 +77,8 @@ export const Menu = withStyled(MenuContent)((
           <FocusTrap>
             <ArrowNavigation selector="auto-vertical">
               <MenuContent
+                role="menu"
+                aria-labelledby={ariaLabelledBy}
                 {...props}
                 show
                 bg="transparent"
@@ -87,6 +91,8 @@ export const Menu = withStyled(MenuContent)((
           </FocusTrap>
         ) : (
           <MenuContent
+            role="menu"
+            aria-labelledby={ariaLabelledBy}
             {...props}
             show
             border={false}
