@@ -9,7 +9,11 @@ const config = {
 export const Basic = () => {
   return (
     <Box>
-      <Link href="#" onClick={() => console.log("Link Clicked")}>
+      <Link
+        href="#"
+        onClick={() => console.log("Link Clicked")}
+        data-testid="link"
+      >
         Link
       </Link>
     </Box>

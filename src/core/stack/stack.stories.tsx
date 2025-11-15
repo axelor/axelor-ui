@@ -8,7 +8,7 @@ const config = {
 
 export const Basic = () => {
   return (
-    <Stack gap={3}>
+    <Stack gap={3} data-testid="stack">
       <Box border p={2}>
         First item
       </Box>

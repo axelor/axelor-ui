@@ -13,7 +13,7 @@ export const Basic = () => {
   return (
     <Box>
       <h1>
-        Example heading <Badge>New</Badge>
+        Example heading <Badge data-testid="badge">New</Badge>
       </h1>
       <h2>
         Example heading <Badge>New</Badge>

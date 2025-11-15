@@ -13,6 +13,7 @@ export const Basic = () => {
 
   return (
     <Switch
+      data-testid="switch"
       checked={checked}
       onChange={(e: any) => setChecked(e.target.checked)}
     />
@@ -20,7 +21,7 @@ export const Basic = () => {
 };
 
 export const Disabled = () => {
-  return <Switch checked={true} disabled />;
+  return <Switch data-testid="switch" checked={true} disabled />;
 };
 
 export const Invalid = () => {
@@ -28,6 +29,7 @@ export const Invalid = () => {
 
   return (
     <Switch
+      data-testid="switch"
       invalid
       checked={checked}
       onChange={(e: any) => setChecked(e.target.checked)}
@@ -40,6 +42,7 @@ export const Readonly = () => {
 
   return (
     <Switch
+      data-testid="switch"
       readOnly
       checked={checked}
       onChange={(e: any) => setChecked(e.target.checked)}
@@ -54,9 +57,19 @@ export const Sizes = () => {
 
   return (
     <Box>
-      <Switch checked={checked} onChange={handleChange} size="sm" />
-      <Switch checked={checked} onChange={handleChange} />
-      <Switch checked={checked} onChange={handleChange} size="lg" />
+      <Switch
+        data-testid="switch"
+        checked={checked}
+        onChange={handleChange}
+        size="sm"
+      />
+      <Switch data-testid="switch" checked={checked} onChange={handleChange} />
+      <Switch
+        data-testid="switch"
+        checked={checked}
+        onChange={handleChange}
+        size="lg"
+      />
     </Box>
   );
 };

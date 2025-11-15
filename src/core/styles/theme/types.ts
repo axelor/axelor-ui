@@ -93,8 +93,8 @@ export interface ThemeOptions {
     ring?: {
       width?: string;
       color?: string;
-    };
-  };
+    }
+  }
   link?: {
     color?: string;
     hover?: string;

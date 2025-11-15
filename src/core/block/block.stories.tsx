@@ -16,4 +16,5 @@ export const Basic: Story = {
     classes: "border rounded p-2",
     children: <div>Welcome!!!</div>,
   },
+  render: (props) => <Block {...props} data-testid="block" />,
 };

@@ -21,7 +21,11 @@ export const Basic = () => {
   const [value, setValue] = useState("");
 
   return (
-    <Input value={value} onChange={(e: any) => setValue(e.target.value)} />
+    <Input
+      value={value}
+      onChange={(e: any) => setValue(e.target.value)}
+      data-testid="input"
+    />
   );
 };
 

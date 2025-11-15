@@ -17,12 +17,13 @@ export const Basic: Story = {
     p: 4,
     children: "Welcome!",
   },
+  render: (props) => <Box {...props} data-testid="box" />,
 };
 
 export const Border = () => {
   return (
     <Box display="flex">
-      <Box p={5} m={2} border bg="body-tertiary">
+      <Box p={5} m={2} border bg="body-tertiary" data-testid="box-square">
         square
       </Box>
       <Box p={5} m={2} border rounded={2} borderWidth={2} bg="body-tertiary">

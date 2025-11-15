@@ -5,7 +5,7 @@ const config = {
   title: "Components/Barcode",
 };
 
-export const Basic = () => <Barcode value="Code 128" />;
+export const Basic = () => <Barcode value="Code 128" data-testid="barcode" />;
 
 export const EAN13 = () => <Barcode value="3330123456789" format="EAN13" />;
 

@@ -10,7 +10,7 @@ export const Basic = () => {
   return (
     <Box p={5}>
       <Box border p={4} bgColor="body-tertiary" />
-      <Divider />
+      <Divider data-testid="divider" />
       <Box border p={4} bgColor="body-tertiary" />
     </Box>
   );

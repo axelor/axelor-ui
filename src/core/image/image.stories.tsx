@@ -6,7 +6,9 @@ const config = {
 };
 
 export const Basic = () => {
-  return <Image src="https://picsum.photos/400/300" alt="Demo" />;
+  return (
+    <Image src="https://picsum.photos/400/300" alt="Demo" data-testid="image" />
+  );
 };
 
 export const Responsive = () => {
