@@ -2,6 +2,7 @@ import JsBarcode from "jsbarcode";
 import { useEffect, useRef } from "react";
 
 import { Box } from "../box";
+import { findDataProp } from "../system/utils";
 
 export type BarcodeProps = {
   /**
@@ -53,6 +54,7 @@ export type BarcodeProps = {
 
 export const Barcode = (props: BarcodeProps) => {
   const barcodeRef = useRef(null);
+  const testId = findDataProp(props, "data-testid");
 
   const {
     value,
@@ -91,5 +93,14 @@ export const Barcode = (props: BarcodeProps) => {
     onInvalid,
   ]);
 
-  return <Box as="svg" ref={barcodeRef} maxW={100} h={100} />;
+  return (
+    <Box
+      as="svg"
+      ref={barcodeRef}
+      maxW={100}
+      h={100}
+      data-testid={testId}
+      role="img"
+    />
+  );
 };

@@ -5,10 +5,15 @@ const config = {
   title: "Components/QrCode",
 };
 
-export const Basic = () => <QrCode value="https://axelor.com" height={200} />;
+export const Basic = () => (
+  <QrCode value="https://axelor.com" height={200} data-testid="qr-code" />
+);
 
 export const Location = () => (
-  <QrCode value="geo:48.83788976232557,2.590417935294357" />
+  <QrCode
+    value="geo:48.83788976232557,2.590417935294357"
+    data-testid="qr-code"
+  />
 );
 
 export default config;

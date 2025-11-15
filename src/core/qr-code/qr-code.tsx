@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { Box, BoxProps } from "../box";
 import { StyledComponentProps } from "../styled";
 import { StyleProps } from "../system";
+import { findDataProp } from "../system/utils";
 
 type QrCodeProps = {
   /**
@@ -21,6 +22,7 @@ export const QrCode = (props: QrCodeProps) => {
   const { value, height = 140, ...rest } = props;
 
   const canvasRef = useRef(null);
+  const testId = findDataProp(props, "data-testid");
 
   useEffect(() => {
     if (canvasRef.current && value) {
@@ -31,5 +33,13 @@ export const QrCode = (props: QrCodeProps) => {
     }
   }, [value, height]);
 
-  return <Box as="canvas" ref={canvasRef} {...rest} />;
+  return (
+    <Box
+      as="canvas"
+      ref={canvasRef}
+      {...rest}
+      data-testid={testId}
+      role="img"
+    />
+  );
 };
