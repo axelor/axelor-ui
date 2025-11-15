@@ -55,6 +55,7 @@ export const Basic: Story = {
       custom: true,
     },
   },
+  render: (props) => <Panel {...props} data-testid="panel" />,
 };
 
 export const Collapsible: Story = {

@@ -1,14 +1,19 @@
-import { forwardRef, useCallback, useState } from "react";
+import { forwardRef, useCallback, useId, useState } from "react";
 
+import { MaterialIcon } from "../../icons/material-icon";
+import { Button } from "../button";
 import { clsx } from "../clsx";
 import { Collapse } from "../collapse";
 import { CommandBar, CommandBarProps } from "../command-bar";
 import { Scrollable } from "../scrollable";
+import { findAriaProp, findDataProp, makeTestId } from "../system/utils";
 
 import styles from "./panel.module.scss";
 
-export interface PanelProps
-  extends Omit<React.HTMLProps<HTMLDivElement>, "onToggle"> {
+export interface PanelProps extends Omit<
+  React.HTMLProps<HTMLDivElement>,
+  "onToggle"
+> {
   header?: React.ReactNode;
   footer?: React.ReactNode;
   toolbar?: CommandBarProps;
@@ -38,6 +43,10 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
     ...restProps
   } = moreProps;
 
+  const testId = findDataProp(props, "data-testid");
+  const ariaLabel = findAriaProp(props, "aria-label");
+  const contentId = useId();
+  const headerId = useId();
   const hasHeader = Boolean(header || toolbar || collapsible);
   const hasFooter = Boolean(footer);
 
@@ -83,14 +92,21 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
 
   const collapseIcon = collapsible ? (
     <CommandBar
+      data-testid={makeTestId(testId, "toggle-toolbar")}
       items={[
         {
           key: "toggle",
-          className: styles.toggle,
-          iconProps: {
-            icon: "keyboard_arrow_down",
-          },
-          onClick: handleToggle,
+          render: ({ className, variant }) => (
+            <Button
+              className={className}
+              variant={variant}
+              onClick={handleToggle}
+              aria-expanded={!collapsed}
+              aria-controls={contentId}
+            >
+              <MaterialIcon icon="keyboard_arrow_down" aria-hidden="true" />
+            </Button>
+          ),
         },
       ]}
     />
@@ -99,11 +115,22 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
   const ContentPane = scrollbar?.custom ? Scrollable : "div";
 
   const content = (
-    <div className={styles.body}>
-      <ContentPane className={styles.content} onScroll={onScroll}>
+    <div className={styles.body} id={contentId}>
+      <ContentPane
+        className={styles.content}
+        onScroll={onScroll}
+        data-testid={makeTestId(testId, "content")}
+      >
         {children}
       </ContentPane>
-      {hasFooter && <div className={styles.footer}>{footer}</div>}
+      {hasFooter && (
+        <div
+          className={styles.footer}
+          data-testid={makeTestId(testId, "footer")}
+        >
+          {footer}
+        </div>
+      )}
     </div>
   );
 
@@ -129,11 +156,16 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
       ref={ref}
       className={clsx(styles.panel, className, styles[collapseState])}
       {...restProps}
+      data-testid={testId}
+      role="region"
+      aria-label={ariaLabel}
+      aria-labelledby={!ariaLabel && hasHeader ? headerId : undefined}
     >
       {hasHeader && (
         <Header
           {...moreProps}
           handleToggle={handleToggle}
+          headerId={headerId}
           className={clsx({
             [styles.hide]: headerHide,
             [styles.shadow]: headerShadow,
@@ -147,11 +179,24 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
   );
 });
 
-function Header(props: PanelProps & { handleToggle?: () => void }) {
-  const { header, toolbar, className, children, collapsible, handleToggle } =
-    props;
+function Header(
+  props: PanelProps & { handleToggle?: () => void; headerId?: string },
+) {
+  const {
+    header,
+    toolbar,
+    className,
+    children,
+    collapsible,
+    handleToggle,
+    headerId,
+  } = props;
+  const testId = findDataProp(props, "data-testid");
   return (
-    <div className={clsx(styles.header, className)}>
+    <div
+      className={clsx(styles.header, className)}
+      data-testid={makeTestId(testId, "header")}
+    >
       <div className={styles.headerInner}>
         {header && (
           <div
@@ -162,16 +207,28 @@ function Header(props: PanelProps & { handleToggle?: () => void }) {
             className={clsx(styles.title, {
               [styles.collapse]: collapsible,
             })}
+            data-testid={makeTestId(testId, "title")}
+            id={headerId}
           >
             {header}
           </div>
         )}
         {toolbar && (
           <div className={styles.toolbar}>
-            <CommandBar {...toolbar} />
+            <CommandBar
+              {...toolbar}
+              data-testid={makeTestId(testId, "toolbar")}
+            />
           </div>
         )}
-        {children && <div className={styles.toolbar}>{children}</div>}
+        {children && (
+          <div
+            className={styles.toolbar}
+            data-testid={makeTestId(testId, "actions")}
+          >
+            {children}
+          </div>
+        )}
       </div>
     </div>
   );
