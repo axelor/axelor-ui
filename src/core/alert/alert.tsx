@@ -4,11 +4,13 @@ import { clsx } from "../clsx";
 import styled, { withStyled } from "../styled";
 import { useClassNames } from "../styles";
 import { TVariant } from "../system";
+import { findAriaProp, findDataProp, makeTestId } from "../system/utils";
 
 export interface AlertProps {
   variant?: TVariant;
   className?: string;
   children?: React.ReactNode;
+  role?: "alert" | "status";
 }
 
 export interface AlertHeaderProps {
@@ -56,7 +58,13 @@ export const AlertLink = withStyled(StyledLink)((props, ref) => {
 const AlertRoot = styled.div<AlertProps>();
 
 export const Alert = withStyled(AlertRoot)((props, ref) => {
-  const { className, children, variant = "info", ...rest } = props;
+  const {
+    className,
+    children,
+    variant = "info",
+    role: roleProp,
+    ...rest
+  } = props;
 
   const icons: Partial<Record<TVariant, BootstrapIconName>> = {
     success: "check-circle",
@@ -64,6 +72,17 @@ export const Alert = withStyled(AlertRoot)((props, ref) => {
     warning: "exclamation-triangle",
     danger: "x-circle",
   };
+
+  const testId = findDataProp(props, "data-testid");
+  const ariaLabel = findAriaProp(props, "aria-label");
+
+  // Determine role based on variant if not explicitly provided
+  const role =
+    roleProp ||
+    (variant === "danger" || variant === "warning" ? "alert" : "status");
+
+  // Set aria-live based on role
+  const ariaLive = role === "alert" ? "assertive" : "polite";
 
   return (
     <Box
@@ -80,8 +99,18 @@ export const Alert = withStyled(AlertRoot)((props, ref) => {
       borderColor={`${variant}`}
       color={`${variant}-emphasis`}
       {...rest}
+      data-testid={testId}
+      role={role}
+      aria-live={ariaLive}
+      aria-atomic="true"
+      aria-label={ariaLabel}
     >
-      {icons[variant] && <BootstrapIcon icon={icons[variant]} />}
+      {icons[variant] && (
+        <BootstrapIcon
+          icon={icons[variant]}
+          data-testid={makeTestId(testId, "icon")}
+        />
+      )}
       <Box ms={2} alignSelf="center">
         {children}
       </Box>

@@ -9,11 +9,11 @@ const config = {
 
 export const Basic = () => {
   return (
-    <Box>
+    <Box d="flex" flexDirection="column" g={4}>
       <Alert>This is a simple alert...</Alert>
-      <Alert variant="warning">
-        <AlertHeader>Warning!</AlertHeader>
-        This is a alert with title...
+      <Alert variant="warning" data-testid="alert">
+        <AlertHeader data-testid="alert-header">Warning!</AlertHeader>
+        <div data-testid="alert-content">This is a alert with title...</div>
       </Alert>
       <Alert variant="danger">
         <Box alignItems="center" d="flex" g={2}>
