@@ -1,17 +1,6 @@
-import {
-  ForwardedRef,
-  Ref,
-  RefObject,
-  useCallback,
-  useEffect,
-  useRef,
-} from "react";
+import { useCallback } from "react";
 
-export type PossibleRef<T> = Ref<T> | ForwardedRef<T> | undefined;
-
-export type MergedRef<T> = React.RefObject<T> & ((value: T) => void);
-
-export type MergedRefType<T> = T extends React.SetStateAction<infer P> ? P : T;
+export type PossibleRef<T> = React.Ref<T> | undefined;
 
 /**
  * This hook can be used to combine multiple hooks.
@@ -22,35 +11,24 @@ export type MergedRefType<T> = T extends React.SetStateAction<infer P> ? P : T;
  * @param refs refs to use
  * @returns RefCallback<T>
  */
-export function useRefs<T>(
-  ...refs: PossibleRef<T>[]
-): MergedRef<MergedRefType<T>> {
-  const combinedRef = useCallback(
+export function useRefs<T>(...refs: PossibleRef<T>[]): React.RefCallback<T> {
+  return useCallback(
     (value: T) => {
-      (combinedRef as unknown as RefObject<T>).current = value;
-      refs.forEach((ref) => {
-        if (ref && typeof ref === "function") ref(value);
-        if (ref && typeof ref === "object")
-          (ref as RefObject<T>).current = value;
-      });
+      const cleanups = refs
+        .map((ref) => {
+          if (ref && typeof ref === "function") return ref(value);
+          if (ref && typeof ref === "object") {
+            ref.current = value;
+          }
+        })
+        .filter((cleanup) => typeof cleanup === "function");
+
+      if (cleanups.length > 0) {
+        return () => {
+          cleanups.forEach((cleanup) => cleanup());
+        };
+      }
     },
     [refs],
   );
-  return combinedRef as unknown as MergedRef<MergedRefType<T>>;
-}
-
-/**
- * This hook can be used to return a new hook that also keeps the given
- * forwarded ref in sync.
- *
- * @param ref the ref to keep in sync
- * @returns RefObject<T>
- */
-export function useForwardedRef<T>(ref: ForwardedRef<T>): RefObject<T | null> {
-  const res = useRef<T>(null);
-  useEffect(() => {
-    if (ref && typeof ref === "function") ref(res.current);
-    if (ref && typeof ref === "object") ref.current = res.current;
-  }, [ref, res]);
-  return res;
 }
