@@ -1,4 +1,4 @@
-import { JSX, forwardRef, useCallback, useMemo, useState } from "react";
+import { JSX, forwardRef, useCallback, useId, useMemo, useState } from "react";
 
 import { clsx } from "../clsx";
 import { useRefs } from "../hooks";
@@ -12,6 +12,7 @@ import {
   useOverflowMenu,
 } from "../overflow";
 
+import { findAriaProp, findDataProp, makeTestId } from "../system/utils";
 import styles from "./overflow-list.module.scss";
 
 export interface OverflowListItem
@@ -47,6 +48,8 @@ export interface OverflowListProps<T extends OverflowListItem> {
 export const OverflowList = forwardRef<HTMLDivElement, OverflowListProps<any>>(
   (props, ref) => {
     const { style, className, items, overflowProps } = props;
+    const testId = findDataProp(props, "data-testid");
+    const ariaLabel = findAriaProp(props, "aria-label");
     return (
       <Overflow key={items.length} {...overflowProps} ref={ref}>
         <div
@@ -54,6 +57,9 @@ export const OverflowList = forwardRef<HTMLDivElement, OverflowListProps<any>>(
             [styles.vertical]: overflowProps?.overflowAxis === "vertical",
           })}
           style={style}
+          data-testid={testId}
+          role="list"
+          aria-label={ariaLabel}
         >
           {items.map((item) => (
             <OverflowItem
@@ -62,10 +68,15 @@ export const OverflowList = forwardRef<HTMLDivElement, OverflowListProps<any>>(
               groupId={item.groupId}
               priority={item.priority}
             >
-              <ListItem key={item.id} {...props} item={item} />
+              <ListItem
+                key={item.id}
+                {...props}
+                item={item}
+                data-testid={makeTestId(testId, "item", item.id)}
+              />
             </OverflowItem>
           ))}
-          <ListMenu {...props} />
+          <ListMenu {...props} data-testid={makeTestId(testId, "menu")} />
         </div>
       </Overflow>
     );
@@ -79,19 +90,40 @@ const ListItem = forwardRef<
   OverflowListItemProps<any> & OverflowListProps<any>
 >((props, ref) => {
   const { item, onItemClick, isItemActive, renderItem: Comp } = props;
+  const testId = findDataProp(props, "data-testid");
+  const isActive = isItemActive?.(item);
 
   const handleClick = useCallback(
     () => onItemClick?.(item),
     [item, onItemClick],
   );
 
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        onItemClick?.(item);
+      }
+    },
+    [item, onItemClick],
+  );
+
   const renderProps = useMemo(
-    () => ({ item, active: isItemActive?.(item) }),
-    [isItemActive, item],
+    () => ({ item, active: isActive }),
+    [isActive, item],
   );
 
   return (
-    <div className={styles.item} ref={ref} onClick={handleClick}>
+    <div
+      data-testid={testId}
+      className={styles.item}
+      ref={ref}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      role="listitem"
+      aria-selected={isActive}
+      tabIndex={0}
+    >
       <Comp {...renderProps} />
     </div>
   );
@@ -102,6 +134,8 @@ const ListMenuItem = (
 ) => {
   const { item, isItemActive, renderMenuItem: Comp, onItemClick } = props;
   const { id } = item;
+
+  const testId = findDataProp(props, "data-testid");
   const visible = useIsOverflowItemVisible(id);
   const active = isItemActive?.(item);
 
@@ -117,7 +151,7 @@ const ListMenuItem = (
   }
 
   return (
-    <MenuItem active={active} onClick={handleClick}>
+    <MenuItem active={active} onClick={handleClick} data-testid={testId}>
       <Comp {...renderProps} />
     </MenuItem>
   );
@@ -152,21 +186,53 @@ const ListMenu = (props: OverflowListProps<any>) => {
     [hideMenu, onItemClick],
   );
 
+  const handleTriggerKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        showMenu();
+      } else if (e.key === "Escape" && show) {
+        e.preventDefault();
+        hideMenu();
+      }
+    },
+    [show, showMenu, hideMenu],
+  );
+
+  const menuId = useId();
+
   if (!isOverflowing) {
     return null;
   }
 
+  const testId = findDataProp(props, "data-testid");
+
   return (
     <>
-      <div onClick={showMenu} className={styles.button} ref={triggerRef as any}>
+      <div
+        onClick={showMenu}
+        onKeyDown={handleTriggerKeyDown}
+        className={styles.button}
+        ref={triggerRef as any}
+        data-testid={makeTestId(testId, testId, "trigger")}
+        role="button"
+        tabIndex={0}
+        aria-haspopup="menu"
+        aria-expanded={show}
+        aria-controls={show ? menuId : undefined}
+        aria-label={`Show ${count} more items`}
+      >
         <TriggerComp count={count} open={show} />
       </div>
       <Menu
         {...menuProps}
+        id={menuId}
         target={target}
         show={show}
         onHide={hideMenu}
         navigation
+        data-testid={testId}
+        aria-label="Overflow menu"
       >
         {items.map((item) => (
           <ListMenuItem
@@ -174,6 +240,7 @@ const ListMenu = (props: OverflowListProps<any>) => {
             {...props}
             item={item}
             onItemClick={handleItemClick}
+            data-testid={makeTestId(testId, "item", item.id)}
           />
         ))}
       </Menu>
