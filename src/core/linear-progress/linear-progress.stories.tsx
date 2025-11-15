@@ -46,4 +46,18 @@ export const Thickness = () => {
   );
 };
 
+export const MinMax = () => {
+  return (
+    <Box>
+      <LinearProgress value={0} min={0} max={10} />
+      <br />
+      <LinearProgress value={2} min={0} max={10} />
+      <br />
+      <LinearProgress value={5} min={0} max={10} />
+      <br />
+      <LinearProgress value={10} min={0} max={10} />
+    </Box>
+  );
+};
+
 export default config;

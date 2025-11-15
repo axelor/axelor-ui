@@ -60,4 +60,15 @@ export const Thickness = () => {
   );
 };
 
+export const MinMax = () => {
+  return (
+    <Box>
+      <CircularProgress color="primary" value={2} min={0} max={10} />{" "}
+      <CircularProgress color="primary" value={5} min={0} max={10} />{" "}
+      <CircularProgress color="primary" value={8} min={0} max={10} />{" "}
+      <CircularProgress color="primary" value={10} min={0} max={10} />
+    </Box>
+  );
+};
+
 export default config;
