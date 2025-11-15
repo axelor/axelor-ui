@@ -28,8 +28,10 @@ import {
 
 import { MaterialIcon } from "../../icons/material-icon";
 import { Badge } from "../badge";
+import { Button } from "../button";
 import { clsx } from "../clsx";
 import { useControlled, useRefs } from "../hooks";
+import { findDataProp, makeTestId } from "../system/utils";
 
 import styles from "./select.module.scss";
 
@@ -41,7 +43,9 @@ export type SelectValue<Type, Multiple extends boolean> =
 export type SelectIcon = {
   key?: string | number;
   icon: React.ReactNode;
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  title?: string;
+  htmlProps?: React.HTMLAttributes<HTMLElement> & { color?: never };
+  onClick?: React.MouseEventHandler<HTMLElement>;
 };
 
 export type SelectRefHandler = {
@@ -156,6 +160,8 @@ export const Select = forwardRef(function Select<
     inputStartAdornment,
     inputEndAdornment,
   } = props;
+
+  const testId = findDataProp(props, "data-testid");
 
   const [value, setValue] = useControlled({
     name: "Select",
@@ -434,6 +440,7 @@ export const Select = forwardRef(function Select<
   const rootRef = useRefs(ref, refs.setReference);
   const inputRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const listboxId = useId();
 
   const handleToggleClick = useCallback(() => {
     if (readOnly || disabled) return;
@@ -553,25 +560,39 @@ export const Select = forwardRef(function Select<
     };
   }, [props.clearIcon, handleClearClick]);
 
+  const canClear =
+    clearIcon &&
+    [value].flat().filter(Boolean).length > 0 &&
+    !readOnly &&
+    !disabled;
+
+  const notValid = useMemo(() => {
+    if (invalid) return true;
+    if (value) return false;
+    if (required) return true;
+    return false;
+  }, [required, invalid, value]);
+
   const renderMultiple = useCallback(() => {
     const items = value as Type[] | null;
     return items?.map((item) => {
+      const key = optionKey(item);
       return (
-        <div key={optionKey(item)} className={styles.tag}>
+        <div
+          key={key}
+          className={styles.tag}
+          data-testid={makeTestId(testId, "tag", key)}
+        >
           {!!renderValue && renderValue({ option: item })}
           {!!renderValue || (
-            <Badge
-              bg="secondary"
-              key={optionKey(item)}
-              className={styles.badge}
-            >
+            <Badge bg="secondary" key={key} className={styles.badge}>
               {optionLabel(item)}
             </Badge>
           )}
         </div>
       );
     });
-  }, [optionKey, optionLabel, renderValue, value]);
+  }, [optionKey, optionLabel, renderValue, value, testId]);
 
   const renderSelector = useCallback(() => {
     const shouldShowEmptyBox = readOnly && isEmpty(value);
@@ -591,6 +612,14 @@ export const Select = forwardRef(function Select<
               ? undefined
               : placeholder
           }
+          role="combobox"
+          aria-expanded={open}
+          aria-autocomplete="list"
+          aria-controls={listboxId}
+          aria-haspopup="listbox"
+          aria-activedescendant={activeDescendant}
+          aria-invalid={notValid ? true : undefined}
+          data-testid={makeTestId(testId, "input")}
           {...(!readOnly && {
             onChange: handleInputChange,
             onKeyDown: handleInputKeyDown,
@@ -603,14 +632,21 @@ export const Select = forwardRef(function Select<
     if (multiple) return null;
     if (value) {
       return (
-        <div className={styles.value}>
+        <div className={styles.value} data-testid={makeTestId(testId, "value")}>
           {!!renderValue && renderValue({ option: value as Type })}
           {!!renderValue || optionLabel(value as Type)}
         </div>
       );
     }
     if (placeholder) {
-      return <span className={styles.placeholder}>{placeholder}</span>;
+      return (
+        <span
+          className={styles.placeholder}
+          data-testid={makeTestId(testId, "placeholder")}
+        >
+          {placeholder}
+        </span>
+      );
     }
     return null;
   }, [
@@ -629,20 +665,11 @@ export const Select = forwardRef(function Select<
     handleBlur,
     renderValue,
     optionLabel,
+    testId,
+    listboxId,
+    notValid,
+    open,
   ]);
-
-  const canClear =
-    clearIcon &&
-    [value].flat().filter(Boolean).length > 0 &&
-    !readOnly &&
-    !disabled;
-
-  const notValid = useMemo(() => {
-    if (invalid) return true;
-    if (value) return false;
-    if (required) return true;
-    return false;
-  }, [required, invalid, value]);
 
   useImperativeHandle(
     selectRef,
@@ -653,6 +680,22 @@ export const Select = forwardRef(function Select<
     }),
     [open, handleOpen, handleClose],
   );
+
+  const referenceProps = !readOnly
+    ? getReferenceProps({
+        ref: rootRef,
+        tabIndex: autoComplete || disabled ? undefined : 0,
+        onClick: handleRootClick,
+        onKeyDown: handleRootKeyDown,
+        onKeyUp: handleRootKeyUp,
+        onFocus: autoComplete ? undefined : handleFocus,
+        onBlur: autoComplete ? undefined : handleBlur,
+      })
+    : undefined;
+
+  const activeDescendant = autoComplete
+    ? (referenceProps?.["aria-activedescendant"] as string | undefined)
+    : undefined;
 
   return (
     <>
@@ -667,49 +710,81 @@ export const Select = forwardRef(function Select<
         autoFocus={autoComplete ? undefined : autoFocus}
         aria-disabled={disabled ? true : undefined}
         aria-readonly={readOnly ? true : undefined}
-        {...(!readOnly &&
-          getReferenceProps({
-            ref: rootRef,
-            tabIndex: autoComplete || disabled ? undefined : 0,
-            onClick: handleRootClick,
-            onKeyDown: handleRootKeyDown,
-            onKeyUp: handleRootKeyUp,
-            onFocus: autoComplete ? undefined : handleFocus,
-            onBlur: autoComplete ? undefined : handleBlur,
-          }))}
+        aria-invalid={notValid ? true : undefined}
+        aria-required={required ? true : undefined}
+        data-testid={testId}
+        {...referenceProps}
+        {...(autoComplete
+          ? {
+              role: undefined,
+              "aria-expanded": undefined,
+              "aria-haspopup": undefined,
+              "aria-controls": undefined,
+              "aria-activedescendant": undefined,
+              "aria-autocomplete": undefined,
+            }
+          : {
+              "aria-expanded": open,
+              "aria-haspopup": "listbox" as const,
+              "aria-controls": listboxId,
+            })}
       >
         <div ref={contentRef} className={styles.content}>
           {inputStartAdornment}
           {multiple && renderMultiple()}
           {renderSelector()}
         </div>
-        <div tabIndex={-1} className={styles.actions} onClick={handleClose}>
+        <div
+          tabIndex={-1}
+          className={styles.actions}
+          onClick={handleClose}
+          data-testid={makeTestId(testId, "actions")}
+        >
           {inputEndAdornment}
           {canClear && (
-            <div
+            <Button
+              type="button"
+              variant="link"
+              tabIndex={-1}
+              title={clearIcon.title}
               className={clsx(styles.action, styles.clearIcon)}
               onClick={clearIcon.onClick}
+              data-testid={makeTestId(testId, "clear")}
+              {...clearIcon.htmlProps}
             >
               {clearIcon.icon}
-            </div>
+            </Button>
           )}
-          {icons.map(({ key, icon, onClick }, index) => (
-            <div
+          {icons.map(({ key, icon, title, htmlProps, onClick }, index) => (
+            <Button
               key={key ?? index}
+              type="button"
+              variant="link"
+              tabIndex={-1}
+              title={title}
               data-index={index}
               className={clsx(styles.action)}
               onClick={onClick}
+              data-testid={makeTestId(testId, "icon", key ?? index)}
+              {...htmlProps}
             >
               {icon}
-            </div>
+            </Button>
           ))}
           {toggleIcon && (
-            <div
+            <Button
+              type="button"
+              variant="link"
+              tabIndex={-1}
+              title={toggleIcon.title}
+              aria-expanded={open}
               className={clsx(styles.action, styles.toggleIcon)}
               onClick={toggleIcon.onClick}
+              data-testid={makeTestId(testId, "toggle")}
+              {...toggleIcon.htmlProps}
             >
               {toggleIcon.icon}
-            </div>
+            </Button>
           )}
         </div>
       </div>
@@ -726,7 +801,11 @@ export const Select = forwardRef(function Select<
                 ref: refs.setFloating,
                 className: styles.list,
                 style: floatingStyles,
+                role: "listbox",
+                id: listboxId,
+                "aria-label": placeholder || "Select options",
               })}
+              data-testid={makeTestId(testId, "list")}
             >
               {items.map((item, index) => {
                 const { key, ...itemProps } = getItemProps({
@@ -744,6 +823,7 @@ export const Select = forwardRef(function Select<
                     {...itemProps}
                     active={activeIndex === index}
                     selected={!multiple && selectedIndex === index}
+                    data-testid={makeTestId(testId, "option", optionKey(item))}
                   >
                     {!!renderOption || optionLabel(item)}
                     {!!renderOption &&
@@ -774,6 +854,7 @@ export const Select = forwardRef(function Select<
                   active={
                     !item.disabled && activeIndex === items.length + index
                   }
+                  data-testid={makeTestId(testId, "custom-option", item.key)}
                 >
                   {item.title}
                 </SelectItem>
@@ -804,7 +885,8 @@ const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
         ref={ref}
         role="option"
         id={id}
-        aria-selected={active}
+        aria-selected={selected !== undefined ? selected : active}
+        aria-current={active ? "true" : undefined}
         className={clsx(className, styles.option, {
           [styles.active]: active,
           [styles.selected]: selected,

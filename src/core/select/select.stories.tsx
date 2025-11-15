@@ -207,6 +207,7 @@ export const Basic = () => {
         {renderCheckBox("clearOnBlur")}
       </Box>
       <Select
+        data-testid="select"
         placeholder="Select a value"
         readOnly={attrs.readOnly}
         required={attrs.required}
@@ -227,6 +228,7 @@ export const Actions: Story = {
   render: () => (
     <div style={{ width: 250 }}>
       <Select
+        data-testid="select-actions"
         options={OPTIONS}
         optionKey={(x) => x.value}
         optionLabel={(x) => x.title}
@@ -236,9 +238,11 @@ export const Actions: Story = {
         icons={[
           {
             icon: <MaterialIcon icon="add" />,
+            title: "Add",
           },
           {
             icon: <MaterialIcon icon="delete" />,
+            title: "Delete",
           },
         ]}
       />
@@ -297,6 +301,7 @@ export const Creatable = () => {
   return (
     <div style={{ width: 250 }}>
       <Select
+        data-testid="select-creatable"
         value={value}
         onChange={handleChange}
         onInputChange={handleInputChange}
@@ -314,6 +319,7 @@ export const Multiple: Story = {
   render: () => (
     <div style={{ width: 250 }}>
       <Select
+        data-testid="select-multiple"
         multiple
         options={OPTIONS}
         optionKey={(x) => x.value}
@@ -369,6 +375,7 @@ export const Async = () => {
   return (
     <div style={{ width: 250 }}>
       <Select
+        data-testid="select-async"
         multiple
         options={options}
         optionKey={(x) => x.value}
@@ -386,6 +393,7 @@ export const Renderers = () => {
   return (
     <div style={{ width: 250 }}>
       <Select
+        data-testid="select-renderers"
         multiple
         autoComplete={false}
         options={OPTIONS}
@@ -396,8 +404,8 @@ export const Renderers = () => {
         renderValue={({ option }) => (
           <Badge bg="primary">
             <Box d="flex" alignItems="center" g={1}>
-              <span>{option.title}</span>
-              <MaterialIcon icon="close" fontSize="1rem" />
+              <span data-testid="title">{option.title}</span>
+              <MaterialIcon icon="close" fontSize="1rem" data-testid="close" />
             </Box>
           </Badge>
         )}

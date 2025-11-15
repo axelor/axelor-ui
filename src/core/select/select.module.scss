@@ -183,12 +183,14 @@
 .actions {
   display: flex;
   user-select: none;
+  gap: 0.25rem;
 }
 
 .action {
   display: inline-flex;
   align-items: center;
   cursor: pointer;
+  padding: 0;
   opacity: 0.6;
   &:hover {
     opacity: 1;
