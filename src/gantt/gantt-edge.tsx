@@ -1,11 +1,9 @@
 import React, { useCallback } from "react";
-import { Icon, useClassNames, useTheme } from "../core";
-
-import BiCaretLeftFill from "bootstrap-icons/icons/caret-left-fill.svg?react";
-import BiCaretRightFill from "bootstrap-icons/icons/caret-right-fill.svg?react";
+import { useClassNames, useTheme } from "../core";
 
 import classes from "./gantt.module.scss";
 import * as TYPES from "./types";
+import { MaterialIcon, MaterialIconProps } from "../icons/material-icon";
 
 const Line = React.memo<{
   x1: number;
@@ -57,9 +55,9 @@ const Line = React.memo<{
   let pointerIcon;
 
   if (isStartPointer) {
-    pointerIcon = rtl ? BiCaretLeftFill : BiCaretRightFill;
+    pointerIcon = rtl ? "arrow_left" : "arrow_right";
   } else {
-    pointerIcon = rtl ? BiCaretRightFill : BiCaretLeftFill;
+    pointerIcon = rtl ? "arrow_right" : "arrow_left";
   }
 
   return (
@@ -75,8 +73,9 @@ const Line = React.memo<{
         }}
       >
         {pointer && (
-          <Icon
-            as={pointerIcon}
+          <MaterialIcon
+            icon={pointerIcon as MaterialIconProps['icon']}
+            fontSize={"2rem"}
             className={classNames(
               isStartPointer
                 ? classes.ganttEdgeIconStart

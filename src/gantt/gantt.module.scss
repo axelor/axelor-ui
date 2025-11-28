@@ -112,21 +112,23 @@ $cellHeight: 2.25rem;
   align-items: center;
 }
 
-.ganttEdgeIconStart {
+.ganttEdgeIconStart,.ganttEdgeIconEnd{
   position: absolute;
-  right: -$spacing;
+}
+
+.ganttEdgeIconStart {
+  right: -$spacing * 3;
   .rtl & {
     right: unset;
-    left: -$spacing;
+    left: -$spacing * 3;
   }
 }
 
 .ganttEdgeIconEnd {
-  position: absolute;
-  left: -$spacing;
+  left: -$spacing * 3;
   .rtl & {
     left: unset;
-    right: -$spacing;
+    right: -$spacing * 3;
   }
 }
 
