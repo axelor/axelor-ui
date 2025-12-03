@@ -1,18 +1,31 @@
 import * as focusTrap from "focus-trap";
+import { type Options as FocusTrapOptions } from "focus-trap";
 import * as React from "react";
 import { useRefs } from "../hooks";
 import { WithChildrenProps } from "../system";
 
-export type FocusTarget = focusTrap.FocusTargetOrFalse;
+export type FocusTarget = FocusTrapOptions["initialFocus"];
 
 export interface FocusTrapProps<T extends React.ElementType = "div">
-  extends WithChildrenProps<T> {
+  extends WithChildrenProps<T>,
+    Pick<
+      FocusTrapOptions,
+      "initialFocus" | "allowOutsideClick" | "clickOutsideDeactivates"
+    > {
   enabled?: boolean;
-  initialFocus?: FocusTarget;
 }
 
 export const FocusTrap = React.forwardRef<HTMLDivElement, FocusTrapProps>(
-  ({ enabled = true, children, initialFocus }: FocusTrapProps, ref) => {
+  (
+    {
+      enabled = true,
+      children,
+      initialFocus,
+      clickOutsideDeactivates,
+      allowOutsideClick = true,
+    }: FocusTrapProps,
+    ref,
+  ) => {
     const childrenRef = React.useRef<HTMLDivElement | null>(null);
 
     React.useEffect(() => {
@@ -20,9 +33,10 @@ export const FocusTrap = React.forwardRef<HTMLDivElement, FocusTrapProps>(
       if (children && enabled) {
         const trap = focusTrap.createFocusTrap(children, {
           returnFocusOnDeactivate: true,
-          allowOutsideClick: true,
+          allowOutsideClick,
           fallbackFocus: children,
           escapeDeactivates: false,
+          clickOutsideDeactivates,
           initialFocus,
         });
         trap.activate();
@@ -30,7 +44,7 @@ export const FocusTrap = React.forwardRef<HTMLDivElement, FocusTrapProps>(
           trap.deactivate();
         };
       }
-    }, [enabled, initialFocus]);
+    }, [enabled, initialFocus, allowOutsideClick, clickOutsideDeactivates]);
 
     const handleRef = useRefs<HTMLDivElement>(
       ref,
