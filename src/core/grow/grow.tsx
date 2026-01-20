@@ -1,6 +1,6 @@
-import { cloneElement, forwardRef, isValidElement } from "react";
+import { cloneElement, forwardRef, isValidElement, useRef } from "react";
 import { Transition } from "react-transition-group";
-import { useForwardedRef } from "../hooks";
+import { useRefs } from "../hooks";
 import { TransitionProps } from "../transitions/types";
 import {
   getTransition,
@@ -33,7 +33,8 @@ export const Grow = forwardRef<HTMLElement, GrowProps>(
     }: GrowProps,
     ref,
   ) => {
-    const nodeRef = useForwardedRef<any>(ref);
+    const nodeRef = useRef<HTMLElement | undefined>(undefined);
+    const combinedRef = useRefs(ref, nodeRef);
     const handleEnter = (isAppearing: boolean) => {
       const node: HTMLElement = nodeRef.current!;
       const style = node.style;
@@ -120,7 +121,7 @@ export const Grow = forwardRef<HTMLElement, GrowProps>(
             const style = getTransitionStyle(state, styles as any, children);
             return cloneElement(children as React.ReactElement<any>, {
               style,
-              ref: nodeRef,
+              ref: combinedRef,
             });
           }
         }}

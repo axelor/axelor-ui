@@ -1,6 +1,7 @@
 import { forwardRef, useRef } from "react";
 import { Transition } from "react-transition-group";
-import { useForwardedRef } from "../hooks";
+
+import { useRefs } from "../hooks";
 import { useClassNames } from "../styles";
 import { TransitionProps } from "../transitions/types";
 import {
@@ -8,6 +9,7 @@ import {
   getTransitionProps,
   reflow,
 } from "../transitions/utils";
+
 import styles from "./collapse.module.css";
 
 export interface CollapseProps extends TransitionProps {
@@ -32,7 +34,8 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
     },
     ref,
   ) => {
-    const forwardRef = useForwardedRef(ref);
+    const nodeRef = useRef<HTMLDivElement>(null);
+    const combinedRef = useRefs(ref, nodeRef);
     const wrapperRef = useRef<HTMLDivElement | null>(null);
     const size = horizontal ? "width" : "height";
 
@@ -55,7 +58,7 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
     };
 
     function handleEnter(isAppearing: boolean) {
-      const node = forwardRef.current!;
+      const node = nodeRef.current!;
       node.style[size] = "0";
       if (onEnter) {
         onEnter(node, isAppearing);
@@ -63,7 +66,7 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
     }
 
     const handleEntering = (isAppearing: boolean) => {
-      const node = forwardRef.current!;
+      const node = nodeRef.current!;
       const style = node.style;
       const wrapperSize = getWrapperSize();
       const options = getTransitionProps("enter", { timeout, style });
@@ -77,7 +80,7 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
     };
 
     const handleEntered = (isAppearing: boolean) => {
-      const node = forwardRef.current!;
+      const node = nodeRef.current!;
       node.style[size] = "auto";
 
       if (onEntered) {
@@ -86,7 +89,7 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
     };
 
     const handleExit = () => {
-      const node = forwardRef.current!;
+      const node = nodeRef.current!;
       const wrapperSize = getWrapperSize();
 
       node.style[size] = `${wrapperSize}px`;
@@ -98,7 +101,7 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
     };
 
     const handleExiting = () => {
-      const node = forwardRef.current!;
+      const node = nodeRef.current!;
       const style = node.style;
       const options = getTransitionProps("exit", { timeout, style });
 
@@ -111,7 +114,7 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
     };
 
     const handleExited = () => {
-      const node = forwardRef.current!;
+      const node = nodeRef.current!;
       if (onExited) {
         onExited(node);
       }
@@ -129,7 +132,7 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
         onExit={handleExit}
         onExiting={handleExiting}
         onExited={handleExited}
-        nodeRef={forwardRef}
+        nodeRef={nodeRef}
         {...props}
       >
         {(state) => {
@@ -144,7 +147,7 @@ export const Collapse = forwardRef<HTMLDivElement, CollapseProps>(
             },
           ]);
           return (
-            <div className={cls} ref={forwardRef}>
+            <div className={cls} ref={combinedRef}>
               <div ref={wrapperRef} className={styles.collapseWrapper}>
                 <div className={styles.collapseWrapperInner}>
                   {typeof children === "function" && children(state)}

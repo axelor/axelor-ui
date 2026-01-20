@@ -1,6 +1,6 @@
-import { cloneElement, forwardRef, isValidElement } from "react";
+import { cloneElement, forwardRef, isValidElement, useRef } from "react";
 import { Transition } from "react-transition-group";
-import { useForwardedRef } from "../hooks";
+import { useRefs } from "../hooks";
 import { TransitionProps } from "../transitions/types";
 import {
   getTransition,
@@ -31,7 +31,8 @@ export const Fade = forwardRef<HTMLElement, FadeProps>(
     },
     ref,
   ) => {
-    const nodeRef = useForwardedRef<any>(ref);
+    const nodeRef = useRef<HTMLElement | undefined>(undefined);
+    const combinedRef = useRefs(ref, nodeRef);
     const handleEnter = (isAppearing: boolean) => {
       const node: HTMLElement = nodeRef.current!;
       const style = node.style;
@@ -87,7 +88,7 @@ export const Fade = forwardRef<HTMLElement, FadeProps>(
             }
             return cloneElement(children as React.ReactElement<any>, {
               style,
-              ref: nodeRef,
+              ref: combinedRef,
             });
           }
         }}
