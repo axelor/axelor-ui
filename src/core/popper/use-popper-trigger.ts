@@ -80,7 +80,7 @@ export function usePopperTrigger({
     if (targetEl && trigger === "click") {
       targetEl.addEventListener("click", togglePopper);
       return () => {
-        targetEl.addEventListener("click", togglePopper);
+        targetEl.removeEventListener("click", togglePopper);
       };
     }
   }, [trigger, targetEl, togglePopper]);
@@ -121,12 +121,22 @@ export function usePopperTrigger({
     }
   }, [trigger, interactive, contentEl, onContentEnter, onContentLeave]);
 
+  const onClickAway = useCallback(
+    (e: Event) => {
+      if (targetEl?.contains(e.target as Node)) {
+        return;
+      }
+      hidePopper();
+    },
+    [targetEl, hidePopper],
+  );
+
   return {
     open,
     targetEl,
     contentEl,
     setTargetEl,
     setContentEl,
-    onClickAway: hidePopper,
+    onClickAway,
   };
 }
