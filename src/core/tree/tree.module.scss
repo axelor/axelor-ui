@@ -81,8 +81,19 @@
   & > * {
     visibility: hidden;
   }
-  &.active > * {
+  
+  &.active .rootNodeContent {
     visibility: visible;
+  }
+
+  &.active .rootNodeContent > * {
+    background: var(--bs-table-active-bg);
+    color: var(--bs-table-active-color);
+  }
+
+  &.hover .rootNodeContent > * {
+    background: var(--bs-table-hover-bg);
+    color: var(--bs-table-hover-color);
   }
 }
 

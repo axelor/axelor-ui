@@ -217,7 +217,7 @@ export function RootDroppable({
 }) {
   const classNames = useClassNames();
 
-  const [{ highlighted }, dropRef] = useDrop({
+  const [{ highlighted, hovered }, dropRef] = useDrop({
     accept: NODE_TYPE,
     hover(item: any) {
       return true;
@@ -250,9 +250,10 @@ export function RootDroppable({
       }}
       className={classNames(styles.rootNode, {
         [styles.active]: highlighted,
+        [styles.hover]: hovered,
       })}
     >
-      <Box d="flex" flex={1} alignItems={"center"} justifyContent={"center"}>
+      <Box className={styles.rootNodeContent} d="flex" flex={1} alignItems={"center"} justifyContent={"center"}>
         {text ?? "Drop here"}
       </Box>
     </Box>
