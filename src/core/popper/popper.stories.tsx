@@ -84,18 +84,22 @@ function Example({ event, interactive }: any) {
       <Button textTransform="capitalize" variant="primary" ref={setTargetEl}>
         {event}
       </Button>
-      <ClickAwayListener onClickAway={onClickAway}>
-        <Popper open={open} target={targetEl} offset={[0, 4]}>
+      <Popper open={open} target={targetEl} offset={[0, 4]}>
+        <ClickAwayListener onClickAway={onClickAway}>
           <Box p={2} ref={setContentEl} style={{ width: 320 }}>
             <Box as="h4">Personal Information</Box>
             <Input mt={1} placeholder="First Name" />
             <Input mt={1} placeholder="Last Name" />
-            <Button mt={1} variant="primary">
+            <Button
+              mt={1}
+              variant="primary"
+              onClick={(e) => onClickAway(e.nativeEvent)}
+            >
               Save
             </Button>
           </Box>
-        </Popper>
-      </ClickAwayListener>
+        </ClickAwayListener>
+      </Popper>
     </Box>
   );
 }
