@@ -113,7 +113,7 @@ export const Hook = () => {
           <Input
             type="checkbox"
             checked={interactive}
-            onClick={() => setInteractive((checked) => !checked)}
+            onChange={() => setInteractive((checked) => !checked)}
           />{" "}
           Interactive
         </InputLabel>
