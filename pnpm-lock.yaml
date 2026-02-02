@@ -74,22 +74,22 @@ importers:
     devDependencies:
       '@chromatic-com/storybook':
         specifier: ^4.1.3
-        version: 4.1.3(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))
+        version: 4.1.3(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))
       '@eslint/js':
         specifier: ^9.39.2
         version: 9.39.2
       '@storybook/addon-docs':
         specifier: ^9.1.17
-        version: 9.1.17(@types/react@19.1.13)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))
+        version: 9.1.17(@types/react@19.1.13)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))
       '@storybook/addon-links':
         specifier: ^9.1.17
-        version: 9.1.17(react@19.1.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))
+        version: 9.1.17(react@19.1.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))
       '@storybook/react':
         specifier: ^9.1.17
-        version: 9.1.17(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))(typescript@5.9.3)
+        version: 9.1.17(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))(typescript@5.9.3)
       '@storybook/react-vite':
         specifier: ^9.1.17
-        version: 9.1.17(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(rollup@4.48.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))(typescript@5.9.3)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))
+        version: 9.1.17(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(rollup@4.48.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))
       '@types/node':
         specifier: ^25.2.0
         version: 25.2.0
@@ -107,7 +107,7 @@ importers:
         version: 4.4.12(@types/react@19.1.13)
       '@vitejs/plugin-react':
         specifier: ^4.7.0
-        version: 4.7.0(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))
+        version: 4.7.0(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))
       commander:
         specifier: ^14.0.3
         version: 14.0.3
@@ -158,7 +158,7 @@ importers:
         version: 7.7.3
       storybook:
         specifier: ^9.1.17
-        version: 9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))
+        version: 9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -166,11 +166,11 @@ importers:
         specifier: ^8.54.0
         version: 8.54.0(eslint@9.39.2)(typescript@5.9.3)
       vite:
-        specifier: ~7.1.12
-        version: 7.1.12(@types/node@25.2.0)(sass@1.77.8)
+        specifier: ~7.3.1
+        version: 7.3.1(@types/node@25.2.0)(sass@1.77.8)
       vite-plugin-svgr:
         specifier: ^4.3.0
-        version: 4.5.0(rollup@4.48.1)(typescript@5.9.3)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))
+        version: 4.5.0(rollup@4.48.1)(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))
 
 packages:
 
@@ -286,8 +286,20 @@ packages:
     cpu: [ppc64]
     os: [aix]
 
+  '@esbuild/aix-ppc64@0.27.2':
+    resolution: {integrity: sha512-GZMB+a0mOMZs4MpDbj8RJp4cw+w1WV5NYD6xzgvzUJ5Ek2jerwfO2eADyI6ExDSUED+1X8aMbegahsJi+8mgpw==}
+    engines: {node: '>=18'}
+    cpu: [ppc64]
+    os: [aix]
+
   '@esbuild/android-arm64@0.25.9':
     resolution: {integrity: sha512-IDrddSmpSv51ftWslJMvl3Q2ZT98fUSL2/rlUXuVqRXHCs5EUF1/f+jbjF5+NG9UffUDMCiTyh8iec7u8RlTLg==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [android]
+
+  '@esbuild/android-arm64@0.27.2':
+    resolution: {integrity: sha512-pvz8ZZ7ot/RBphf8fv60ljmaoydPU12VuXHImtAs0XhLLw+EXBi2BLe3OYSBslR4rryHvweW5gmkKFwTiFy6KA==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [android]
@@ -298,8 +310,20 @@ packages:
     cpu: [arm]
     os: [android]
 
+  '@esbuild/android-arm@0.27.2':
+    resolution: {integrity: sha512-DVNI8jlPa7Ujbr1yjU2PfUSRtAUZPG9I1RwW4F4xFB1Imiu2on0ADiI/c3td+KmDtVKNbi+nffGDQMfcIMkwIA==}
+    engines: {node: '>=18'}
+    cpu: [arm]
+    os: [android]
+
   '@esbuild/android-x64@0.25.9':
     resolution: {integrity: sha512-I853iMZ1hWZdNllhVZKm34f4wErd4lMyeV7BLzEExGEIZYsOzqDWDf+y082izYUE8gtJnYHdeDpN/6tUdwvfiw==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [android]
+
+  '@esbuild/android-x64@0.27.2':
+    resolution: {integrity: sha512-z8Ank4Byh4TJJOh4wpz8g2vDy75zFL0TlZlkUkEwYXuPSgX8yzep596n6mT7905kA9uHZsf/o2OJZubl2l3M7A==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [android]
@@ -310,8 +334,20 @@ packages:
     cpu: [arm64]
     os: [darwin]
 
+  '@esbuild/darwin-arm64@0.27.2':
+    resolution: {integrity: sha512-davCD2Zc80nzDVRwXTcQP/28fiJbcOwvdolL0sOiOsbwBa72kegmVU0Wrh1MYrbuCL98Omp5dVhQFWRKR2ZAlg==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [darwin]
+
   '@esbuild/darwin-x64@0.25.9':
     resolution: {integrity: sha512-jhHfBzjYTA1IQu8VyrjCX4ApJDnH+ez+IYVEoJHeqJm9VhG9Dh2BYaJritkYK3vMaXrf7Ogr/0MQ8/MeIefsPQ==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@esbuild/darwin-x64@0.27.2':
+    resolution: {integrity: sha512-ZxtijOmlQCBWGwbVmwOF/UCzuGIbUkqB1faQRf5akQmxRJ1ujusWsb3CVfk/9iZKr2L5SMU5wPBi1UWbvL+VQA==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [darwin]
@@ -322,8 +358,20 @@ packages:
     cpu: [arm64]
     os: [freebsd]
 
+  '@esbuild/freebsd-arm64@0.27.2':
+    resolution: {integrity: sha512-lS/9CN+rgqQ9czogxlMcBMGd+l8Q3Nj1MFQwBZJyoEKI50XGxwuzznYdwcav6lpOGv5BqaZXqvBSiB/kJ5op+g==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [freebsd]
+
   '@esbuild/freebsd-x64@0.25.9':
     resolution: {integrity: sha512-mrKX6H/vOyo5v71YfXWJxLVxgy1kyt1MQaD8wZJgJfG4gq4DpQGpgTB74e5yBeQdyMTbgxp0YtNj7NuHN0PoZg==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [freebsd]
+
+  '@esbuild/freebsd-x64@0.27.2':
+    resolution: {integrity: sha512-tAfqtNYb4YgPnJlEFu4c212HYjQWSO/w/h/lQaBK7RbwGIkBOuNKQI9tqWzx7Wtp7bTPaGC6MJvWI608P3wXYA==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [freebsd]
@@ -334,8 +382,20 @@ packages:
     cpu: [arm64]
     os: [linux]
 
+  '@esbuild/linux-arm64@0.27.2':
+    resolution: {integrity: sha512-hYxN8pr66NsCCiRFkHUAsxylNOcAQaxSSkHMMjcpx0si13t1LHFphxJZUiGwojB1a/Hd5OiPIqDdXONia6bhTw==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [linux]
+
   '@esbuild/linux-arm@0.25.9':
     resolution: {integrity: sha512-HBU2Xv78SMgaydBmdor38lg8YDnFKSARg1Q6AT0/y2ezUAKiZvc211RDFHlEZRFNRVhcMamiToo7bDx3VEOYQw==}
+    engines: {node: '>=18'}
+    cpu: [arm]
+    os: [linux]
+
+  '@esbuild/linux-arm@0.27.2':
+    resolution: {integrity: sha512-vWfq4GaIMP9AIe4yj1ZUW18RDhx6EPQKjwe7n8BbIecFtCQG4CfHGaHuh7fdfq+y3LIA2vGS/o9ZBGVxIDi9hw==}
     engines: {node: '>=18'}
     cpu: [arm]
     os: [linux]
@@ -346,8 +406,20 @@ packages:
     cpu: [ia32]
     os: [linux]
 
+  '@esbuild/linux-ia32@0.27.2':
+    resolution: {integrity: sha512-MJt5BRRSScPDwG2hLelYhAAKh9imjHK5+NE/tvnRLbIqUWa+0E9N4WNMjmp/kXXPHZGqPLxggwVhz7QP8CTR8w==}
+    engines: {node: '>=18'}
+    cpu: [ia32]
+    os: [linux]
+
   '@esbuild/linux-loong64@0.25.9':
     resolution: {integrity: sha512-Sbe10Bnn0oUAB2AalYztvGcK+o6YFFA/9829PhOCUS9vkJElXGdphz0A3DbMdP8gmKkqPmPcMJmJOrI3VYB1JQ==}
+    engines: {node: '>=18'}
+    cpu: [loong64]
+    os: [linux]
+
+  '@esbuild/linux-loong64@0.27.2':
+    resolution: {integrity: sha512-lugyF1atnAT463aO6KPshVCJK5NgRnU4yb3FUumyVz+cGvZbontBgzeGFO1nF+dPueHD367a2ZXe1NtUkAjOtg==}
     engines: {node: '>=18'}
     cpu: [loong64]
     os: [linux]
@@ -358,8 +430,20 @@ packages:
     cpu: [mips64el]
     os: [linux]
 
+  '@esbuild/linux-mips64el@0.27.2':
+    resolution: {integrity: sha512-nlP2I6ArEBewvJ2gjrrkESEZkB5mIoaTswuqNFRv/WYd+ATtUpe9Y09RnJvgvdag7he0OWgEZWhviS1OTOKixw==}
+    engines: {node: '>=18'}
+    cpu: [mips64el]
+    os: [linux]
+
   '@esbuild/linux-ppc64@0.25.9':
     resolution: {integrity: sha512-++0HQvasdo20JytyDpFvQtNrEsAgNG2CY1CLMwGXfFTKGBGQT3bOeLSYE2l1fYdvML5KUuwn9Z8L1EWe2tzs1w==}
+    engines: {node: '>=18'}
+    cpu: [ppc64]
+    os: [linux]
+
+  '@esbuild/linux-ppc64@0.27.2':
+    resolution: {integrity: sha512-C92gnpey7tUQONqg1n6dKVbx3vphKtTHJaNG2Ok9lGwbZil6DrfyecMsp9CrmXGQJmZ7iiVXvvZH6Ml5hL6XdQ==}
     engines: {node: '>=18'}
     cpu: [ppc64]
     os: [linux]
@@ -370,8 +454,20 @@ packages:
     cpu: [riscv64]
     os: [linux]
 
+  '@esbuild/linux-riscv64@0.27.2':
+    resolution: {integrity: sha512-B5BOmojNtUyN8AXlK0QJyvjEZkWwy/FKvakkTDCziX95AowLZKR6aCDhG7LeF7uMCXEJqwa8Bejz5LTPYm8AvA==}
+    engines: {node: '>=18'}
+    cpu: [riscv64]
+    os: [linux]
+
   '@esbuild/linux-s390x@0.25.9':
     resolution: {integrity: sha512-Mfiphvp3MjC/lctb+7D287Xw1DGzqJPb/J2aHHcHxflUo+8tmN/6d4k6I2yFR7BVo5/g7x2Monq4+Yew0EHRIA==}
+    engines: {node: '>=18'}
+    cpu: [s390x]
+    os: [linux]
+
+  '@esbuild/linux-s390x@0.27.2':
+    resolution: {integrity: sha512-p4bm9+wsPwup5Z8f4EpfN63qNagQ47Ua2znaqGH6bqLlmJ4bx97Y9JdqxgGZ6Y8xVTixUnEkoKSHcpRlDnNr5w==}
     engines: {node: '>=18'}
     cpu: [s390x]
     os: [linux]
@@ -382,8 +478,20 @@ packages:
     cpu: [x64]
     os: [linux]
 
+  '@esbuild/linux-x64@0.27.2':
+    resolution: {integrity: sha512-uwp2Tip5aPmH+NRUwTcfLb+W32WXjpFejTIOWZFw/v7/KnpCDKG66u4DLcurQpiYTiYwQ9B7KOeMJvLCu/OvbA==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [linux]
+
   '@esbuild/netbsd-arm64@0.25.9':
     resolution: {integrity: sha512-9jNJl6FqaUG+COdQMjSCGW4QiMHH88xWbvZ+kRVblZsWrkXlABuGdFJ1E9L7HK+T0Yqd4akKNa/lO0+jDxQD4Q==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [netbsd]
+
+  '@esbuild/netbsd-arm64@0.27.2':
+    resolution: {integrity: sha512-Kj6DiBlwXrPsCRDeRvGAUb/LNrBASrfqAIok+xB0LxK8CHqxZ037viF13ugfsIpePH93mX7xfJp97cyDuTZ3cw==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [netbsd]
@@ -394,8 +502,20 @@ packages:
     cpu: [x64]
     os: [netbsd]
 
+  '@esbuild/netbsd-x64@0.27.2':
+    resolution: {integrity: sha512-HwGDZ0VLVBY3Y+Nw0JexZy9o/nUAWq9MlV7cahpaXKW6TOzfVno3y3/M8Ga8u8Yr7GldLOov27xiCnqRZf0tCA==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [netbsd]
+
   '@esbuild/openbsd-arm64@0.25.9':
     resolution: {integrity: sha512-YaFBlPGeDasft5IIM+CQAhJAqS3St3nJzDEgsgFixcfZeyGPCd6eJBWzke5piZuZ7CtL656eOSYKk4Ls2C0FRQ==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [openbsd]
+
+  '@esbuild/openbsd-arm64@0.27.2':
+    resolution: {integrity: sha512-DNIHH2BPQ5551A7oSHD0CKbwIA/Ox7+78/AWkbS5QoRzaqlev2uFayfSxq68EkonB+IKjiuxBFoV8ESJy8bOHA==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [openbsd]
@@ -406,8 +526,20 @@ packages:
     cpu: [x64]
     os: [openbsd]
 
+  '@esbuild/openbsd-x64@0.27.2':
+    resolution: {integrity: sha512-/it7w9Nb7+0KFIzjalNJVR5bOzA9Vay+yIPLVHfIQYG/j+j9VTH84aNB8ExGKPU4AzfaEvN9/V4HV+F+vo8OEg==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [openbsd]
+
   '@esbuild/openharmony-arm64@0.25.9':
     resolution: {integrity: sha512-4Xd0xNiMVXKh6Fa7HEJQbrpP3m3DDn43jKxMjxLLRjWnRsfxjORYJlXPO4JNcXtOyfajXorRKY9NkOpTHptErg==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [openharmony]
+
+  '@esbuild/openharmony-arm64@0.27.2':
+    resolution: {integrity: sha512-LRBbCmiU51IXfeXk59csuX/aSaToeG7w48nMwA6049Y4J4+VbWALAuXcs+qcD04rHDuSCSRKdmY63sruDS5qag==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [openharmony]
@@ -418,8 +550,20 @@ packages:
     cpu: [x64]
     os: [sunos]
 
+  '@esbuild/sunos-x64@0.27.2':
+    resolution: {integrity: sha512-kMtx1yqJHTmqaqHPAzKCAkDaKsffmXkPHThSfRwZGyuqyIeBvf08KSsYXl+abf5HDAPMJIPnbBfXvP2ZC2TfHg==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [sunos]
+
   '@esbuild/win32-arm64@0.25.9':
     resolution: {integrity: sha512-mGFrVJHmZiRqmP8xFOc6b84/7xa5y5YvR1x8djzXpJBSv/UsNK6aqec+6JDjConTgvvQefdGhFDAs2DLAds6gQ==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@esbuild/win32-arm64@0.27.2':
+    resolution: {integrity: sha512-Yaf78O/B3Kkh+nKABUF++bvJv5Ijoy9AN1ww904rOXZFLWVc5OLOfL56W+C8F9xn5JQZa3UX6m+IktJnIb1Jjg==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [win32]
@@ -430,8 +574,20 @@ packages:
     cpu: [ia32]
     os: [win32]
 
+  '@esbuild/win32-ia32@0.27.2':
+    resolution: {integrity: sha512-Iuws0kxo4yusk7sw70Xa2E2imZU5HoixzxfGCdxwBdhiDgt9vX9VUCBhqcwY7/uh//78A1hMkkROMJq9l27oLQ==}
+    engines: {node: '>=18'}
+    cpu: [ia32]
+    os: [win32]
+
   '@esbuild/win32-x64@0.25.9':
     resolution: {integrity: sha512-PPOl1mi6lpLNQxnGoyAfschAodRFYXJ+9fs6WHXz7CSWKbOqiMZsubC+BQsVKuul+3vKLuwTHsS2c2y9EoKwxQ==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [win32]
+
+  '@esbuild/win32-x64@0.27.2':
+    resolution: {integrity: sha512-sRdU18mcKf7F+YgheI/zGf5alZatMUTKj/jNS6l744f9u3WFu4v7twcUI9vu4mknF4Y9aDlblIie0IM+5xxaqQ==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
@@ -1339,6 +1495,11 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
+  esbuild@0.27.2:
+    resolution: {integrity: sha512-HyNQImnsOC7X9PMNaCIeAm4ISCQXs5a5YasTXVliKv4uuBo1dKrG0A+uQS8M5eXjVMnLg3WgXaKvprHlFJQffw==}
+    engines: {node: '>=18'}
+    hasBin: true
+
   escalade@3.2.0:
     resolution: {integrity: sha512-WUj2qlxaQtO4g6Pq5c29GTcWGDyd8itL8zTlipgECz3JesAiiOKotd8JU6otB3PACgG6xkJUyVhboMS+bje/jA==}
     engines: {node: '>=6'}
@@ -2199,8 +2360,8 @@ packages:
     peerDependencies:
       vite: '>=2.6.0'
 
-  vite@7.1.12:
-    resolution: {integrity: sha512-ZWyE8YXEXqJrrSLvYgrRP7p62OziLW7xI5HYGWFzOvupfAlrLvURSzv/FyGyy0eidogEM3ujU+kUG1zuHgb6Ug==}
+  vite@7.3.1:
+    resolution: {integrity: sha512-w+N7Hifpc3gRjZ63vYBXA56dvvRlNWRczTdmCBBa+CotUzAPf5b7YMdMR/8CQoeYE5LX3W4wj6RYTgonm1b9DA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -2427,13 +2588,13 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
 
-  '@chromatic-com/storybook@4.1.3(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))':
+  '@chromatic-com/storybook@4.1.3(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))':
     dependencies:
       '@neoconfetti/react': 1.0.0
       chromatic: 13.3.5
       filesize: 10.1.6
       jsonfile: 6.2.0
-      storybook: 9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))
+      storybook: 9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))
       strip-ansi: 7.1.0
     transitivePeerDependencies:
       - '@chromatic-com/cypress'
@@ -2448,79 +2609,157 @@ snapshots:
   '@esbuild/aix-ppc64@0.25.9':
     optional: true
 
+  '@esbuild/aix-ppc64@0.27.2':
+    optional: true
+
   '@esbuild/android-arm64@0.25.9':
+    optional: true
+
+  '@esbuild/android-arm64@0.27.2':
     optional: true
 
   '@esbuild/android-arm@0.25.9':
     optional: true
 
+  '@esbuild/android-arm@0.27.2':
+    optional: true
+
   '@esbuild/android-x64@0.25.9':
+    optional: true
+
+  '@esbuild/android-x64@0.27.2':
     optional: true
 
   '@esbuild/darwin-arm64@0.25.9':
     optional: true
 
+  '@esbuild/darwin-arm64@0.27.2':
+    optional: true
+
   '@esbuild/darwin-x64@0.25.9':
+    optional: true
+
+  '@esbuild/darwin-x64@0.27.2':
     optional: true
 
   '@esbuild/freebsd-arm64@0.25.9':
     optional: true
 
+  '@esbuild/freebsd-arm64@0.27.2':
+    optional: true
+
   '@esbuild/freebsd-x64@0.25.9':
+    optional: true
+
+  '@esbuild/freebsd-x64@0.27.2':
     optional: true
 
   '@esbuild/linux-arm64@0.25.9':
     optional: true
 
+  '@esbuild/linux-arm64@0.27.2':
+    optional: true
+
   '@esbuild/linux-arm@0.25.9':
+    optional: true
+
+  '@esbuild/linux-arm@0.27.2':
     optional: true
 
   '@esbuild/linux-ia32@0.25.9':
     optional: true
 
+  '@esbuild/linux-ia32@0.27.2':
+    optional: true
+
   '@esbuild/linux-loong64@0.25.9':
+    optional: true
+
+  '@esbuild/linux-loong64@0.27.2':
     optional: true
 
   '@esbuild/linux-mips64el@0.25.9':
     optional: true
 
+  '@esbuild/linux-mips64el@0.27.2':
+    optional: true
+
   '@esbuild/linux-ppc64@0.25.9':
+    optional: true
+
+  '@esbuild/linux-ppc64@0.27.2':
     optional: true
 
   '@esbuild/linux-riscv64@0.25.9':
     optional: true
 
+  '@esbuild/linux-riscv64@0.27.2':
+    optional: true
+
   '@esbuild/linux-s390x@0.25.9':
+    optional: true
+
+  '@esbuild/linux-s390x@0.27.2':
     optional: true
 
   '@esbuild/linux-x64@0.25.9':
     optional: true
 
+  '@esbuild/linux-x64@0.27.2':
+    optional: true
+
   '@esbuild/netbsd-arm64@0.25.9':
+    optional: true
+
+  '@esbuild/netbsd-arm64@0.27.2':
     optional: true
 
   '@esbuild/netbsd-x64@0.25.9':
     optional: true
 
+  '@esbuild/netbsd-x64@0.27.2':
+    optional: true
+
   '@esbuild/openbsd-arm64@0.25.9':
+    optional: true
+
+  '@esbuild/openbsd-arm64@0.27.2':
     optional: true
 
   '@esbuild/openbsd-x64@0.25.9':
     optional: true
 
+  '@esbuild/openbsd-x64@0.27.2':
+    optional: true
+
   '@esbuild/openharmony-arm64@0.25.9':
+    optional: true
+
+  '@esbuild/openharmony-arm64@0.27.2':
     optional: true
 
   '@esbuild/sunos-x64@0.25.9':
     optional: true
 
+  '@esbuild/sunos-x64@0.27.2':
+    optional: true
+
   '@esbuild/win32-arm64@0.25.9':
+    optional: true
+
+  '@esbuild/win32-arm64@0.27.2':
     optional: true
 
   '@esbuild/win32-ia32@0.25.9':
     optional: true
 
+  '@esbuild/win32-ia32@0.27.2':
+    optional: true
+
   '@esbuild/win32-x64@0.25.9':
+    optional: true
+
+  '@esbuild/win32-x64@0.27.2':
     optional: true
 
   '@eslint-community/eslint-utils@4.9.0(eslint@9.39.2)':
@@ -2683,12 +2922,12 @@ snapshots:
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
 
-  '@joshwooding/vite-plugin-react-docgen-typescript@0.6.1(typescript@5.9.3)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))':
+  '@joshwooding/vite-plugin-react-docgen-typescript@0.6.1(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))':
     dependencies:
       glob: 10.4.5
       magic-string: 0.30.18
       react-docgen-typescript: 2.4.0(typescript@5.9.3)
-      vite: 7.1.12(@types/node@25.2.0)(sass@1.77.8)
+      vite: 7.3.1(@types/node@25.2.0)(sass@1.77.8)
     optionalDependencies:
       typescript: 5.9.3
 
@@ -2811,36 +3050,36 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.48.1':
     optional: true
 
-  '@storybook/addon-docs@9.1.17(@types/react@19.1.13)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))':
+  '@storybook/addon-docs@9.1.17(@types/react@19.1.13)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))':
     dependencies:
       '@mdx-js/react': 3.1.0(@types/react@19.1.13)(react@19.1.1)
-      '@storybook/csf-plugin': 9.1.17(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))
+      '@storybook/csf-plugin': 9.1.17(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))
       '@storybook/icons': 1.4.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      '@storybook/react-dom-shim': 9.1.17(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))
+      '@storybook/react-dom-shim': 9.1.17(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
-      storybook: 9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))
+      storybook: 9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))
       ts-dedent: 2.2.0
     transitivePeerDependencies:
       - '@types/react'
 
-  '@storybook/addon-links@9.1.17(react@19.1.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))':
+  '@storybook/addon-links@9.1.17(react@19.1.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))':
     dependencies:
       '@storybook/global': 5.0.0
-      storybook: 9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))
+      storybook: 9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))
     optionalDependencies:
       react: 19.1.1
 
-  '@storybook/builder-vite@9.1.17(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))':
+  '@storybook/builder-vite@9.1.17(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))':
     dependencies:
-      '@storybook/csf-plugin': 9.1.17(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))
-      storybook: 9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))
+      '@storybook/csf-plugin': 9.1.17(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))
+      storybook: 9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))
       ts-dedent: 2.2.0
-      vite: 7.1.12(@types/node@25.2.0)(sass@1.77.8)
+      vite: 7.3.1(@types/node@25.2.0)(sass@1.77.8)
 
-  '@storybook/csf-plugin@9.1.17(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))':
+  '@storybook/csf-plugin@9.1.17(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))':
     dependencies:
-      storybook: 9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))
+      storybook: 9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))
       unplugin: 1.16.1
 
   '@storybook/global@5.0.0': {}
@@ -2850,39 +3089,39 @@ snapshots:
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
 
-  '@storybook/react-dom-shim@9.1.17(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))':
+  '@storybook/react-dom-shim@9.1.17(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))':
     dependencies:
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
-      storybook: 9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))
+      storybook: 9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))
 
-  '@storybook/react-vite@9.1.17(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(rollup@4.48.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))(typescript@5.9.3)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))':
+  '@storybook/react-vite@9.1.17(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(rollup@4.48.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))':
     dependencies:
-      '@joshwooding/vite-plugin-react-docgen-typescript': 0.6.1(typescript@5.9.3)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))
+      '@joshwooding/vite-plugin-react-docgen-typescript': 0.6.1(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))
       '@rollup/pluginutils': 5.2.0(rollup@4.48.1)
-      '@storybook/builder-vite': 9.1.17(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))
-      '@storybook/react': 9.1.17(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))(typescript@5.9.3)
+      '@storybook/builder-vite': 9.1.17(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))
+      '@storybook/react': 9.1.17(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))(typescript@5.9.3)
       find-up: 7.0.0
       magic-string: 0.30.18
       react: 19.1.1
       react-docgen: 8.0.1
       react-dom: 19.1.1(react@19.1.1)
       resolve: 1.22.10
-      storybook: 9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))
+      storybook: 9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))
       tsconfig-paths: 4.2.0
-      vite: 7.1.12(@types/node@25.2.0)(sass@1.77.8)
+      vite: 7.3.1(@types/node@25.2.0)(sass@1.77.8)
     transitivePeerDependencies:
       - rollup
       - supports-color
       - typescript
 
-  '@storybook/react@9.1.17(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))(typescript@5.9.3)':
+  '@storybook/react@9.1.17(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))(typescript@5.9.3)':
     dependencies:
       '@storybook/global': 5.0.0
-      '@storybook/react-dom-shim': 9.1.17(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)))
+      '@storybook/react-dom-shim': 9.1.17(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)))
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
-      storybook: 9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))
+      storybook: 9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))
     optionalDependencies:
       typescript: 5.9.3
 
@@ -3148,7 +3387,7 @@ snapshots:
       '@typescript-eslint/types': 8.54.0
       eslint-visitor-keys: 4.2.1
 
-  '@vitejs/plugin-react@4.7.0(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))':
+  '@vitejs/plugin-react@4.7.0(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))':
     dependencies:
       '@babel/core': 7.28.3
       '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.3)
@@ -3156,7 +3395,7 @@ snapshots:
       '@rolldown/pluginutils': 1.0.0-beta.27
       '@types/babel__core': 7.20.5
       react-refresh: 0.17.0
-      vite: 7.1.12(@types/node@25.2.0)(sass@1.77.8)
+      vite: 7.3.1(@types/node@25.2.0)(sass@1.77.8)
     transitivePeerDependencies:
       - supports-color
 
@@ -3168,13 +3407,13 @@ snapshots:
       chai: 5.3.3
       tinyrainbow: 2.0.0
 
-  '@vitest/mocker@3.2.4(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))':
+  '@vitest/mocker@3.2.4(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))':
     dependencies:
       '@vitest/spy': 3.2.4
       estree-walker: 3.0.3
       magic-string: 0.30.18
     optionalDependencies:
-      vite: 7.1.12(@types/node@25.2.0)(sass@1.77.8)
+      vite: 7.3.1(@types/node@25.2.0)(sass@1.77.8)
 
   '@vitest/pretty-format@3.2.4':
     dependencies:
@@ -3456,6 +3695,35 @@ snapshots:
       '@esbuild/win32-arm64': 0.25.9
       '@esbuild/win32-ia32': 0.25.9
       '@esbuild/win32-x64': 0.25.9
+
+  esbuild@0.27.2:
+    optionalDependencies:
+      '@esbuild/aix-ppc64': 0.27.2
+      '@esbuild/android-arm': 0.27.2
+      '@esbuild/android-arm64': 0.27.2
+      '@esbuild/android-x64': 0.27.2
+      '@esbuild/darwin-arm64': 0.27.2
+      '@esbuild/darwin-x64': 0.27.2
+      '@esbuild/freebsd-arm64': 0.27.2
+      '@esbuild/freebsd-x64': 0.27.2
+      '@esbuild/linux-arm': 0.27.2
+      '@esbuild/linux-arm64': 0.27.2
+      '@esbuild/linux-ia32': 0.27.2
+      '@esbuild/linux-loong64': 0.27.2
+      '@esbuild/linux-mips64el': 0.27.2
+      '@esbuild/linux-ppc64': 0.27.2
+      '@esbuild/linux-riscv64': 0.27.2
+      '@esbuild/linux-s390x': 0.27.2
+      '@esbuild/linux-x64': 0.27.2
+      '@esbuild/netbsd-arm64': 0.27.2
+      '@esbuild/netbsd-x64': 0.27.2
+      '@esbuild/openbsd-arm64': 0.27.2
+      '@esbuild/openbsd-x64': 0.27.2
+      '@esbuild/openharmony-arm64': 0.27.2
+      '@esbuild/sunos-x64': 0.27.2
+      '@esbuild/win32-arm64': 0.27.2
+      '@esbuild/win32-ia32': 0.27.2
+      '@esbuild/win32-x64': 0.27.2
 
   escalade@3.2.0: {}
 
@@ -4137,13 +4405,13 @@ snapshots:
 
   source-map@0.6.1: {}
 
-  storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)):
+  storybook@9.1.17(@testing-library/dom@10.4.0)(prettier@3.8.1)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)):
     dependencies:
       '@storybook/global': 5.0.0
       '@testing-library/jest-dom': 6.8.0
       '@testing-library/user-event': 14.6.1(@testing-library/dom@10.4.0)
       '@vitest/expect': 3.2.4
-      '@vitest/mocker': 3.2.4(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8))
+      '@vitest/mocker': 3.2.4(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8))
       '@vitest/spy': 3.2.4
       better-opn: 3.0.2
       esbuild: 0.25.9
@@ -4276,20 +4544,20 @@ snapshots:
     dependencies:
       react: 19.1.1
 
-  vite-plugin-svgr@4.5.0(rollup@4.48.1)(typescript@5.9.3)(vite@7.1.12(@types/node@25.2.0)(sass@1.77.8)):
+  vite-plugin-svgr@4.5.0(rollup@4.48.1)(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.0)(sass@1.77.8)):
     dependencies:
       '@rollup/pluginutils': 5.2.0(rollup@4.48.1)
       '@svgr/core': 8.1.0(typescript@5.9.3)
       '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(typescript@5.9.3))
-      vite: 7.1.12(@types/node@25.2.0)(sass@1.77.8)
+      vite: 7.3.1(@types/node@25.2.0)(sass@1.77.8)
     transitivePeerDependencies:
       - rollup
       - supports-color
       - typescript
 
-  vite@7.1.12(@types/node@25.2.0)(sass@1.77.8):
+  vite@7.3.1(@types/node@25.2.0)(sass@1.77.8):
     dependencies:
-      esbuild: 0.25.9
+      esbuild: 0.27.2
       fdir: 6.5.0(picomatch@4.0.3)
       picomatch: 4.0.3
       postcss: 8.5.6
