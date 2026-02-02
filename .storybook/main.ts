@@ -1,6 +1,10 @@
 import type { StorybookConfig } from "@storybook/react-vite";
 import path from "path";
 import { mergeConfig } from "vite";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.stories.tsx"],
@@ -11,10 +15,7 @@ const config: StorybookConfig = {
     "@chromatic-com/storybook",
   ],
 
-  framework: {
-    name: "@storybook/react-vite",
-    options: {},
-  },
+  framework: "@storybook/react-vite",
   core: {
     disableTelemetry: true,
   },
@@ -29,9 +30,6 @@ const config: StorybookConfig = {
             replacement: "$1",
           },
         ],
-      },
-      define: {
-        "process.env": {},
       },
       cacheDir,
       optimizeDeps: {
