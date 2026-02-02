@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.4.0",
-    "@floating-ui/react": "^0.27.14",
+    "@floating-ui/react": "^0.27.17",
     "@fluentui/priority-overflow": "^9.2.1",
     "@fluentui/react-context-selector": "^9.2.14",
     "@hello-pangea/dnd": "^18.0.1",
