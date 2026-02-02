@@ -33,8 +33,8 @@ importers:
         specifier: ^0.36.2
         version: 0.36.2
       '@types/qrcode':
-        specifier: ^1.5.5
-        version: 1.5.5
+        specifier: ^1.5.6
+        version: 1.5.6
       bootstrap:
         specifier: ^5.3.8
         version: 5.3.8(@popperjs/core@2.11.8)
@@ -935,8 +935,8 @@ packages:
   '@types/prop-types@15.7.15':
     resolution: {integrity: sha512-F6bEyamV9jKGAFBEmlQnesRPGOQqS2+Uwi0Em15xenOxHaf2hv6L8YCVn3rPdPJOiJfPiCnLIRyvwVaqMY3MIw==}
 
-  '@types/qrcode@1.5.5':
-    resolution: {integrity: sha512-CdfBi/e3Qk+3Z/fXYShipBT13OJ2fDO2Q2w5CIP5anLTLIndQG9z6P1cnm+8zCWSpm5dnxMFd/uREtb0EXuQzg==}
+  '@types/qrcode@1.5.6':
+    resolution: {integrity: sha512-te7NQcV2BOvdj2b1hCAHzAoMNuj65kNBMz0KBaxM6c3VGBOhU0dURQKOtH8CFNI/dsKkwlv32p26qYQTWoB5bw==}
 
   '@types/react-dom@19.1.9':
     resolution: {integrity: sha512-qXRuZaOsAdXKFyOhRBg6Lqqc0yay13vN7KrIg4L7N4aaHN68ma9OK3NE1BoDFgFOTfM7zg+3/8+2n8rLUH3OKQ==}
@@ -3004,7 +3004,7 @@ snapshots:
 
   '@types/prop-types@15.7.15': {}
 
-  '@types/qrcode@1.5.5':
+  '@types/qrcode@1.5.6':
     dependencies:
       '@types/node': 22.18.5
 
