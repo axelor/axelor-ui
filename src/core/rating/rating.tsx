@@ -117,6 +117,7 @@ export function Rating(props: RatingProps) {
       d="flex"
       role="radiogroup"
       aria-label={text}
+      title={text}
       aria-disabled={readonly}
       className={clsx([styles.container], {
         [styles.pointer]: !readonly,
@@ -143,7 +144,6 @@ export function Rating(props: RatingProps) {
             aria-checked={checked}
             aria-disabled={readonly}
             style={{ ...(checked && highlightMe ? style.style : {}) }}
-            title={text}
             data-testid={makeTestId(testId, "icon", position)}
             {...getItemProps(position - 1)}
           >
