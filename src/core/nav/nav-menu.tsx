@@ -695,6 +695,7 @@ function MenuItem(props: ItemProps) {
           shadow
           rounded
           placement="end"
+          role={"tooltip"}
           data-testid={makeTestId(testId, "help")}
         >
           <Box p={2} style={{ maxWidth: 320 }}>

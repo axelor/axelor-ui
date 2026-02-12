@@ -32,6 +32,7 @@ export const Basic = () => {
         open={open}
         target={targetEl}
         offset={[0, 4]}
+        role={"dialog"}
       >
         <Box p={2}>The content of the Popper.</Box>
       </Popper>
@@ -56,6 +57,7 @@ export const Dropdown = () => {
         target={targetEl}
         offset={[0, 4]}
         arrow
+        role={"menu"}
       >
         <ul
           className={classNames(
@@ -96,11 +98,12 @@ function Example({ event, interactive }: any) {
         {event}
       </Button>
       <Popper
-          data-testid="popper"
-          open={open}
-          target={targetEl}
-          offset={[0, 4]}
-        >
+        data-testid="popper"
+        open={open}
+        target={targetEl}
+        offset={[0, 4]}
+        role={"dialog"}
+      >
         <ClickAwayListener onClickAway={onClickAway}>
           <Box p={2} ref={setContentEl} style={{ width: 320 }}>
             <Box as="h4">Personal Information</Box>
@@ -178,6 +181,7 @@ export const Placement = () => {
         arrow
         shadow
         rounded
+        role={"dialog"}
       >
         <Box p={3}>The content of the Popper.</Box>
       </Popper>
@@ -235,6 +239,7 @@ export const Transition = () => {
         transition={Grow}
         offset={[0, 4]}
         arrow
+        role={"dialog"}
       >
         <Box p={2}>The content of the Popper.</Box>
       </Popper>

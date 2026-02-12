@@ -112,6 +112,7 @@ function GridFooterRowColumn(
             shadow
             rounded
             placement="top"
+            role={"tooltip"}
             data-testid={makeTestId(testId, "tooltip")}
           >
             <Box p={2}>

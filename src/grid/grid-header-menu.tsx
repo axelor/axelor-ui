@@ -135,6 +135,7 @@ export const GridHeaderMenu = React.memo(function GridHeaderMenu(
         placement={placement}
         target={columnOptionsTarget}
         open={showColumnOptions}
+        role="menu"
         data-testid={makeTestId(testId, "popper")}
       >
         <ClickAwayListener onClickAway={hideMenu}>

@@ -21,6 +21,18 @@ import { TransitionProps } from "../transitions";
 import { useRefs } from "../hooks";
 import styles from "./popper.module.css";
 
+export type PopperRole =
+  | "tooltip"
+  | "dialog"
+  | "alertdialog"
+  | "menu"
+  | "listbox"
+  | "alert"
+  | "status"
+  | "group"
+  | "region"
+  | "presentation";
+
 export type PopperPlacement =
   | "top"
   | "top-start"
@@ -48,7 +60,7 @@ export interface PopperProps {
   shadow?: boolean;
   rounded?: boolean;
   border?: boolean;
-  role?: string;
+  role?: PopperRole;
   bg?: TBackground;
   color?: TForeground;
   transition?:

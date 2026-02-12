@@ -21,7 +21,7 @@ export const Basic = () => {
       <Button variant="primary" ref={setTargetEl} onClick={toggle}>
         Show popper
       </Button>
-      <Popper open={open} target={targetEl} offset={[0, 4]}>
+      <Popper open={open} target={targetEl} offset={[0, 4]} role={"dialog"}>
         <ClickAwayListener onClickAway={toggle}>
           <Box p={2} bg="secondary" color="light" border rounded shadow>
             <p>Sample Buttons</p>
