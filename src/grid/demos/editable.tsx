@@ -80,9 +80,10 @@ function Form({
 
   React.useEffect(() => {
     const _handlers = handlers;
-    _handlers.current && (_handlers.current.save = handleSave);
+    if (!_handlers.current) return;
+    _handlers.current.setSave(handleSave);
     return () => {
-      _handlers.current && (_handlers.current.save = null);
+      _handlers.current.setSave(null);
     };
   }, [handlers, handleSave]);
 
@@ -169,6 +170,9 @@ export default function Editable() {
   const boxRef = React.useRef<any>(null);
   const handlers = React.useRef({
     save: (e: boolean) => {},
+    setSave: (fn: any) => {
+      handlers.current.save = fn;
+    },
   });
 
   const handleRecordAdd = React.useCallback(() => {

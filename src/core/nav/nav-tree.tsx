@@ -234,20 +234,20 @@ function useTree(props: NavTreeProps) {
   const isMain = !filterText;
 
   const active = useMemo(() => {
-    const isTemp = textRef.current === filterText;
+    const isTemp = textRef.current === filterText; // eslint-disable-line react-hooks/refs
     if (isMain) return mainState.active;
     if (isTemp) return tempState.active;
   }, [filterText, isMain, mainState.active, tempState.active]);
 
   const selected = useMemo(() => {
-    const isTemp = textRef.current === filterText;
+    const isTemp = textRef.current === filterText; // eslint-disable-line react-hooks/refs
     if (isMain) return mainState.selected;
     if (isTemp) return tempState.selected;
     return [];
   }, [filterText, isMain, mainState.selected, tempState.selected]);
 
   const expanded = useMemo(() => {
-    const isTemp = textRef.current === filterText;
+    const isTemp = textRef.current === filterText; // eslint-disable-line react-hooks/refs
     if (isMain) return mainState.expanded;
     if (isTemp) return tempState.expanded;
     return findParents(filtered).filter((x) => x.items!.length > 0);
@@ -455,7 +455,12 @@ function NavTreeNode(props: NavTreeNodeProps) {
   const latestExpandedRef = useRef(expanded);
   const latestItemsRef = useRef(treeItems);
 
+  // Synchronous "latest ref" pattern: keep refs in sync during render so
+  // the async Promise.finally() callback in `toggle` always reads the most
+  // recent values without being listed in its deps or causing re-renders.
+  // eslint-disable-next-line react-hooks/refs
   latestExpandedRef.current = expanded;
+  // eslint-disable-next-line react-hooks/refs
   latestItemsRef.current = treeItems;
 
   const toggle = useCallback(() => {

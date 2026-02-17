@@ -24,6 +24,7 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
+      "react-hooks/set-state-in-effect": "off",
       "no-shadow": "off",
       "@typescript-eslint/no-shadow": "warn",
       "@typescript-eslint/no-explicit-any": "warn",

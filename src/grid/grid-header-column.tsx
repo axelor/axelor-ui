@@ -129,7 +129,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
   } = props;
 
   const classNames = useClassNames();
-  const targetRef = useRef<HTMLSpanElement | null>(null);
+  const [target, setTarget] = useState<HTMLSpanElement | null>(null);
   const [show, setShow] = useState(false);
   const t = useTranslation();
   const testId = findDataProp(props, "data-testid");
@@ -194,7 +194,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
           })}
           title={column.help || column.title}
           onClick={(e) => {
-            const dropdownEl = targetRef.current;
+            const dropdownEl = target;
             if (
               dropdownEl &&
               (e.target === dropdownEl ||
@@ -224,7 +224,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
               className={classNames(styles.headerColumnMenuButton, {
                 [styles.active]: show,
               })}
-              ref={targetRef}
+              ref={setTarget}
               onClick={handleShow}
               role="button"
               aria-label={`${t("Column options")}`}
@@ -260,7 +260,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
 
         <Menu
           id={menuId}
-          target={targetRef.current}
+          target={target}
           show={show}
           navigation
           onHide={() => setShow(false)}

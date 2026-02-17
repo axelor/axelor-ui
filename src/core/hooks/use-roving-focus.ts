@@ -149,7 +149,6 @@ export type RovingFocusResult = {
  * This is similar to the useEvent RFC pattern.
  */
 function useEvent<T extends (...args: any[]) => any>(handler?: T): T {
-  // eslint-disable-line
   const handlerRef = useRef<T | undefined>(handler);
 
   useLayoutEffect(() => {
@@ -266,7 +265,9 @@ export function useRovingFocus(
 
   // Keep refs in sync during render (synchronous update)
   // This is safe because we're just keeping refs in sync with state, not causing side effects
+  // eslint-disable-next-line react-hooks/refs
   optionsRef.current = { disabled, orientation, rtl, loop, focusStrategy };
+  // eslint-disable-next-line react-hooks/refs
   indexRef.current = activeIndex;
 
   // Generate unique ID for this hook instance (for active-descendant)

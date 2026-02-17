@@ -442,6 +442,10 @@ export const Select = forwardRef(function Select<
   const contentRef = useRef<HTMLDivElement>(null);
   const listboxId = useId();
 
+  const [focusOnTab, setFocusOnTab] = useState(false);
+  const [focusOnce, setFocusOnce] = useState(true);
+  const [focusNow, setFocusNow] = useState(false);
+
   const handleToggleClick = useCallback(() => {
     if (readOnly || disabled) return;
     if (open) {
@@ -483,10 +487,6 @@ export const Select = forwardRef(function Select<
       readOnly,
     ],
   );
-
-  const [focusOnTab, setFocusOnTab] = useState(false);
-  const [focusOnce, setFocusOnce] = useState(true);
-  const [focusNow, setFocusNow] = useState(false);
 
   const hasOptions = options.length + (customOptions?.length ?? 0) > 0;
   const hasDropdownOpen = open && hasOptions;
@@ -594,6 +594,36 @@ export const Select = forwardRef(function Select<
     });
   }, [optionKey, optionLabel, renderValue, value, testId]);
 
+  useImperativeHandle(
+    selectRef,
+    () => ({
+      isOpen: () => Boolean(open),
+      open: handleOpen,
+      close: handleClose,
+    }),
+    [open, handleOpen, handleClose],
+  );
+
+  /* eslint-disable react-hooks/refs -- rootRef is a forwarded ref passed to
+   * getReferenceProps for floating-ui positioning; it must remain a ref, not
+   * state, because floating-ui owns the ref merging internally. */
+  const referenceProps = !readOnly
+    ? getReferenceProps({
+        ref: rootRef,
+        tabIndex: autoComplete || disabled ? undefined : 0,
+        onClick: handleRootClick,
+        onKeyDown: handleRootKeyDown,
+        onKeyUp: handleRootKeyUp,
+        onFocus: autoComplete ? undefined : handleFocus,
+        onBlur: autoComplete ? undefined : handleBlur,
+      })
+    : undefined;
+  /* eslint-enable react-hooks/refs */
+
+  const activeDescendant = autoComplete
+    ? (referenceProps?.["aria-activedescendant"] as string | undefined)
+    : undefined;
+
   const renderSelector = useCallback(() => {
     const shouldShowEmptyBox = readOnly && isEmpty(value);
     if (autoComplete || shouldShowEmptyBox) {
@@ -650,6 +680,7 @@ export const Select = forwardRef(function Select<
     }
     return null;
   }, [
+    activeDescendant,
     autoComplete,
     multiple,
     value,
@@ -670,33 +701,7 @@ export const Select = forwardRef(function Select<
     notValid,
     open,
   ]);
-
-  useImperativeHandle(
-    selectRef,
-    () => ({
-      isOpen: () => Boolean(open),
-      open: handleOpen,
-      close: handleClose,
-    }),
-    [open, handleOpen, handleClose],
-  );
-
-  const referenceProps = !readOnly
-    ? getReferenceProps({
-        ref: rootRef,
-        tabIndex: autoComplete || disabled ? undefined : 0,
-        onClick: handleRootClick,
-        onKeyDown: handleRootKeyDown,
-        onKeyUp: handleRootKeyUp,
-        onFocus: autoComplete ? undefined : handleFocus,
-        onBlur: autoComplete ? undefined : handleBlur,
-      })
-    : undefined;
-
-  const activeDescendant = autoComplete
-    ? (referenceProps?.["aria-activedescendant"] as string | undefined)
-    : undefined;
-
+  
   return (
     <>
       <div
@@ -807,6 +812,10 @@ export const Select = forwardRef(function Select<
               })}
               data-testid={makeTestId(testId, "list")}
             >
+              {/* eslint-disable react-hooks/refs -- listRef.current[index] is
+                  intentionally mutated inside callback refs passed to
+                  floating-ui's getItemProps; the array is a non-reactive
+                  lookup table for DOM nodes, not reactive state. */}
               {items.map((item, index) => {
                 const { key, ...itemProps } = getItemProps({
                   key: optionKey(item),
@@ -859,6 +868,7 @@ export const Select = forwardRef(function Select<
                   {item.title}
                 </SelectItem>
               ))}
+              {/* eslint-enable react-hooks/refs */}
             </div>
           </FloatingFocusManager>
         </FloatingPortal>

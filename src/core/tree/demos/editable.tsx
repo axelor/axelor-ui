@@ -14,8 +14,6 @@ const columns = [
   { name: "progress", title: "Progress", type: "String" },
 ];
 
-const FormHandlers = React.createContext(React.createRef<any>());
-
 function FormField({
   className,
   data,
@@ -75,7 +73,6 @@ function FormField({
 
 function Form({ node, index, columns, onSave, onCancel, ...rest }: any) {
   const values = React.useRef({ ...node.data });
-  const handlers = React.useContext(FormHandlers);
   const dirty = React.useRef(false);
 
   const handleChange = React.useCallback((name: string, value: any) => {
@@ -102,10 +99,6 @@ function Form({ node, index, columns, onSave, onCancel, ...rest }: any) {
       )
     );
   }, [onSave, index, node]);
-
-  React.useEffect(() => {
-    handlers.current && (handlers.current.save = handleSave);
-  }, [handlers, handleSave]);
 
   return (
     <div style={{ display: "flex" }} {...rest}>

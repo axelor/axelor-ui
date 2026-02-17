@@ -159,6 +159,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
     ...options,
   });
 
+  /* eslint-disable react-hooks/refs */
   const [, drag, linePreview] = useDrag(
     getDragProps(DND_TYPES.LINE, {
       end: () => {
@@ -212,6 +213,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
       },
     }),
   );
+  /* eslint-enable react-hooks/refs */
 
   const [, leftConnectDrag, leftConnectPreview] = useDrag({
     type: DND_TYPES.CONNECT_START,
@@ -357,9 +359,11 @@ export const GanttLine = React.memo(function GanttLine(props: {
     rightConnectPreview,
   ]);
 
+  /* eslint-disable react-hooks/refs */
   drop(drag(dragLineRef));
   leftConnectDrop(leftConnectDrag(leftConnectRef));
   rightConnectDrop(rightConnectDrag(rightConnectRef));
+  /* eslint-enable react-hooks/refs */
 
   React.useEffect(() => {
     refs.current.element = { x, y, width };

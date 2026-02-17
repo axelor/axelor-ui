@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { useClassNames } from "../core";
 import * as TYPES from "./types";
@@ -78,7 +78,9 @@ const GridDragElementComponent = React.memo(function GridDragElementComponent(
     [column],
   );
 
-  drag(drop(ref));
+  useEffect(() => {
+    drag(drop(ref));
+  }, [drag, drop, ref]);
 
   const classNames = useClassNames();
 

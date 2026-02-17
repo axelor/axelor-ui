@@ -38,7 +38,7 @@ const GanttRows = React.memo(function GanttRows({
     <>
       {columns.map((item, ind) => {
         const style = { left, width: item.width };
-        left += item.width;
+        left += item.width; // eslint-disable-line react-hooks/immutability
         return (
           <div key={ind} className={classes["ganttColumn"]} style={style}>
             <Box color="secondary" className={classes["ganttColumnTitle"]}>
@@ -68,7 +68,7 @@ export function GanttBody(props: {
   items: TYPES.GanttHeaderItem[];
 }) {
   const { totalRecords, activeRowIndex, children, items } = props;
-  const bodyRef = React.useRef<HTMLDivElement>(null);
+  const [body, setBody] = React.useState<HTMLDivElement | null>(null);
   const { dir } = useTheme();
   const rtl = dir === "rtl";
   const testId = findDataProp(props, "data-testid");
@@ -201,10 +201,12 @@ export function GanttBody(props: {
     }),
   });
 
-  drop(bodyRef);
+  useEffect(() => {
+    drop(body);
+  }, [body, drop]);
 
   return (
-    <div ref={bodyRef} className={classes.ganttBody} data-testid={testId}>
+    <div ref={setBody} className={classes.ganttBody} data-testid={testId}>
       <GanttRows
         activeRowIndex={activeRowIndex}
         items={items}

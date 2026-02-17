@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import { Box } from "../box";
 import { Button } from "../button";
@@ -11,7 +11,7 @@ const config = {
 
 export const Basic = () => {
   const [show, setShow] = useState(false);
-  const container = useRef(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   const toggle = () => {
     setShow((prev) => !prev);
@@ -25,7 +25,7 @@ export const Basic = () => {
       <Box mt={2} p={2} border>
         It looks like I will render here...
         {show && (
-          <Portal container={container.current}>
+          <Portal container={container}>
             <Box
               p={2}
               bg="secondary"
@@ -39,7 +39,7 @@ export const Basic = () => {
           </Portal>
         )}
       </Box>
-      <Box mt={2} p={2} ref={container} border></Box>
+      <Box mt={2} p={2} ref={setContainer} border></Box>
     </Box>
   );
 };

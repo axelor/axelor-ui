@@ -180,7 +180,9 @@ function DNDTreeNode(props: TYPES.TreeChildProps) {
     });
   }, []);
 
-  dragRef(dropRef(ref));
+  useEffect(() => {
+    dragRef(dropRef(ref));
+  }, [dragRef, dropRef, ref]);
 
   useEffect(() => {
     isDragging && onSelect?.({} as any, {} as any, index);
@@ -268,7 +270,13 @@ export function RootDroppable(props: {
       })}
       data-testid={testId}
     >
-      <Box className={styles.rootNodeContent} d="flex" flex={1} alignItems={"center"} justifyContent={"center"}>
+      <Box
+        className={styles.rootNodeContent}
+        d="flex"
+        flex={1}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
         {text ?? "Drop here"}
       </Box>
     </Box>
@@ -311,9 +319,7 @@ export const TreeNode = React.memo(function TreeNode({
         : {
             data,
           })}
-      {...(edit
-        ? { node: data, index, columns, onCancel, onSave }
-        : {})}
+      {...(edit ? { node: data, index, columns, onCancel, onSave } : {})}
     >
       <DNDTreeNode
         data={data}

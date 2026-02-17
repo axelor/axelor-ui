@@ -1,4 +1,4 @@
-import { ReactPortal, useEffect, useState } from "react";
+import { ReactPortal } from "react";
 import * as React from "react";
 import { createPortal } from "react-dom";
 
@@ -11,14 +11,13 @@ export const Portal = ({
   container = document.body,
   children,
 }: PortalProps): ReactPortal | null => {
-  const [mountNode, setMountNode] = useState<Element | null>(null);
-  useEffect(() => {
+  const mountNode = React.useMemo(() => {
     let node = container;
     if (typeof container === "function") {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
       node = (container as Function)();
     }
-    setMountNode(node);
+    return node as Element;
   }, [container]);
 
   return mountNode ? createPortal(children, mountNode) : null;

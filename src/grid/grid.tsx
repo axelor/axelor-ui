@@ -592,8 +592,9 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       },
       [onBeforeColumnResize],
     );
-
+    
     const handleColumnResize = React.useCallback(
+      // eslint-disable-next-line react-hooks/use-memo
       throttle(function handleColumnResize(
         e: React.DragEvent<HTMLElement>,
         column: TYPES.GridColumn,

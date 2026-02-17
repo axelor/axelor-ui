@@ -371,6 +371,7 @@ function MenuItem({
         endIcon={rtl ? BiCaretLeftFill : BiCaretRightFill}
         onMouseEnter={handleItemMouseEnter}
       />
+      {/* eslint-disable-next-line react-hooks/refs */}
       <Portal container={menubarRef.current}>
         <Menu
           target={target}

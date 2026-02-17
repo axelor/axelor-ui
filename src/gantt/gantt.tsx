@@ -148,7 +148,7 @@ export function Gantt(props: TYPES.GanttProps) {
       const tableElement = container.previousSibling;
       const { scrollTop } = container;
       if (tableElement && scrollTop >= 0) {
-        (tableElement as HTMLElement).scrollTop = scrollTop;
+        (tableElement as HTMLElement).scrollTop = scrollTop; // eslint-disable-line react-hooks/immutability
       }
     }
   }

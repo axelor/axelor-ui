@@ -180,6 +180,7 @@ const PopperElement = forwardRef<HTMLDivElement, PopperProps>(
         }),
         flip(),
         hide(),
+        // eslint-disable-next-line react-hooks/refs
         ...(arrow ? [arrowMiddleware({ element: arrowRef })] : []),
       ],
     });
@@ -238,7 +239,7 @@ const PopperElement = forwardRef<HTMLDivElement, PopperProps>(
                 top: middlewareData?.arrow?.y ?? "",
                 right: "",
                 bottom: "",
-                [staticSide]: `${-(arrowRef?.current?.offsetWidth ?? 0) / 2}px`,
+                [staticSide]: `${-(arrowRef?.current?.offsetWidth ?? 0) / 2}px`, // eslint-disable-line react-hooks/refs
               }}
             />
           )}

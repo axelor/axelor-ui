@@ -118,6 +118,7 @@ export const ClickAwayListener = ({
     };
   }, [handleClickAway, getDoc]);
 
+  // eslint-disable-next-line react-hooks/refs
   return React.cloneElement(children, {
     onTouchEnd: createHandleSynthetic("onTouchEnd"),
     onClick: createHandleSynthetic("onClick"),
