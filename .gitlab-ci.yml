@@ -10,7 +10,7 @@ cache: &global_cache
 
 build_package:
   stage: build
-  image: node:24.13.0-bullseye
+  image: node:24.13.1-bullseye
   cache:
     <<: *global_cache
   artifacts:
@@ -27,7 +27,7 @@ build_package:
       
 publish_to_npm:
   stage: publish
-  image: node:24.13.0-bullseye
+  image: node:24.13.1-bullseye
   cache:
     <<: *global_cache
     policy: pull
