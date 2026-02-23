@@ -417,6 +417,9 @@ export const Select = forwardRef(function Select<
     (event: React.KeyboardEvent<HTMLDivElement>) => {
       if (autoComplete) return;
       if (event.target !== event.currentTarget) return;
+      if (open && event.key === "Tab") {
+        startTransition(() => handleClose());
+      }
       if (event.key === "Enter" && activeIndex !== null) {
         event.preventDefault();
         const option = items[activeIndex];
@@ -434,7 +437,7 @@ export const Select = forwardRef(function Select<
         handleOpen();
       }
     },
-    [activeIndex, autoComplete, handleOpen, items, open, updateValue],
+    [activeIndex, autoComplete, handleClose, handleOpen, items, open, updateValue],
   );
 
   const rootRef = useRefs(ref, refs.setReference);
