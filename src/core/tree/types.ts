@@ -27,6 +27,10 @@ export interface TreeSortColumn {
   order: "asc" | "desc";
 }
 
+export interface TreeHandle {
+  reloadChildren: (parentKey: string) => Promise<void>;
+}
+
 export interface TreeProps {
   className?: string;
   records: any[];

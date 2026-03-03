@@ -1,6 +1,7 @@
 import React, {
   useCallback,
   useEffect,
+  useImperativeHandle,
   useMemo,
   useRef,
   useState,
@@ -31,7 +32,7 @@ function toNode({
   };
 }
 
-function getChildrenList(data: any, parent: any): number[] {
+function getChildrenList(data: any, parent: any): any[] {
   const collectChildrenIds = (parent: any): any => {
     return data
       .filter((item: any) => item.parent === parent)
@@ -64,7 +65,8 @@ function getParentList(data: any, parent: any): number[] {
   return collectParentIds(parent);
 }
 
-export function Tree(props: TYPES.TreeProps) {
+export const Tree = React.forwardRef<TYPES.TreeHandle, TYPES.TreeProps>(
+  function Tree(props, ref) {
   const {
     className,
     sortable,
@@ -91,6 +93,7 @@ export function Tree(props: TYPES.TreeProps) {
     null,
   );
   const loadedRef = useRef<Record<string, boolean>>({});
+  const dataRef = useRef<TYPES.TreeNode[]>([]);
 
   const selectRow = useCallback((index: number) => {
     setData((data) =>
@@ -305,6 +308,49 @@ export function Tree(props: TYPES.TreeProps) {
   };
 
   useEffect(() => {
+    dataRef.current = data;
+  }, [data]);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      reloadChildren: async (parentKey: string) => {
+        if (!onLoad) return;
+
+        const parentNode = dataRef.current.find((item) => item.$key === parentKey);
+        if (!parentNode) return;
+
+        setLoading(true);
+        try {
+          const children = await onLoad(parentNode, sortColumns || []);
+          setData((data) => {
+            const parentIndex = data.findIndex((item) => item.$key === parentKey);
+            if (parentIndex === -1) return data;
+
+            const childrenList = getChildrenList(data, parentKey);
+            const next = data.filter((item) => !childrenList.includes(item.$key));
+            const insertAt = next.findIndex((item) => item.$key === parentKey);
+            if (insertAt === -1) return data;
+
+            return [
+              ...next.slice(0, insertAt + 1),
+              ...children.map((item: any) => ({
+                ...toNode(item),
+                parent: parentKey,
+              })),
+              ...next.slice(insertAt + 1),
+            ];
+          });
+          loadedRef.current[parentKey] = true;
+        } finally {
+          setLoading(false);
+        }
+      },
+    }),
+    [onLoad, sortColumns],
+  );
+
+  useEffect(() => {
     // reset loaded state
     loadedRef.current = {};
 
@@ -400,7 +446,7 @@ export function Tree(props: TYPES.TreeProps) {
           (row, rowIndex) =>
             !row.hidden && (
               <TreeNode
-                key={rowIndex}
+                key={row.$key ?? rowIndex}
                 index={rowIndex}
                 columns={columns}
                 edit={editNode === row}
@@ -428,4 +474,4 @@ export function Tree(props: TYPES.TreeProps) {
       </div>
     </div>
   );
-}
+});
