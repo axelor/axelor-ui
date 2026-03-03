@@ -340,14 +340,64 @@ export const Select = forwardRef(function Select<
     [handleOpen, multiple, onInputChange, updateValue],
   );
 
-  const handleInputKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLInputElement>) => {
-      if (open && event.key === "Tab") {
-        startTransition(() => handleClose());
+  const handleRootKeyDownOpen = useCallback(
+    (event: React.KeyboardEvent<HTMLElement>, isTargetRoot?: boolean) => {
+      if (
+        event.key === "ArrowUp" ||
+        event.key === "ArrowDown" ||
+        (isTargetRoot && event.key === " ")
+      ) {
+        event.preventDefault();
+        handleOpen();
+        return true;
       }
+      return false;
+    },
+    [handleOpen],
+  );
+
+  const handleRootKeyDownInput = useCallback(
+    (event: React.KeyboardEvent<HTMLElement>) => {
       if (event.key === "Escape" && clearOnEscape) {
         resetInput();
+        return;
       }
+
+      // delete the last item from the selection
+      if (multiple && event.key === "Backspace") {
+        if (inputValue) return;
+        if (Array.isArray(value)) {
+          const values = value.slice(0, -1);
+          const next = values.length
+            ? (values as SelectValue<Type, Multiple>)
+            : null;
+          setValue(next);
+          onChange?.(next);
+        }
+      }
+    },
+    [
+      clearOnEscape,
+      inputValue,
+      multiple,
+      onChange,
+      resetInput,
+      setValue,
+      value,
+    ],
+  );
+
+  const handleRootKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      const isTargetRoot = event.target === event.currentTarget;
+
+      if (!open && handleRootKeyDownOpen(event, isTargetRoot)) return;
+
+      if (open && event.key === "Tab") {
+        startTransition(() => handleClose());
+        return;
+      }
+
       if (event.key === "Enter" && activeIndex !== null) {
         event.preventDefault();
         const option = items[activeIndex];
@@ -355,50 +405,37 @@ export const Select = forwardRef(function Select<
           updateValue(option);
         } else {
           // custom option
-          const ref = listRef.current[activeIndex];
-          if (ref) {
+          const activeRef = listRef.current[activeIndex];
+          if (activeRef) {
             handleClose();
-            ref.click();
+            activeRef.click();
           }
         }
-      }
-
-      // delete the last item from the selection
-      if (multiple && event.key === "Backspace") {
-        if (inputValue) return;
-        if (Array.isArray(value)) {
-          const items = value.slice(0, value.length - 1);
-          const next = items.length
-            ? (items as SelectValue<Type, Multiple>)
-            : null;
-          setValue(next);
-          onChange?.(next);
-          return;
-        }
+        return;
       }
 
       if (
-        (event.key === "Backspace" && removeOnBackspace) ||
-        (event.key === "Delete" && removeOnDelete)
+        ((!multiple && event.key === "Backspace" && removeOnBackspace) ||
+          (event.key === "Delete" && removeOnDelete)) &&
+        !isEmpty(value) &&
+        (!multiple || !inputValue)
       ) {
-        if (isEmpty(value)) return;
-        if (multiple && inputValue) return;
         event.preventDefault();
         setValue(null);
         onChange?.(null);
+        return;
       }
 
-      if (open) return;
-      if (event.key === "ArrowUp" || event.key === "ArrowDown") {
-        event.preventDefault();
-        handleOpen();
+      if (autoComplete || !isTargetRoot) {
+        handleRootKeyDownInput(event);
       }
     },
     [
       activeIndex,
-      clearOnEscape,
+      autoComplete,
       handleClose,
-      handleOpen,
+      handleRootKeyDownInput,
+      handleRootKeyDownOpen,
       inputValue,
       items,
       multiple,
@@ -406,38 +443,10 @@ export const Select = forwardRef(function Select<
       open,
       removeOnBackspace,
       removeOnDelete,
-      resetInput,
       setValue,
       updateValue,
       value,
     ],
-  );
-
-  const handleRootKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLDivElement>) => {
-      if (autoComplete) return;
-      if (event.target !== event.currentTarget) return;
-      if (open && event.key === "Tab") {
-        startTransition(() => handleClose());
-      }
-      if (event.key === "Enter" && activeIndex !== null) {
-        event.preventDefault();
-        const option = items[activeIndex];
-        if (option) {
-          updateValue(option);
-        }
-      }
-      if (open) return;
-      if (
-        event.key === "ArrowUp" ||
-        event.key === "ArrowDown" ||
-        event.key === " "
-      ) {
-        event.preventDefault();
-        handleOpen();
-      }
-    },
-    [activeIndex, autoComplete, handleClose, handleOpen, items, open, updateValue],
   );
 
   const rootRef = useRefs(ref, refs.setReference);
@@ -655,7 +664,6 @@ export const Select = forwardRef(function Select<
           data-testid={makeTestId(testId, "input")}
           {...(!readOnly && {
             onChange: handleInputChange,
-            onKeyDown: handleInputKeyDown,
             onFocus: handleFocus,
             onBlur: handleBlur,
           })}
@@ -694,7 +702,6 @@ export const Select = forwardRef(function Select<
     readOnly,
     disabled,
     handleInputChange,
-    handleInputKeyDown,
     handleFocus,
     handleBlur,
     renderValue,
