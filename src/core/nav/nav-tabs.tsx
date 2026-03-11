@@ -159,6 +159,7 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
     const [stripElement, stripRef] = useState<HTMLDivElement | null>(null);
     const [startArrow, setStartArrow] = useState(false);
     const [endArrow, setEndArrow] = useState(false);
+    const hasOverflow = startArrow || endArrow;
 
     const [active, setActiveTab] = useControlled<string | null>({
       name: "NavTabs",
@@ -230,8 +231,8 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
         );
         const end = Math.ceil(elem.scrollWidth - width - start);
 
-        setStartArrow(start > 0);
-        setEndArrow(end > 0);
+        setStartArrow(start > 1);
+        setEndArrow(end > 1);
       }
     }, [isRtl, stripElement]);
 
@@ -316,18 +317,20 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
           ref={ref}
           data-testid={testId}
         >
-          <div
-            className={clsx(styles.button, styles.start, {
-              [styles.active]: startArrow,
-            })}
-            data-testid={makeTestId(testId, "start-arrow")}
-          >
-            <MaterialIcon
-              className={styles.arrow}
-              icon={isRtl ? "keyboard_arrow_right" : "keyboard_arrow_left"}
-              onClick={onScrollToEnd}
-            />
-          </div>
+          {hasOverflow && (
+            <div
+              className={clsx(styles.button, styles.start, {
+                [styles.active]: startArrow,
+              })}
+              data-testid={makeTestId(testId, "start-arrow")}
+            >
+              <MaterialIcon
+                className={styles.arrow}
+                icon={isRtl ? "keyboard_arrow_right" : "keyboard_arrow_left"}
+                onClick={onScrollToEnd}
+              />
+            </div>
+          )}
           <div
             ref={stripRef}
             className={styles.strip}
@@ -360,18 +363,20 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
               data-testid={makeTestId(testId, "indicator")}
             ></div>
           </div>
-          <div
-            className={clsx(styles.button, styles.end, {
-              [styles.active]: endArrow,
-            })}
-            data-testid={makeTestId(testId, "end-arrow")}
-          >
-            <MaterialIcon
-              className={styles.arrow}
-              icon={isRtl ? "keyboard_arrow_left" : "keyboard_arrow_right"}
-              onClick={onScrollToStart}
-            />
-          </div>
+          {hasOverflow && (
+            <div
+              className={clsx(styles.button, styles.end, {
+                [styles.active]: endArrow,
+              })}
+              data-testid={makeTestId(testId, "end-arrow")}
+            >
+              <MaterialIcon
+                className={styles.arrow}
+                icon={isRtl ? "keyboard_arrow_left" : "keyboard_arrow_right"}
+                onClick={onScrollToStart}
+              />
+            </div>
+          )}
         </div>
       </NavTabsContext.Provider>
     );

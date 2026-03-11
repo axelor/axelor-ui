@@ -80,7 +80,34 @@
   opacity: 0.75;
 }
 
-.button,
+.button {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  opacity: 0.2;
+  pointer-events: none;
+
+  &.active {
+    opacity: 0.75;
+    pointer-events: auto;
+    
+    &:hover {
+      color: var(--ax-nav-tabs-tab-hover-color);
+      font-weight: var(--ax-nav-tabs-tab-hover-font-weight);
+    }
+  }
+  
+  &.end {
+    border-left: var(--bs-border-width) solid transparent;
+    border-image: linear-gradient(transparent 25%, var(--bs-border-color) 25%, var(--bs-border-color) 75%, transparent 75%) 1;
+  }
+  
+  &.start {
+    border-right: var(--bs-border-width) solid transparent;
+    border-image: linear-gradient(transparent 25%, var(--bs-border-color) 25%, var(--bs-border-color) 75%, transparent 75%) 1;
+  }
+}
+
 .icon {
   display: flex;
   align-items: center;
@@ -88,15 +115,8 @@
 }
 
 .arrow {
-  visibility: hidden;
   cursor: pointer;
   user-select: none;
-}
-
-.button.active {
-  .arrow {
-    visibility: visible;
-  }
 }
 
 .text {
