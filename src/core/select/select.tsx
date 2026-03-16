@@ -649,6 +649,7 @@ export const Select = forwardRef(function Select<
           className={styles.input}
           value={inputValue ?? ""}
           readOnly={readOnly || disabled}
+          disabled={disabled}
           placeholder={
             inputValue || (multiple && !isEmpty(value))
               ? undefined
