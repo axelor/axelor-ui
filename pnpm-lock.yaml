@@ -70,8 +70,8 @@ importers:
         version: 4.4.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
     devDependencies:
       '@chromatic-com/storybook':
-        specifier: ^5.0.1
-        version: 5.0.1(storybook@10.2.15(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
+        specifier: ^5.1.1
+        version: 5.1.1(storybook@10.2.15(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
       '@eslint/js':
         specifier: ^9.39.2
         version: 9.39.2
@@ -265,11 +265,11 @@ packages:
     resolution: {integrity: sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A==}
     engines: {node: '>=6.9.0'}
 
-  '@chromatic-com/storybook@5.0.1':
-    resolution: {integrity: sha512-v80QBwVd8W6acH5NtDgFlUevIBaMZAh1pYpBiB40tuNzS242NTHeQHBDGYwIAbWKDnt1qfjJpcpL6pj5kAr4LA==}
+  '@chromatic-com/storybook@5.1.1':
+    resolution: {integrity: sha512-BPoAXHM71XgeCK2u0jKr9i8apeQMm/Z9IWGyndA2FMijfQG9m8ox45DdWh/pxFkK5ClhGgirv5QwMhFIeHmThg==}
     engines: {node: '>=20.0.0', yarn: '>=1.22.18'}
     peerDependencies:
-      storybook: ^0.0.0-0 || ^10.1.0 || ^10.1.0-0 || ^10.2.0-0 || ^10.3.0-0
+      storybook: ^0.0.0-0 || ^10.1.0 || ^10.1.0-0 || ^10.2.0-0 || ^10.3.0-0 || ^10.4.0-0
 
   '@emotion/is-prop-valid@1.4.0':
     resolution: {integrity: sha512-QgD4fyscGcbbKwJmqNvUMSE02OsHUa+lAWKdEUIJKgqe5IwRSKd7+KhibEWdaKwgjLj0DRSHA9biAIqGBk05lw==}
@@ -2388,7 +2388,7 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@chromatic-com/storybook@5.0.1(storybook@10.2.15(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))':
+  '@chromatic-com/storybook@5.1.1(storybook@10.2.15(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))':
     dependencies:
       '@neoconfetti/react': 1.0.0
       chromatic: 13.3.5
