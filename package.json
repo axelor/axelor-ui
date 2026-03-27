@@ -53,7 +53,7 @@
     "color": "^5.0.3",
     "csstype": "^3.2.3",
     "dayjs": "^1.11.20",
-    "focus-trap": "^8.0.0",
+    "focus-trap": "^8.0.1",
     "immer": "^11.1.4",
     "jsbarcode": "^3.12.3",
     "qrcode": "^1.5.4",
