@@ -69,7 +69,6 @@ function getMomentList(
   compareType?: "hour" | "month" | "day" | "week" | "year",
   startOfType?: "isoWeek",
 ): TYPES.GanttHeaderItem[] {
-  compareType = compareType || type;
   const list: TYPES.GanttHeaderItem[] = [];
 
   let current = startDate.clone();
@@ -88,7 +87,7 @@ function getMomentList(
         : `${current.format(format)}`;
 
     let next = start.add(1, type);
-    while (current.isSame(next)) {
+    while (current.isSame(next, compareType || type)) {
       next = next.add(1, type);
     }
     current = next;

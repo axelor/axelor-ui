@@ -108,19 +108,17 @@ export function GanttBody(props: {
                 : clientOffset.x - parentBound.left,
               y: clientOffset.y - parentBound.top,
             };
-            let width = 0;
             if (dragItem.type === DND_TYPES.RESIZE_LEFT) {
-              if (offset.x > element.x) {
-                width = element.width - Math.abs(offset.x - element.x);
-              } else {
-                width = element.width + Math.abs(offset.x - element.x);
-              }
+              const width =
+                offset.x > element.x
+                  ? element.width - Math.abs(offset.x - element.x)
+                  : element.width + Math.abs(offset.x - element.x);
               element.width = width > 0 ? width : 0;
               if (width > 0) {
                 element.x = offset.x;
               }
             } else {
-              width = offset.x - element.x;
+              const width = offset.x - element.x;
               element.width = width > 0 ? width : 0;
             }
 
