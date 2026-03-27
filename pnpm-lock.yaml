@@ -24,11 +24,11 @@ importers:
         specifier: ^18.0.1
         version: 18.0.1(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@material-symbols/font-400':
-        specifier: ^0.40.2
-        version: 0.40.2
+        specifier: ^0.43.0
+        version: 0.43.0
       '@material-symbols/metadata':
-        specifier: ^0.40.2
-        version: 0.40.2
+        specifier: ^0.43.0
+        version: 0.43.0
       '@types/qrcode':
         specifier: ^1.5.6
         version: 1.5.6
@@ -572,11 +572,11 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@material-symbols/font-400@0.40.2':
-    resolution: {integrity: sha512-Ibyypche5VmVB0ZNZd9Ytt9BSHhNr34ZTbFycfXY4Gnbs6mf+jYRblTGosHWWzw010mhJMewfnuW8nnk1XI9Ag==}
+  '@material-symbols/font-400@0.43.0':
+    resolution: {integrity: sha512-udDhGtCmDmlOY1PgcAATMzaztlr92rCt4cGgjfD9X2DhITk3lIaC9LoJgfe2VBcFUDZPSo3qTD1w5X+h9i9yVA==}
 
-  '@material-symbols/metadata@0.40.2':
-    resolution: {integrity: sha512-ZalDHlL0iaJR7ppM425K5aosrP+dQu714HmuEM4cZOqGj/+5NIjJiPLpiqNGqQBuxN2xuglBTmKLAFE5E6qyfQ==}
+  '@material-symbols/metadata@0.43.0':
+    resolution: {integrity: sha512-Tm5tQ2U4zBlJTsNT4H5mYTAuN8RCc9wkajMwIQATVF8qZWZuQbvKU8poA/OkMqy9GocUvW9uKoqZvLIKIcr+KQ==}
 
   '@mdx-js/react@3.1.1':
     resolution: {integrity: sha512-f++rKLQgUVYDAtECQ6fn/is15GkEH9+nZPM3MS0RcxVqoTfawHvDlSCH7JbMhAM6uJ32v3eXLvLmLvjGu7PTQw==}
@@ -2646,9 +2646,9 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@material-symbols/font-400@0.40.2': {}
+  '@material-symbols/font-400@0.43.0': {}
 
-  '@material-symbols/metadata@0.40.2': {}
+  '@material-symbols/metadata@0.43.0': {}
 
   '@mdx-js/react@3.1.1(@types/react@19.2.14)(react@19.2.4)':
     dependencies:
