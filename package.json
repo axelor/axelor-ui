@@ -43,7 +43,7 @@
     "@emotion/is-prop-valid": "^1.4.0",
     "@floating-ui/react": "^0.27.17",
     "@fluentui/priority-overflow": "^9.2.1",
-    "@fluentui/react-context-selector": "^9.2.14",
+    "@fluentui/react-context-selector": "^9.2.15",
     "@hello-pangea/dnd": "^18.0.1",
     "@material-symbols/font-400": "^0.40.2",
     "@material-symbols/metadata": "^0.40.2",
