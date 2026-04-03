@@ -6,6 +6,7 @@ import {
   useEffect,
   useLayoutEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -151,10 +152,7 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
     const testId = findDataProp(props, "data-testid");
     const isRtl = useTheme().dir === "rtl";
 
-    const [indicator, setIndicator] = useState<{ x: number; w: number }>({
-      x: 0,
-      w: 0,
-    });
+    const indicatorRef = useRef<HTMLDivElement>(null);
 
     const [stripElement, stripRef] = useState<HTMLDivElement | null>(null);
     const [startArrow, setStartArrow] = useState(false);
@@ -167,10 +165,22 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
       state: props.active,
       defaultState: items?.[0]?.id,
     });
+    const [pendingActive, setPendingActive] = useState<string | null>(null);
 
     const [activeElement, setActiveElement] = useState<HTMLElement | null>(
       null,
     );
+    const visualActive = pendingActive ?? active;
+
+    useEffect(() => {
+      if (pendingActive === null) return;
+      if (
+        pendingActive === active ||
+        !items.some((item) => item.id === pendingActive)
+      ) {
+        setPendingActive(null);
+      }
+    }, [active, items, pendingActive]);
 
     const scrollIn = useCallback(
       (element: HTMLElement) => {
@@ -205,6 +215,7 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
 
     const setActive = useCallback(
       (id: string | null, element: HTMLElement | null, persist = true) => {
+        setPendingActive(id);
         persist && setActiveTab(id);
         setActiveElement(element);
         onItemSelect?.(items.find((x) => x.id === id));
@@ -279,24 +290,27 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
     }, [getScrollSize, isRtl, stripElement]);
 
     useLayoutEffect(() => {
-      if (activeElement && stripElement) {
-        const observer = new ResizeObserver(() => {
-          const x = isRtl
-            ? stripElement.clientWidth -
-              activeElement.offsetLeft -
-              activeElement.clientWidth
-            : activeElement.offsetLeft;
+      if (activeElement && stripElement && indicatorRef.current) {
+        const indicator = indicatorRef.current;
+        const update = () => {
+          // offsetLeft is always measured from the left edge of the
+          // offset parent, regardless of document direction, so
+          // translateX works identically for both LTR and RTL.
+          const x = activeElement.offsetLeft;
           const w = activeElement.offsetWidth;
           if (w > 0) {
-            setIndicator({ x: x + 1, w: w - 2 });
+            indicator.style.transform = `translateX(${x + 1}px)`;
+            indicator.style.width = `${w - 2}px`;
           }
-        });
+        };
+        update();
+        const observer = new ResizeObserver(update);
         observer.observe(activeElement);
         return () => {
           observer.disconnect();
         };
       }
-    }, [activeElement, isRtl, stripElement, items]);
+    }, [activeElement, stripElement, items]);
 
     useLayoutEffect(() => {
       if (stripElement) {
@@ -311,7 +325,9 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
     }, [activateScrollArrows, stripElement, items]);
 
     return (
-      <NavTabsContext.Provider value={{ active, activeElement, setActive }}>
+      <NavTabsContext.Provider
+        value={{ active: visualActive, activeElement, setActive }}
+      >
         <div
           className={clsx(className, styles.container)}
           ref={ref}
@@ -348,18 +364,8 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
               ))}
             </div>
             <div
+              ref={indicatorRef}
               className={styles.indicator}
-              style={
-                isRtl
-                  ? {
-                      right: indicator.x,
-                      width: indicator.w,
-                    }
-                  : {
-                      left: indicator.x,
-                      width: indicator.w,
-                    }
-              }
               data-testid={makeTestId(testId, "indicator")}
             ></div>
           </div>

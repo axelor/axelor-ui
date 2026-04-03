@@ -136,9 +136,11 @@
 .indicator {
   position: absolute;
   bottom: 0;
+  left: 0;
   height: var(--ax-nav-tabs-indicator-size);
   background-color: var(--ax-nav-tabs-indicator-color);
-  transition: all 300ms ease-out 0ms;
+  transition: transform 300ms ease-out, width 300ms ease-out;
+  will-change: transform;
 }
 
 .tab {
