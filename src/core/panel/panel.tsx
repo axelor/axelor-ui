@@ -17,6 +17,9 @@ export interface PanelProps extends Omit<
   header?: React.ReactNode;
   footer?: React.ReactNode;
   toolbar?: CommandBarProps;
+  bodyClassName?: string;
+  contentClassName?: string;
+  headerTitleClassName?: string;
   scrollbar?: {
     custom?: boolean;
     trigger?: {
@@ -36,6 +39,9 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
     header,
     footer,
     toolbar,
+    bodyClassName,
+    contentClassName,
+    headerTitleClassName,
     collapsible = false,
     collapsed = false,
     setCollapsed,
@@ -115,9 +121,9 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
   const ContentPane = scrollbar?.custom ? Scrollable : "div";
 
   const content = (
-    <div className={styles.body} id={contentId}>
+    <div className={styles.bodyInner} id={contentId}>
       <ContentPane
-        className={styles.content}
+        className={clsx(styles.content, contentClassName)}
         onScroll={onScroll}
         data-testid={makeTestId(testId, "content")}
       >
@@ -143,12 +149,12 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
       onExit={onExit}
       onExiting={onExiting}
       onExited={onExited}
-      className={styles.bodyWrapper}
+      className={clsx(styles.body, bodyClassName)}
     >
       {content}
     </Collapse>
   ) : (
-    <div className={styles.bodyWrapper}>{content}</div>
+    <div className={clsx(styles.body, bodyClassName)}>{content}</div>
   );
 
   return (
@@ -166,6 +172,7 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
           {...moreProps}
           handleToggle={handleToggle}
           headerId={headerId}
+          headerTitleClassName={headerTitleClassName}
           className={clsx({
             [styles.hide]: headerHide,
             [styles.shadow]: headerShadow,
@@ -190,6 +197,7 @@ function Header(
     collapsible,
     handleToggle,
     headerId,
+    headerTitleClassName,
   } = props;
   const testId = findDataProp(props, "data-testid");
   return (
@@ -204,7 +212,7 @@ function Header(
               handleToggle && {
                 onClick: handleToggle,
               })}
-            className={clsx(styles.title, {
+            className={clsx(styles.title, headerTitleClassName, {
               [styles.collapse]: collapsible,
             })}
             data-testid={makeTestId(testId, "title")}

@@ -106,13 +106,17 @@
   font-weight: var(--ax-panel-footer-font-weight);
 }
 
-.bodyWrapper,
-.body {
+.body,
+.bodyInner {
   display: flex;
   flex-direction: column;
   min-height: 0;
   min-width: 0;
   max-height: 100%;
+}
+
+.bodyInner {
+  flex: 1;
 }
 
 .content {
@@ -146,14 +150,14 @@
 .exiting,
 .enter,
 .entering {
-  .body,
+  .bodyInner,
   .content {
     overflow: hidden;
     user-select: none;
   }
 }
 
-.entered .body {
+.entered .bodyInner {
   opacity: 1;
 }
 
