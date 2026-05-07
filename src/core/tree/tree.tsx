@@ -65,6 +65,25 @@ function getParentList(data: any, parent: any): number[] {
   return collectParentIds(parent);
 }
 
+function hasCollapsedAncestor(
+  rowsByKey: Map<any, TYPES.TreeNode>,
+  row: TYPES.TreeNode,
+  rootKey: any,
+): boolean {
+  let parentKey = row.parent;
+
+  while (parentKey && parentKey !== rootKey) {
+    const parentRow = rowsByKey.get(parentKey);
+
+    if (!parentRow) return false;
+    if (!parentRow.expanded) return true;
+
+    parentKey = parentRow.parent;
+  }
+
+  return false;
+}
+
 export const Tree = React.forwardRef<TYPES.TreeHandle, TYPES.TreeProps>(
   function Tree(props, ref) {
   const {
@@ -160,8 +179,10 @@ export const Tree = React.forwardRef<TYPES.TreeHandle, TYPES.TreeProps>(
       }
       loadedRef.current[record.$key] = true;
       const updateKey = isHover ? "hover" : "selected";
-      setData((data) =>
-        data
+      setData((data) => {
+        const rowsByKey = new Map(data.map((row) => [row.$key, row]));
+
+        return data
           .map((row) => (row[updateKey] ? { ...row, [updateKey]: false } : row))
           .map((row) =>
             row.$key === record.$key
@@ -171,10 +192,15 @@ export const Tree = React.forwardRef<TYPES.TreeHandle, TYPES.TreeProps>(
                   expanded: !record.expanded,
                 }
               : (record.childrenList || []).includes(row.$key)
-                ? { ...row, hidden: Boolean(record.expanded) }
+                ? {
+                    ...row,
+                    hidden: record.expanded
+                      ? true
+                      : hasCollapsedAncestor(rowsByKey, row, record.$key),
+                  }
                 : row,
-          ),
-      );
+          );
+      });
     },
     [onLoad, sortColumns],
   );
