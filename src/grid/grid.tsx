@@ -363,7 +363,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         }
 
         onRowClick && onRowClick(e, row, rowIndex);
-        if (!isSelectBox && editable && !e.ctrlKey && !e.shiftKey) {
+        if (!isSelectBox && editable && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
           if (onRecordEdit) {
             if (cell?.editable !== false) {
               e.preventDefault();
@@ -395,7 +395,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         if (row.type === ROW_TYPE.ROW) {
           const isMultiple = selectionType === "multiple";
           const withShift = isMultiple && e.shiftKey;
-          const withControl = e.ctrlKey || isSelectBox;
+          const withControl = e.ctrlKey || e.metaKey || isSelectBox;
 
           setState((draft) => {
             if (draft.editRow) return;
