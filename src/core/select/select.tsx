@@ -99,6 +99,7 @@ export interface SelectProps<Type, Multiple extends boolean> {
   onOpen?: () => void;
   onClose?: () => void;
   onInputChange?: (value: string) => void;
+  selectOnFocus?: boolean;
   optionKey: (option: Type) => string | number;
   optionLabel: (option: Type) => string;
   optionEqual?: (option: Type, value: Type) => boolean;
@@ -150,6 +151,7 @@ export const Select = forwardRef(function Select<
     onClose,
     onChange,
     onInputChange,
+    selectOnFocus,
     renderOption,
     renderValue,
     inputStartAdornment,
@@ -169,11 +171,17 @@ export const Select = forwardRef(function Select<
     state: props.open,
   });
 
-  const [inputValue, setInputValue] = useState("");
+  const getInputText = useCallback(
+    (val: SelectValue<Type, Multiple>) =>
+      multiple || isEmpty(val) ? "" : optionLabel(val as Type),
+    [multiple, optionLabel],
+  );
+
+  const [inputValue, setInputValue] = useState(() => getInputText(value));
   const [searchValue, setSearchValue] = useState("");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const valueRef = useRef<SelectValue<Type, Multiple>>();
+  const valueRef = useRef<SelectValue<Type, Multiple>>(value);
 
   const optionEqual = useCallback(
     (a: Type, b: Type) =>
@@ -182,11 +190,10 @@ export const Select = forwardRef(function Select<
   );
 
   const resetInput = useCallback(() => {
-    const text = multiple || isEmpty(value) ? "" : optionLabel(value as Type);
-    setInputValue(text);
+    setInputValue(getInputText(value));
     setSearchValue("");
     onInputChange?.("");
-  }, [multiple, onInputChange, optionLabel, value]);
+  }, [getInputText, onInputChange, value]);
 
   useEffect(() => {
     if (valueRef.current !== value) {
@@ -298,13 +305,21 @@ export const Select = forwardRef(function Select<
         handleClose();
       }
 
+      // Input is usually already focused here, so `.focus()` fires no event
+      // and `handleFocus` never runs; trigger selection directly instead.
       inputRef.current?.focus();
+      if (selectOnFocus) {
+        selectInputDeferred();
+      }
 
       if (next !== value) {
         setValue(next);
         onChange?.(next);
       }
     },
+    // selectInputDeferred: declared later but stable (empty deps), omitted
+    // here to avoid a use-before-declaration reference.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       acceptOption,
       closeOnSelect,
@@ -312,6 +327,7 @@ export const Select = forwardRef(function Select<
       multiple,
       onChange,
       optionLabel,
+      selectOnFocus,
       setValue,
       value,
     ],
@@ -432,7 +448,23 @@ export const Select = forwardRef(function Select<
 
   const rootRef = useRefs(ref, refs.setReference);
   const inputRef = useRef<HTMLInputElement>(null);
+  const selectOnFocusFrameRef = useRef(0);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    return () => cancelAnimationFrame(selectOnFocusFrameRef.current);
+  }, []);
+
+  // Deferred a frame: WebKit applies its native caret placement after our
+  // listeners run, silently overriding a synchronous `.select()` call.
+  const selectInputDeferred = useCallback(() => {
+    cancelAnimationFrame(selectOnFocusFrameRef.current);
+    selectOnFocusFrameRef.current = requestAnimationFrame(() => {
+      if (document.activeElement === inputRef.current) {
+        inputRef.current?.select();
+      }
+    });
+  }, []);
 
   const handleToggleClick = useCallback(() => {
     if (readOnly || disabled) return;
@@ -500,7 +532,10 @@ export const Select = forwardRef(function Select<
     if (openOnFocus && focusOnce) {
       setFocusNow(true);
     }
-  }, [focusOnce, openOnFocus]);
+    if (selectOnFocus) {
+      selectInputDeferred();
+    }
+  }, [focusOnce, openOnFocus, selectOnFocus, selectInputDeferred]);
 
   const handleRootKeyUp = useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
