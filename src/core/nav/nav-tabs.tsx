@@ -173,14 +173,21 @@ export const NavTabs = forwardRef<HTMLDivElement, NavTabsProps>(
     const visualActive = pendingActive ?? active;
 
     useEffect(() => {
-      if (pendingActive === null) return;
+      // an externally-driven `active` change is authoritative: drop any
+      // optimistic pending value, whether or not it happens to match, so a
+      // pending value from a tab that never got removed from `items` can't
+      // outlive an `active` prop change and get stuck showing the wrong tab
+      setPendingActive(null);
+    }, [active]);
+
+    useEffect(() => {
       if (
-        pendingActive === active ||
+        pendingActive !== null &&
         !items.some((item) => item.id === pendingActive)
       ) {
         setPendingActive(null);
       }
-    }, [active, items, pendingActive]);
+    }, [items, pendingActive]);
 
     const scrollIn = useCallback(
       (element: HTMLElement) => {
@@ -471,7 +478,7 @@ function NavTab(props: NavTabProps) {
     [element, isRtl, scrollTab, stripElement],
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isActive) {
       setActive(item.id, element, false);
     }
