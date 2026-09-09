@@ -134,19 +134,24 @@ export const GanttLine = React.memo(function GanttLine(props: {
   const setVirtualLineTarget = (target: TYPES.GanttVirtualLinePoint) =>
     setVirtualLine((line) => ({ ...line, target }));
 
-  const getLineData = useCallback(() => {
-    const line = refs.current.element;
-    return {
-      duration: (line.width / hourSize).toFixed(2),
-      startDate: getDateFromOffset(line.x, startDate, view, cellSize),
-      endDate: getDateFromOffset(
-        line.x + line.width,
-        startDate,
-        view,
-        cellSize,
-      ),
-    };
-  }, [cellSize, hourSize, startDate, view]);
+  const getLineData = useCallback(
+    (moved?: boolean) => {
+      const line = refs.current.element;
+      // A moved line keeps its duration, so derive the end date from the
+      // snapped start date. Snapping the right edge independently can land
+      // both edges in the same cell when the task is shorter than a cell
+      // (e.g. a 4 days task in month view).
+      const hours = moved ? Number(duration) || line.width / hourSize : 0;
+      return {
+        duration: (line.width / hourSize).toFixed(2),
+        startDate: getDateFromOffset(line.x, startDate, view, cellSize),
+        endDate: moved
+          ? getDateFromOffset(line.x, startDate, view, cellSize, hours)
+          : getDateFromOffset(line.x + line.width, startDate, view, cellSize),
+      };
+    },
+    [cellSize, hourSize, startDate, view, duration],
+  );
 
   const getDragProps = (type: string, options?: any) => ({
     type,
@@ -163,7 +168,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
   const [, drag, linePreview] = useDrag(
     getDragProps(DND_TYPES.LINE, {
       end: () => {
-        const line = getLineData();
+        const line = getLineData(true);
         if (allowStartDate || allowEndDate) {
           onUpdate?.(taskData, {
             ...(allowStartDate && { startDate: line.startDate }),

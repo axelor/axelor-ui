@@ -364,15 +364,30 @@ export function getHeader(
   }
 }
 
+/**
+ * Get the date at the given graph offset, snapped to the view cell
+ * (hour, day, week or month depending on the view).
+ *
+ * @param offsetX the horizontal offset from the graph start
+ * @param startDate the graph start date
+ * @param view the gantt view type
+ * @param cellSize the cell width in pixels
+ * @param hours extra hours added after snapping, e.g. the task duration to get
+ * the end date of a task from its start offset
+ */
 export function getDateFromOffset(
   offsetX: number,
   startDate: Dayjs,
   view: TYPES.GanttType,
   cellSize: number,
+  hours: number = 0,
 ) {
   const { type } = viewConfig[view];
   const total = Number((offsetX / cellSize).toFixed(0));
   let date = startDate.clone();
   date = date.add(total, type);
+  if (hours) {
+    date = date.add(hours, "hour");
+  }
   return date.utc().format();
 }
