@@ -64,9 +64,7 @@ const formatMs = (value: string | number) => {
 
 export const getTransition = (
   props:
-    | "all"
-    | keyof React.CSSProperties
-    | [keyof React.CSSProperties] = "all",
+    "all" | keyof React.CSSProperties | [keyof React.CSSProperties] = "all",
   options: {
     easing?: string;
     duration?: string | number;

@@ -14,13 +14,7 @@ export type BarcodeProps = {
    * @default CODE128
    */
   format?:
-    | "CODE128"
-    | "EAN13"
-    | "EAN8"
-    | "UPC"
-    | "CODE39"
-    | "ITF14"
-    | "Codabar";
+    "CODE128" | "EAN13" | "EAN8" | "UPC" | "CODE39" | "ITF14" | "Codabar";
   /**
    * Barcode height
    * @default 100

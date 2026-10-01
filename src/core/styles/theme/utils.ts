@@ -1,11 +1,7 @@
 import Color from "color";
 
 export type ColorParam =
-  | typeof Color
-  | string
-  | ArrayLike<number>
-  | number
-  | { [key: string]: any };
+  typeof Color | string | ArrayLike<number> | number | { [key: string]: any };
 
 export function hexColor(color: ColorParam) {
   return Color(color).hex().toLowerCase();

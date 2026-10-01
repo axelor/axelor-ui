@@ -1,12 +1,7 @@
 import { Config } from "../types";
 
 export type TVerticalAlignment =
-  | "baseline"
-  | "top"
-  | "middle"
-  | "bottom"
-  | "text-top"
-  | "text-bottom";
+  "baseline" | "top" | "middle" | "bottom" | "text-top" | "text-bottom";
 
 export type TDimension = 25 | 50 | 75 | 100 | "auto";
 
