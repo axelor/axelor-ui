@@ -70,8 +70,8 @@ importers:
         version: 4.4.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
     devDependencies:
       '@chromatic-com/storybook':
-        specifier: ^5.2.1
-        version: 5.2.1(storybook@10.6.1(@types/react@19.2.14)(prettier@3.9.9)(react@19.2.4))
+        specifier: ^5.3.1
+        version: 5.4.0(storybook@10.6.1(@types/react@19.2.14)(prettier@3.9.9)(react@19.2.4))
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.11.0)
@@ -296,11 +296,11 @@ packages:
   '@cacheable/utils@2.5.0':
     resolution: {integrity: sha512-buipgOVDkkPXNR5+xBpDw7Zk2n1EvU7qBJCNUcL7rhQ//kfpOXPAvQ511Os0vpLYJ1pZnvudNytkQt2hst3wqA==}
 
-  '@chromatic-com/storybook@5.2.1':
-    resolution: {integrity: sha512-z6I7NJk/0VngA64y5TNYaB4Hc2X8+90n4op6lBt9PvWk5TmIlFLDqdX33rlrwbNRkkYijVgA/wO04rVYXi5Mlg==}
+  '@chromatic-com/storybook@5.4.0':
+    resolution: {integrity: sha512-U4Rny8H6BBa8uiRMnL0CFZyqZ0MWogN/szlMugsInfSnX+PtrLCVp2kjrvaG9bv6X5xSgHpnmepOzLm8+QFseA==}
     engines: {node: '>=20.0.0', yarn: '>=1.22.18'}
     peerDependencies:
-      storybook: ^0.0.0-0 || ^10.1.0 || ^10.1.0-0 || ^10.2.0-0 || ^10.3.0-0 || ^10.4.0-0 || ^10.5.0-0 || ^10.6.0-0
+      storybook: ^0.0.0-0 || ^10.1.0 || ^10.1.0-0 || ^10.2.0-0 || ^10.3.0-0 || ^10.4.0-0 || ^10.5.0-0 || ^10.6.0-0 || ^11.0.0-0
 
   '@emnapi/core@1.11.0':
     resolution: {integrity: sha512-l9Oo58x0HOP5znGzVhYW9U3e5wVuA4LAZU2AGezTmkhO1CgQRFDhDg4nneHsu/t3WniXg9QrG2nIXL/ZS8ln8Q==}
@@ -1495,8 +1495,9 @@ packages:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
     engines: {node: '>= 8.10.0'}
 
-  chromatic@16.10.0:
-    resolution: {integrity: sha512-nFsztmnu7rFiGafUJgXvLUNpqmRylz92eNvzBoJNTKKQj4EQUyxznwnfpf1dTs7hXtWD8JwcH92jADydaHA1sw==}
+  chromatic@18.10.1:
+    resolution: {integrity: sha512-oeCv4HvMrZPB7SzCD9yuzAPgB4c/TfhqLzDn1/K7dIYGvF/mWhOrwDa5sXHIkaXFJ+mYx9rMKy9fPShWPujH5Q==}
+    engines: {node: '>=22.0.0'}
     hasBin: true
     peerDependencies:
       '@chromatic-com/cypress': ^0.*.* || ^1.0.0
@@ -2742,10 +2743,10 @@ snapshots:
       hashery: 1.5.1
       keyv: 5.6.0
 
-  '@chromatic-com/storybook@5.2.1(storybook@10.6.1(@types/react@19.2.14)(prettier@3.9.9)(react@19.2.4))':
+  '@chromatic-com/storybook@5.4.0(storybook@10.6.1(@types/react@19.2.14)(prettier@3.9.9)(react@19.2.4))':
     dependencies:
       '@neoconfetti/react': 1.0.0
-      chromatic: 16.10.0
+      chromatic: 18.10.1
       jsonfile: 6.2.0
       storybook: 10.6.1(@types/react@19.2.14)(prettier@3.9.9)(react@19.2.4)
       strip-ansi: 7.1.2
@@ -3784,7 +3785,7 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  chromatic@16.10.0:
+  chromatic@18.10.1:
     dependencies:
       semver: 7.8.5
 
