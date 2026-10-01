@@ -74,7 +74,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/react-transition-group": "^4.4.12",
     "@vitejs/plugin-react": "^5.1.4",
-    "commander": "^14.0.3",
+    "commander": "^15.0.0",
     "eslint": "^10.1.0",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
