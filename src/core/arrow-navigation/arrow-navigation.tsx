@@ -101,7 +101,6 @@ export const ArrowNavigation = React.forwardRef(
 
     const handleRef = useRefs(ref, children?.props?.ref, nodeRef);
 
-    /* eslint-disable react-hooks/refs */
     return enabled
       ? React.cloneElement(children, {
           onKeyDown: handleKeyDown,
@@ -109,6 +108,5 @@ export const ArrowNavigation = React.forwardRef(
           tabIndex: 1,
         })
       : children;
-    /* eslint-enable react-hooks/refs */
   },
 );

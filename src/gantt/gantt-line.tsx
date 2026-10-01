@@ -153,6 +153,7 @@ export const GanttLine = React.memo(function GanttLine(props: {
     [cellSize, hourSize, startDate, view, duration],
   );
 
+  /* eslint-disable react-hooks/refs */
   const getDragProps = (type: string, options?: any) => ({
     type,
     item: {
@@ -164,7 +165,6 @@ export const GanttLine = React.memo(function GanttLine(props: {
     ...options,
   });
 
-  /* eslint-disable react-hooks/refs */
   const [, drag, linePreview] = useDrag(
     getDragProps(DND_TYPES.LINE, {
       end: () => {
