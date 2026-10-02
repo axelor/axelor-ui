@@ -5,7 +5,7 @@ React components by Axelor.
 ## Prerequisite
 
 - node >= v24.21
-- pnpm >= 10
+- pnpm >= 11
 
 ```bash
 #Nodejs
@@ -16,7 +16,8 @@ $ source "$HOME/.nvm/nvm.sh"
 # Install and use node version found in .nvmrc of the project
 $ nvm install && nvm use
 
-# pnpm
+# pnpm (run it again after switching Node version with nvm,
+# the pnpm shim is installed per Node version)
 $ corepack enable pnpm
 ```
 

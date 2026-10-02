@@ -5,7 +5,7 @@ if (pm !== "pnpm") {
   console.log(`Use "pnpm" for installation in this project.
 
 If you don't have pnpm, install it via "npm i -g pnpm".
-For more details, go to https://pnpm.ip/
+For more details, go to https://pnpm.io/
 `);
   process.exit(1);
 }

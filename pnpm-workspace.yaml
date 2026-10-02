@@ -1,0 +1,7 @@
+peerDependencyRules:
+  ignoreMissing:
+    - "@babel/*"
+    - "@eslint/*"
+
+allowBuilds:
+  esbuild: true
