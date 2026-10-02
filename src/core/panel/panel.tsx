@@ -34,7 +34,14 @@ export interface PanelProps extends Omit<
 }
 
 export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
-  const { className, children, scrollbar = {}, ...moreProps } = props;
+  const {
+    className,
+    children,
+    scrollbar = {},
+    setCollapsed,
+    onToggle,
+    ...moreProps
+  } = props;
   const {
     header,
     footer,
@@ -44,8 +51,6 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
     headerTitleClassName,
     collapsible = false,
     collapsed = false,
-    setCollapsed,
-    onToggle,
     ...restProps
   } = moreProps;
 
