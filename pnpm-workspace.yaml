@@ -5,3 +5,15 @@ peerDependencyRules:
 
 allowBuilds:
   esbuild: true
+
+# react version used for development, keep it at the minimum version supported
+# by peerDependencies to avoid relying on newer features
+catalog:
+  react: 19.2.4
+  react-dom: 19.2.4
+
+# keep a single react copy (some storybook addons depend on react directly and
+# would otherwise resolve the latest version)
+overrides:
+  react: "catalog:"
+  react-dom: "catalog:"
