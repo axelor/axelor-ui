@@ -94,5 +94,7 @@ export interface TreeChildProps extends TreeNodeProps {
   edit?: boolean;
 }
 
-export interface TreeChildContentProps
-  extends Pick<TreeChildProps, "data" | "columns" | "textRenderer"> {}
+export interface TreeChildContentProps extends Pick<
+  TreeChildProps,
+  "data" | "columns" | "textRenderer"
+> {}

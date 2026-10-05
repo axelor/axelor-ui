@@ -4,12 +4,7 @@ import {
 } from "react-transition-group/Transition";
 
 export type TransitionHandlerKeys =
-  | "onEnter"
-  | "onEntering"
-  | "onEntered"
-  | "onExit"
-  | "onExiting"
-  | "onExited";
+  "onEnter" | "onEntering" | "onEntered" | "onExit" | "onExiting" | "onExited";
 
 export type TransitionKeys =
   | "in"
@@ -19,9 +14,10 @@ export type TransitionKeys =
   | "children"
   | TransitionHandlerKeys;
 
-export interface TransitionHandlerProps
-  extends Pick<_TransitionProps, TransitionHandlerKeys> {}
+export interface TransitionHandlerProps extends Pick<
+  _TransitionProps,
+  TransitionHandlerKeys
+> {}
 
 export interface TransitionProps
-  extends TransitionActions,
-    Partial<Pick<_TransitionProps, TransitionKeys>> {}
+  extends TransitionActions, Partial<Pick<_TransitionProps, TransitionKeys>> {}

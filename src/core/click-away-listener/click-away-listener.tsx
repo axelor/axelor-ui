@@ -2,8 +2,9 @@ import * as React from "react";
 import { useRefs } from "../hooks";
 import { WithChildrenProps } from "../system";
 
-export interface ClickAwayListenerProps<T extends React.ElementType = "div">
-  extends WithChildrenProps<T> {
+export interface ClickAwayListenerProps<
+  T extends React.ElementType = "div",
+> extends WithChildrenProps<T> {
   onClickAway: (event: Event) => void;
 }
 

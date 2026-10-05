@@ -363,7 +363,13 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
         }
 
         onRowClick && onRowClick(e, row, rowIndex);
-        if (!isSelectBox && editable && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
+        if (
+          !isSelectBox &&
+          editable &&
+          !e.ctrlKey &&
+          !e.metaKey &&
+          !e.shiftKey
+        ) {
           if (onRecordEdit) {
             if (cell?.editable !== false) {
               e.preventDefault();
@@ -592,7 +598,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
       },
       [onBeforeColumnResize],
     );
-    
+
     const handleColumnResize = React.useCallback(
       throttle(function handleColumnResize(
         e: React.DragEvent<HTMLElement>,

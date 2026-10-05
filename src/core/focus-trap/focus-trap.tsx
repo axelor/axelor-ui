@@ -7,7 +7,8 @@ import { WithChildrenProps } from "../system";
 export type FocusTarget = FocusTrapOptions["initialFocus"];
 
 export interface FocusTrapProps<T extends React.ElementType = "div">
-  extends WithChildrenProps<T>,
+  extends
+    WithChildrenProps<T>,
     Pick<
       FocusTrapOptions,
       "initialFocus" | "allowOutsideClick" | "clickOutsideDeactivates"

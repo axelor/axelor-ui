@@ -11,8 +11,9 @@ import {
 } from "./utils";
 import { WithChildrenProps } from "../system";
 
-export interface ArrowNavigationProps<T extends React.ElementType = "div">
-  extends WithChildrenProps<T> {
+export interface ArrowNavigationProps<
+  T extends React.ElementType = "div",
+> extends WithChildrenProps<T> {
   enabled?: boolean;
   selector: "auto-horizontal" | "auto-vertical" | (() => HTMLElement[][]);
 }

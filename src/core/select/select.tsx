@@ -36,9 +36,7 @@ import { findDataProp, makeTestId } from "../system/utils";
 import styles from "./select.module.scss";
 
 export type SelectValue<Type, Multiple extends boolean> =
-  | (Multiple extends true ? Type[] : Type)
-  | null
-  | undefined;
+  (Multiple extends true ? Type[] : Type) | null | undefined;
 
 export type SelectIcon = {
   key?: string | number;
@@ -747,7 +745,7 @@ export const Select = forwardRef(function Select<
     notValid,
     open,
   ]);
-  
+
   return (
     <>
       <div

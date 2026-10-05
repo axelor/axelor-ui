@@ -15,8 +15,10 @@ import {
 import { findAriaProp, findDataProp, makeTestId } from "../system/utils";
 import styles from "./overflow-list.module.scss";
 
-export interface OverflowListItem
-  extends Pick<OverflowItemProps, "id" | "groupId" | "priority"> {}
+export interface OverflowListItem extends Pick<
+  OverflowItemProps,
+  "id" | "groupId" | "priority"
+> {}
 
 export interface OverflowListItemProps<T extends OverflowListItem> {
   item: T;

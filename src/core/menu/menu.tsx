@@ -7,16 +7,15 @@ import styled, { withStyled } from "../styled";
 
 import styles from "./menu.module.css";
 
-export interface MenuProps
-  extends Pick<
-    PopperProps,
-    | "placement"
-    | "container"
-    | "offset"
-    | "arrow"
-    | "transition"
-    | "contentClassName"
-  > {
+export interface MenuProps extends Pick<
+  PopperProps,
+  | "placement"
+  | "container"
+  | "offset"
+  | "arrow"
+  | "transition"
+  | "contentClassName"
+> {
   target?: HTMLElement | null;
   flip?: boolean;
   show?: boolean;

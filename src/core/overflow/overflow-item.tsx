@@ -3,8 +3,9 @@ import { useRefs } from "../hooks";
 import { useOverflowItem } from "./hooks";
 import { WithChildrenProps } from "../system";
 
-export interface OverflowItemProps<T extends React.ElementType = "div">
-  extends WithChildrenProps<T> {
+export interface OverflowItemProps<
+  T extends React.ElementType = "div",
+> extends WithChildrenProps<T> {
   /**
    * The unique identifier for the item used by the overflow manager.
    */

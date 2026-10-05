@@ -77,7 +77,7 @@ const Line = React.memo<{
       >
         {pointer && (
           <MaterialIcon
-            icon={pointerIcon as MaterialIconProps['icon']}
+            icon={pointerIcon as MaterialIconProps["icon"]}
             fontSize={"2rem"}
             className={classNames(
               isStartPointer

@@ -13,8 +13,10 @@ export type DropHandler = (
   target: TYPES.DropObject,
 ) => void;
 
-export interface GridDragElementProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onDrop"> {
+export interface GridDragElementProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  "onDrop"
+> {
   canDrag?: boolean;
   canDrop?: boolean;
   column?: TYPES.GridColumn;

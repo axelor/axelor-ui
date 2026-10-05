@@ -9,7 +9,8 @@ import { WithChildrenProps } from "../system";
 import styles from "./overflow.module.scss";
 
 export interface OverflowProps<T extends React.ElementType = "div">
-  extends WithChildrenProps<T>,
+  extends
+    WithChildrenProps<T>,
     Pick<
       ObserveOptions,
       "overflowAxis" | "overflowDirection" | "padding" | "minimumVisible"

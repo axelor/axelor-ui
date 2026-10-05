@@ -31,7 +31,8 @@ import { ComputeResult } from "./types";
 import { isReponsive } from "./utils";
 
 export interface StyleProps
-  extends BackgroundProps,
+  extends
+    BackgroundProps,
     BorderProps,
     EffectProps,
     InteractiveProps,
@@ -58,7 +59,8 @@ export interface WithChildrenProps<T extends React.ElementType = "div"> {
  * @deprecated
  */
 export interface SystemProps
-  extends Omit<React.HTMLAttributes<HTMLElement>, keyof StyleProps>,
+  extends
+    Omit<React.HTMLAttributes<HTMLElement>, keyof StyleProps>,
     StyleProps {}
 
 const SystemConfig = {

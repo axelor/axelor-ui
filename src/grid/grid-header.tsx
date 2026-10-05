@@ -15,10 +15,8 @@ import * as TYPES from "./types";
 import styles from "./grid.module.scss";
 
 export interface GridHeaderProps
-  extends Pick<
-      TYPES.GridState,
-      "selectedCols" | "columns" | "orderBy" | "groupBy"
-    >,
+  extends
+    Pick<TYPES.GridState, "selectedCols" | "columns" | "orderBy" | "groupBy">,
     Pick<
       TYPES.GridProps,
       "selectionType" | "searchRowRenderer" | "searchColumnRenderer"

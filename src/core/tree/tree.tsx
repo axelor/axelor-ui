@@ -86,418 +86,429 @@ function hasCollapsedAncestor(
 
 export const Tree = React.forwardRef<TYPES.TreeHandle, TYPES.TreeProps>(
   function Tree(props, ref) {
-  const {
-    className,
-    sortable,
-    droppable,
-    droppableText,
-    onLoad,
-    onSort,
-    onNodeMove,
-    onNodeEdit,
-    onNodeSave,
-    onNodeDiscard,
-    columns,
-    records,
-    nodeRenderer,
-    textRenderer,
-    editNodeRenderer,
-  } = props;
-  const testId = findDataProp(props, "data-testid");
-  const ariaLabel = findAriaProp(props, "aria-label");
-  const [data, setData] = useState<TYPES.TreeNode[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [editNode, setEditNode] = useState<TYPES.TreeNode | null>(null);
-  const [sortColumns, setSortColumns] = useState<TYPES.TreeSortColumn[] | null>(
-    null,
-  );
-  const loadedRef = useRef<Record<string, boolean>>({});
-  const dataRef = useRef<TYPES.TreeNode[]>([]);
+    const {
+      className,
+      sortable,
+      droppable,
+      droppableText,
+      onLoad,
+      onSort,
+      onNodeMove,
+      onNodeEdit,
+      onNodeSave,
+      onNodeDiscard,
+      columns,
+      records,
+      nodeRenderer,
+      textRenderer,
+      editNodeRenderer,
+    } = props;
+    const testId = findDataProp(props, "data-testid");
+    const ariaLabel = findAriaProp(props, "aria-label");
+    const [data, setData] = useState<TYPES.TreeNode[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [editNode, setEditNode] = useState<TYPES.TreeNode | null>(null);
+    const [sortColumns, setSortColumns] = useState<
+      TYPES.TreeSortColumn[] | null
+    >(null);
+    const loadedRef = useRef<Record<string, boolean>>({});
+    const dataRef = useRef<TYPES.TreeNode[]>([]);
 
-  const selectRow = useCallback((index: number) => {
-    setData((data) =>
-      data.map((row, i) => {
-        if (i === index) {
-          return { ...row, selected: true };
-        }
-        return row.selected ? { ...row, selected: false } : row;
-      }),
-    );
-  }, []);
-
-  const handleSort = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>, column: TYPES.TreeColumn) => {
-      setSortColumns((sortColumns) => {
-        if (!sortColumns) {
-          sortColumns = [];
-        }
-        const exist = sortColumns.find((c) => c.name === column.name);
-        if (exist) {
-          if (!e.shiftKey) {
-            sortColumns = [exist];
+    const selectRow = useCallback((index: number) => {
+      setData((data) =>
+        data.map((row, i) => {
+          if (i === index) {
+            return { ...row, selected: true };
           }
-          return sortColumns.map((col) => {
-            if (col.name === column.name) {
-              return { ...col, order: col.order === "asc" ? "desc" : "asc" };
+          return row.selected ? { ...row, selected: false } : row;
+        }),
+      );
+    }, []);
+
+    const handleSort = useCallback(
+      (e: React.MouseEvent<HTMLDivElement>, column: TYPES.TreeColumn) => {
+        setSortColumns((sortColumns) => {
+          if (!sortColumns) {
+            sortColumns = [];
+          }
+          const exist = sortColumns.find((c) => c.name === column.name);
+          if (exist) {
+            if (!e.shiftKey) {
+              sortColumns = [exist];
             }
-            return col;
-          });
-        }
-        return [
-          ...(e.shiftKey ? sortColumns : []),
-          {
-            name: column.name,
-            order: "asc",
-          },
-        ];
-      });
-    },
-    [],
-  );
-
-  const handleToggle = useCallback(
-    async function handleToggle(record: any, index: number, isHover = false) {
-      if (!loadedRef.current[record.$key] && record.children && onLoad) {
-        loadedRef.current[record.$key] = true;
-        try {
-          setLoading(true);
-          const children = await onLoad(record, sortColumns || []);
-          setData((data) => {
-            const index = data.findIndex((item) => item.$key === record.$key);
-            return [
-              ...data.slice(0, index + 1),
-              ...children.map((item: any) => ({
-                ...toNode(item),
-                parent: record.$key,
-              })),
-              ...data.slice(index + 1),
-            ];
-          });
-        } finally {
-          setLoading(false);
-        }
-      }
-      loadedRef.current[record.$key] = true;
-      const updateKey = isHover ? "hover" : "selected";
-      setData((data) => {
-        const rowsByKey = new Map(data.map((row) => [row.$key, row]));
-
-        return data
-          .map((row) => (row[updateKey] ? { ...row, [updateKey]: false } : row))
-          .map((row) =>
-            row.$key === record.$key
-              ? {
-                  ...row,
-                  [updateKey]: true,
-                  expanded: !record.expanded,
-                }
-              : (record.childrenList || []).includes(row.$key)
-                ? {
-                    ...row,
-                    hidden: record.expanded
-                      ? true
-                      : hasCollapsedAncestor(rowsByKey, row, record.$key),
-                  }
-                : row,
-          );
-      });
-    },
-    [onLoad, sortColumns],
-  );
-
-  const handleSelect = useCallback(
-    async function handleSelect(_: any, record: any, index: number) {
-      setEditNode(null);
-      if (record.children) {
-        await handleToggle(record, index);
-      } else {
-        selectRow(index);
-      }
-    },
-    [handleToggle, selectRow],
-  );
-
-  const handleDrop = useCallback(
-    async function handleDrop(
-      { data: dragItem }: { data: TYPES.TreeNode },
-      { data: hoverItem }: { data: TYPES.TreeNode },
-    ) {
-      setLoading(true);
-      try {
-        const hoverParent = hoverItem;
-        const hasDroppedOnRoot = droppable && hoverItem.data === null;
-
-        let updatedNode = { ...dragItem };
-        if (hoverParent.$key !== dragItem.parent && onNodeMove) {
-          updatedNode = await onNodeMove(
-            dragItem,
-            hoverParent as TYPES.TreeNode,
-          );
-        }
-        setData((data) => {
-          const dragIndex = data.findIndex(
-            (item) => item.$key === dragItem?.$key,
-          );
-          data.splice(dragIndex, 1);
-
-          const hoverIndex = hasDroppedOnRoot
-            ? data.length - 1
-            : data.findIndex((item) => item.$key === hoverItem?.$key);
-
-          data.splice(hoverIndex + 1, 0, {
-            ...updatedNode,
-            parent: hoverParent.$key,
-          });
-
-          let nextDragItem = dragItem;
-          let nextHoverItem = dragItem;
-
-          const childrenList = getChildrenList(data, dragItem.$key);
-          if (childrenList.length > 0) {
-            childrenList.forEach(($id: number) => {
-              const dragIndex = data.findIndex((item) => item.$key === $id);
-              if (dragIndex > -1) {
-                nextDragItem = data[dragIndex];
-                data.splice(dragIndex, 1);
+            return sortColumns.map((col) => {
+              if (col.name === column.name) {
+                return { ...col, order: col.order === "asc" ? "desc" : "asc" };
               }
-              const hoverIndex = data.findIndex(
-                (item) => item.$key === nextHoverItem.$key,
-              );
-              if (hoverIndex > -1) {
-                data.splice(hoverIndex + 1, 0, nextDragItem);
-                nextHoverItem = nextDragItem;
-              }
+              return col;
             });
           }
-
-          return [...data];
+          return [
+            ...(e.shiftKey ? sortColumns : []),
+            {
+              name: column.name,
+              order: "asc",
+            },
+          ];
         });
-      } finally {
-        setLoading(false);
-      }
-    },
-    [droppable, onNodeMove],
-  );
+      },
+      [],
+    );
 
-  const handleNodeEdit = useCallback((record: any) => {
-    setEditNode(record);
-  }, []);
-
-  const handleNodeSave = useCallback(
-    async (record: any, index?: number) => {
-      if (onNodeSave) {
-        record.data = await onNodeSave(record.data);
-      }
-      setEditNode(null);
-      setData((data) => {
-        return data.map((rec, ind) => (ind === index ? record : rec));
-      });
-    },
-    [onNodeSave],
-  );
-
-  const handleNodeCancel = useCallback(
-    (record: any) => {
-      setEditNode(null);
-      onNodeDiscard && onNodeDiscard(record);
-    },
-    [onNodeDiscard],
-  );
-
-  const handleNavigation = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    let currentIndex: number = data.findIndex((row) => row.selected);
-    let activeIndex = currentIndex;
-
-    if (activeIndex > -1) {
-      switch (e.key) {
-        case "Enter":
-          return handleSelect({}, data[activeIndex], activeIndex);
-        case "ArrowUp":
-          for (let i = 0; i < data.length; i++) {
-            if (i < currentIndex && !data[i].hidden) {
-              activeIndex = i;
-            }
+    const handleToggle = useCallback(
+      async function handleToggle(record: any, index: number, isHover = false) {
+        if (!loadedRef.current[record.$key] && record.children && onLoad) {
+          loadedRef.current[record.$key] = true;
+          try {
+            setLoading(true);
+            const children = await onLoad(record, sortColumns || []);
+            setData((data) => {
+              const index = data.findIndex((item) => item.$key === record.$key);
+              return [
+                ...data.slice(0, index + 1),
+                ...children.map((item: any) => ({
+                  ...toNode(item),
+                  parent: record.$key,
+                })),
+                ...data.slice(index + 1),
+              ];
+            });
+          } finally {
+            setLoading(false);
           }
-          break;
-        case "ArrowDown":
-          for (let i = 0; i < data.length; i++) {
-            if (i > currentIndex && !data[i].hidden) {
-              activeIndex = i;
-              break;
-            }
-          }
-          break;
-      }
-    }
+        }
+        loadedRef.current[record.$key] = true;
+        const updateKey = isHover ? "hover" : "selected";
+        setData((data) => {
+          const rowsByKey = new Map(data.map((row) => [row.$key, row]));
 
-    selectRow(Math.max(0, activeIndex));
-  };
+          return data
+            .map((row) =>
+              row[updateKey] ? { ...row, [updateKey]: false } : row,
+            )
+            .map((row) =>
+              row.$key === record.$key
+                ? {
+                    ...row,
+                    [updateKey]: true,
+                    expanded: !record.expanded,
+                  }
+                : (record.childrenList || []).includes(row.$key)
+                  ? {
+                      ...row,
+                      hidden: record.expanded
+                        ? true
+                        : hasCollapsedAncestor(rowsByKey, row, record.$key),
+                    }
+                  : row,
+            );
+        });
+      },
+      [onLoad, sortColumns],
+    );
 
-  useEffect(() => {
-    dataRef.current = data;
-  }, [data]);
+    const handleSelect = useCallback(
+      async function handleSelect(_: any, record: any, index: number) {
+        setEditNode(null);
+        if (record.children) {
+          await handleToggle(record, index);
+        } else {
+          selectRow(index);
+        }
+      },
+      [handleToggle, selectRow],
+    );
 
-  useImperativeHandle(
-    ref,
-    () => ({
-      reloadChildren: async (parentKey: string) => {
-        if (!onLoad) return;
-
-        const parentNode = dataRef.current.find((item) => item.$key === parentKey);
-        if (!parentNode) return;
-
+    const handleDrop = useCallback(
+      async function handleDrop(
+        { data: dragItem }: { data: TYPES.TreeNode },
+        { data: hoverItem }: { data: TYPES.TreeNode },
+      ) {
         setLoading(true);
         try {
-          const children = await onLoad(parentNode, sortColumns || []);
+          const hoverParent = hoverItem;
+          const hasDroppedOnRoot = droppable && hoverItem.data === null;
+
+          let updatedNode = { ...dragItem };
+          if (hoverParent.$key !== dragItem.parent && onNodeMove) {
+            updatedNode = await onNodeMove(
+              dragItem,
+              hoverParent as TYPES.TreeNode,
+            );
+          }
           setData((data) => {
-            const parentIndex = data.findIndex((item) => item.$key === parentKey);
-            if (parentIndex === -1) return data;
+            const dragIndex = data.findIndex(
+              (item) => item.$key === dragItem?.$key,
+            );
+            data.splice(dragIndex, 1);
 
-            const childrenList = getChildrenList(data, parentKey);
-            const next = data.filter((item) => !childrenList.includes(item.$key));
-            const insertAt = next.findIndex((item) => item.$key === parentKey);
-            if (insertAt === -1) return data;
+            const hoverIndex = hasDroppedOnRoot
+              ? data.length - 1
+              : data.findIndex((item) => item.$key === hoverItem?.$key);
 
-            return [
-              ...next.slice(0, insertAt + 1),
-              ...children.map((item: any) => ({
-                ...toNode(item),
-                parent: parentKey,
-              })),
-              ...next.slice(insertAt + 1),
-            ];
+            data.splice(hoverIndex + 1, 0, {
+              ...updatedNode,
+              parent: hoverParent.$key,
+            });
+
+            let nextDragItem = dragItem;
+            let nextHoverItem = dragItem;
+
+            const childrenList = getChildrenList(data, dragItem.$key);
+            if (childrenList.length > 0) {
+              childrenList.forEach(($id: number) => {
+                const dragIndex = data.findIndex((item) => item.$key === $id);
+                if (dragIndex > -1) {
+                  nextDragItem = data[dragIndex];
+                  data.splice(dragIndex, 1);
+                }
+                const hoverIndex = data.findIndex(
+                  (item) => item.$key === nextHoverItem.$key,
+                );
+                if (hoverIndex > -1) {
+                  data.splice(hoverIndex + 1, 0, nextDragItem);
+                  nextHoverItem = nextDragItem;
+                }
+              });
+            }
+
+            return [...data];
           });
-          loadedRef.current[parentKey] = true;
         } finally {
           setLoading(false);
         }
       },
-    }),
-    [onLoad, sortColumns],
-  );
-
-  useEffect(() => {
-    // reset loaded state
-    loadedRef.current = {};
-
-    const [sortColumn] = sortColumns || [];
-    setData(
-      (sortColumn && !onSort
-        ? [...records].sort((r1, r2) => {
-            const v1 = r1[sortColumn.name];
-            const v2 = r2[sortColumn.name];
-            if (v1 > v2) return sortColumn.order === "asc" ? 1 : -1;
-            if (v1 < v2) return sortColumn.order === "asc" ? -1 : 1;
-            return 0;
-          })
-        : [...records]
-      ).map(toNode),
+      [droppable, onNodeMove],
     );
-  }, [records, sortColumns, onSort]);
 
-  useEffect(() => {
-    onSort && sortColumns && onSort(sortColumns);
-  }, [sortColumns, onSort]);
+    const handleNodeEdit = useCallback((record: any) => {
+      setEditNode(record);
+    }, []);
 
-  useEffect(() => {
-    editNode && onNodeEdit && onNodeEdit(editNode);
-  }, [editNode, onNodeEdit]);
+    const handleNodeSave = useCallback(
+      async (record: any, index?: number) => {
+        if (onNodeSave) {
+          record.data = await onNodeSave(record.data);
+        }
+        setEditNode(null);
+        setData((data) => {
+          return data.map((rec, ind) => (ind === index ? record : rec));
+        });
+      },
+      [onNodeSave],
+    );
 
-  const classNames = useClassNames();
+    const handleNodeCancel = useCallback(
+      (record: any) => {
+        setEditNode(null);
+        onNodeDiscard && onNodeDiscard(record);
+      },
+      [onNodeDiscard],
+    );
 
-  const $data = useMemo(() => {
-    return data.map((item: any) => {
-      const childrenList = getChildrenList(data, item.$key);
-      const parentList = getParentList(data, item.parent);
-      return {
-        ...item,
-        ...(loadedRef.current[item.$key]
-          ? {
-              children: childrenList.length ? true : false,
+    const handleNavigation = (e: React.KeyboardEvent<HTMLDivElement>) => {
+      let currentIndex: number = data.findIndex((row) => row.selected);
+      let activeIndex = currentIndex;
+
+      if (activeIndex > -1) {
+        switch (e.key) {
+          case "Enter":
+            return handleSelect({}, data[activeIndex], activeIndex);
+          case "ArrowUp":
+            for (let i = 0; i < data.length; i++) {
+              if (i < currentIndex && !data[i].hidden) {
+                activeIndex = i;
+              }
             }
-          : {}),
-        level: parentList.length,
-        childrenList,
-      };
-    });
-  }, [data]);
+            break;
+          case "ArrowDown":
+            for (let i = 0; i < data.length; i++) {
+              if (i > currentIndex && !data[i].hidden) {
+                activeIndex = i;
+                break;
+              }
+            }
+            break;
+        }
+      }
 
-  return (
-    <div
-      className={classNames("table-tree", className, styles.tree, {
-        [styles.loading]: loading,
-      })}
-      role="treegrid"
-      aria-label={ariaLabel}
-      aria-busy={loading || undefined}
-      {...(editNode
-        ? {}
-        : {
-            tabIndex: 0,
-            onKeyDown: handleNavigation,
-          })}
-      data-testid={testId}
-    >
+      selectRow(Math.max(0, activeIndex));
+    };
+
+    useEffect(() => {
+      dataRef.current = data;
+    }, [data]);
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        reloadChildren: async (parentKey: string) => {
+          if (!onLoad) return;
+
+          const parentNode = dataRef.current.find(
+            (item) => item.$key === parentKey,
+          );
+          if (!parentNode) return;
+
+          setLoading(true);
+          try {
+            const children = await onLoad(parentNode, sortColumns || []);
+            setData((data) => {
+              const parentIndex = data.findIndex(
+                (item) => item.$key === parentKey,
+              );
+              if (parentIndex === -1) return data;
+
+              const childrenList = getChildrenList(data, parentKey);
+              const next = data.filter(
+                (item) => !childrenList.includes(item.$key),
+              );
+              const insertAt = next.findIndex(
+                (item) => item.$key === parentKey,
+              );
+              if (insertAt === -1) return data;
+
+              return [
+                ...next.slice(0, insertAt + 1),
+                ...children.map((item: any) => ({
+                  ...toNode(item),
+                  parent: parentKey,
+                })),
+                ...next.slice(insertAt + 1),
+              ];
+            });
+            loadedRef.current[parentKey] = true;
+          } finally {
+            setLoading(false);
+          }
+        },
+      }),
+      [onLoad, sortColumns],
+    );
+
+    useEffect(() => {
+      // reset loaded state
+      loadedRef.current = {};
+
+      const [sortColumn] = sortColumns || [];
+      setData(
+        (sortColumn && !onSort
+          ? [...records].sort((r1, r2) => {
+              const v1 = r1[sortColumn.name];
+              const v2 = r2[sortColumn.name];
+              if (v1 > v2) return sortColumn.order === "asc" ? 1 : -1;
+              if (v1 < v2) return sortColumn.order === "asc" ? -1 : 1;
+              return 0;
+            })
+          : [...records]
+        ).map(toNode),
+      );
+    }, [records, sortColumns, onSort]);
+
+    useEffect(() => {
+      onSort && sortColumns && onSort(sortColumns);
+    }, [sortColumns, onSort]);
+
+    useEffect(() => {
+      editNode && onNodeEdit && onNodeEdit(editNode);
+    }, [editNode, onNodeEdit]);
+
+    const classNames = useClassNames();
+
+    const $data = useMemo(() => {
+      return data.map((item: any) => {
+        const childrenList = getChildrenList(data, item.$key);
+        const parentList = getParentList(data, item.parent);
+        return {
+          ...item,
+          ...(loadedRef.current[item.$key]
+            ? {
+                children: childrenList.length ? true : false,
+              }
+            : {}),
+          level: parentList.length,
+          childrenList,
+        };
+      });
+    }, [data]);
+
+    return (
       <div
-        className={styles.header}
-        role="row"
-        data-testid={makeTestId(testId, "header")}
-      >
-        {columns.map((column, ind) => {
-          const sortColumn = (sortColumns || []).find(
-            (c) => c.name === column.name,
-          );
-          return (
-            <TreeHeaderColumn
-              key={column.name}
-              data={column}
-              {...(sortColumn ? { sort: sortColumn.order } : {})}
-              {...(sortable
-                ? {
-                    onSort: handleSort,
-                  }
-                : {})}
-              aria-colindex={ind + 1}
-              data-testid={makeTestId(testId, "column", column.name)}
-            />
-          );
+        className={classNames("table-tree", className, styles.tree, {
+          [styles.loading]: loading,
         })}
-      </div>
-      <div
-        className={styles.body}
-        role="presentation"
-        data-testid={makeTestId(testId, "body")}
+        role="treegrid"
+        aria-label={ariaLabel}
+        aria-busy={loading || undefined}
+        {...(editNode
+          ? {}
+          : {
+              tabIndex: 0,
+              onKeyDown: handleNavigation,
+            })}
+        data-testid={testId}
       >
-        {$data.map(
-          (row, rowIndex) =>
-            !row.hidden && (
-              <TreeNode
-                key={row.$key ?? rowIndex}
-                index={rowIndex}
-                columns={columns}
-                edit={editNode === row}
-                data={row}
-                renderer={nodeRenderer}
-                textRenderer={textRenderer}
-                editRenderer={editNodeRenderer}
-                onToggle={handleToggle}
-                onSelect={handleSelect}
-                {...(editNode ? {} : { onDrop: handleDrop })}
-                onEdit={handleNodeEdit}
-                onSave={handleNodeSave}
-                onCancel={handleNodeCancel}
-                data-testid={makeTestId(testId, "node", row.$key ?? rowIndex)}
+        <div
+          className={styles.header}
+          role="row"
+          data-testid={makeTestId(testId, "header")}
+        >
+          {columns.map((column, ind) => {
+            const sortColumn = (sortColumns || []).find(
+              (c) => c.name === column.name,
+            );
+            return (
+              <TreeHeaderColumn
+                key={column.name}
+                data={column}
+                {...(sortColumn ? { sort: sortColumn.order } : {})}
+                {...(sortable
+                  ? {
+                      onSort: handleSort,
+                    }
+                  : {})}
+                aria-colindex={ind + 1}
+                data-testid={makeTestId(testId, "column", column.name)}
               />
-            ),
-        )}
-        {droppable && (
-          <RootDroppable
-            text={droppableText}
-            onDrop={handleDrop}
-            data-testid={makeTestId(testId, "dropzone")}
-          />
-        )}
+            );
+          })}
+        </div>
+        <div
+          className={styles.body}
+          role="presentation"
+          data-testid={makeTestId(testId, "body")}
+        >
+          {$data.map(
+            (row, rowIndex) =>
+              !row.hidden && (
+                <TreeNode
+                  key={row.$key ?? rowIndex}
+                  index={rowIndex}
+                  columns={columns}
+                  edit={editNode === row}
+                  data={row}
+                  renderer={nodeRenderer}
+                  textRenderer={textRenderer}
+                  editRenderer={editNodeRenderer}
+                  onToggle={handleToggle}
+                  onSelect={handleSelect}
+                  {...(editNode ? {} : { onDrop: handleDrop })}
+                  onEdit={handleNodeEdit}
+                  onSave={handleNodeSave}
+                  onCancel={handleNodeCancel}
+                  data-testid={makeTestId(testId, "node", row.$key ?? rowIndex)}
+                />
+              ),
+          )}
+          {droppable && (
+            <RootDroppable
+              text={droppableText}
+              onDrop={handleDrop}
+              data-testid={makeTestId(testId, "dropzone")}
+            />
+          )}
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  },
+);

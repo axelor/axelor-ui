@@ -76,9 +76,7 @@ export interface ThemeElementSpacing {
 }
 
 export interface ThemeElementCommon
-  extends ThemeTypography,
-    ThemeElementColors,
-    ThemeElementSpacing {
+  extends ThemeTypography, ThemeElementColors, ThemeElementSpacing {
   border?: ThemeElementBorder;
 }
 
@@ -93,8 +91,8 @@ export interface ThemeOptions {
     ring?: {
       width?: string;
       color?: string;
-    }
-  }
+    };
+  };
   link?: {
     color?: string;
     hover?: string;

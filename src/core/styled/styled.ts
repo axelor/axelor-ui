@@ -20,8 +20,10 @@ export type StyledComponentProps<C extends React.ElementType, P extends {}> =
     ? Merge<React.ComponentProps<C>, Merge<Q, P>>
     : Merge<React.ComponentProps<C>, P>;
 
-export interface StyledComponent<C extends React.ElementType, P extends {}>
-  extends React.FC<StyledComponentProps<C, P>> {
+export interface StyledComponent<
+  C extends React.ElementType,
+  P extends {},
+> extends React.FC<StyledComponentProps<C, P>> {
   <As extends React.ElementType = C>(
     props: { as?: As } & StyledComponentProps<As, P>,
   ): JSX.Element | null;
