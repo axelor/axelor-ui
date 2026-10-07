@@ -1,6 +1,4 @@
 import { Box } from "../box";
-import { Icon } from "../icon";
-import { IconProps } from "../icon/icon";
 import styled, { withStyled } from "../styled";
 import { findDataProp, makeTestId } from "../system/utils";
 
@@ -9,8 +7,8 @@ import styles from "./menu.module.css";
 export interface MenuItemProps {
   text?: string;
   label?: string;
-  startIcon?: IconProps["as"];
-  endIcon?: IconProps["as"];
+  startIcon?: React.ReactNode;
+  endIcon?: React.ReactNode;
   active?: boolean;
   disabled?: boolean;
 }
@@ -37,25 +35,30 @@ export const MenuItem = withStyled(MenuItemBase)((
     <MenuItemBase {...props} ref={ref}>
       <Box d="flex" alignItems="center">
         {startIcon && (
-          <Icon
-            as={startIcon}
+          <Box
+            as="span"
+            d="inline-flex"
             me={1}
-            size="sm"
+            className={styles.menuItemIcon}
             data-testid={makeTestId(testId, "start-icon")}
-          />
+          >
+            {startIcon}
+          </Box>
         )}
         <Box d="inline-flex" flexGrow={1} style={{ minWidth: 0 }}>
           {children || text}
         </Box>
         {label && <Box d="inline-flex">{label}</Box>}
         {endIcon && (
-          <Icon
-            as={endIcon}
-            float="end"
+          <Box
+            as="span"
+            d="inline-flex"
             ms={1}
-            size="sm"
+            className={styles.menuItemIcon}
             data-testid={makeTestId(testId, "end-icon")}
-          />
+          >
+            {endIcon}
+          </Box>
         )}
       </Box>
     </MenuItemBase>

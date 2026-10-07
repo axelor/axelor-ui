@@ -73,3 +73,6 @@
 .menuItem:focus {
   outline: none;
 }
+.menuItem .menuItemIcon > * {
+  font-size: 0.875em;
+}

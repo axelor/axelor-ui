@@ -1,5 +1,3 @@
-import BiCaretLeftFill from "bootstrap-icons/icons/caret-left-fill.svg?react";
-import BiCaretRightFill from "bootstrap-icons/icons/caret-right-fill.svg?react";
 import React, {
   useCallback,
   useContext,
@@ -9,6 +7,7 @@ import React, {
   useState,
 } from "react";
 
+import { BootstrapIcon } from "../../icons/bootstrap-icon";
 import { ArrowNavigation } from "../arrow-navigation";
 import { isElementDisabled, isElementHidden } from "../arrow-navigation/utils";
 import { Box } from "../box";
@@ -368,7 +367,9 @@ function MenuItem({
         {...rest}
         text={text}
         ref={setTarget}
-        endIcon={rtl ? BiCaretLeftFill : BiCaretRightFill}
+        endIcon={
+          <BootstrapIcon icon={rtl ? "caret-left-fill" : "caret-right-fill"} />
+        }
         onMouseEnter={handleItemMouseEnter}
       />
       {/* eslint-disable-next-line react-hooks/refs */}

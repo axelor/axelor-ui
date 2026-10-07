@@ -21,7 +21,6 @@ export * from "./fade";
 export * from "./focus-trap";
 export * from "./grow";
 export * from "./hooks";
-export * from "./icon";
 export * from "./image";
 export * from "./input";
 export * from "./input-feedback";

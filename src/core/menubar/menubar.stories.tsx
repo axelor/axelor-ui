@@ -1,8 +1,4 @@
-import BiArrowClockwise from "bootstrap-icons/icons/arrow-clockwise.svg?react";
-import BiArrowCounterclockwise from "bootstrap-icons/icons/arrow-counterclockwise.svg?react";
-import BiClipboardCheck from "bootstrap-icons/icons/clipboard-check.svg?react";
-import BiClipboard from "bootstrap-icons/icons/clipboard.svg?react";
-import BiScissors from "bootstrap-icons/icons/scissors.svg?react";
+import { BootstrapIcon } from "../../icons/bootstrap-icon";
 
 import { Menu as AxMenu } from "../menu/menu";
 import { MenuDivider } from "../menu/menu-divider";
@@ -37,14 +33,30 @@ export const Basic = () => {
       <Menu text="Edit">
         <MenuItem
           text="Undo"
-          startIcon={BiArrowCounterclockwise}
+          startIcon={<BootstrapIcon icon="arrow-counterclockwise" />}
           label="Ctrl+Z"
         />
-        <MenuItem text="Redo" startIcon={BiArrowClockwise} label="Ctrl+Y" />
+        <MenuItem
+          text="Redo"
+          startIcon={<BootstrapIcon icon="arrow-clockwise" />}
+          label="Ctrl+Y"
+        />
         <MenuDivider />
-        <MenuItem text="Cut" startIcon={BiScissors} label="Ctrl+X" />
-        <MenuItem text="Copy" startIcon={BiClipboard} label="Ctrl+C" />
-        <MenuItem text="Paste" startIcon={BiClipboardCheck} label="Ctrl+P" />
+        <MenuItem
+          text="Cut"
+          startIcon={<BootstrapIcon icon="scissors" />}
+          label="Ctrl+X"
+        />
+        <MenuItem
+          text="Copy"
+          startIcon={<BootstrapIcon icon="clipboard" />}
+          label="Ctrl+C"
+        />
+        <MenuItem
+          text="Paste"
+          startIcon={<BootstrapIcon icon="clipboard-check" />}
+          label="Ctrl+P"
+        />
       </Menu>
       <Menu text="View">
         <MenuItem text="Print Layout" />
