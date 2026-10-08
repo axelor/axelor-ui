@@ -40,6 +40,9 @@ const config: StorybookConfig = {
 
   typescript: {
     reactDocgen: "react-docgen-typescript",
+    reactDocgenTypescriptOptions: {
+      include: ["src/**/*.tsx"],
+    },
   },
 };
 
