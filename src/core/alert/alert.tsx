@@ -70,7 +70,7 @@ export const Alert = withStyled(AlertRoot)((props, ref) => {
     success: "check-circle",
     info: "info-circle",
     warning: "exclamation-triangle",
-    danger: "x-circle",
+    danger: "exclamation-circle",
   };
 
   const testId = findDataProp(props, "data-testid");
