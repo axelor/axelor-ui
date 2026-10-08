@@ -35,6 +35,13 @@ const config: StorybookConfig = {
       optimizeDeps: {
         entries: [`${src}/**/*.{ts,js,tsx,jsx,mdx,css,scss,html}`],
       },
+      build: {
+        rolldownOptions: {
+          checks: {
+            bundlerTimings: false,
+          },
+        },
+      },
     });
   },
 
