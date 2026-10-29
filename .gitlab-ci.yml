@@ -28,14 +28,11 @@ build_package:
       
 publish_to_npm:
   stage: publish
-  image: node:20.15-bullseye
-  cache:
-    <<: *global_cache
-    policy: pull
+  image: node:24-bookworm
   dependencies:
     - build_package
   only:
     - tags
   script:
     - npm config set -- '//registry.npmjs.org/:_authToken' "${NPMJS_TOKEN}"
-    - (cd dist && npm publish --access public --tag 0.4-stable)
+    - (cd dist && npm stage publish --access public --tag 0.4-stable)
