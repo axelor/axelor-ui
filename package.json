@@ -73,7 +73,7 @@
     "@types/react": "~19.2.18",
     "@types/react-dom": "~19.2.7",
     "@types/react-transition-group": "^4.4.12",
-    "@vitejs/plugin-react": "^6.1.2",
+    "@vitejs/plugin-react": "^6.3.0",
     "commander": "^15.0.0",
     "eslint": "^10.11.0",
     "eslint-plugin-react-hooks": "^7.1.1",
@@ -93,7 +93,7 @@
     "storybook": "^10.6.7",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.71.1",
-    "vite": "~8.3.3",
+    "vite": "~8.3.8",
     "vite-plugin-svgr": "^5.2.0"
   },
   "packageManager": "pnpm@11.28.5+sha512.484563d30b4c2ad27cb48aa94ff2b302dbcebc8ff6bf28816c2589886e146ce7f76f354f3bc1a438e6f5e9768c302aa0a6f7add8232903cd4cf81426cbc14d9e"
