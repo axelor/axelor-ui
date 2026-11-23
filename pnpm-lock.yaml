@@ -46,8 +46,8 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3
       csstype:
-        specifier: ^3.2.3
-        version: 3.2.3
+        specifier: ^3.2.4
+        version: 3.2.4
       dayjs:
         specifier: ^1.11.23
         version: 1.11.23
@@ -1684,8 +1684,8 @@ packages:
   css.escape@1.5.1:
     resolution: {integrity: sha512-YUifsXXuknHlUsmlgyY0PKzgPOr7/FjCePfHNt0jxm83wHZi44VDMQ7/fGNkjY3/jV1MC+1CmZbaHzugyeRtpg==}
 
-  csstype@3.2.3:
-    resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
+  csstype@3.2.4:
+    resolution: {integrity: sha512-PoKaoPzQapnEoqUSnHx1u6W6ku8CVEgKsnpmmzU3m1nwkidpPBQ8V/Zq2+bWNrsOKoKLwTGdbx6xF7BXP1zLVQ==}
 
   dayjs@1.11.23:
     resolution: {integrity: sha512-QDTCU0M0MxR3hQfnlDJfwekQiaanm1ubOD231u73WBckQ/fsamwRLiE2GBz6D3a/xF1NgfiDLJjXBa1hYOYTtQ==}
@@ -3804,7 +3804,7 @@ snapshots:
 
   '@types/react@19.2.18':
     dependencies:
-      csstype: 3.2.3
+      csstype: 3.2.4
 
   '@types/resolve@1.20.6': {}
 
@@ -4100,7 +4100,7 @@ snapshots:
 
   css.escape@1.5.1: {}
 
-  csstype@3.2.3: {}
+  csstype@3.2.4: {}
 
   dayjs@1.11.23: {}
 
@@ -4146,7 +4146,7 @@ snapshots:
   dom-helpers@5.2.1:
     dependencies:
       '@babel/runtime': 7.28.6
-      csstype: 3.2.3
+      csstype: 3.2.4
 
   dot-case@3.0.4:
     dependencies:
