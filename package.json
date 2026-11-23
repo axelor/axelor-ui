@@ -82,7 +82,7 @@
     "fs-extra": "^11.4.1",
     "globals": "^17.14.0",
     "i18next": "^26.4.2",
-    "prettier": "^3.9.9",
+    "prettier": "^3.10.1",
     "prop-types": "^15.8.1",
     "react": "catalog:",
     "react-dom": "catalog:",
