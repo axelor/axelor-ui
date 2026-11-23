@@ -55,8 +55,8 @@ importers:
         specifier: ^8.2.6
         version: 8.2.6
       immer:
-        specifier: ^11.1.21
-        version: 11.1.21
+        specifier: ^11.2.10
+        version: 11.2.10
       jsbarcode:
         specifier: ^3.12.3
         version: 3.12.3
@@ -1977,8 +1977,8 @@ packages:
     resolution: {integrity: sha512-Hs59xBNfUIunMFgWAbGX5cq6893IbWg4KnrjbYwX3tx0ztorVgTDA6B2sxf8ejHJ4wz8BqGUMYlnzNBer5NvGg==}
     engines: {node: '>= 4'}
 
-  immer@11.1.21:
-    resolution: {integrity: sha512-bZSadeCPGdaY5/qRLgr6mDSH1ra21rD3rqpiWk7+QTr4ayYPTE9qZYdLh/NdPhMe0wSrTvHD/Lk8q5EwhUs0aw==}
+  immer@11.2.10:
+    resolution: {integrity: sha512-pzANBj+0A9u+prdhBJ14DVi44vCvVUQzBa8DKt6I0AMCokPHtt722BK9IX5bFC70xUSU9TnzLRIJLTGqIzjEFw==}
 
   immutable@4.3.9:
     resolution: {integrity: sha512-ObHy4YN7ycwZOUCLI1/6svfyAFu7vL8RhAvVu/bh/RZW9EPlOyDaQ9jDQWCtdqzaXUjgXZCW1migtHE7YI7UGQ==}
@@ -4407,7 +4407,7 @@ snapshots:
 
   ignore@7.0.5: {}
 
-  immer@11.1.21: {}
+  immer@11.2.10: {}
 
   immutable@4.3.9: {}
 
