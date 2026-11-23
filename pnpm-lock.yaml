@@ -22,8 +22,8 @@ importers:
         specifier: ^9.4.3
         version: 9.4.3
       '@fluentui/react-context-selector':
-        specifier: ^9.2.20
-        version: 9.2.20(@types/react@19.2.18)(react@19.2.4)(scheduler@0.27.0)
+        specifier: ^9.2.21
+        version: 9.2.21(@types/react@19.2.18)(react@19.2.4)(scheduler@0.27.0)
       '@hello-pangea/dnd':
         specifier: ^18.0.1
         version: 18.0.1(@types/react@19.2.18)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -537,8 +537,8 @@ packages:
   '@fluentui/priority-overflow@9.4.3':
     resolution: {integrity: sha512-2BntHbObEJ8zuHni2/Finy20o0YEX4x1LAhL/lbft38YI1BN06QMdyxH6wD15iBxD9XX5mypdDWg7DusNJsMDw==}
 
-  '@fluentui/react-context-selector@9.2.20':
-    resolution: {integrity: sha512-7AcVVBYIedph3S5yNLhwBQUO5yYE8shfroAt8b7Z0pkLqrWaFulUC7Ysi6mkzPhKgnKRrrNZkZfrZ9kWkLWzQg==}
+  '@fluentui/react-context-selector@9.2.21':
+    resolution: {integrity: sha512-pzVcMTosiP7tIZbqz+hs3BIIMKrjJCqeBGaGMcZC6AO0eaFORh/DuOTKLC8o692ltG/Qpkijo9V4qZiiodRvFg==}
     peerDependencies:
       '@types/react': '>=16.14.0 <20.0.0'
       react: 19.2.4
@@ -559,8 +559,8 @@ packages:
   '@fluentui/react-theme@9.2.2':
     resolution: {integrity: sha512-yUQMQkMLGvo6+Q/RITxpLh00STvI299gnk1IV/QHc2DW5EKiCcmIp9xma7+lJzfLACfDkwJDy5hZSl+7MIYf9w==}
 
-  '@fluentui/react-utilities@9.26.7':
-    resolution: {integrity: sha512-OXbeacOthwAg3FkNojWE4L8uhiWOcKuI7V2NHbndgDHZRftu/ZDUTW6ykma3bh5t/SlJ5JuHlzC+rWd8UfEMcA==}
+  '@fluentui/react-utilities@9.27.0':
+    resolution: {integrity: sha512-7Voc3cEcv67tm3xndxEg9OzrOnbtM6/1LPFX+a+Al7uijhWkyHc3+sQYqdCdT2N21H04jP9Rt04JC31XaxeNig==}
     peerDependencies:
       '@types/react': '>=16.14.0 <20.0.0'
       react: 19.2.4
@@ -3137,9 +3137,9 @@ snapshots:
     dependencies:
       '@swc/helpers': 0.5.18
 
-  '@fluentui/react-context-selector@9.2.20(@types/react@19.2.18)(react@19.2.4)(scheduler@0.27.0)':
+  '@fluentui/react-context-selector@9.2.21(@types/react@19.2.18)(react@19.2.4)(scheduler@0.27.0)':
     dependencies:
-      '@fluentui/react-utilities': 9.26.7(@types/react@19.2.18)(react@19.2.4)
+      '@fluentui/react-utilities': 9.27.0(@types/react@19.2.18)(react@19.2.4)
       '@swc/helpers': 0.5.18
       react: 19.2.4
       scheduler: 0.27.0
@@ -3159,7 +3159,7 @@ snapshots:
       '@fluentui/tokens': 1.0.0-alpha.24
       '@swc/helpers': 0.5.18
 
-  '@fluentui/react-utilities@9.26.7(@types/react@19.2.18)(react@19.2.4)':
+  '@fluentui/react-utilities@9.27.0(@types/react@19.2.18)(react@19.2.4)':
     dependencies:
       '@fluentui/keyboard-keys': 9.0.9
       '@fluentui/react-shared-contexts': 9.26.4(@types/react@19.2.18)(react@19.2.4)
