@@ -219,9 +219,11 @@ export const Select = forwardRef(function Select<
   }, [optionMatch, options, searchOptions, searchValue]);
 
   const selectedIndex = useMemo(() => {
-    const item = Array.isArray(value) ? value[value.length - 1] : value;
-    return open && item ? items?.findIndex((x) => optionEqual(x, item)) : -1;
-  }, [items, open, optionEqual, value]);
+    const item = value as Type | null;
+    if (!open || multiple || !item) return null;
+    const index = items.findIndex((x) => optionEqual(x, item));
+    return index < 0 ? null : index;
+  }, [items, multiple, open, optionEqual, value]);
 
   const handleOpen = useCallback(() => {
     if (open || disabled || readOnly) return;
@@ -274,7 +276,10 @@ export const Select = forwardRef(function Select<
   const listNav = useListNavigation(context, {
     listRef,
     activeIndex,
-    selectedIndex,
+    // moves the active item to a non-null index whenever the list opens or
+    // changes (-1 means none), so give it the current value only when opened
+    // without a search; otherwise the item activated while typing is dropped
+    selectedIndex: searchValue ? null : selectedIndex,
     onNavigate: setActiveIndex,
     virtual: true,
     loop: true,
