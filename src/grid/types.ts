@@ -14,6 +14,7 @@ export interface GridColumn {
   sort?: boolean;
   editable?: boolean;
   sortable?: boolean;
+  groupable?: boolean;
   searchable?: boolean;
   action?: boolean;
   aggregate?: "sum" | "min" | "max" | "avg" | "count";

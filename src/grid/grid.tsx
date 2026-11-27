@@ -750,7 +750,7 @@ export const Grid = React.forwardRef<HTMLDivElement, TYPES.GridProps>(
               targetIndex = data.groupBy.length;
             }
             data.groupBy.splice(targetIndex, 0, group);
-          } else if (!isDestExist) {
+          } else if (!isDestExist && dest.groupable !== false) {
             data.groupBy.push(group);
           }
 
