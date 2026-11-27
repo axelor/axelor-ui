@@ -423,9 +423,10 @@ export const Select = forwardRef(function Select<
         if (option) {
           updateValue(option);
         } else {
-          // custom option
+          // custom option, unless disabled
+          const custom = customOptions?.[activeIndex - items.length];
           const activeRef = listRef.current[activeIndex];
-          if (activeRef) {
+          if (activeRef && !custom?.disabled) {
             handleClose();
             activeRef.click();
           }
@@ -452,6 +453,7 @@ export const Select = forwardRef(function Select<
     [
       activeIndex,
       autoComplete,
+      customOptions,
       handleClose,
       handleRootKeyDownInput,
       handleRootKeyDownOpen,
