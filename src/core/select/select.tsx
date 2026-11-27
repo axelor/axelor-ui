@@ -413,7 +413,10 @@ export const Select = forwardRef(function Select<
       if (!open && handleRootKeyDownOpen(event, isTargetRoot)) return;
 
       if (open && event.key === "Tab") {
-        startTransition(() => handleClose());
+        startTransition(() => {
+          handleClose();
+          if (clearOnBlur) resetInput();
+        });
         return;
       }
 
@@ -453,6 +456,7 @@ export const Select = forwardRef(function Select<
     [
       activeIndex,
       autoComplete,
+      clearOnBlur,
       customOptions,
       handleClose,
       handleRootKeyDownInput,
@@ -464,6 +468,7 @@ export const Select = forwardRef(function Select<
       open,
       removeOnBackspace,
       removeOnDelete,
+      resetInput,
       setValue,
       updateValue,
       value,
