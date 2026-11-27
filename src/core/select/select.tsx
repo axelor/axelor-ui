@@ -378,6 +378,7 @@ export const Select = forwardRef(function Select<
   const handleRootKeyDownInput = useCallback(
     (event: React.KeyboardEvent<HTMLElement>) => {
       if (event.key === "Escape" && clearOnEscape) {
+        handleClose();
         resetInput();
         return;
       }
@@ -397,6 +398,7 @@ export const Select = forwardRef(function Select<
     },
     [
       clearOnEscape,
+      handleClose,
       inputValue,
       multiple,
       onChange,
