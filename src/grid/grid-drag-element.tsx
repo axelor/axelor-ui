@@ -60,6 +60,8 @@ const GridDragElementComponent = React.memo(function GridDragElementComponent(
       },
       canDrop(_item, monitor) {
         const item: any = monitor.getItem();
+        // the groups area only takes columns that can be grouped
+        if (!column && item.groupable === false) return false;
         return item.name !== (column || {}).name;
       },
       collect: (monitor) => {
@@ -69,7 +71,7 @@ const GridDragElementComponent = React.memo(function GridDragElementComponent(
             column &&
             !item.$group &&
             !(column as TYPES.DropObject).$group) ||
-          (!item?.$group && !column) ||
+          (!item?.$group && !column && item?.groupable !== false) ||
           (item?.$group && (column as TYPES.DropObject)?.$group);
         return {
           isOver: canOver && monitor.isOver(),

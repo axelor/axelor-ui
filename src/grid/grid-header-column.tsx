@@ -177,14 +177,14 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
     const resizable =
       canResize && column.name !== "__reorder__" && !column.action;
     const isGrouped = groupBy?.map((g) => g.name).includes(column.name);
-    const canGroup = onGroup && !isGrouped;
+    const canGroup = onGroup && !isGrouped && column.groupable !== false;
     const canUnGroup = onUngroup && isGrouped;
     const canSort = onSort && column.sortable !== false;
     const hasMenu =
       !column.action &&
       Boolean(column.title) &&
       Boolean(
-        canSort || onGroup || onUngroup || onShow || onHide || onCustomize,
+        canSort || canGroup || canUnGroup || onShow || onHide || onCustomize,
       );
     return (
       <>
@@ -337,7 +337,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
 
           {onHide && (
             <>
-              {(canSort || onGroup || onUngroup) && <MenuDivider />}
+              {(canSort || canGroup || canUnGroup) && <MenuDivider />}
 
               <MenuItem
                 onClick={(e: SyntheticEvent) => {
@@ -377,7 +377,7 @@ export const GridHeaderColumn = React.memo(function GridHeaderColumn(
 
           {onCustomize && (
             <>
-              {(canSort || onGroup || onUngroup || onHide || onShow) && (
+              {(canSort || canGroup || canUnGroup || onHide || onShow) && (
                 <MenuDivider />
               )}
               <MenuItem
